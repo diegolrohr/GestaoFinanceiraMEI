@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Xml.Serialization;
+using Fly01.Core;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFe
 {
@@ -16,7 +17,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         public string TotalAproxString
         {
             get { return TotalAprox.ToString("0.00").Replace(",", "."); }
-            set { TotalAprox = double.Parse(value.Replace(".", ",")); }
+            set { TotalAprox = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         /// <summary>

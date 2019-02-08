@@ -1,7 +1,9 @@
-﻿using Fly01.Core.Entities.Domains.Enum;
+﻿using Fly01.Core;
+using Fly01.Core.Entities.Domains.Enum;
 using Fly01.EmissaoNFE.Domain.Enums;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Xml.Serialization;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFe
@@ -96,7 +98,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         public string QuantidadeString
         {
             get { return Quantidade.ToString("0.00").Replace(",", "."); }
-            set { Quantidade = double.Parse(value.Replace(".", ",")); }
+            set { Quantidade = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [Required]
@@ -112,7 +114,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         public string ValorUnitarioString
         {
             get { return ValorUnitario.ToString("0.00").Replace(",", "."); }
-            set { ValorUnitario = double.Parse(value.Replace(".", ",")); }
+            set { ValorUnitario = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault ); }
         }
 
         [Required]
@@ -127,7 +129,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         public string ValorBrutoString
         {
             get { return ValorBruto.ToString("0.00").Replace(",", "."); }
-            set { ValorBruto = double.Parse(value.Replace(".", ",")); }
+            set { ValorBruto = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [Required]
@@ -163,7 +165,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         public string QuantidadeTributadaString
         {
             get { return QuantidadeTributada.ToString("0.00").Replace(",", "."); }
-            set { QuantidadeTributada = double.Parse(value.Replace(".", ",")); }
+            set { QuantidadeTributada = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [Required]
@@ -179,7 +181,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         public string ValorUnitarioTributadoString
         {
             get { return ValorUnitarioTributado.ToString("0.00").Replace(",", "."); }
-            set { ValorUnitarioTributado = double.Parse(value.Replace(".", ",")); }
+            set { ValorUnitarioTributado = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]
@@ -190,7 +192,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         public string ValorFreteString
         {
             get { return ValorFrete.HasValue ? ValorFrete.Value.ToString("0.00").Replace(",", ".") : "0.00"; }
-            set { ValorFrete = double.Parse(value.Replace(".", ",")); }
+            set { ValorFrete = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         public bool ShouldSerializeValorFreteString()
@@ -218,7 +220,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         public string ValorDescontoString
         {
             get { return ValorDesconto.HasValue ? ValorDesconto.Value.ToString("0.00").Replace(",", ".") : null; }
-            set { ValorDesconto = double.Parse(value.Replace(".", ",")); }
+            set { ValorDesconto = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         public bool ShouldSerializeValorDescontoString()

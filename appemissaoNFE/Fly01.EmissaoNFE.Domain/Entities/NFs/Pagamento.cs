@@ -1,6 +1,7 @@
 ﻿using Fly01.EmissaoNFE.Domain.Enums;
 using System;
 using System.Xml.Serialization;
+using Fly01.Core;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFS
 {
@@ -30,7 +31,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         public string ValorString
         {
             get { return Valor.ToString("0.00").Replace(",", "."); }
-            set { Valor = double.Parse(value.Replace(".", ",")); }
+            set { Valor = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
     }
 }

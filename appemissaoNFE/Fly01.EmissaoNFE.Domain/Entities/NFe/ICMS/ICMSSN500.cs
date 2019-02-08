@@ -1,4 +1,5 @@
-﻿using Fly01.Core.Entities.Domains.Enum;
+﻿using Fly01.Core;
+using Fly01.Core.Entities.Domains.Enum;
 using Fly01.EmissaoNFE.Domain.Enums;
 using System.Xml.Serialization;
 
@@ -26,7 +27,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
             {
                 return ValorBCSTRetido.ToString("0.00").Replace(",", ".");
             }
-            set { ValorBCSTRetido = double.Parse(value.Replace(".", ",")); }
+            set { ValorBCSTRetido = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]
@@ -39,7 +40,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
             {
                 return AliquotaConsumidorFinal.ToString("0.00").Replace(",", ".");
             }
-            set { AliquotaConsumidorFinal = double.Parse(value.Replace(".", ",")); }
+            set { AliquotaConsumidorFinal = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]
@@ -52,7 +53,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
             {
                 return ValorICMSSTRetido.ToString("0.00").Replace(",", ".");
             }
-            set { ValorICMSSTRetido = double.Parse(value.Replace(".", ",")); }
+            set { ValorICMSSTRetido = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]

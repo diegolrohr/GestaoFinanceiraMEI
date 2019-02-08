@@ -1,5 +1,6 @@
 ﻿using Fly01.EmissaoNFE.Domain.Enums;
 using System.Xml.Serialization;
+using Fly01.Core;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFS
 {
@@ -19,7 +20,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         public string AliquotaIssString
         {
             get { return AliquotaIss.ToString("0.00").Replace(",", "."); }
-            set { AliquotaIss = double.Parse(value.Replace(".", ",")); }
+            set { AliquotaIss = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlElement(ElementName = "idcnae")]
@@ -47,7 +48,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         public string QuantidadeString
         {
             get { return Quantidade.ToString("0.00").Replace(",", "."); }
-            set { Quantidade = double.Parse(value.Replace(".", ",")); }
+            set { Quantidade = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]
@@ -60,7 +61,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         public string ValorUnitarioString
         {
             get { return ValorUnitario.ToString("0.00").Replace(",", "."); }
-            set { ValorUnitario = double.Parse(value.Replace(".", ",")); }
+            set { ValorUnitario = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]
@@ -73,7 +74,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         public string ValorTotalString
         {
             get { return ValorTotal.ToString("0.00").Replace(",", "."); }
-            set { ValorTotal = double.Parse(value.Replace(".", ",")); }
+            set { ValorTotal = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]
@@ -86,7 +87,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         public string BaseCalculoString
         {
             get { return BaseCalculo.ToString("0.00").Replace(",", "."); }
-            set { BaseCalculo = double.Parse(value.Replace(".", ",")); }
+            set { BaseCalculo = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         /// <summary>
@@ -111,7 +112,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         public string ValorPISString
         {
             get { return ValorPIS.ToString("0.00").Replace(",", "."); }
-            set { ValorPIS = double.Parse(value.Replace(".", ",")); }
+            set { ValorPIS = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]
@@ -121,7 +122,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         public string ValorCofinsString
         {
             get { return ValorCofins.ToString("0.00").Replace(",", "."); }
-            set { ValorCofins = double.Parse(value.Replace(".", ",")); }
+            set { ValorCofins = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]
@@ -131,7 +132,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         public string ValorINSSString
         {
             get { return ValorINSS.ToString("0.00").Replace(",", "."); }
-            set { ValorINSS = double.Parse(value.Replace(".", ",")); }
+            set { ValorINSS = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]
@@ -141,7 +142,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         public string ValorIRString
         {
             get { return ValorIR.ToString("0.00").Replace(",", "."); }
-            set { ValorIR = double.Parse(value.Replace(".", ",")); }
+            set { ValorIR = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]
@@ -151,7 +152,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         public string ValorCSLLString
         {
             get { return ValorCSLL.ToString("0.00").Replace(",", "."); }
-            set { ValorCSLL = double.Parse(value.Replace(".", ",")); }
+            set { ValorCSLL = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]
@@ -161,7 +162,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         public string ValorISSString
         {
             get { return ValorISS.ToString("0.00").Replace(",", "."); }
-            set { ValorISS = double.Parse(value.Replace(".", ",")); }
+            set { ValorISS = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]
@@ -171,7 +172,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         public string ValorISSRetidoString
         {
             get { return ValorISSRetido.ToString("0.00").Replace(",", "."); }
-            set { ValorISSRetido = double.Parse(value.Replace(".", ",")); }
+            set { ValorISSRetido = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
         /// <summary>
         /// OutrasRetenções + retenções de cada imposto(PIS, COFINS, CSLL, INSS, IR)
@@ -193,7 +194,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         public string ValorLiquidoString
         {
             get { return ValorLiquido.ToString("0.00").Replace(",", "."); }
-            set { ValorLiquido = double.Parse(value.Replace(".", ",")); }
+            set { ValorLiquido = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         /// <summary>
@@ -210,7 +211,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
             {
                 return CodigoIBGEPrestador == "3106200" ? "0" : DescontoCondicional.ToString("0.00").Replace(",", ".");
             }
-            set { DescontoCondicional = double.Parse(value.Replace(".", ",")); }
+            set { DescontoCondicional = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]
@@ -228,7 +229,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
                     DescontoCondicional.ToString("0.00").Replace(",", ".") :
                     DescontoIncondicional.ToString("0.00").Replace(",", ".");
             }
-            set { DescontoIncondicional = double.Parse(value.Replace(".", ",")); }
+            set { DescontoIncondicional = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         /// <summary>

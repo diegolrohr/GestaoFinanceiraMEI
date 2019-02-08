@@ -22,7 +22,7 @@ namespace Fly01.EmissaoNFE.BL
         {
             foreach (var nota in entity.Item)
             {
-                if ((nota.Identificador.FinalidadeEmissaoNFe == TipoVenda.Normal)
+                if ((nota.Identificador.FinalidadeEmissaoNFe == TipoCompraVenda.Normal)
                     && (nota.Identificador.TipoDocumentoFiscal == TipoNota.Saida) && (nota.Identificador.ConsumidorFinal == 1))
                 {
                     var empresaUF = EstadoBL.All.Where(x => x.CodigoIbge == nota.Identificador.CodigoUF.ToString()).FirstOrDefault().Sigla;

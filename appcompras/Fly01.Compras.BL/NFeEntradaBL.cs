@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using Fly01.EmissaoNFE.Domain.Enums;
+using Fly01.Core.ViewModels;
 
 namespace Fly01.Compras.BL
 {
@@ -36,6 +37,7 @@ namespace Fly01.Compras.BL
         protected NotaFiscalItemTributacaoEntradaBL NotaFiscalItemTributacaoEntradaBL { get; set; }
         protected CertificadoDigitalBL CertificadoDigitalBL { get; set; }
         protected NotaFiscalInutilizadaBL NotaFiscalInutilizadaBL { get; set; }
+        protected EstadoBL EstadoBL { get; set; }
 
         public NFeEntradaBL(AppDataContext context,
                      SerieNotaFiscalBL serieNotaFiscalBL,
@@ -47,7 +49,8 @@ namespace Fly01.Compras.BL
                      SubstituicaoTributariaBL substituicaoTributariaBL,
                      NotaFiscalItemTributacaoEntradaBL notaFiscalItemTributacaoEntradaBL,
                      FormaPagamentoBL formaPagamentoBL,
-                     NotaFiscalInutilizadaBL notaFiscalInutilizadaBL)
+                     NotaFiscalInutilizadaBL notaFiscalInutilizadaBL,
+                     EstadoBL estadoBL)
             : base(context)
         {
             SerieNotaFiscalBL = serieNotaFiscalBL;
@@ -60,6 +63,7 @@ namespace Fly01.Compras.BL
             NotaFiscalItemTributacaoEntradaBL = notaFiscalItemTributacaoEntradaBL;
             FormaPagamentoBL = formaPagamentoBL;
             NotaFiscalInutilizadaBL = notaFiscalInutilizadaBL;
+            EstadoBL = estadoBL;
         }
 
         public IQueryable<NFeEntrada> Everything => repository.All.Where(x => x.Ativo);
@@ -185,7 +189,7 @@ namespace Fly01.Compras.BL
                         NumeroDocumentoFiscal = entity.NumNotaFiscal.Value,
                         Emissao = TimeZoneHelper.GetDateTimeNow(isLocal, utcId),
                         EntradaSaida = TimeZoneHelper.GetDateTimeNow(isLocal, utcId),
-                        TipoDocumentoFiscal = entity.TipoCompra == TipoVenda.Devolucao ? TipoNota.Saida : TipoNota.Entrada,
+                        TipoDocumentoFiscal = entity.TipoCompra == TipoCompraVenda.Devolucao ? TipoNota.Saida : TipoNota.Entrada,
                         DestinoOperacao = destinoOperacao,
                         CodigoMunicipio = empresa.Cidade != null ? empresa.Cidade.CodigoIbge : null,
                         ImpressaoDANFE = TipoImpressaoDanfe.Retrato,
@@ -199,7 +203,7 @@ namespace Fly01.Compras.BL
                         FormaEmissao = parametros.TipoModalidade,
                         CodigoProcessoEmissaoNFe = 0
                     };
-                    if (entity.TipoCompra == TipoVenda.Devolucao)
+                    if (entity.TipoCompra == TipoCompraVenda.Devolucao)
                     {
                         itemTransmissao.Identificador.NFReferenciada = new NFReferenciada()
                         {
@@ -256,7 +260,7 @@ namespace Fly01.Compras.BL
                     #region Transporte
                     itemTransmissao.Transporte = new Transporte()
                     {
-                        ModalidadeFrete = (ModalidadeFrete)System.Enum.Parse(typeof(ModalidadeFrete), entity.TipoFrete.ToString())
+                        ModalidadeFrete = entity.TipoFrete
                     };
                     if (transportadora != null)
                     {
@@ -285,7 +289,7 @@ namespace Fly01.Compras.BL
                             x.CestId == item.Produto.CestId.Value &
                             x.EstadoOrigem.Sigla == UFSiglaEmpresa &
                             x.EstadoDestinoId == fornecedor.EstadoId &
-                            x.TipoSubstituicaoTributaria == (entity.TipoCompra == TipoVenda.Devolucao ? TipoSubstituicaoTributaria.Saida : TipoSubstituicaoTributaria.Entrada)
+                            x.TipoSubstituicaoTributaria == (entity.TipoCompra == TipoCompraVenda.Devolucao ? TipoSubstituicaoTributaria.Saida : TipoSubstituicaoTributaria.Entrada)
                             ).FirstOrDefault();
                         var CST = item.GrupoTributario.TipoTributacaoPIS.HasValue ? item.GrupoTributario.TipoTributacaoPIS.Value.ToString() : "";
                         var itemTributacao = new NotaFiscalItemTributacaoEntrada();
@@ -498,7 +502,7 @@ namespace Fly01.Compras.BL
                         //Transferência não existe para o SEFAZ
                         tipoFormaPagamento = formaPagamento.TipoFormaPagamento == TipoFormaPagamento.Transferencia ? TipoFormaPagamento.Outros : formaPagamento.TipoFormaPagamento;
                     }
-                    if (entity.TipoCompra == TipoVenda.Devolucao)
+                    if (entity.TipoCompra == TipoCompraVenda.Devolucao)
                     {
                         tipoFormaPagamento = TipoFormaPagamento.SemPagamento;
                     }
@@ -660,8 +664,21 @@ namespace Fly01.Compras.BL
         }
 
         public override void Insert(NFeEntrada entity)
-        {             
+        {
+            GetIdPlacaEstado(entity);
             base.Insert(entity);
+        }
+
+        public void GetIdPlacaEstado(NFeEntrada entity)
+        {
+            if (!entity.EstadoPlacaVeiculoId.HasValue && !string.IsNullOrEmpty(entity.EstadoCodigoIbge))
+            {
+                var dadosEstado = EstadoBL.All.FirstOrDefault(x => x.CodigoIbge == entity.EstadoCodigoIbge);
+                if (dadosEstado != null)
+                {
+                    entity.EstadoPlacaVeiculoId = dadosEstado.Id;
+                }
+            }
         }
 
         public override void Update(NFeEntrada entity)
@@ -707,8 +724,8 @@ namespace Fly01.Compras.BL
             var totalImpostosProdutos = nfe.TotalImpostosProdutos;
             var totalImpostosProdutosNaoAgrega = nfe.TotalImpostosProdutosNaoAgrega;
             bool calculaFrete = (
-                ((nfe.TipoFrete == TipoFrete.FOB || nfe.TipoFrete == TipoFrete.Destinatario) && nfe.TipoCompra == TipoVenda.Normal) ||
-                ((nfe.TipoFrete == TipoFrete.CIF || nfe.TipoFrete == TipoFrete.Remetente) && nfe.TipoCompra == TipoVenda.Devolucao)
+                ((nfe.TipoFrete == TipoFrete.FOB || nfe.TipoFrete == TipoFrete.Destinatario) && nfe.TipoCompra == TipoCompraVenda.Normal) ||
+                ((nfe.TipoFrete == TipoFrete.CIF || nfe.TipoFrete == TipoFrete.Remetente) && nfe.TipoCompra == TipoCompraVenda.Devolucao)
             );
 
             var result = new TotalPedidoNotaFiscal()

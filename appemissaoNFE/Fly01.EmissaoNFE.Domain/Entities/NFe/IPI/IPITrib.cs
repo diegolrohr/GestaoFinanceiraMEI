@@ -1,4 +1,5 @@
 ﻿using System.Xml.Serialization;
+using Fly01.Core;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFe.IPI
 {
@@ -37,7 +38,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.IPI
         public string ValorBaseCalculoString
         {
             get { return ValorBaseCalculo.Value.ToString("0.00").Replace(",", "."); }
-            set { ValorBaseCalculo = double.Parse(value.Replace(".", ",")); }
+            set { ValorBaseCalculo = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         public bool ShouldSerializeValorBaseCalculoString()
@@ -66,7 +67,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.IPI
         public string ValorIPIString
         {
             get { return ValorIPI.ToString("0.00").Replace(",", "."); }
-            set { ValorIPI = double.Parse(value.Replace(".", ",")); }
+            set { ValorIPI = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         /// <summary>
@@ -79,7 +80,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.IPI
         public string ValorIPIDevolucaoString
         {
             get { return ValorIPIDevolucao.HasValue ? ValorIPIDevolucao.Value.ToString("0.00").Replace(",", ".") : "0.00"; }
-            set { ValorIPIDevolucao = double.Parse(value.Replace(".", ",")); }
+            set { ValorIPIDevolucao = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         public bool ShouldSerializeValorIPIDevolucaoString()

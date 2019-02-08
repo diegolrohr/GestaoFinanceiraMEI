@@ -133,7 +133,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 FormaEmissao = ParametrosTributarios.TipoModalidade,
                 CodigoProcessoEmissaoNFe = 0
             };
-            if (NFe.TipoVenda == TipoVenda.Devolucao || NFe.TipoVenda == TipoVenda.Complementar)
+            if (NFe.TipoVenda == TipoCompraVenda.Devolucao || NFe.TipoVenda == TipoCompraVenda.Complementar)
             {
                 identificador.NFReferenciada = new NFReferenciada()
                 {
@@ -364,7 +364,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 Destinatario = ObterDestinatario(),
                 Transporte = new Transporte()
                 {
-                    ModalidadeFrete = (ModalidadeFrete)Enum.Parse(typeof(ModalidadeFrete), NFe.TipoFrete.ToString()),
+                    ModalidadeFrete = NFe.TipoFrete,
                 }
             };
         }

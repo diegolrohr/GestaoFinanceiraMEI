@@ -2,7 +2,7 @@
 
 namespace Fly01.Core.Entities.Domains.Enum
 {
-    public enum StatusOrdemVenda
+    public enum Status
     {
         [Subtitle("Aberto", "Aberto", "Aberto", "gray")]
         Aberto = 1,

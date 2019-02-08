@@ -4,6 +4,7 @@ using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Notifications;
 using Fly01.Core.Rest;
+using Fly01.Core.ViewModels;
 using Fly01.EmissaoNFE.Domain.ViewModel;
 using Fly01.Faturamento.DAL;
 using Newtonsoft.Json;

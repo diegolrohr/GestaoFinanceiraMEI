@@ -100,7 +100,7 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Properties\PublishProfiles\Homologacao.pubxml" />
+    <None Include="Properties\PublishProfiles\HomologacaoStage.pubxml" />
     <None Include="Properties\PublishProfiles\Producao.pubxml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>

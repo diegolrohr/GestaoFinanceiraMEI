@@ -1,6 +1,7 @@
 ﻿using Fly01.Core.Entities.Domains.Enum;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {
@@ -21,7 +22,7 @@ namespace Fly01.Core.Entities.Domains.Commons
         public string TipoEspecie { get; set; }
 
         [Required]
-        public TipoVenda TipoCompra { get; set; }
+        public TipoCompraVenda TipoCompra { get; set; }
         public double? ValorFrete { get; set; }
 
         public double? PesoBruto { get; set; }
@@ -49,8 +50,11 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public Guid? ContaFinanceiraParcelaPaiId { get; set; }
 
+        public Guid? NFeImportacaoId { get; set; }
+
         public virtual Pessoa Transportadora { get; set; }
         public virtual Pessoa Fornecedor { get; set; }
         public virtual Orcamento OrcamentoOrigem { get; set; }
+        //public virtual NFeImportacao NFeImportacao { get; set; }
     }
 }

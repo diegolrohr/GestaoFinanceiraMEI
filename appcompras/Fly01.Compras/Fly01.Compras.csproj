@@ -69,6 +69,9 @@
     <Compile Include="Controllers\AutoCompleteController.cs" />
     <Compile Include="Controllers\AvaliacaoAppController.cs" />
     <Compile Include="Controllers\CartaCorrecaoController.cs" />
+    <Compile Include="Controllers\NFeImportacaoCobrancaController.cs" />
+    <Compile Include="Controllers\NFeImportacaoProdutoController.cs" />
+    <Compile Include="Controllers\NFeImportacaoController.cs" />
     <Compile Include="Controllers\CategoriaController.cs" />
     <Compile Include="Controllers\CertificadoDigitalController.cs" />
     <Compile Include="Controllers\MinhaContaController.cs" />
@@ -102,6 +105,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\FormatTextHelper.cs" />
     <Compile Include="Helpers\EmailFilesHelper.cs" />
     <Compile Include="Models\Reports\ReportImprimirOrcamento.cs" />
     <Compile Include="Models\Reports\ReportImprimirPedido.cs" />
@@ -141,6 +145,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="ApplicationInsights.config" />
+    <None Include="Properties\PublishProfiles\HomologacaoStage.pubxml" />
     <None Include="Resources\Microsoft.ReportViewer.ProcessingObjectModel.dll" />
     <None Include="Properties\PublishProfiles\Producao.pubxml" />
     <None Include="Properties\Settings.settings">
@@ -345,6 +350,7 @@
     <Content Include="Views\OrdemCompra\Functions\_fnChangeInput.cshtml" />
     <Content Include="Views\NotaFiscalEntrada\Functions\_fnChangeInput.cshtml" />
     <Content Include="Views\NotaFiscalInutilizada\Functions\_fnChangeInput.cshtml" />
+    <Content Include="Views\Account\LoginSSO.cshtml" />
     <Content Include="Views\Kit\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\Kit\Functions\_fnSalvar.cshtml" />
     <Content Include="Views\KitItem\Functions\_fnAdicionarItem.cshtml" />
@@ -360,6 +366,45 @@
     <Content Include="Views\MinhaConta\Functions\_fnRenderBoletos.cshtml" />
     <Content Include="Views\MinhaConta\Functions\_fnRenderSituacao.cshtml" />
     <Content Include="Views\MinhaConta\Functions\_fnRenderVencimento.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnChangeFornecedor.cshtml" />
+    <Content Include="Views\NFeImportacao\Edit.cshtml" />
+    <Content Include="Views\NFeImportacao\Create.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnBaixarXML.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnRemoveFilter.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnAddFilter.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnUpdateDataFinal.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnChangeInput.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnEditar.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnFooterCallbackProdutosPendencias.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnSalvarProduto.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnMovimentaEstoque.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnAtualizaProduto.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnRenderCheck.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnAtualizaVlCompras.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnRenderText.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnRenderButtonExcluirProdutos.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnValorVenda.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnModalAlterarProdutos.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnFormReadyModal.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnDrawCallbackProdutosPendencias.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnRenderExcluirProdutoPendencia.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnRenderSalvarProdutoPendencia.cshtml" />
+    <Content Include="Views\NFeImportacaoProduto\Functions\_fnChangeTipoFatorConversao.cshtml" />
+    <Content Include="Views\NFeImportacaoProduto\Functions\_fnFormReadyFatorConversao.cshtml" />
+    <Content Include="Views\NFeImportacaoProduto\Functions\_fnChangeFatorConversao.cshtml" />
+    <Content Include="Views\NFeImportacaoProduto\Functions\_fnSalvarModalFatorConversao.cshtml" />
+    <Content Include="Views\NFeImportacaoProduto\Functions\_fnCancelarModalFatorConversao.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnValidaCamposGeraFinanceiro.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnFooterCallbackCobrancas.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnDrawCallbackCobrancas.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnFooterCallbackProdutos.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnChkGeraContasXml.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnExcluirCobranca.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnFooterCallbackProdutos.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnVisualizar.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnFormReadyVisualizarImportacao.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnExcluirNFeImportacao.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -540,6 +585,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\appemissaoNFE\Fly01.EmissaoNFE.Domain\Fly01.EmissaoNFE.Domain.csproj">
+      <Project>{279B3A0C-4549-4B8C-9EF9-90E35A5255D6}</Project>
+      <Name>Fly01.EmissaoNFE.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Fly01.Core.API\Fly01.Core.API.csproj">
       <Project>{24148D87-4211-43B6-9C02-CD6E0D03EE0A}</Project>
       <Name>Fly01.Core.API</Name>

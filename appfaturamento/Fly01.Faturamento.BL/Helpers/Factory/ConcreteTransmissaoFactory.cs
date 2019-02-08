@@ -11,12 +11,12 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
         {
             switch (entity.TipoVenda)
             {
-                case TipoVenda.Normal:
+                case TipoCompraVenda.Normal:
                     var normal = new TransmissaoNFeNormal(entity, transmissaoBLs);
                     return normal.ObterTransmissaoVM();                    
-                case TipoVenda.Complementar:
+                case TipoCompraVenda.Complementar:
                     return TransmissaoTipoComplementar(entity, transmissaoBLs);
-                case TipoVenda.Devolucao:
+                case TipoCompraVenda.Devolucao:
                     var devolucao = new TransmissaoNFeDevolucao(entity, transmissaoBLs);
                     return devolucao.ObterTransmissaoVM();
                 default:

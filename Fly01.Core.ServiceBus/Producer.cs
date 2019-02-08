@@ -40,7 +40,9 @@ namespace Fly01.Core.ServiceBus
 
                     if (RabbitConfig.IsDevEnvironment) routingKey = Environment.MachineName + "_" + routingKey;
 
-                    channel.BasicPublish(RabbitConfig.AMQPExchange, routingKey, properties, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message)));
+                    var json = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message));
+
+                    channel.BasicPublish(RabbitConfig.AMQPExchange, routingKey, properties, json);
                 }
             }
             catch (Exception ex)

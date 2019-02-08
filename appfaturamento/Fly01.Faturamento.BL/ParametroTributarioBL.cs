@@ -22,7 +22,7 @@ namespace Fly01.Faturamento.BL
 
         public ParametroTributarioBL(AppDataContextBase context, EntidadeBL entidadeBL) : base(context)
         {
-            empresa = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
+            empresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
             empresaUF = empresa.Cidade != null ? (empresa.Cidade.Estado != null ? empresa.Cidade.Estado.Sigla : string.Empty) : string.Empty;
             EntidadeBL = entidadeBL;
             MustConsumeMessageServiceBus = true;

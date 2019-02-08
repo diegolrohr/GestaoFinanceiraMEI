@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFe
@@ -9,12 +10,16 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// <summary>
         /// informar o grupo de Fatura
         /// </summary>
+        /// 
+        [JsonProperty("fat")]
         [XmlElement(ElementName = "fat")]
         public Fatura Fatura { get; set; }
 
         /// <summary>
         /// informar o grupo dup de duplicatas
         /// </summary>
+        /// 
+        [JsonProperty("dup")]
         [XmlElement(ElementName = "dup")]
         public List<Duplicata> Duplicatas { get; set; }
     }

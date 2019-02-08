@@ -1,4 +1,6 @@
-﻿using Fly01.Core.Helpers;
+﻿using Fly01.Core;
+using Fly01.Core.Helpers;
+using Newtonsoft.Json;
 using System;
 using System.Xml.Serialization;
 
@@ -10,6 +12,8 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// <summary>
         /// informar o número da duplicata
         /// </summary>
+        /// 
+        [JsonProperty("nDup")]
         [XmlElement(ElementName = "nDup")]
         public string Numero { get; set; }
 
@@ -22,6 +26,8 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// <summary>
         /// informar a data de vencimento da duplicata como string
         /// </summary>
+        /// 
+        [JsonProperty("dVenc")]
         [XmlElement(ElementName = "dVenc")]
         public string VencimentoString
         {
@@ -35,11 +41,12 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         [XmlIgnore]
         public double ValorDuplicata { get; set; }
 
+        [JsonProperty("vDup")]
         [XmlElement(ElementName = "vDup")]
         public string ValorDuplicataString
         {
             get { return ValorDuplicata.ToString("0.00").Replace(",", "."); }
-            set { ValorDuplicata = double.Parse(value.Replace(".", ",")); }
+            set { ValorDuplicata = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
     }
 }

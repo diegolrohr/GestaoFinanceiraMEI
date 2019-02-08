@@ -59,6 +59,8 @@ namespace Fly01.Compras.DAL
             builder.Entity<SubstituicaoTributaria>().Ignore(m => m.EstadoDestinoCodigoIbge);
             builder.Entity<SubstituicaoTributaria>().Ignore(m => m.CodigoNcm);
             builder.Entity<SubstituicaoTributaria>().Ignore(m => m.CodigoCest);
+            builder.Entity<NotaFiscalEntrada>().Ignore(m => m.EstadoCodigoIbge);
+            builder.Entity<OrdemCompra>().Ignore(m => m.EstadoCodigoIbge);
 
             builder.Entity<NotaFiscalEntrada>()
                 .Map(m => m.ToTable("NotaFiscalEntrada"))
@@ -67,6 +69,28 @@ namespace Fly01.Compras.DAL
             builder.Entity<NotaFiscalItemEntrada>()
                 .Map(m => m.ToTable("NotaFiscalItemEntrada"))
                 .Map<NFeProdutoEntrada>(m => m.ToTable("NFeProdutoEntrada"));
+
+            #region One-to-Zero-or-One Relationship Two way FK
+            builder.Entity<NFeImportacao>()
+              .HasOptional(s => s.Pedido)
+              .WithMany()
+              .HasForeignKey(s => s.PedidoId);
+
+            builder.Entity<NFeImportacaoProduto>()
+              .HasOptional(s => s.PedidoItem)
+              .WithMany()
+              .HasForeignKey(s => s.PedidoItemId);
+
+            //builder.Entity<Pedido>()
+            //  .HasOptional(s => s.NFeImportacao)
+            //  .WithMany()
+            //  .HasForeignKey(s => s.NFeImportacaoId);
+
+            //builder.Entity<PedidoItem>()
+            //  .HasOptional(s => s.NFeImportacaoProduto)              
+            //  .WithMany()
+            //  .HasForeignKey(s => s.NFeImportacaoProdutoId);
+            #endregion
         }
 
         public DbSet<Pessoa> Pessoas { get; set; }
@@ -100,5 +124,8 @@ namespace Fly01.Compras.DAL
         public DbSet<Nbs> Nbss { get; set; }
         public DbSet<Kit> Kits { get; set; }
         public DbSet<KitItem> KitItens { get; set; }
+        public DbSet<NFeImportacao> NFeImportacoes { get; set; }
+        public DbSet<NFeImportacaoProduto> NFeImportacaoProdutos { get; set; }
+        public DbSet<NFeImportacaoCobranca> NFeImportacaoCobrancas { get; set; }
     }
 }

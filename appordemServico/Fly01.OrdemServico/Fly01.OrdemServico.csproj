@@ -129,6 +129,7 @@
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Properties\PublishProfiles\HomologacaoStage.pubxml" />
     <None Include="Resources\Microsoft.ReportViewer.ProcessingObjectModel.dll" />
     <None Include="Properties\PublishProfiles\Homologacao.pubxml" />
     <None Include="Properties\PublishProfiles\Producao.pubxml" />
@@ -245,6 +246,7 @@
     <Content Include="Views\MinhaConta\Functions\_fnRenderBoletos.cshtml" />
     <Content Include="Views\MinhaConta\Functions\_fnRenderSituacao.cshtml" />
     <Content Include="Views\MinhaConta\Functions\_fnRenderVencimento.cshtml" />
+    <Content Include="Views\Account\LoginSSO.cshtml" />
     <None Include="Views\OrdemServico\Functions\_fnModalOrdemServicoManutencao.cshtml" />
     <Content Include="Views\ParametroOrdemServico\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\Responsavel\ImportaCadastro.cshtml" />

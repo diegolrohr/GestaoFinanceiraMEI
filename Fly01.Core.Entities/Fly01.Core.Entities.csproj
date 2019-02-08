@@ -66,6 +66,9 @@
     <Compile Include="Domains\Commons\KitItem.cs" />
     <Compile Include="Domains\Commons\Kit.cs" />
     <Compile Include="Domains\Commons\Ncm.cs" />
+    <Compile Include="Domains\Commons\NFeImportacao.cs" />
+    <Compile Include="Domains\Commons\NFeImportacaoCobranca.cs" />
+    <Compile Include="Domains\Commons\NFeImportacaoProduto.cs" />
     <Compile Include="Domains\Commons\ResponseDadosBancariosStone.cs" />
     <Compile Include="Domains\Commons\ResponseConfiguracaoStone.cs" />
     <Compile Include="Domains\Commons\ResponseConsultaTotalStone.cs" />
@@ -85,6 +88,8 @@
     <Compile Include="Domains\Commons\TotalOrdemServico.cs" />
     <Compile Include="Domains\Enum\ObjetoDeManutencao.cs" />
     <Compile Include="Domains\Enum\OrigemMercadoria.cs" />
+    <Compile Include="Domains\Enum\TipoAtualizacaoValor.cs" />
+    <Compile Include="Domains\Enum\TipoFatorConversao.cs" />
     <Compile Include="Domains\Enum\StatusOrdemServico.cs" />
     <Compile Include="Domains\Commons\OrdemServico.cs" />
     <Compile Include="Domains\Commons\OrdemServicoManutencao.cs" />
@@ -198,7 +203,7 @@
     <Compile Include="Domains\Enum\StatusCartacorrecao.cs" />
     <Compile Include="Domains\Enum\StatusNotaFiscal.cs" />
     <Compile Include="Domains\Enum\StatusOrdemCompra.cs" />
-    <Compile Include="Domains\Enum\StatusOrdemVenda.cs" />
+    <Compile Include="Domains\Enum\Status.cs" />
     <Compile Include="Domains\Enum\HorarioVerao.cs" />
     <Compile Include="Domains\Enum\TipoAmbiente.cs" />
     <Compile Include="Domains\Enum\TipoCodigoBanco.cs" />
@@ -207,7 +212,7 @@
     <Compile Include="Domains\Enum\TipoCFPS.cs" />
     <Compile Include="Domains\Enum\TipoContaFinanceira.cs" />
     <Compile Include="Domains\Enum\TipoEntradaSaida.cs" />
-    <Compile Include="Domains\Enum\TipoVenda.cs" />
+    <Compile Include="Domains\Enum\TipoCompraVenda.cs" />
     <Compile Include="Domains\Enum\TipoFormaPagamento.cs" />
     <Compile Include="Domains\Enum\TipoFrete.cs" />
     <Compile Include="Domains\Enum\TipoIndicacaoInscricaoEstadual.cs" />

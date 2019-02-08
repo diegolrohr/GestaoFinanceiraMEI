@@ -21,6 +21,7 @@ namespace Fly01.Compras.BL
         protected NotaFiscalItemTributacaoEntradaBL NotaFiscalItemTributacaoEntradaBL { get; set; }
         public const int MaxLengthObservacao = 200;
         protected KitItemBL KitItemBL { get; set; }
+        protected EstadoBL EstadoBL { get; set; }
 
         protected OrdemCompraBL OrdemCompraBL { get; set; }
 
@@ -31,7 +32,7 @@ namespace Fly01.Compras.BL
         private readonly string routePrefixNameContaReceber = @"ContaReceber";
 
 
-        public PedidoBL(AppDataContextBase context, PedidoItemBL pedidoItemBL, OrdemCompraBL ordemCompraBL, NFeEntradaBL nFeEntradaBL, NFeProdutoEntradaBL nFeProdutoEntradaBL, NotaFiscalItemTributacaoEntradaBL notaFiscalItemTributacaoEntradaBL, TotalTributacaoBL totalTributacaoBL, KitItemBL kitItemBL) : base(context)
+        public PedidoBL(AppDataContextBase context, PedidoItemBL pedidoItemBL, OrdemCompraBL ordemCompraBL, NFeEntradaBL nFeEntradaBL, NFeProdutoEntradaBL nFeProdutoEntradaBL, NotaFiscalItemTributacaoEntradaBL notaFiscalItemTributacaoEntradaBL, TotalTributacaoBL totalTributacaoBL, KitItemBL kitItemBL, EstadoBL estadoBL) : base(context)
         {
             PedidoItemBL = pedidoItemBL;
             OrdemCompraBL = ordemCompraBL;
@@ -40,6 +41,7 @@ namespace Fly01.Compras.BL
             NotaFiscalItemTributacaoEntradaBL = notaFiscalItemTributacaoEntradaBL;
             TotalTributacaoBL = totalTributacaoBL;
             KitItemBL = kitItemBL;
+            EstadoBL = estadoBL;
         }
 
         public override void ValidaModel(Pedido entity)
@@ -53,7 +55,7 @@ namespace Fly01.Compras.BL
             entity.Fail(entity.Observacao != null && entity.Observacao.Length > 200, new Error("A observacao não poder ter mais de 200 caracteres", "observacao"));
             entity.Fail(entity.Numero < 1, new Error("O número do pedido é inválido"));
             entity.Fail(All.Any(x => x.Numero == entity.Numero && x.Id != entity.Id && x.Ativo), new Error("O número do pedido já foi utilizado"));
-            entity.Fail(entity.TipoCompra == TipoVenda.Devolucao && !string.IsNullOrEmpty(entity.ChaveNFeReferenciada) && entity.ChaveNFeReferenciada.Length != 44, new Error("A chave da nota fiscal referenciada deve conter 44 caracteres"));
+            entity.Fail(entity.TipoCompra == TipoCompraVenda.Devolucao && !string.IsNullOrEmpty(entity.ChaveNFeReferenciada) && entity.ChaveNFeReferenciada.Length != 44, new Error("A chave da nota fiscal referenciada deve conter 44 caracteres"));
 
             if (entity.Status == StatusOrdemCompra.Finalizado)
             {
@@ -61,8 +63,8 @@ namespace Fly01.Compras.BL
                 var hasEstoqueNegativo = VerificaEstoqueNegativo(entity.Id, entity.TipoCompra.ToString()).Any();
 
                 bool pagaFrete = (
-                    ((entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente) && entity.TipoCompra == TipoVenda.Normal) ||
-                    ((entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario) && entity.TipoCompra == TipoVenda.Devolucao)
+                    ((entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente) && entity.TipoCompra == TipoCompraVenda.Normal) ||
+                    ((entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario) && entity.TipoCompra == TipoCompraVenda.Devolucao)
                 );
                 entity.Fail(pagaFrete && (entity.TransportadoraId == null || entity.TransportadoraId == default(Guid)), new Error("Se configurou o frete por conta da sua empresa, informe a transportadora"));
 
@@ -70,14 +72,14 @@ namespace Fly01.Compras.BL
                 {
                     TotalTributacaoBL.DadosValidosCalculoTributario(entity, entity.FornecedorId);
                     entity.Fail(entity.FormaPagamentoId == null, new Error("Para finalizar o pedido que gera nota fiscal, informe a forma de pagamento"));
-                    entity.Fail(entity.TipoCompra == TipoVenda.Devolucao && string.IsNullOrEmpty(entity.ChaveNFeReferenciada), new Error("Para finalizar o pedido de devolução que gera nota fiscal, informe a chave da nota fiscal referenciada"));
+                    entity.Fail(entity.TipoCompra == TipoCompraVenda.Devolucao && string.IsNullOrEmpty(entity.ChaveNFeReferenciada), new Error("Para finalizar o pedido de devolução que gera nota fiscal, informe a chave da nota fiscal referenciada"));
                 }
 
                 entity.Fail(entity.MovimentaEstoque && hasEstoqueNegativo & !entity.AjusteEstoqueAutomatico, new Error("Para finalizar o pedido o estoque não poderá ficar negativo, realize os ajustes de entrada ou marque para gerar as movimentações de entrada automáticas"));
                 entity.Fail(entity.GeraNotaFiscal && string.IsNullOrEmpty(entity.NaturezaOperacao), new Error("Para finalizar o pedido que gera nota fiscal, informe a natureza de operação"));
                 entity.Fail(entity.TipoOrdemCompra == TipoOrdemCompra.Orcamento, new Error("Orçamento não pode ser finalizado. Converta em pedido para finalizar"));
-                entity.Fail(!produtos.Any(), new Error("Para finalizar a compra é necessário ao menos ter adicionado um produto."));
-                entity.Fail(produtos.Any(x => x.GrupoTributarioId == default(Guid) ) && entity.GeraNotaFiscal == true , new Error("Para finalizar o pedido que gera nota fiscal, informe o grupo tributário nos produtos."));
+                //entity.Fail(!produtos.Any(), new Error("Para finalizar a compra é necessário ao menos ter adicionado um produto."));
+                entity.Fail(produtos.Any(x => x.GrupoTributarioId == default(Guid)) && entity.GeraNotaFiscal == true, new Error("Para finalizar o pedido que gera nota fiscal, informe o grupo tributário nos produtos."));
 
                 entity.Fail(
                     (entity.GeraFinanceiro && (entity.FormaPagamentoId == null || entity.CondicaoParcelamentoId == null || entity.CategoriaId == null || entity.DataVencimento == null)),
@@ -93,7 +95,7 @@ namespace Fly01.Compras.BL
         protected dynamic GetNotaFiscal(Pedido entity, TipoNotaFiscal tipo)
         {
             dynamic notaFiscal;
-            
+
             notaFiscal = new NFeEntrada();
 
             notaFiscal.Id = Guid.NewGuid();
@@ -227,7 +229,7 @@ namespace Fly01.Compras.BL
 
                     #region Copia os dados do pedido de origem da nota fiscal referenciada
                     var fornecedorReferenciado = TotalTributacaoBL.GetPessoa(pedidoReferenciado.FornecedorId);
-                    entity.Fail(entity.TipoCompra == TipoVenda.Devolucao && pedidoReferenciado.TipoCompra == TipoVenda.Devolucao, new Error("Não é possível realizar devolução de uma nota fiscal de devolução. Referencie outra nota fiscal.", "tipoCompra"));
+                    entity.Fail(entity.TipoCompra == TipoCompraVenda.Devolucao && pedidoReferenciado.TipoCompra == TipoCompraVenda.Devolucao, new Error("Não é possível realizar devolução de uma nota fiscal de devolução. Referencie outra nota fiscal.", "tipoCompra"));
                     entity.Fail((fornecedorReferenciado == null || fornecedorReferenciado.Ativo == false), new Error("Informe um fornecedor ativo. Fornecedor da nota fiscal referenciada inexistente ou excluído.", "fornecedorId"));
 
                     if (entity.IsValid())
@@ -238,7 +240,7 @@ namespace Fly01.Compras.BL
                         entity.Data = previousData;
                         entity.TipoCompra = previousTipoCompra;
 
-                        if (entity.TipoCompra == TipoVenda.Devolucao)
+                        if (entity.TipoCompra == TipoCompraVenda.Devolucao)
                         {
                             entity.NaturezaOperacao = null;
                             entity.GrupoTributarioPadraoId = previousGrupoTributarioPadraoId;
@@ -260,12 +262,12 @@ namespace Fly01.Compras.BL
                                 produto.CopyProperties<PedidoItem>(produtoClonado);
                                 produtoClonado.Id = default(Guid);
                                 produtoClonado.PedidoId = entity.Id;
-                                if (entity.TipoCompra == TipoVenda.Devolucao)
+                                if (entity.TipoCompra == TipoCompraVenda.Devolucao)
                                 {
                                     //na devolucao o grupo tributarioPadrão informado é setado, pois os de origem são CFOP venda e teria que entrar um por um para alterar
                                     produtoClonado.GrupoTributarioId = entity.GrupoTributarioPadraoId.HasValue ? entity.GrupoTributarioPadraoId.Value : produtoClonado.GrupoTributarioId;
                                 }
-                                else if (entity.TipoCompra == TipoVenda.Complementar)
+                                else if (entity.TipoCompra == TipoCompraVenda.Complementar)
                                 {
                                     //na nfe de complemento de preço zeramos os valores para que o usuário possa informar apenas os valores a serem complementados
                                     produtoClonado.GrupoTributarioId = entity.GrupoTributarioPadraoId.HasValue ? entity.GrupoTributarioPadraoId.Value : produtoClonado.GrupoTributarioId;
@@ -303,7 +305,7 @@ namespace Fly01.Compras.BL
 
             ValidaModel(entity);
 
-            if (entity.Status == StatusOrdemCompra.Aberto && entity.TipoOrdemCompra == TipoOrdemCompra.Pedido && entity.TipoCompra == TipoVenda.Devolucao && !string.IsNullOrEmpty(entity.ChaveNFeReferenciada) && entity.IsValid())
+            if (entity.Status == StatusOrdemCompra.Aberto && entity.TipoOrdemCompra == TipoOrdemCompra.Pedido && entity.TipoCompra == TipoCompraVenda.Devolucao && !string.IsNullOrEmpty(entity.ChaveNFeReferenciada) && entity.IsValid())
             {
                 CopiaDadosNFeReferenciadaDevolucao(entity);
             }
@@ -313,14 +315,27 @@ namespace Fly01.Compras.BL
                 GeraNotasFiscais(entity);
             }
 
+            GetIdPlacaEstado(entity);
             base.Insert(entity);
+        }
+
+        public void GetIdPlacaEstado(Pedido entity)
+        {
+            if (!entity.EstadoPlacaVeiculoId.HasValue && !string.IsNullOrEmpty(entity.EstadoCodigoIbge))
+            {
+                var dadosEstado = EstadoBL.All.FirstOrDefault(x => x.CodigoIbge == entity.EstadoCodigoIbge);
+                if (dadosEstado != null)
+                {
+                    entity.EstadoPlacaVeiculoId = dadosEstado.Id;
+                }
+            }
         }
 
         public override void Update(Pedido entity)
         {
             var previous = All.AsNoTracking().FirstOrDefault(e => e.Id == entity.Id);
-            entity.Fail(previous.Status != StatusOrdemCompra.Aberto && entity.Status != StatusOrdemCompra.Aberto, new Error("Somente compra em aberto pode ser alterada", "status"));
-
+            if (previous != null)
+                entity.Fail(previous.Status != StatusOrdemCompra.Aberto && entity.Status != StatusOrdemCompra.Aberto, new Error("Somente compra em aberto pode ser alterada", "status"));
             ValidaModel(entity);
 
             GeraIdContaFinanceiraRecuperarDadosParcela(entity);
@@ -369,8 +384,8 @@ namespace Fly01.Compras.BL
             if (entity.GeraFinanceiro)
             {
                 bool pagaFrete = (
-                    ((entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario) && entity.TipoCompra == TipoVenda.Normal) ||
-                    ((entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente) && entity.TipoCompra == TipoVenda.Devolucao)
+                    ((entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario) && entity.TipoCompra == TipoCompraVenda.Normal) ||
+                    ((entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente) && entity.TipoCompra == TipoCompraVenda.Devolucao)
                 );
 
                 double totalProdutos = produtos != null ? produtos.Select(e => (e.Quantidade * e.Valor) - e.Desconto).Sum() : 0;
@@ -396,7 +411,7 @@ namespace Fly01.Compras.BL
                     Producer<ContaPagar>.Send(routePrefixNameContaPagar, AppUser, PlataformaUrl, contaPagarTransp, RabbitConfig.EnHttpVerb.POST);
                 }
 
-                if (entity.TipoCompra == TipoVenda.Normal)
+                if (entity.TipoCompra == TipoCompraVenda.Normal)
                 {
                     var contaPagar = new ContaPagar()
                     {
@@ -415,7 +430,7 @@ namespace Fly01.Compras.BL
                     };
                     Producer<ContaPagar>.Send(routePrefixNameContaPagar, AppUser, PlataformaUrl, contaPagar, RabbitConfig.EnHttpVerb.POST);
                 }
-                else if (entity.TipoCompra == TipoVenda.Devolucao)
+                else if (entity.TipoCompra == TipoCompraVenda.Devolucao)
                 {
                     var contaReceber = new ContaReceber()
                     {
@@ -478,11 +493,11 @@ namespace Fly01.Compras.BL
 
         public TotalPedidoNotaFiscal CalculaTotalOrdemCompra(Guid ordemCompraId, Guid fornecedorId, bool geraNotaFiscal, string tipoCompra, string tipoFrete, double? valorFrete = 0, bool onList = false)
         {
-            var tipoVendaEnum = (TipoVenda)Enum.Parse(typeof(TipoVenda), tipoCompra, true);
+            var tipoVendaEnum = (TipoCompraVenda)Enum.Parse(typeof(TipoCompraVenda), tipoCompra, true);
             var tipoFreteEnum = (TipoFrete)Enum.Parse(typeof(TipoFrete), tipoFrete, true);
 
             var ordemCompra = All.Where(x => x.Id == ordemCompraId).FirstOrDefault();
-            if (geraNotaFiscal && ordemCompra.Status !=  StatusOrdemCompra.Finalizado)
+            if (geraNotaFiscal && ordemCompra.Status != StatusOrdemCompra.Finalizado)
             {
                 TotalTributacaoBL.DadosValidosCalculoTributario(ordemCompra, fornecedorId, onList);
             }

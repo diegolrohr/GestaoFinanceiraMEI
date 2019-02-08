@@ -123,7 +123,7 @@ namespace Fly01.Core.Presentation.Controllers
 
                 var configuracao = new MinhaContaConfiguracaoVM()
                 {
-                    //TODO: CodigoMaxime = "T94517",
+                    //CodigoMaxime = "T94517",
                     CodigoMaxime = SessionManager.Current.UserData.TokenData.CodigoMaxime,
                     VencimentoInicial = dataInicial,
                     VencimentoFinal = dataFinal,
@@ -165,7 +165,7 @@ namespace Fly01.Core.Presentation.Controllers
                 {
                     { "urlBoleto", Uri.EscapeUriString(urlBoleto)}
                 };
-                var response = RestHelper.ExecuteGetRequest<MinhaContaCodigoBarrasResponseVM>(AppDefaults.UrlApiGatewayNew, "boletos/codigobarras", queryStringCodigo)?.Data;
+                var response = RestHelper.ExecuteGetRequest<MinhaContaCodigoBarrasResponseVM>(AppDefaults.UrlGatewayNew, "boletos/codigobarras", queryStringCodigo)?.Data;
                 return Json(new
                 {
                     success = true,

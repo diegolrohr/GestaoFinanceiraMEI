@@ -73,9 +73,13 @@
     <Compile Include="Controllers\Api\KitItemController.cs" />
     <Compile Include="Controllers\Api\KitPedidoController.cs" />
     <Compile Include="Controllers\Api\MinhaContaController.cs" />
+    <Compile Include="Controllers\Api\NFeImportacaoVinculacaoController.cs" />
     <Compile Include="Controllers\Api\MonitorNFController.cs" />
     <Compile Include="Controllers\Api\MonitorNFInutilizadaController.cs" />
     <Compile Include="Controllers\Api\NBSController.cs" />
+    <Compile Include="Controllers\Api\NFeImportacaoCobrancaController.cs" />
+    <Compile Include="Controllers\Api\NFeImportacaoProdutoController.cs" />
+    <Compile Include="Controllers\Api\NFeImportacaoController.cs" />
     <Compile Include="Controllers\Api\NFeEntradaController.cs" />
     <Compile Include="Controllers\Api\NFeProdutoEntradaController.cs" />
     <Compile Include="Controllers\Api\NotaFiscalAtualizaStatusController.cs" />
@@ -138,8 +142,8 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Properties\PublishProfiles\HomologacaoStage.pubxml" />
     <None Include="Properties\PublishProfiles\Producao.pubxml" />
-    <None Include="Properties\PublishProfiles\Homologacao.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -152,6 +156,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\..\appemissaoNFE\Fly01.EmissaoNFE.Domain\Fly01.EmissaoNFE.Domain.csproj">
+      <Project>{279b3a0c-4549-4b8c-9ef9-90e35a5255d6}</Project>
+      <Name>Fly01.EmissaoNFE.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Fly01.Core.API\Fly01.Core.API.csproj">
       <Project>{24148D87-4211-43B6-9C02-CD6E0D03EE0A}</Project>
       <Name>Fly01.Core.API</Name>

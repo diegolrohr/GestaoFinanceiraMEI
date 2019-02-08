@@ -1,4 +1,6 @@
-﻿using System.Xml.Serialization;
+using System.Xml.Serialization;
+using Fly01.Core;
+
 namespace Fly01.EmissaoNFE.Domain.Entities.NFe
 {
     public class PISST
@@ -12,7 +14,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         public string SomatorioBCString
         {
             get { return ValorBC.HasValue ? ValorBC.Value.ToString("0.00").Replace(",", ".") : "0.00"; }
-            set { ValorBC = double.Parse(value.Replace(".", ",")); }
+            set { ValorBC = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
         public bool ShouldSerializeValorBCString()
         {
@@ -28,7 +30,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         public string AliquotaPercentualString
         {
             get { return AliquotaPercentual.HasValue ? AliquotaPercentual.Value.ToString("0.00").Replace(",", ".") : "0.00"; }
-            set { AliquotaPercentual = double.Parse(value.Replace(".", ",")); }
+            set { AliquotaPercentual = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
         public bool ShouldSerializeAliquotaPercentualString()
         {

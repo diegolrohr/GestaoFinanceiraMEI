@@ -30,7 +30,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
         {
             var itemTransmissao = ObterCabecalhoItemTransmissao();
 
-            itemTransmissao.Transporte.ModalidadeFrete = ModalidadeFrete.SemFrete;
+            itemTransmissao.Transporte.ModalidadeFrete = TipoFrete.SemFrete;
 
             CriarProdutosEImpostosParaDetalhes(itemTransmissao);
 

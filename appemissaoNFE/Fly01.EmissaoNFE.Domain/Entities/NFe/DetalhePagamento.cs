@@ -1,4 +1,6 @@
-﻿using Fly01.Core.Entities.Domains.Enum;
+﻿using Fly01.Core;
+using Fly01.Core.Entities.Domains.Enum;
+using Newtonsoft.Json;
 using System.Xml.Serialization;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFe
@@ -21,6 +23,8 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// 90=Sem Pagamento;
         /// 99=Outros.
         /// </summary>        
+        /// 
+        [JsonProperty("tPag")]
         [XmlElement(ElementName = "tPag")]
         public TipoFormaPagamento TipoFormaPagamento { get; set; }
 
@@ -30,11 +34,12 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         [XmlIgnore]
         public double ValorPagamento { get; set; }
 
+        [JsonProperty("vPag")]
         [XmlElement(ElementName = "vPag")]
         public string ValorPagamentoString
         {
             get { return ValorPagamento.ToString("0.00").Replace(",", "."); }
-            set { ValorPagamento = double.Parse(value.Replace(".", ",")); }
+            set { ValorPagamento = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
     }
 }

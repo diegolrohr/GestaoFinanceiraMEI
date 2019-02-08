@@ -108,7 +108,7 @@ namespace Fly01.OrdemServico.Controllers
         {
             Dictionary<string, string> filters = new Dictionary<string, string>
             {
-                { "ordemServicoId eq", string.IsNullOrEmpty(id) ? new Guid().ToString() : id }
+                { "ordemServicoId eq", string.IsNullOrEmpty(id) ? Guid.NewGuid().ToString() : id }
             };
             return GridLoad(filters);
         }

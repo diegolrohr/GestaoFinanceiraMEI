@@ -126,7 +126,6 @@
     <Compile Include="Enums\CSTIPI.cs" />
     <Compile Include="Enums\CRT.cs" />
     <Compile Include="Enums\ISSRetidoNFs.cs" />
-    <Compile Include="Enums\ModalidadeFrete.cs" />
     <Compile Include="Enums\IndInscricaoEstadual.cs" />
     <Compile Include="Enums\ModalidadeDeterminacaoBCICMSST.cs" />
     <Compile Include="Enums\ModalidadeDeterminacaoBCICMS.cs" />
@@ -206,6 +205,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>

@@ -29,6 +29,7 @@ namespace Fly01.Faturamento.BL
         protected NotaFiscalItemTributacaoBL NotaFiscalItemTributacaoBL { get; set; }
         protected CertificadoDigitalBL CertificadoDigitalBL { get; set; }
         protected NotaFiscalInutilizadaBL NotaFiscalInutilizadaBL { get; set; }
+        protected EstadoBL EstadoBL { get; set; }
 
         public NFeBL(AppDataContext context,
                      SerieNotaFiscalBL serieNotaFiscalBL,
@@ -40,7 +41,8 @@ namespace Fly01.Faturamento.BL
                      SubstituicaoTributariaBL substituicaoTributariaBL,
                      NotaFiscalItemTributacaoBL notaFiscalItemTributacaoBL,
                      FormaPagamentoBL formaPagamentoBL,
-                     NotaFiscalInutilizadaBL notaFiscalInutilizadaBL)
+                     NotaFiscalInutilizadaBL notaFiscalInutilizadaBL,
+                     EstadoBL estadoBL)
             : base(context)
         {
             SerieNotaFiscalBL = serieNotaFiscalBL;
@@ -53,6 +55,7 @@ namespace Fly01.Faturamento.BL
             NotaFiscalItemTributacaoBL = notaFiscalItemTributacaoBL;
             FormaPagamentoBL = formaPagamentoBL;
             NotaFiscalInutilizadaBL = notaFiscalInutilizadaBL;
+            EstadoBL = estadoBL;
         }
 
         public IQueryable<NFe> Everything => repository.All.Where(x => x.Ativo);
@@ -201,7 +204,20 @@ namespace Fly01.Faturamento.BL
 
         public override void Insert(NFe entity)
         {
+            GetIdPlacaEstado(entity);
             base.Insert(entity);
+        }
+
+        public void GetIdPlacaEstado(NFe entity)
+        {
+            if (!entity.EstadoPlacaVeiculoId.HasValue && !string.IsNullOrEmpty(entity.EstadoCodigoIbge))
+            {
+                var dadosEstado = EstadoBL.All.FirstOrDefault(x => x.CodigoIbge == entity.EstadoCodigoIbge);
+                if (dadosEstado != null)
+                {
+                    entity.EstadoPlacaVeiculoId = dadosEstado.Id;
+                }
+            }
         }
 
         public override void Update(NFe entity)
@@ -246,11 +262,11 @@ namespace Fly01.Faturamento.BL
             var totalProdutos = 0.0;
             if (produtos != null)
             {
-                if (nfe.TipoVenda == TipoVenda.Normal || nfe.TipoVenda == TipoVenda.Devolucao)
+                if (nfe.TipoVenda == TipoCompraVenda.Normal || nfe.TipoVenda == TipoCompraVenda.Devolucao)
                 {
                     totalProdutos = produtos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto));
                 }
-                else if (nfe.TipoVenda == TipoVenda.Complementar)
+                else if (nfe.TipoVenda == TipoCompraVenda.Complementar)
                 {
                     totalProdutos = +produtos.Where(x => x.Quantidade != 0 && x.Valor != 0).Sum(x => ((x.Quantidade * x.Valor) - x.Desconto));
                     totalProdutos = +produtos.Where(x => x.Quantidade == 0 && x.Valor != 0).Sum(x => (x.Valor - x.Desconto));
@@ -264,8 +280,8 @@ namespace Fly01.Faturamento.BL
             var totalImpostosProdutos = nfe.TotalImpostosProdutos;
             var totalImpostosProdutosNaoAgrega = nfe.TotalImpostosProdutosNaoAgrega;
             bool calculaFrete = (
-                ((nfe.TipoFrete == TipoFrete.CIF || nfe.TipoFrete == TipoFrete.Remetente) && nfe.TipoVenda == TipoVenda.Normal) ||
-                ((nfe.TipoFrete == TipoFrete.FOB || nfe.TipoFrete == TipoFrete.Destinatario) && nfe.TipoVenda == TipoVenda.Devolucao)
+                ((nfe.TipoFrete == TipoFrete.CIF || nfe.TipoFrete == TipoFrete.Remetente) && nfe.TipoVenda == TipoCompraVenda.Normal) ||
+                ((nfe.TipoFrete == TipoFrete.FOB || nfe.TipoFrete == TipoFrete.Destinatario) && nfe.TipoVenda == TipoCompraVenda.Devolucao)
             );
 
             var result = new TotalPedidoNotaFiscal()

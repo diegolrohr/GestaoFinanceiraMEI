@@ -21,7 +21,7 @@ namespace Fly01.Core.Entities.Domains.Commons
         public TipoNotaFiscal TipoNotaFiscal { get; set; }
 
         [Required]
-        public TipoVenda TipoVenda { get; set; }
+        public TipoCompraVenda TipoVenda { get; set; }
 
         [Required]
         public StatusNotaFiscal Status { get; set; }
@@ -46,6 +46,8 @@ namespace Fly01.Core.Entities.Domains.Commons
         public string PlacaVeiculo { get; set; }
 
         public Guid? EstadoPlacaVeiculoId { get; set; }
+
+        public string EstadoCodigoIbge { get; set; }
 
         public double? ValorFrete { get; set; }
 

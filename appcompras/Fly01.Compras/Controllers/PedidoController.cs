@@ -584,7 +584,7 @@ namespace Fly01.Compras.Controllers
                 Class = "col s12 m6 l4",
                 Label = "Tipo Compra",
                 Disabled = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoVenda))),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoCompraVenda))),
             });
             config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m6 l2", Label = "Data", Disabled = true });
             config.Elements.Add(new InputCheckboxUI { Id = "nFeRefComplementarIsDevolucao", Class = "col s12 m6 l4", Label = "NF Referenciada é de Devolução", Disabled = true });

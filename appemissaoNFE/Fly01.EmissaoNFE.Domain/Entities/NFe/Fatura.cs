@@ -1,4 +1,7 @@
-﻿using System.Xml.Serialization;
+﻿using Fly01.Core;
+using Newtonsoft.Json;
+using System.Globalization;
+using System.Xml.Serialization;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFe
 {
@@ -8,6 +11,8 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// <summary>
         /// informar o número da fatura
         /// </summary>
+        /// 
+        [JsonProperty("nFat")]
         [XmlElement(ElementName = "nFat")]
         public string NumeroFatura { get; set; }
 
@@ -17,11 +22,12 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         [XmlIgnore]
         public double? ValorOriginario { get; set; }
 
+        [JsonProperty("vOrig")]
         [XmlElement(ElementName = "vOrig")]
         public string ValorOriginarioString
         {
             get { return ValorOriginario.HasValue ? ValorOriginario.Value.ToString("0.00").Replace(",", ".") : null; }
-            set { ValorOriginario = double.Parse(value.Replace(".", ",")); }
+            set { ValorOriginario = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         public bool ShouldSerializeValorOiriginarioString()
@@ -35,11 +41,12 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         [XmlIgnore]
         public double? ValorDesconto { get; set; }
 
+        [JsonProperty("vDesc")]
         [XmlElement(ElementName = "vDesc")]
         public string ValorDescontoString
         {
             get { return ValorDesconto.HasValue ? ValorDesconto.Value.ToString("0.00").Replace(",", ".") : null; }
-            set { ValorDesconto = double.Parse(value.Replace(".", ",")); }
+            set { ValorDesconto = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         public bool ShouldSerializeValorDescontoString()
@@ -53,11 +60,12 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         [XmlIgnore]
         public double? ValorLiquido { get; set; }
 
+        [JsonProperty("vLiq")]
         [XmlElement(ElementName = "vLiq")]
         public string ValorLiquidoString
         {
             get { return ValorLiquido.HasValue ? ValorLiquido.Value.ToString("0.00").Replace(",", ".") : null; }
-            set { ValorLiquido = double.Parse(value.Replace(".", ",")); }
+            set { ValorLiquido = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         public bool ShouldSerializeValorLiquidoString()

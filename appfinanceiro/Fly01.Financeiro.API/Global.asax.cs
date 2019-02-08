@@ -69,7 +69,8 @@ namespace Fly01.Financeiro.API
         {
             AppDefaults.UrlGateway = ConfigurationManager.AppSettings["UrlGateway"];
             AppDefaults.UrlStone = ConfigurationManager.AppSettings["UrlStone"];
-            AppDefaults.UrlApiGatewayNew = ConfigurationManager.AppSettings["UrlGatewayNew"];
+            AppDefaults.UrlGatewayNew = $"{ConfigurationManager.AppSettings["UrlGatewayNew"]}api/";
+            AppDefaults.UrlManager = $"{AppDefaults.UrlGatewayNew}manager/";
 
             base.SetAppDefaults();
         }

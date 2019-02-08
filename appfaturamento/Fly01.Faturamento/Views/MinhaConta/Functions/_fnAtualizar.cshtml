@@ -13,7 +13,6 @@
             $('input#dataFinal').val(moment(dataFinal).format("DD/MM/YYYY"));
         }
         
-        console.log("datediff"+dataFinalDisplay.diff(dataInicialDisplay, 'days'));
 
         if ($('input#dataInicial').val() == "" || $('input#dataFinal').val() == "") {
             $$$.toast("Informe a data inicial e a data final.", 'error');

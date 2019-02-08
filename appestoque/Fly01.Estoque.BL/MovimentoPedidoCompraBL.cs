@@ -30,7 +30,7 @@ namespace Fly01.Estoque.BL
             else
             {
                 //compra devolução é saída.
-                if (entity.TipoCompra == TipoVenda.Devolucao)
+                if (entity.TipoCompra == TipoCompraVenda.Devolucao)
                 {
                     var diferenca = produto.SaldoProduto - entity.Quantidade;
                     //se vai ficar negativo, dar entrada automática da diferenca antes
@@ -48,13 +48,15 @@ namespace Fly01.Estoque.BL
                     }
                 }
                 //compra normal é entrada
-                if (entity.TipoCompra == TipoVenda.Normal)
+                if (entity.TipoCompra == TipoCompraVenda.Normal || entity.TipoCompra == TipoCompraVenda.Complementar)
                 {
+                    var observacao = string.Format("Movimentação do estoque gerada através da importação do XML da nota {0} - {1}, aplicativo Bemacash Compras", entity.Serie, entity.Numero);
+
                     MovimentoEstoque movimentoEntrada = new MovimentoEstoque()
                     {
-                        QuantidadeMovimento = (entity.TipoCompra == TipoVenda.Devolucao) ? -entity.Quantidade : entity.Quantidade,
+                        QuantidadeMovimento = (entity.TipoCompra == TipoCompraVenda.Devolucao) ? -entity.Quantidade : entity.Quantidade,
                         ProdutoId = entity.ProdutoId,
-                        Observacao = @"Observação gerada pela movimentação do estoque, referente ao pedido nº " + entity.PedidoNumero.ToString() + ", aplicativo Bemacash Compras",
+                        Observacao = entity.IsNFeImportacao ? observacao : @"Observação gerada pela movimentação do estoque, referente ao pedido nº " + entity.PedidoNumero.ToString() + ", aplicativo Bemacash Compras",
                         UsuarioInclusao = entity.UsuarioInclusao,
                         PlataformaId = entity.PlataformaId
                     };

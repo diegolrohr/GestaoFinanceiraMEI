@@ -6,6 +6,7 @@ using Fly01.Core.Helpers;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.Core.Rest;
 using System.Linq;
+using Fly01.Compras.Helpers;
 
 namespace Fly01.Compras.Controllers
 {
@@ -32,6 +33,7 @@ namespace Fly01.Compras.Controllers
 
             return GetJson(filterObjects);
         }
+
         public JsonResult SerieNotaFiscal(string term, string tipo)
         {
             var resourceName = AppDefaults.GetResourceName(typeof(SerieNotaFiscalVM));
@@ -51,5 +53,46 @@ namespace Fly01.Compras.Controllers
 
         public JsonResult SerieNFe(string term)
             => SerieNotaFiscal(term, "NFe");
+
+
+        public JsonResult FornecedorXML(string term)
+        {
+            var resourceName = AppDefaults.GetResourceName(typeof(PessoaVM));
+            var queryString = AppDefaults.GetQueryStringDefault();
+
+            queryString.AddParam("$filter", $"(contains(nome, '{term}') or contains(cpfcnpj, '{term}')) and fornecedor eq true");
+            queryString.AddParam("$select", "id,nome,cpfcnpj");
+            queryString.AddParam("$orderby", "nome");
+
+            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<PessoaVM>>(resourceName, queryString).Data
+                                select new
+                                {
+                                    id = item.Id,
+                                    label = item.CPFCNPJ != string.Empty ? item.Nome + " / " + FormatTextHelper.FormatCpfCnpj(item.CPFCNPJ) : item.Nome,
+                                    detail = item.CPFCNPJ == string.Empty ? "(Sem documento)" : FormatTextHelper.FormatCpfCnpj(item.CPFCNPJ)
+                                };
+
+            return GetJson(filterObjects);
+        }
+
+        public JsonResult TransportadoraXML(string term)
+        {
+            var resourceName = AppDefaults.GetResourceName(typeof(PessoaVM));
+            var queryString = AppDefaults.GetQueryStringDefault();
+
+            queryString.AddParam("$filter", $"(contains(nome, '{term}') or contains(cpfcnpj, '{term}')) and transportadora eq true");
+            queryString.AddParam("$select", "id,nome,cpfcnpj");
+            queryString.AddParam("$orderby", "nome");
+
+            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<PessoaVM>>(resourceName, queryString).Data
+                                select new
+                                {
+                                    id = item.Id,
+                                    label = item.CPFCNPJ != string.Empty ? item.Nome + " / " + FormatTextHelper.FormatCpfCnpj(item.CPFCNPJ) : item.Nome,
+                                    detail = item.CPFCNPJ == string.Empty ? "(Sem documento)" : FormatTextHelper.FormatCpfCnpj(item.CPFCNPJ)
+                                };
+
+            return GetJson(filterObjects);
+        }
     }
 }

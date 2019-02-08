@@ -175,6 +175,7 @@
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Properties\PublishProfiles\HomologacaoStage.pubxml" />
     <None Include="Resources\Microsoft.ReportViewer.ProcessingObjectModel.dll" />
     <None Include="Properties\PublishProfiles\Homologacao.pubxml" />
     <None Include="Properties\PublishProfiles\Producao.pubxml" />
@@ -412,6 +413,7 @@
     <Content Include="Views\Stone\Functions\_fnLogout.cshtml" />
     <Content Include="Views\Stone\Functions\_fnReadyLogin.cshtml" />
     <Content Include="Views\Stone\Functions\_fnExcluir.cshtml" />
+    <Content Include="Views\Account\LoginSSO.cshtml" />
     <Content Include="Views\MinhaConta\Functions\_fnAtualizar.cshtml" />
     <Content Include="Views\MinhaConta\Functions\_fnRenderBoletos.cshtml" />
     <Content Include="Views\MinhaConta\Functions\_fnRenderVencimento.cshtml" />

@@ -27,10 +27,10 @@ namespace Fly01.Core.Entities.Domains.Commons
         public TipoOrdemVenda TipoOrdemVenda { get; set; }
 
         [Required]
-        public TipoVenda TipoVenda { get; set; }
+        public TipoCompraVenda TipoVenda { get; set; }
 
         [Required]
-        public StatusOrdemVenda Status { get; set; }
+        public Status Status { get; set; }
 
         [Required]
         [Column(TypeName = "date")]
@@ -52,6 +52,8 @@ namespace Fly01.Core.Entities.Domains.Commons
         public string PlacaVeiculo { get; set; }
 
         public Guid? EstadoPlacaVeiculoId { get; set; }
+
+        public string EstadoCodigoIbge { get; set; }
 
         public double? ValorFrete { get; set; }
 

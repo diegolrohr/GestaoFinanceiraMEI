@@ -55,6 +55,10 @@
     <Compile Include="ViewModels\EPermissionValue.cs" />
     <Compile Include="ViewModels\PermissionResponseVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\AgendaVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\NFeImportacaoCobrancaVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\NFeImportacaoProdutoVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\NFeImportacaoFormVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\NFeImportacaoVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\MinhaContaConfiguracaoVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\MinhaContaCodigoBarrasResponseVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\MinhaContaResponseVM.cs" />

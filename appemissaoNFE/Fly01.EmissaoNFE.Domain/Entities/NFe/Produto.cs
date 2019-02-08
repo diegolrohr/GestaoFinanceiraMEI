@@ -2,6 +2,7 @@
 using Fly01.EmissaoNFE.Domain.Enums;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Xml.Serialization;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFe
@@ -107,12 +108,15 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// </summary>
         public double ValorUnitario { get; set; }
 
+
+        CultureInfo cultures = new CultureInfo("pt-BR");
+
         [JsonProperty("vUnCom")]
         [XmlElement(ElementName = "vUnCom")]
         public string ValorUnitarioString
         {
             get { return ValorUnitario.ToString("0.00").Replace(",", "."); }
-            set { ValorUnitario = double.Parse(value.Replace(".", ",")); }
+            set { ValorUnitario = double.Parse(value.Replace(".", ","), cultures); }
         }
 
         [Required]

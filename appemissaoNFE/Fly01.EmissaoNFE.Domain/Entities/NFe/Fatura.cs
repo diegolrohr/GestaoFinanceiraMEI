@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Globalization;
 using System.Xml.Serialization;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFe
@@ -20,12 +21,14 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         [XmlIgnore]
         public double? ValorOriginario { get; set; }
 
+        CultureInfo cultures = new CultureInfo("pt-BR");
+
         [JsonProperty("vOrig")]
         [XmlElement(ElementName = "vOrig")]
         public string ValorOriginarioString
         {
             get { return ValorOriginario.HasValue ? ValorOriginario.Value.ToString("0.00").Replace(",", ".") : null; }
-            set { ValorOriginario = double.Parse(value.Replace(".", ",")); }
+            set { ValorOriginario = double.Parse(value.Replace(".", ","), cultures); }
         }
 
         public bool ShouldSerializeValorOiriginarioString()

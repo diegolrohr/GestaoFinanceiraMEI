@@ -151,7 +151,7 @@ namespace Fly01.Compras.Controllers
             {
                 new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" , ShowIf = "(row.status != 'Finalizado')" },
                 new DataTableUIAction { OnClickFn = "fnVisualizar", Label = "Visualizar" },
-                new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" },
+                new DataTableUIAction { OnClickFn = "fnExcluirNFeImportacao", Label = "Excluir" },
                 new DataTableUIAction { OnClickFn = "fnBaixarXML", Label = "Baixar XML" }
             }));
 

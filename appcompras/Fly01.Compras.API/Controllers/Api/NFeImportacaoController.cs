@@ -108,7 +108,7 @@ namespace Fly01.Compras.API.Controllers.Api
                         {
                             Id = condicacaoAVistaId.Value,
                             QtdParcelas = 1,
-                            Descricao = "Avista"
+                            Descricao = "A Vista"
                         };
                         UnitOfWork.CondicaoParcelamentoBL.Insert(novacondicaoAVista);
                         await UnitOfWork.Save();
@@ -217,7 +217,7 @@ namespace Fly01.Compras.API.Controllers.Api
                 {
                     var nfeproduto = NFe.InfoNFe.Detalhes.Where(x => x.Produto.GTIN == item.CodigoBarras).Select(x => x.Produto).FirstOrDefault();
                     if (item.NovoProduto)
-                    {                        
+                    {
                         var saldoFator = FatorConversaoQuantidade(item.FatorConversao, item.Quantidade, item.TipoFatorConversao);
                         var valorFator = FatorConversaoValor(item.FatorConversao, item.Valor, item.TipoFatorConversao);
                         var novoproduto = new Produto()
@@ -364,16 +364,9 @@ namespace Fly01.Compras.API.Controllers.Api
                         Observacao = string.Format("Pedido gerado através da importação do XML da nota {0} - {1}.", entity.Serie, entity.Numero)
                     };
 
-                    //try
-                    //{
                     using (UnitOfWork newUnitOfWork = new UnitOfWork(ContextInitialize))
                     {
                         UnitOfWork.PedidoBL.Insert(pedido);
-                        //newUnitOfWork.PedidoBL.Insert(pedido);
-                        //await newUnitOfWork.Save();
-                        //try
-                        //{
-                        //Atente a UnitOfWork != newUnitOfWork
                         foreach (var item in UnitOfWork.NFeImportacaoProdutoBL.All.Where(x => x.NFeImportacaoId == entity.Id))
                         {
                             item.PedidoItemId = Guid.NewGuid();
@@ -389,26 +382,8 @@ namespace Fly01.Compras.API.Controllers.Api
                             UnitOfWork.NFeImportacaoProdutoBL.Update(item);
                         }
                         pedido.Status = StatusOrdemCompra.Finalizado;
-                        //newUnitOfWork.PedidoBL.Update(pedido);
                         UnitOfWork.PedidoBL.Update(pedido);
-                        //await newUnitOfWork.Save();
-                        //        }
-                        //        catch (Exception ex)
-                        //        {
-                        //            //var pedidoSalvo = newUnitOfWork.PedidoBL.All.Where(x => x.Id == pedido.Id).FirstOrDefault();
-                        //            //if (pedido != null)
-                        //            //{
-                        //            //    newUnitOfWork.PedidoBL.Delete(pedidoSalvo);
-                        //            //    await newUnitOfWork.Save();
-                        //            //}
-                        //            throw new BusinessException(ex.Message);
-                        //        }
                     }
-                    //}
-                    //catch (Exception ex)
-                    //{
-                    //    throw new BusinessException(ex.Message);
-                    //}
                 }
                 #endregion
             }

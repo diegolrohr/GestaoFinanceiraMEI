@@ -86,7 +86,6 @@ namespace Fly01.Compras.Controllers
                 { " and ((produtoId eq", "null)" },
                 { " or (produto ne null and produto/unidadeMedida/abreviacao ne", "unidadeMedida/abreviacao))" },
             };
-            //$expand = produto($expand = unidadeMedida),unidadeMedida &$filter = ((produtoId eq null) or(produto ne null and produto / unidadeMedida / abreviacao ne unidadeMedida / abreviacao))
             return GridLoad(filters);
         }
 

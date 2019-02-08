@@ -81,15 +81,15 @@ namespace Fly01.Compras.DAL
               .WithMany()
               .HasForeignKey(s => s.PedidoItemId);
 
-            builder.Entity<Pedido>()
-              .HasOptional(s => s.NFeImportacao)
-              .WithMany()
-              .HasForeignKey(s => s.NFeImportacaoId);
+            //builder.Entity<Pedido>()
+            //  .HasOptional(s => s.NFeImportacao)
+            //  .WithMany()
+            //  .HasForeignKey(s => s.NFeImportacaoId);
 
-            builder.Entity<PedidoItem>()
-              .HasOptional(s => s.NFeImportacaoProduto)              
-              .WithMany()
-              .HasForeignKey(s => s.NFeImportacaoProdutoId);
+            //builder.Entity<PedidoItem>()
+            //  .HasOptional(s => s.NFeImportacaoProduto)              
+            //  .WithMany()
+            //  .HasForeignKey(s => s.NFeImportacaoProdutoId);
             #endregion
         }
 

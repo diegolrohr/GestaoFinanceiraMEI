@@ -1,4 +1,5 @@
-﻿using System.Xml.Serialization;
+﻿using Fly01.Core;
+using System.Xml.Serialization;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFe.COFINS
 {
@@ -16,7 +17,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.COFINS
         public string ValorBCString
         {
             get { return ValorBC.ToString("0.00").Replace(",", "."); }
-            set { ValorBC = double.Parse(value.Replace(".", ",")); }
+            set { ValorBC = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]
@@ -26,7 +27,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.COFINS
         public string AliquotaPercentualString
         {
             get { return AliquotaPercentual.ToString("0.00").Replace(",", "."); }
-            set { AliquotaPercentual = double.Parse(value.Replace(".", ",")); }
+            set { AliquotaPercentual = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]
@@ -36,7 +37,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.COFINS
         public string ValorCOFINSString
         {
             get { return ValorCOFINS.ToString("0.00").Replace(",", ".");  }
-            set { ValorCOFINS = double.Parse(value.Replace(".", ",")); }
+            set { ValorCOFINS = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
     }
 }

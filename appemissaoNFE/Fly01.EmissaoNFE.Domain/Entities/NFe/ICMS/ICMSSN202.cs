@@ -1,6 +1,7 @@
 ﻿using Fly01.Core.Entities.Domains.Enum;
 using Fly01.EmissaoNFE.Domain.Enums;
 using System.Xml.Serialization;
+using Fly01.Core;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
 {
@@ -30,7 +31,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
             {
                 return PercentualMargemValorAdicionadoST.HasValue ? PercentualMargemValorAdicionadoST.Value.ToString("0.00").Replace(",", ".") : "0.00";
             }
-            set { PercentualMargemValorAdicionadoST = double.Parse(value.Replace(".", ",")); }
+            set { PercentualMargemValorAdicionadoST = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         public bool ShouldSerializePercentualMargemValorAdicionadoSTString()
@@ -48,7 +49,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
             {
                 return PercentualReducaoBCST.HasValue ? PercentualReducaoBCST.Value.ToString("0.00").Replace(",", ".") : "0.00";
             }
-            set { PercentualReducaoBCST = double.Parse(value.Replace(".", ",")); }
+            set { PercentualReducaoBCST = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         public bool ShouldSerializePercentualReducaoBCSTString()
@@ -66,7 +67,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
             {
                 return ValorBCST.ToString("0.00").Replace(",", ".");
             }
-            set { ValorBCST = double.Parse(value.Replace(".", ",")); }
+            set { ValorBCST = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]
@@ -79,7 +80,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
             {
                 return AliquotaICMSST.ToString("0.00").Replace(",", ".");
             }
-            set { AliquotaICMSST = double.Parse(value.Replace(".", ",")); }
+            set { AliquotaICMSST = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]
@@ -92,7 +93,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
             {
                 return ValorICMSST.ToString("0.00").Replace(",", ".");
             }
-            set { ValorICMSST = double.Parse(value.Replace(".", ",")); }
+            set { ValorICMSST = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]

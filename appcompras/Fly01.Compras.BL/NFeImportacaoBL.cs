@@ -81,30 +81,6 @@ namespace Fly01.Compras.BL
             base.Update(entity);
         }
 
-        protected double FatorConversaoValor(double fator, double valor, TipoFatorConversao tipo)
-        {
-            if (tipo == TipoFatorConversao.Multiplicar)
-            {
-                return Math.Round((valor / fator), 2, MidpointRounding.AwayFromZero);
-            }
-            else
-            {
-                return Math.Round((valor * fator), 2, MidpointRounding.AwayFromZero);
-            }
-        }
-
-        protected double FatorConversaoQuantidade(double fator, double quantidade, TipoFatorConversao tipo)
-        {
-            if (tipo == TipoFatorConversao.Multiplicar)
-            {
-                return Math.Round((quantidade * fator), 2, MidpointRounding.AwayFromZero);
-            }
-            else
-            {
-                return Math.Round((quantidade / fator), 2, MidpointRounding.AwayFromZero);
-            }
-        }
-
         private bool NotaValida(NFeVM nfe)
         {
             return (
@@ -196,15 +172,13 @@ namespace Fly01.Compras.BL
 
         private void TryGetProdutoIdFromXml(Guid id)
         {
-            foreach (var item in NFeImportacaoProdutoBL.All.Where(x => x.NFeImportacaoId == id && x.ProdutoId == null))
+            foreach (var item in NFeImportacaoProdutoBL.AllIncluding(x => x.UnidadeMedida).Where(x => x.NFeImportacaoId == id && x.ProdutoId == null))
             {
-                var produto = ProdutoBL.All.AsNoTracking().FirstOrDefault(x => (x.CodigoBarras.ToUpper() == item.CodigoBarras.ToUpper() && x.CodigoBarras != "SEM GTIN") || x.CodigoProduto.ToUpper() == item.Codigo.ToUpper());
+                var produto = ProdutoBL.AllIncluding(x => x.UnidadeMedida).AsNoTracking().FirstOrDefault(x => (x.CodigoBarras.ToUpper() == item.CodigoBarras.ToUpper() && x.CodigoBarras != "SEM GTIN") || x.CodigoProduto.ToUpper() == item.Codigo.ToUpper());
                 if (produto != null)
                 {
                     item.ProdutoId = produto.Id;
-                    item.NovoProduto = false;
-                    item.FatorConversao = 0.0;
-                    item.TipoFatorConversao = TipoFatorConversao.Multiplicar;
+                    item.NovoProduto = false;                    
                 }
                 NFeImportacaoProdutoBL.Update(item);
             }
@@ -242,10 +216,10 @@ namespace Fly01.Compras.BL
                     entity.SomatorioProduto = NFe.InfoNFe.Total.ICMSTotal.SomatorioProdutos;
 
                     #region Vincular produtos
-                    var unPadraoId = UnidadeMedidaBL.All.AsNoTracking().FirstOrDefault(x => x.Abreviacao.ToUpper() == "UN")?.Id;
+                    var unPadrao = UnidadeMedidaBL.All.AsNoTracking().FirstOrDefault(x => x.Abreviacao.ToUpper() == "UN");
                     foreach (var item in NFe.InfoNFe.Detalhes.Select(x => x.Produto))
                     {
-                        var produto = ProdutoBL.All.AsNoTracking().FirstOrDefault(x =>
+                        var produto = ProdutoBL.AllIncluding(x => x.UnidadeMedida).AsNoTracking().FirstOrDefault(x =>
                             (x.CodigoBarras.ToUpper() == item.GTIN.ToUpper() && x.CodigoBarras != "SEM GTIN") ||
                             (x.CodigoProduto.ToUpper() == item.Codigo.ToUpper()) ||
                             (x.Descricao.ToUpper() == item.Descricao.ToUpper())
@@ -260,7 +234,7 @@ namespace Fly01.Compras.BL
                             CodigoBarras = item.GTIN,
                             Quantidade = item.Quantidade,
                             Valor = item.ValorUnitario,
-                            UnidadeMedidaId = unidadeMedida != null ? unidadeMedida.Id : unPadraoId.Value,
+                            UnidadeMedidaId = unidadeMedida != null ? unidadeMedida.Id : unPadrao.Id,
                             FatorConversao = 0.00,//para saber que não foi atualizado
                             TipoFatorConversao = TipoFatorConversao.Multiplicar,
                             MovimentaEstoque = true,
@@ -271,6 +245,12 @@ namespace Fly01.Compras.BL
 
                         if (produto != null)
                         {
+                            if ((unidadeMedida != null && unidadeMedida.Abreviacao == produto.UnidadeMedida.Abreviacao) ||
+                                (unidadeMedida == null && unPadrao.Abreviacao == produto.UnidadeMedida.Abreviacao))
+                            {
+                                NFeImportacaoProduto.FatorConversao = 1.0;
+                            }
+                            
                             NFeImportacaoProduto.ProdutoId = produto.Id;
                             NFeImportacaoProduto.NovoProduto = false;
                         }

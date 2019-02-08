@@ -275,6 +275,7 @@ namespace Fly01.Compras.API.Controllers.Api
                             var contaPagar = new ContaPagar()
                             {
                                 Id = item.ContaFinanceiraId.Value,
+                                StatusContaBancaria = StatusContaBancaria.EmAberto,
                                 ValorPrevisto = item.Valor,
                                 CategoriaId = entity.CategoriaId.Value,
                                 CondicaoParcelamentoId = condicacaoAVistaId.Value,
@@ -295,6 +296,7 @@ namespace Fly01.Compras.API.Controllers.Api
                         var contaPagar = new ContaPagar()
                         {
                             Id = entity.ContaFinanceiraPaiId.Value,
+                            StatusContaBancaria = StatusContaBancaria.EmAberto,
                             ValorPrevisto = entity.ValorTotal,
                             CategoriaId = entity.CategoriaId.Value,
                             CondicaoParcelamentoId = entity.CondicaoParcelamentoId.Value,
@@ -395,6 +397,11 @@ namespace Fly01.Compras.API.Controllers.Api
 
         protected double FatorConversaoValor(double fator, double valor, TipoFatorConversao tipo)
         {
+            if(fator <= 0)
+            {
+                fator = 1.0;
+            }
+
             if (tipo == TipoFatorConversao.Multiplicar)
             {
                 return Math.Round((valor / fator), 2, MidpointRounding.AwayFromZero);
@@ -407,6 +414,11 @@ namespace Fly01.Compras.API.Controllers.Api
 
         protected double FatorConversaoQuantidade(double fator, double quantidade, TipoFatorConversao tipo)
         {
+            if (fator <= 0)
+            {
+                fator = 1.0;
+            }
+
             if (tipo == TipoFatorConversao.Multiplicar)
             {
                 return Math.Round((quantidade * fator), 2, MidpointRounding.AwayFromZero);

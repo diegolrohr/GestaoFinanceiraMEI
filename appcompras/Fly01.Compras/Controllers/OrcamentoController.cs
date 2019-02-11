@@ -330,6 +330,8 @@ namespace Fly01.Compras.Controllers
                 }
             });
 
+            config.Elements.Add(new InputCurrencyUI { Id = "totalProdutosDt", Class = "col s12 m4 right", Label = "Total produtos", Readonly = true });
+
             return Content(JsonConvert.SerializeObject(config, uiJS.Defaults.JsonSerializerSetting.Front), "application/json");
         }
 

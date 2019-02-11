@@ -16,7 +16,7 @@ namespace Fly01.Compras.ViewModel
         public string Marca { get; set; }
 
         [JsonProperty("ordemCompraOrigemId")]
-        public Guid OrdemCompraOrigemId { get; set; }
+        public Guid? OrdemCompraOrigemId { get; set; }
 
         [JsonProperty("TipoNotaFiscal")]
         [APIEnum("TipoNotaFiscal")]

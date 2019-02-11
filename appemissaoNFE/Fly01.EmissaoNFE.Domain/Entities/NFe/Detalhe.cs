@@ -25,7 +25,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// informar o grupo XML imposto com as informações dos tributos incidentes no item.
         /// </summary>
         /// 
-        [JsonProperty("prod")]
+        [JsonProperty("imposto")]
         [XmlElement("imposto")]
         public Imposto Imposto { get; set; }
 

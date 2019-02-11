@@ -1,5 +1,16 @@
 ﻿<script>
     function fnFormReady() {
+        //fnCollapseSimulacao();
+        //$('.collapsible').collapsible();
+
+        $("form#fly01frmContaPagar #condicaoParcelamentoDescricao").on("blur", function () {
+            if ($("form#fly01frmContaPagar #condicaoParcelamentoDescricao").val() === "") {
+                console.log('limpou');
+                $('form#fly01frmContaPagar #condicoesParcelamento').val("");
+                $('form#fly01frmContaPagar #qtdParcelas').val("");
+            }
+        });
+
         if ($('#id').val() != "") {
             $('#baixarTituloField').hide();
             $('#repetirField').hide();
@@ -14,5 +25,19 @@
         $('#tipoRepeticaoField').hide();
         $('#numeroRepeticoesField').hide();
         $('#periodoFimField').hide();
+    }
+
+    function fnCollapseSimulacao() {
+        $("#collapseSimulacaoField").append(createElem("ul",
+              { "class": "collapsible", "data-collapsible": "accordion" },
+              createElem("li", null, [
+                  createElem("div", { "class": "collapsible-header" }, createElem("h6", { "class": "orange-text light" }, "Simular condição de parcelamento")),
+                  createElem("div", { "class": "collapsible-body", "id": "divCollapseDtSimulacaoParcelamento" }, document.getElementById("divDtSimulacaoParcelamentoField"))
+              ])
+          ));
+
+        //$("#divCollapseDtSimulacaoParcelamento").append(
+        //    document.getElementById("divDtSimulacaoParcelamentoField")
+        //    );
     }
 </script>

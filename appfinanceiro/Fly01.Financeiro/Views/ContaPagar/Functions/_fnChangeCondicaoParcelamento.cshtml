@@ -1,0 +1,7 @@
+﻿<script>
+    function fnChangeCondicaoParcelamento(event, data) {
+        console.log('fnChangeCondicaoParcelamento', event, data);
+        $('form#fly01frmContaPagar #condicoesParcelamento').val(data.item.condicoesParcelamento);
+        $('form#fly01frmContaPagar #qtdParcelas').val(data.item.qtdParcelas);
+    }
+</script>

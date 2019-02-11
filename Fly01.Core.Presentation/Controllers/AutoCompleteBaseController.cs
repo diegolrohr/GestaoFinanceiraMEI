@@ -235,11 +235,11 @@ namespace Fly01.Core.Presentation.Controllers
             var queryString = AppDefaults.GetQueryStringDefault();
 
             queryString.AddParam("$filter", $"contains(descricao, '{term}')");
-            queryString.AddParam("$select", "id,descricao");
+            queryString.AddParam("$select", "id,descricao,condicoesParcelamento,qtdParcelas");
             queryString.AddParam("$orderby", "descricao");
 
             var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<CondicaoParcelamentoVM>>(resourceName, queryString).Data
-                                select new { id = item.Id, label = item.Descricao };
+                                select new { id = item.Id, label = item.Descricao, condicoesParcelamento = item.CondicoesParcelamento, qtdParcelas = item.QtdParcelas };
 
             return GetJson(filterObjects);
         }

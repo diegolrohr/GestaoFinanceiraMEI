@@ -330,7 +330,7 @@ namespace Fly01.Financeiro.Controllers
                     Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
-                Functions = new List<string> { "fnSalvar" }
+                Functions = new List<string> { "fnSalvar", "fnSimulaParcelamento" }
             };
 
             var config = new FormUI
@@ -388,13 +388,36 @@ namespace Fly01.Financeiro.Controllers
             {
                 Id = "dataVencimento",
                 Class = "col s12 l2",
-                Label = "Vencimento",
+                Label = "Data Referência",
                 Required = true,
                 DomEvents = new List<DomEventUI>
                 {
                     new DomEventUI { DomEvent = "change", Function = "fnChangeVencimento" }
                 }
             });
+
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            {
+                Id = "condicaoParcelamentoId",
+                Class = "col s12 l6",
+                Label = "Condição Parcelamento",
+                Required = true,
+                DataUrl = @Url.Action("CondicaoParcelamento", "AutoComplete"),
+                LabelId = "condicaoParcelamentoDescricao",
+                DataUrlPostModal = Url.Action("FormModal", "CondicaoParcelamento"),
+                DataPostField = "descricao",
+                DomEvents = new List<DomEventUI>
+                {
+                    new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeCondicaoParcelamento" }
+                }
+            }, ResourceHashConst.FinanceiroCadastrosCondicoesParcelamento));
+
+            config.Elements.Add(new InputHiddenUI { Id = "condicoesParcelamento" });
+            config.Elements.Add(new InputHiddenUI { Id = "qtdParcelas" });
+
+            config.Elements.Add(new DivElementUI { Id = "collapseSimulacao", Class = "col s12 visible" });
+            config.Elements.Add(new DivElementUI { Id = "divDtSimulacaoParcelamento", Class = "col s12 visible" });
+
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "formaPagamentoId",
@@ -409,18 +432,6 @@ namespace Fly01.Financeiro.Controllers
 
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
-                Id = "condicaoParcelamentoId",
-                Class = "col s12 l6",
-                Label = "Condição Parcelamento",
-                Required = true,
-                DataUrl = @Url.Action("CondicaoParcelamento", "AutoComplete"),
-                LabelId = "condicaoParcelamentoDescricao",
-                DataUrlPostModal = Url.Action("FormModal", "CondicaoParcelamento"),
-                DataPostField = "descricao"
-            }, ResourceHashConst.FinanceiroCadastrosCondicoesParcelamento));
-
-            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
-            {
                 Id = "categoriaId",
                 Class = "col s12 l6",
                 Label = "Categoria Financeira",
@@ -428,7 +439,7 @@ namespace Fly01.Financeiro.Controllers
                 DataUrl = @Url.Action("CategoriaCP", "AutoComplete"),
                 LabelId = "categoriaDescricao",
                 DataUrlPost = Url.Action("NovaCategoriaDespesa")
-            }, ResourceHashConst.FinanceiroCadastrosCategoria));
+            }, ResourceHashConst.FinanceiroCadastrosCategoria));            
 
             config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
 
@@ -523,6 +534,7 @@ namespace Fly01.Financeiro.Controllers
             }, ResourceHashConst.FinanceiroCadastrosContasBancarias));
 
             cfg.Content.Add(config);
+            cfg.Content.Add(GetDtSimulacaoParcelamento());
 
             return cfg;
         }

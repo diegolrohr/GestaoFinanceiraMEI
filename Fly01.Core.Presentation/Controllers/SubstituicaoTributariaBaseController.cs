@@ -50,6 +50,7 @@ namespace Fly01.Core.Presentation.Controllers
         {
             var customFilters = base.GetQueryStringDefaultGridLoad();
             customFilters.AddParam("$expand", ExpandProperties);
+            customFilters.Add("$select", "id,ncmId,cestId,mva,estadoOrigemId,estadoDestinoId,tipoSubstituicaoTributaria,registroFixo");
 
             return customFilters;
         }

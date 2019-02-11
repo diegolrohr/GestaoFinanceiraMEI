@@ -472,6 +472,10 @@
     <Compile Include="Migrations\201901152009122_AlterDescricaoGrupoProdutoTributario.Designer.cs">
       <DependentUpon>201901152009122_AlterDescricaoGrupoProdutoTributario.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201902111617556_AlterNotaFiscalPedidoOrigem.cs" />
+    <Compile Include="Migrations\201902111617556_AlterNotaFiscalPedidoOrigem.Designer.cs">
+      <DependentUpon>201902111617556_AlterNotaFiscalPedidoOrigem.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CFOPDataInitializer.cs" />
@@ -819,6 +823,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201901152009122_AlterDescricaoGrupoProdutoTributario.resx">
       <DependentUpon>201901152009122_AlterDescricaoGrupoProdutoTributario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902111617556_AlterNotaFiscalPedidoOrigem.resx">
+      <DependentUpon>201902111617556_AlterNotaFiscalPedidoOrigem.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

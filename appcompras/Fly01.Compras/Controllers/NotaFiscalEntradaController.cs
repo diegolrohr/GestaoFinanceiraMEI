@@ -40,7 +40,7 @@ namespace Fly01.Compras.Controllers
                 statusValue = EnumHelper.GetValue(typeof(StatusNotaFiscal), x.Status),
                 data = x.Data.ToString("dd/MM/yyyy"),
                 fornecedor_nome = x.Fornecedor.Nome,
-                ordemCompraOrigem_numero = x.OrdemCompraOrigem.Numero.ToString(),
+                ordemCompraOrigem_numero = x.OrdemCompraOrigem?.Numero.ToString(),
                 tipoCompra = x.TipoCompra,
                 tipoCompraDescription = EnumHelper.GetDescription(typeof(TipoCompraVenda), x.TipoCompra),
                 tipoCompraCssClass = EnumHelper.GetCSS(typeof(TipoCompraVenda), x.TipoCompra),

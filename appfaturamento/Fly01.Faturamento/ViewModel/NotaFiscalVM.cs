@@ -18,7 +18,7 @@ namespace Fly01.Faturamento.ViewModel
         public string Marca { get; set; }
 
         [JsonProperty("ordemVendaOrigemId")]
-        public Guid OrdemVendaOrigemId { get; set; }
+        public Guid? OrdemVendaOrigemId { get; set; }
 
         [JsonProperty("TipoNotaFiscal")]
         [APIEnum("TipoNotaFiscal")]

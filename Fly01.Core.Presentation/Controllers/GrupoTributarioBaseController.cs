@@ -20,6 +20,13 @@ namespace Fly01.Core.Presentation.Controllers
             ExpandProperties = "cfop";
         }
 
+        public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
+        {
+            var queryString = base.GetQueryStringDefaultGridLoad();
+            queryString.Add("$select", "id,descricao,cfopId,registroFixo");
+            return queryString;
+        }
+
         public override Func<T, object> GetDisplayData()
         {
             return x => new

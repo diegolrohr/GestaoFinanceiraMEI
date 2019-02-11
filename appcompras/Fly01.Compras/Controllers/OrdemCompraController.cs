@@ -24,6 +24,14 @@ namespace Fly01.Compras.Controllers
             ExpandProperties = "grupoTributarioPadrao($select=id,descricao,tipoTributacaoICMS),estadoPlacaVeiculo,condicaoParcelamento,formaPagamento,categoria";
         }
 
+        public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
+        {
+            var queryString = base.GetQueryStringDefaultGridLoad();
+            queryString.Add("$select", "id,numero,tipoOrdemCompra,data,status,total,observacao");
+            queryString.AddParam("$orderby", "data,numero");
+            return queryString;
+        }
+
         public override Func<OrdemCompraVM, object> GetDisplayData()
         {
             return x => new
@@ -220,14 +228,6 @@ namespace Fly01.Compras.Controllers
         public JsonResult GridLoadNoFilter()
         {
             return GridLoad();
-        }
-
-        public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
-        {
-            var customFilters = base.GetQueryStringDefaultGridLoad();
-            customFilters.AddParam("$orderby", "data,numero");
-
-            return customFilters;
         }
     }
 }

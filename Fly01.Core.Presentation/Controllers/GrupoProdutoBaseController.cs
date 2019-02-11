@@ -21,7 +21,14 @@ namespace Fly01.Core.Presentation.Controllers
         {
             ExpandProperties = "unidadeMedida,ncm";
         }
-        
+
+        public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
+        {
+            var queryString = base.GetQueryStringDefaultGridLoad();
+            queryString.Add("$select", "id,descricao,tipoProduto,registroFixo");
+            return queryString;
+        }
+
         private List<HtmlUIButton> GetButtonsOnHeader()
         {
             var target = new List<HtmlUIButton>();

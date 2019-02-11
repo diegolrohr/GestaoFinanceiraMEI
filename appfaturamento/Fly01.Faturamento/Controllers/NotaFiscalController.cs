@@ -14,6 +14,7 @@ using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Presentation;
 using Fly01.Core.ViewModels;
 using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.uiJS.Enums;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -48,7 +49,8 @@ namespace Fly01.Faturamento.Controllers
                 tipoVendaValue = EnumHelper.GetValue(typeof(TipoCompraVenda), x.TipoVenda),
                 categoria_descrica = x.Categoria != null ? x.Categoria.Descricao : "",
                 numNotaFiscal = x.NumNotaFiscal,
-                serieNotaFiscal_serie = x.SerieNotaFiscal != null ? x.SerieNotaFiscal.Serie : ""
+                serieNotaFiscal_serie = x.SerieNotaFiscal != null ? x.SerieNotaFiscal.Serie : "",
+                selected = false
             };
         }
 
@@ -63,7 +65,8 @@ namespace Fly01.Faturamento.Controllers
 
             if (UserCanWrite)
             {
-                target.Add(new HtmlUIButton { Id = "atualizarStatus", Label = "Atualizar Status", OnClickFn = "fnAtualizarStatus" });
+                target.Add(new HtmlUIButton { Id = "baixarTodosXmls", Label = "Baixar Xmls", OnClickFn = "fnBaixarXMLNFeZip", Position = HtmlUIButtonPosition.Out });
+                target.Add(new HtmlUIButton { Id = "atualizarStatus", Label = "Atualizar Status", OnClickFn = "fnAtualizarStatus", Position = HtmlUIButtonPosition.Main });
                 target.Add(new HtmlUIButton { Id = "new", Label = "Novo Pedido", OnClickFn = "fnNovoPedido" });
                 target.Add(new HtmlUIButton { Id = "filterGrid", Label = buttonLabel, OnClickFn = buttonOnClick });
                 target.Add(new HtmlUIButton { Id = "newNFInutilizada", Label = "Inutilizar Nota Fiscal", OnClickFn = "fnNotaFiscalInutilizadaList" });
@@ -92,7 +95,8 @@ namespace Fly01.Faturamento.Controllers
                     Title = "Notas Fiscais",
                     Buttons = new List<HtmlUIButton>(GetListButtonsOnHeaderCustom(buttonLabel, buttonOnClick))
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                Functions = new List<string>() {"fnFormReadyNotasFiscais"}
             };
 
             var cfgForm = new FormUI
@@ -149,6 +153,7 @@ namespace Fly01.Faturamento.Controllers
                 Functions = new List<string>() { "fnRenderEnum" },
                 Options = new DataTableUIConfig
                 {
+                    Select = new { style = "multi" },
                     OrderColumn = 6,
                     OrderDir = "desc",
                     NoExportButtons = true

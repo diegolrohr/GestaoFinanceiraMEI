@@ -368,6 +368,8 @@
     <Content Include="Views\MinhaConta\Functions\_fnRenderBoletos.cshtml" />
     <Content Include="Views\MinhaConta\Functions\_fnRenderSituacao.cshtml" />
     <Content Include="Views\MinhaConta\Functions\_fnRenderVencimento.cshtml" />
+    <Content Include="Views\NotaFiscal\Functions\_fnFormReadyNotasFiscais.cshtml" />
+    <Content Include="Views\NotaFiscal\Functions\_fnBaixarXMLNFeZip.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

@@ -12,6 +12,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -349,6 +351,64 @@ namespace Fly01.Faturamento.Controllers
             {
                 ErrorInfo error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
                 return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
+        [HttpPost]
+        public ActionResult BaixarXMLs(List<Guid> ids)
+        {
+            try
+            {
+                List<JObject> response = null;
+                var resourceById = "";
+                string fileName = "";
+                foreach (var item in ids)
+                {
+                    resourceById = string.Format("NotaFiscalXML?&id={0}", item);
+                    var res = RestHelper.ExecuteGetRequest<JObject>(resourceById);
+                    response.Add(res);
+                }
+
+                using (var memoryStream = new MemoryStream())
+                {
+                    using (var ziparchive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
+                    {
+                        response.ToList().ForEach(item =>
+                        {
+                            fileName = "NFe" + item.Value<string>("numNotaFiscal");
+                            AddToArchive(ziparchive, fileName + ".xml", (byte[])Session[fileName]);
+                        });
+                    }
+
+                    var fileZip = File(memoryStream.ToArray(), "application/zip", "arquivosXML.zip");
+
+
+                    return Json(new {success = true, file = fileZip });
+                }
+
+
+                //string fileName = "NFe" + response.Value<string>("numNotaFiscal") + ".xml";
+                //string xml = response.Value<string>("xml");
+                //xml = xml.Replace("\\", "");
+                //Session.Add(fileName, xml);
+
+                //return JsonResponseStatus.GetJson(new { downloadAddress = Url.Action("DownloadXMLString", new { fileName = fileName }) });
+            }
+            catch (Exception ex)
+            {
+                ErrorInfo error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
+        private void AddToArchive(ZipArchive ziparchive, string fileName, byte[] attach)
+        {
+            var zipEntry = ziparchive.CreateEntry(fileName, CompressionLevel.Optimal);
+            using (var zipStream = zipEntry.Open())
+            using (var streamIn = new MemoryStream(attach))
+            {
+                streamIn.CopyTo(zipStream);
             }
         }
 

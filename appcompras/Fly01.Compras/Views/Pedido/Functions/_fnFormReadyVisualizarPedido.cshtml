@@ -69,6 +69,7 @@
                 $('input#totalImpostosProdutosNaoAgrega').val(data.total.TotalImpostosProdutosNaoAgrega.formatMoneyMask(2, 3, '', ','));
                 $('input#totalFrete').val(data.total.ValorFrete.formatMoneyMask(2, 3, '', ','));
                 $('input#totalOrdemCompra').val(data.total.Total.formatMoneyMask(2, 3, '', ','));
+                $('input#totalProdutosDt').val(data.total.TotalProdutos.formatMoneyMask(2, 3, '', ','));
                 $$$.fn.updateTextFields();
             }
             else {

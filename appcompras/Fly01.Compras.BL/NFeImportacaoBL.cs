@@ -170,9 +170,9 @@ namespace Fly01.Compras.BL
 
         private void TryGetProdutoIdFromXml(Guid id)
         {
-            foreach (var item in NFeImportacaoProdutoBL.All.Where(x => x.NFeImportacaoId == id && x.ProdutoId == null))
+            foreach (var item in NFeImportacaoProdutoBL.AllIncluding(x => x.UnidadeMedida).Where(x => x.NFeImportacaoId == id && x.ProdutoId == null))
             {
-                var produto = ProdutoBL.All.AsNoTracking().FirstOrDefault(x => (x.CodigoBarras.ToUpper() == item.CodigoBarras.ToUpper() && x.CodigoBarras != "SEM GTIN") || x.CodigoProduto.ToUpper() == item.Codigo.ToUpper());
+                var produto = ProdutoBL.AllIncluding(x => x.UnidadeMedida).AsNoTracking().FirstOrDefault(x => (x.CodigoBarras.ToUpper() == item.CodigoBarras.ToUpper() && x.CodigoBarras != "SEM GTIN") || x.CodigoProduto.ToUpper() == item.Codigo.ToUpper());
                 if (produto != null)
                 {
                     item.ProdutoId = produto.Id;

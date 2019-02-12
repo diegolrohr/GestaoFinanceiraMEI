@@ -151,6 +151,9 @@ namespace Fly01.Faturamento.BL
 
         private KitItemBL kitItemBL;
         public KitItemBL KitItemBL => kitItemBL ?? (kitItemBL = new KitItemBL(Context, KitBL, ProdutoBL, ServicoBL));
+
+        private CentroCustoBL centroCustoBL;
+        public CentroCustoBL CentroCustoBL => centroCustoBL ?? (centroCustoBL = new CentroCustoBL(Context));
         #endregion
     }
 }

@@ -1,40 +1,48 @@
 ﻿<script>
+    @Html.Partial("Functions/_fnMain");
     function fnSimulaParcelamento() {
-        if ($("#TipoSimulacao").val() === "QtdParcelas" && $("#qtdParcelas").val() === "") {
-            $$$.toast("Quantidade de Parcelas não informadas", 'error');
+        $('#dtSimulacaoParcelamentoField').hide();
+        var tipoSimulacao = $("input#condicaoParcelamentoCondicoesParcelamento").val() != "" ? "CondParcelamento" : "QtdParcelas";
+
+        if ($("#condicaoParcelamentoDescricao").val() === "") {
+            $$$.toast("Selecione uma condição de parcelamento", 'error');
             return false;
         }
 
-        if ($("#TipoSimulacao").val() === "CondParcelamento" && $("#condicoesParcelamento").val() === "") {
-            $$$.toast("Intervalo de dias não informado", 'error');
+        if (tipoSimulacao == "QtdParcelas" && $("#condicaoParcelamentoQtdParcelas").val() === "") {
+            $$$.toast("Quantidade de Parcelas não informadas na condicao selecionada", 'error');
             return false;
         }
 
-        if (parseFloat($("#valorReferencia").val()) <= 0) {
-            $$$.toast("Valor referência deve ser maior que R$ 1,00", 'error');
+        if (tipoSimulacao == "CondParcelamento" && $("#condicaoParcelamentoCondicoesParcelamento").val() === "") {
+            $$$.toast("Intervalo de dias não informado na condição selecionada", 'error');
             return false;
         }
 
-        if ($("#valorReferencia").val() == "") {
+        if (parseFloat(noComma($("#valorPrevisto").val())) <= 0.0) {
+            $$$.toast("Valor referência deve ser maior que R$ 0,00", 'error');
+            return false;
+        }
+
+        if ($("#valorPrevisto").val() == "") {
             $$$.toast("Valor referência não informado", 'error');
             return false;
         }
 
-        if ($("#dataReferencia").val() == "") {
+        if ($("#dataVencimento").val() == "") {
             $$$.toast("Data Referência não informada", 'error');
             return false;
         }
-        if ($("#dataReferencia").val().length < "8") {
+        if ($("#dataVencimento").val().length < "8") {
             $$$.toast("Data Referência inválida.", 'error');
             return false;
         }
 
-
         var dataRow = {
-            valorPrevisto: $("#valorReferencia").val(),
-            dataVencimento: $("#dataReferencia").val(),
-            condicoesParcelamento: $("#condicoesParcelamento").val(),
-            qtdParcelas: $("#qtdParcelas").val()
+            valorPrevisto: $("#valorPrevisto").val(),
+            dataVencimento: $("#dataVencimento").val(),
+            condicoesParcelamento: $("#condicaoParcelamentoCondicoesParcelamento").val(),
+            qtdParcelas: $("#condicaoParcelamentoQtdParcelas").val()
         }
 
         $.ajax({
@@ -45,9 +53,9 @@
             data: JSON.stringify(dataRow),
             success: function (response) {
                 if (response.success) {
-                    $("#simulatorDataTable").DataTable().destroy();
+                    $("#dtSimulacaoParcelamento").DataTable().destroy();
 
-                    var table = $("#simulatorDataTable").DataTable({
+                    var table = $("#dtSimulacaoParcelamento").DataTable({
                         bSort: false,
                         paging: false,
                         bLengthChange: false,
@@ -60,6 +68,7 @@
                             { title: "Data", data: "dataVencimentoString" },
                             { title: "Valor", data: "valor" }]
                     });
+                    $('#dtSimulacaoParcelamentoField').show();
                 } else {
                     $$$.toast(response.message, 'error');
                 }

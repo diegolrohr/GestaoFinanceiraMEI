@@ -17,7 +17,7 @@ namespace Fly01.Core.Presentation.Controllers
     public class CondicaoParcelamentoBaseController<T> : BaseController<T> where T : CondicaoParcelamentoVM
     {
         [OperationRole(NotApply = true)]
-        public JsonResult GridLoadSimulacao(string pValorReferencia, DateTime pDataReferencia, string pCondicoesParcelamento, int? pQtdParcelas)
+        public JsonResult GridLoadSimulacao(string valorPrevisto, DateTime dataVencimento, string condicoesParcelamento, int? qtdParcelas)
         {
             JsonResult jsonResponse = new JsonResult();
 
@@ -25,10 +25,10 @@ namespace Fly01.Core.Presentation.Controllers
             {
                 var dadosReferenciaSimulacao = new
                 {
-                    valorReferencia = pValorReferencia.Replace(",", "."),
-                    dataReferencia = pDataReferencia.ToString("yyyy-MM-dd"),
-                    condicoesParcelamento = pCondicoesParcelamento,
-                    qtdParcelas = pQtdParcelas != null ? pQtdParcelas.Value : 0
+                    valorReferencia = valorPrevisto.Replace(",", "."),
+                    dataReferencia = dataVencimento.ToString("yyyy-MM-dd"),
+                    condicoesParcelamento = condicoesParcelamento,
+                    qtdParcelas = qtdParcelas != null ? qtdParcelas.Value : 0
                 };
 
                 var listCondicoesParcelamento = RestHelper.ExecutePostRequest<ResponseSimulacaoVM>("condicaoparcelamentosimulacao", dadosReferenciaSimulacao);
@@ -208,7 +208,7 @@ namespace Fly01.Core.Presentation.Controllers
             return cfg;
         }
 
-        public ContentResult FormModal()
+        public ContentResult FormModal(string readyFn = "")
         {
             ModalUIForm config = new ModalUIForm()
             {
@@ -222,7 +222,7 @@ namespace Fly01.Core.Presentation.Controllers
                     Get = @Url.Action("Json") + "/",
                 },
                 Id = "fly01mdlfrmCondicaoParcelamento",
-                ReadyFn = "fnFormReady",
+                ReadyFn = string.IsNullOrEmpty(readyFn) ? "fnFormReady" : readyFn,
                 UrlFunctions = Url.Action("Functions", "CondicaoParcelamento", null, Request.Url.Scheme) + "?fns="
             };
 

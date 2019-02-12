@@ -30,35 +30,6 @@ namespace Fly01.Financeiro.Controllers.Base
     {
         protected ContaFinanceiraController() { }
 
-        protected DataTableUI GetDtSimulacaoParcelamento()
-        {
-            DataTableUI dtProdutosPendenciasCfg = new DataTableUI
-            {
-                Parent = "divDtSimulacaoParcelamentoField",
-                Id = "dtSimulacaoParcelamento",
-                UrlGridLoad = Url.Action("GridLoadSimulacao", "CondicaoParcelamento"),
-                UrlFunctions = Url.Action("Functions") + "?fns=",
-                Options = new DataTableUIConfig
-                {
-                    WithoutRowMenu = true,
-                    PageLength = -1,
-                    NoExportButtons = true,
-                },
-                Parameters = new List<DataTableUIParameter>
-                {
-                    new DataTableUIParameter { Id = "valorPrevisto", Required = true },
-                    new DataTableUIParameter { Id = "dataVencimento", Required = true },
-                    new DataTableUIParameter { Id = "condicoesParcelamento", Required = true },
-                    new DataTableUIParameter { Id = "qtdParcelas", Required = true }
-                }
-            };
-            dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 1, Searchable = false, Orderable = false, DataField = "parcela", DisplayName = "Parcela" });
-            dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 2, Searchable = false, Orderable = false, DataField = "data", DisplayName = "Data" });
-            dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 3, Searchable = false, Orderable = false, DataField = "valor", DisplayName = "Valor", Type = "float" });
-
-            return dtProdutosPendenciasCfg;
-        }
-
         /// <summary>
         /// Método Responsável por definir as colunas que serão apresentadas 
         /// no grid de listagem

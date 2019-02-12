@@ -208,7 +208,7 @@ namespace Fly01.Core.Presentation.Controllers
             return cfg;
         }
 
-        public ContentResult FormModal()
+        public ContentResult FormModal(string readyFn = "")
         {
             ModalUIForm config = new ModalUIForm()
             {
@@ -222,7 +222,7 @@ namespace Fly01.Core.Presentation.Controllers
                     Get = @Url.Action("Json") + "/",
                 },
                 Id = "fly01mdlfrmCondicaoParcelamento",
-                ReadyFn = "fnFormReady",
+                ReadyFn = string.IsNullOrEmpty(readyFn) ? "fnFormReady" : readyFn,
                 UrlFunctions = Url.Action("Functions", "CondicaoParcelamento", null, Request.Url.Scheme) + "?fns="
             };
 

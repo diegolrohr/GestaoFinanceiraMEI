@@ -1,24 +1,24 @@
 ﻿<script>
     function fnFormReady() {
-        //fnCollapseSimulacao();
-        //$('.collapsible').collapsible();
-
-        $("form#fly01frmContaPagar #condicaoParcelamentoDescricao").on("blur", function () {
-            if ($("form#fly01frmContaPagar #condicaoParcelamentoDescricao").val() === "") {
-                console.log('limpou');
-                $('form#fly01frmContaPagar #condicoesParcelamento').val("");
-                $('form#fly01frmContaPagar #qtdParcelas').val("");
-            }
-        });
-
-        if ($('#id').val() != "") {
+        fnCollapseSimulacao();
+        $('#dtSimulacaoParcelamentoField').hide();
+        if (!isCreate()) {
             $('#baixarTituloField').hide();
             $('#repetirField').hide();
             $("#condicaoParcelamentoDescricao").attr('disabled', 'disabled');
 
             $("#repeticaoPai").val($("#contaFinanceiraRepeticaoPaiId").val() == "" && $('#repetir').prop('checked'));
             $("#repeticaoFilha").val($("#contaFinanceiraRepeticaoPaiId").val() != "" && $('#repetir').prop('checked'));
+            $('#collapseSimulacaoField').hide();
         }
+
+        $("form#fly01frmContaPagar #condicaoParcelamentoDescricao").on("blur", function () {
+            if ($("form#fly01frmContaPagar #condicaoParcelamentoDescricao").val() === "") {
+                $('form#fly01frmContaPagar #condicoesParcelamentoCondicoesParcelamento').val("");
+                $('form#fly01frmContaPagar #condicoesParcelamentoQtdParcelas').val(parseInt(0));
+                $('#dtSimulacaoParcelamentoField').hide();
+            }
+        });
 
         $('#contaBancariaIdField').hide();
         $('#tipoPeriodicidadeField').hide();
@@ -27,17 +27,32 @@
         $('#periodoFimField').hide();
     }
 
+    function isCreate() {
+        var id = $("form#fly01frmContaPagar input#id").val();
+
+        if (id.length == 0)
+            return true;
+
+        return false;
+    }
+
     function fnCollapseSimulacao() {
+        var elems = [
+            document.getElementById("btnAtualizaSimulacaoField"),
+            document.getElementById("dtSimulacaoParcelamentoField")
+        ];
+
         $("#collapseSimulacaoField").append(createElem("ul",
               { "class": "collapsible", "data-collapsible": "accordion" },
               createElem("li", null, [
                   createElem("div", { "class": "collapsible-header" }, createElem("h6", { "class": "orange-text light" }, "Simular condição de parcelamento")),
-                  createElem("div", { "class": "collapsible-body", "id": "divCollapseDtSimulacaoParcelamento" }, document.getElementById("divDtSimulacaoParcelamentoField"))
+                  createElem("div", { "class": "collapsible-body", "id": "divCollapseDtSimulacaoParcelamento" }, elems)
               ])
           ));
 
-        //$("#divCollapseDtSimulacaoParcelamento").append(
-        //    document.getElementById("divDtSimulacaoParcelamentoField")
-        //    );
+        $('#btnAtualizaSimulacaoField').css('float', 'none');
+        $('#btnAtualizaSimulacaoField').removeClass('input-field');
+        $('#dtSimulacaoParcelamentoField').css('float', 'none');
+        $('.collapsible').collapsible();
     }
 </script>

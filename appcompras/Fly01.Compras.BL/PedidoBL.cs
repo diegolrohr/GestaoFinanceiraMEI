@@ -209,7 +209,7 @@ namespace Fly01.Compras.BL
 
         protected void CopiaDadosNFeReferenciadaDevolucao(Pedido entity)
         {
-            Guid idPedidoReferenciado = default(Guid);
+            Guid? idPedidoReferenciado = default(Guid);
             var NFe = NFeEntradaBL.All.AsNoTracking().Where(x => x.SefazId.ToUpper() == entity.ChaveNFeReferenciada.ToUpper()).FirstOrDefault();
 
             if (NFe != null)

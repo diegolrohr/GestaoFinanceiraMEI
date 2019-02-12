@@ -22,7 +22,14 @@ namespace Fly01.Compras.Controllers
     {
         public NotaFiscalEntradaController()
         {
-            ExpandProperties = "fornecedor,ordemCompraOrigem,categoria,serieNotaFiscal";
+            ExpandProperties = "fornecedor($select=id,nome),ordemCompraOrigem($select=id,numero),categoria($select=id,descricao),serieNotaFiscal($select=id,serie)";
+        }
+
+        public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
+        {
+            var queryString = base.GetQueryStringDefaultGridLoad();
+            queryString.Add("$select", "id,tipoNotaFiscal,status,data,tipoCompra,numNotaFiscal");
+            return queryString;
         }
 
         public override Func<NotaFiscalEntradaVM, object> GetDisplayData()
@@ -40,7 +47,7 @@ namespace Fly01.Compras.Controllers
                 statusValue = EnumHelper.GetValue(typeof(StatusNotaFiscal), x.Status),
                 data = x.Data.ToString("dd/MM/yyyy"),
                 fornecedor_nome = x.Fornecedor.Nome,
-                ordemCompraOrigem_numero = x.OrdemCompraOrigem.Numero.ToString(),
+                ordemCompraOrigem_numero = x.OrdemCompraOrigem?.Numero.ToString(),
                 tipoCompra = x.TipoCompra,
                 tipoCompraDescription = EnumHelper.GetDescription(typeof(TipoCompraVenda), x.TipoCompra),
                 tipoCompraCssClass = EnumHelper.GetCSS(typeof(TipoCompraVenda), x.TipoCompra),

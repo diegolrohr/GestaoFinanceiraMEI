@@ -51,6 +51,7 @@
     <Compile Include="ArquivoRemessaBL.cs" />
     <Compile Include="ArquivoRetornoBL.cs" />
     <Compile Include="BoletoBL.cs" />
+    <Compile Include="CentroCustoBL.cs" />
     <Compile Include="CnabBL.cs" />
     <Compile Include="ConfiguracaoNotificacaoBL.cs" />
     <Compile Include="CategoriaBL.cs" />

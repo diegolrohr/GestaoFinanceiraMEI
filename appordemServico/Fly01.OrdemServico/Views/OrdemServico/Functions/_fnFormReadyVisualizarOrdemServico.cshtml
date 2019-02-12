@@ -120,6 +120,8 @@
             if (data.success) {
                 $('input#totalProdutos').val(data.total.TotalProdutos/*.formatMoneyMask(2, 3, '', ',')/**/);
                 $('input#totalServicos').val(data.total.TotalServicos/*.formatMoneyMask(2, 3, '', ',')/**/);
+                $('input#totalProdutosDt').val(data.total.TotalProdutos/*.formatMoneyMask(2, 3, '', ',')/**/);
+                $('input#totalServicosDt').val(data.total.TotalServicos/*.formatMoneyMask(2, 3, '', ',')/**/);
                 $$$.fn.updateTextFields();
             }
             else {

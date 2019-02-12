@@ -407,7 +407,7 @@ namespace Fly01.Faturamento.BL
 
         protected void CopiaDadosNFeReferenciada(OrdemVenda entity)
         {
-            Guid idPedidoReferenciado = default(Guid);
+            Guid? idPedidoReferenciado = default(Guid);
             var NFe = NFeBL.All.AsNoTracking().Where(x => x.SefazId.ToUpper() == entity.ChaveNFeReferenciada.ToUpper()).FirstOrDefault();
 
             if (NFe != null)

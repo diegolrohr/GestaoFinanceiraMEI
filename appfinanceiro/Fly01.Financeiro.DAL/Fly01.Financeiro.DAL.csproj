@@ -240,6 +240,10 @@
     <Compile Include="Migrations\201901021634288_AlterTableCnabAddColumnPessoaId.Designer.cs">
       <DependentUpon>201901021634288_AlterTableCnabAddColumnPessoaId.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201902122111057_AddCentroCusto.cs" />
+    <Compile Include="Migrations\201902122111057_AddCentroCusto.Designer.cs">
+      <DependentUpon>201902122111057_AddCentroCusto.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer2.cs" />
@@ -406,6 +410,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201901021634288_AlterTableCnabAddColumnPessoaId.resx">
       <DependentUpon>201901021634288_AlterTableCnabAddColumnPessoaId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902122111057_AddCentroCusto.resx">
+      <DependentUpon>201902122111057_AddCentroCusto.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

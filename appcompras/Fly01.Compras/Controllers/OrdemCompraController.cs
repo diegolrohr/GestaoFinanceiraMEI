@@ -11,7 +11,6 @@ using Fly01.uiJS.Enums;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
 
 namespace Fly01.Compras.Controllers
@@ -22,6 +21,14 @@ namespace Fly01.Compras.Controllers
         public OrdemCompraController()
         {
             ExpandProperties = "grupoTributarioPadrao($select=id,descricao,tipoTributacaoICMS),estadoPlacaVeiculo,condicaoParcelamento,formaPagamento,categoria";
+        }
+
+        public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
+        {
+            var queryString = base.GetQueryStringDefaultGridLoad();
+            queryString.Add("$select", "id,numero,tipoOrdemCompra,data,status,total,observacao");
+            queryString.AddParam("$orderby", "data,numero");
+            return queryString;
         }
 
         public override Func<OrdemCompraVM, object> GetDisplayData()
@@ -220,14 +227,6 @@ namespace Fly01.Compras.Controllers
         public JsonResult GridLoadNoFilter()
         {
             return GridLoad();
-        }
-
-        public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
-        {
-            var customFilters = base.GetQueryStringDefaultGridLoad();
-            customFilters.AddParam("$orderby", "data,numero");
-
-            return customFilters;
         }
     }
 }

@@ -148,6 +148,9 @@ namespace Fly01.Financeiro.BL
         private StoneBL stoneBL;
         public StoneBL StoneBL => stoneBL ?? (stoneBL = new StoneBL(Context));
 
+        private CentroCustoBL centroCustoBL;
+        public CentroCustoBL CentroCustoBL => centroCustoBL ?? (centroCustoBL = new CentroCustoBL(Context));
+
         #endregion
     }
 }

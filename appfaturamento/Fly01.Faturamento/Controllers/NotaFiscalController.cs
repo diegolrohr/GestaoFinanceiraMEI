@@ -26,6 +26,13 @@ namespace Fly01.Faturamento.Controllers
             ExpandProperties = "cliente($select=nome),ordemVendaOrigem($select=id,numero),categoria,serieNotaFiscal";
         }
 
+        public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
+        {
+            var queryString = base.GetQueryStringDefaultGridLoad();
+            queryString.Add("$select", "id,tipoNotaFiscal,status,data,tipoVenda,numNotaFiscal");
+            return queryString;
+        }
+
         //NFeVM e NFSeVM na mesma controller notaFiscal, direcionado as controller via javaScript
         public override Func<NotaFiscalVM, object> GetDisplayData()
         {
@@ -42,7 +49,7 @@ namespace Fly01.Faturamento.Controllers
                 statusValue = EnumHelper.GetValue(typeof(StatusNotaFiscal), x.Status),
                 data = x.Data.ToString("dd/MM/yyyy"),
                 cliente_nome = x.Cliente.Nome,
-                ordemVendaOrigem_numero = x.OrdemVendaOrigem.Numero.ToString(),
+                ordemVendaOrigem_numero = x.OrdemVendaOrigem?.Numero.ToString(),
                 tipoVenda = x.TipoVenda,
                 tipoVendaDescription = EnumHelper.GetDescription(typeof(TipoCompraVenda), x.TipoVenda),
                 tipoVendaCssClass = EnumHelper.GetCSS(typeof(TipoCompraVenda), x.TipoVenda),

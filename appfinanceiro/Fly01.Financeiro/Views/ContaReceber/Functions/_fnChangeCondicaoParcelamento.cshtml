@@ -1,0 +1,7 @@
+﻿<script>
+    function fnChangeCondicaoParcelamento(event, data) {
+        $('form#fly01frmContaReceber #condicaoParcelamentoCondicoesParcelamento').val(data.item.condicoesParcelamento);
+        $('form#fly01frmContaReceber #condicaoParcelamentoQtdParcelas').val(data.item.qtdParcelas);
+        $('#dtSimulacaoParcelamentoField').hide();
+    }
+</script>

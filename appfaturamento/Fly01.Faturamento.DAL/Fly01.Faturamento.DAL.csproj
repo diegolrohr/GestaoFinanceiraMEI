@@ -476,6 +476,10 @@
     <Compile Include="Migrations\201902111617556_AlterNotaFiscalPedidoOrigem.Designer.cs">
       <DependentUpon>201902111617556_AlterNotaFiscalPedidoOrigem.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201902122110331_AddCentroCusto.cs" />
+    <Compile Include="Migrations\201902122110331_AddCentroCusto.Designer.cs">
+      <DependentUpon>201902122110331_AddCentroCusto.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CFOPDataInitializer.cs" />
@@ -826,6 +830,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201902111617556_AlterNotaFiscalPedidoOrigem.resx">
       <DependentUpon>201902111617556_AlterNotaFiscalPedidoOrigem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902122110331_AddCentroCusto.resx">
+      <DependentUpon>201902122110331_AddCentroCusto.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

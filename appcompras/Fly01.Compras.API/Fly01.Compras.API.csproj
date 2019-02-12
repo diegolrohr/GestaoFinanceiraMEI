@@ -60,6 +60,7 @@
     <Compile Include="Controllers\Api\AvaliacaoAppController.cs" />
     <Compile Include="Controllers\Api\CalculaTotalNotaFiscalEntradaController.cs" />
     <Compile Include="Controllers\Api\CalculaTotalOrdemCompraController.cs" />
+    <Compile Include="Controllers\Api\CentroCustoController.cs" />
     <Compile Include="Controllers\Api\CertificadoDigitalController.cs" />
     <Compile Include="Controllers\Api\CidadeController.cs" />
     <Compile Include="Controllers\Api\CategoriaController.cs" />

@@ -31,7 +31,7 @@ namespace Fly01.Financeiro.Controllers
     {
         public ContaPagarController()
         {
-            ExpandProperties = "condicaoParcelamento($select=descricao),pessoa($select=nome),categoria($select=descricao),formaPagamento($select=descricao)";
+            ExpandProperties = "condicaoParcelamento($select=descricao,qtdParcelas,condicoesParcelamento),pessoa($select=nome),categoria($select=descricao),formaPagamento($select=descricao)";
         }
 
         public override ActionResult ImprimirRecibo(Guid id)
@@ -330,7 +330,7 @@ namespace Fly01.Financeiro.Controllers
                     Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
-                Functions = new List<string> { "fnSalvar" }
+                Functions = new List<string> { "fnSalvar", "fnSimulaParcelamento" }
             };
 
             var config = new FormUI
@@ -374,7 +374,11 @@ namespace Fly01.Financeiro.Controllers
                 Class = "col s6 l2",
                 Label = "Valor",
                 Required = true,
-                Value = "0"
+                Value = "0",
+                DomEvents = new List<DomEventUI>
+                {
+                    new DomEventUI { DomEvent = "change", Function = "fnHideSimulacaoCondicao" }
+                }
             });
             config.Elements.Add(new InputDateUI
             {
@@ -388,13 +392,59 @@ namespace Fly01.Financeiro.Controllers
             {
                 Id = "dataVencimento",
                 Class = "col s12 l2",
-                Label = "Vencimento",
+                Label = "Data Referência",
                 Required = true,
+                Value = DateTime.Now.ToString("dd/MM/yyyy"),
                 DomEvents = new List<DomEventUI>
                 {
                     new DomEventUI { DomEvent = "change", Function = "fnChangeVencimento" }
                 }
             });
+
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            {
+                Id = "condicaoParcelamentoId",
+                Class = "col s12 l6",
+                Label = "Condição Parcelamento",
+                Required = true,
+                DataUrl = @Url.Action("CondicaoParcelamento", "AutoComplete"),
+                LabelId = "condicaoParcelamentoDescricao",
+                DataUrlPostModal = Url.Action("FormModal", "CondicaoParcelamento", new { readyFn  = "fnFormReadyOnDemandContaPagar" }),
+                DataPostField = "descricao",
+                DomEvents = new List<DomEventUI>
+                {
+                    new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeCondicaoParcelamento" }
+                }
+            }, ResourceHashConst.FinanceiroCadastrosCondicoesParcelamento));
+
+            config.Elements.Add(new InputHiddenUI { Id = "condicaoParcelamentoCondicoesParcelamento" });
+            config.Elements.Add(new InputHiddenUI { Id = "condicaoParcelamentoQtdParcelas" });
+
+            config.Elements.Add(new DivElementUI { Id = "collapseSimulacao", Class = "col s12 visible" });
+
+            config.Elements.Add(new ButtonUI
+            {
+                Id = "btnAtualizaSimulacao",
+                Class = "col s12",
+                Value = "Simular",
+                DomEvents = new List<DomEventUI>
+                {
+                    new DomEventUI { DomEvent = "click", Function = "fnSimulaParcelamento" }
+                }
+            });
+            config.Elements.Add(new TableUI
+            {
+                Id = "dtSimulacaoParcelamento",
+                Class = "col s12",
+                Label = "Simulação",
+                Options = new List<OptionUI>
+                {
+                    new OptionUI { Label = "Parcela", Value = "0"},
+                    new OptionUI { Label = "Data", Value = "1"},
+                    new OptionUI { Label = "Valor",Value = "2"}
+                }
+            });
+
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "formaPagamentoId",
@@ -409,18 +459,6 @@ namespace Fly01.Financeiro.Controllers
 
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
-                Id = "condicaoParcelamentoId",
-                Class = "col s12 l6",
-                Label = "Condição Parcelamento",
-                Required = true,
-                DataUrl = @Url.Action("CondicaoParcelamento", "AutoComplete"),
-                LabelId = "condicaoParcelamentoDescricao",
-                DataUrlPostModal = Url.Action("FormModal", "CondicaoParcelamento"),
-                DataPostField = "descricao"
-            }, ResourceHashConst.FinanceiroCadastrosCondicoesParcelamento));
-
-            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
-            {
                 Id = "categoriaId",
                 Class = "col s12 l6",
                 Label = "Categoria Financeira",
@@ -428,7 +466,7 @@ namespace Fly01.Financeiro.Controllers
                 DataUrl = @Url.Action("CategoriaCP", "AutoComplete"),
                 LabelId = "categoriaDescricao",
                 DataUrlPost = Url.Action("NovaCategoriaDespesa")
-            }, ResourceHashConst.FinanceiroCadastrosCategoria));
+            }, ResourceHashConst.FinanceiroCadastrosCategoria));            
 
             config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
 

@@ -708,6 +708,9 @@ namespace Fly01.Faturamento.Controllers
                     new OptionUI { Label = "Total",Value = "4"},
                 }
             });
+
+            config.Elements.Add(new InputCurrencyUI { Id = "totalProdutosDt", Class = "col s12 m4 right", Label = "Total Produtos", Readonly = true });
+
             config.Elements.Add(new LabelSetUI { Id = "labelSetServico", Class = "col s12", Label = "Serviços" });
             config.Elements.Add(new TableUI
             {
@@ -725,6 +728,9 @@ namespace Fly01.Faturamento.Controllers
                     new OptionUI { Label = "Total",Value = "4"},
                 }
             });
+
+            config.Elements.Add(new InputCurrencyUI { Id = "totalServicosDt", Class = "col s12 m4 right", Label = "Total Serviços", Readonly = true });
+
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
 

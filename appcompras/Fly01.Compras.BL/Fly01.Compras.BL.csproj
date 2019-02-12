@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="ArquivoBL.cs" />
     <Compile Include="CategoriaBL.cs" />
+    <Compile Include="CentroCustoBL.cs" />
     <Compile Include="CertificadoDigitalBL.cs" />
     <Compile Include="CidadeBL.cs" />
     <Compile Include="DashboardBL.cs" />

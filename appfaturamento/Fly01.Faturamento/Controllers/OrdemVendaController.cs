@@ -322,6 +322,13 @@ namespace Fly01.Faturamento.Controllers
             return dtOrdemVendaServicosCfg;
         }
 
+        public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
+        {
+            var queryString = base.GetQueryStringDefaultGridLoad();
+            queryString.Add("$select", "id,numero,tipoOrdemVenda,data,status,tipoVenda,geraNotaFiscal");
+            return queryString;
+        }
+
         public override Func<OrdemVendaVM, object> GetDisplayData()
         {
             return x => new

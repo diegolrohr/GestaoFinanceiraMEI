@@ -114,6 +114,7 @@ namespace Fly01.Compras.BL
             notaFiscal.PesoLiquido = entity.PesoLiquido;
             notaFiscal.QuantidadeVolumes = entity.QuantidadeVolumes;
             notaFiscal.FormaPagamentoId = entity.FormaPagamentoId;
+            notaFiscal.CentroCustoId = entity.CentroCustoId;
             notaFiscal.CondicaoParcelamentoId = entity.CondicaoParcelamentoId;
             notaFiscal.CategoriaId = entity.CategoriaId;
             notaFiscal.DataVencimento = entity.DataVencimento;
@@ -404,6 +405,7 @@ namespace Fly01.Compras.BL
                         DataVencimento = entity.DataVencimento.Value,
                         Descricao = descricaoTitulo,
                         Observacao = observacaoTitulo,
+                        CentroCustoId = entity.CentroCustoId,
                         FormaPagamentoId = entity.FormaPagamentoId.Value,
                         PlataformaId = PlataformaUrl,
                         UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao
@@ -423,6 +425,7 @@ namespace Fly01.Compras.BL
                         DataEmissao = entity.Data,
                         DataVencimento = entity.DataVencimento.Value,
                         Descricao = descricaoTitulo,
+                        CentroCustoId = entity.CentroCustoId,
                         Observacao = observacaoTitulo,
                         FormaPagamentoId = entity.FormaPagamentoId.Value,
                         PlataformaId = PlataformaUrl,
@@ -441,6 +444,7 @@ namespace Fly01.Compras.BL
                         PessoaId = entity.FornecedorId,
                         DataEmissao = entity.Data,
                         DataVencimento = entity.DataVencimento.Value,
+                        CentroCustoId = entity.CentroCustoId,
                         Descricao = descricaoTitulo,
                         Observacao = observacaoTitulo,
                         FormaPagamentoId = entity.FormaPagamentoId.Value,

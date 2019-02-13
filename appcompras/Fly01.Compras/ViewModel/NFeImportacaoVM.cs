@@ -87,6 +87,9 @@ namespace Fly01.Compras.ViewModel
         [JsonProperty("pedidoId")]
         public Guid? PedidoId { get; set; }
 
+        [JsonProperty("centroCustoId")]
+        public Guid? CentroCustoId { get; set; }
+
         #region navigations
         [JsonProperty("pedido")]
         public virtual PedidoVM Pedido { get; set; }

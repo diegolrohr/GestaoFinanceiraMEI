@@ -2,7 +2,7 @@
     function fnBaixarXMLNFeZip() {
         $$$.loading.start();
         $.ajax({
-            url: '@Url.Action("BaixarXMLs", "NotaFiscal")?idsXML=' + $$$._.fly01dt.selected.toString(),
+            url: '@Url.Action("BaixarXMLs", "NotaFiscalEntrada")?idsXML=' + $$$._.fly01dt.selected.toString(),
             type: "GET"
         })
         .done(function (data) {

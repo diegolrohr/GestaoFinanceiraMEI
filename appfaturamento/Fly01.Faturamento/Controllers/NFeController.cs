@@ -362,44 +362,61 @@ namespace Fly01.Faturamento.Controllers
             {
                 var ids = idsXML.Split(',');
                 var response = new List<JObject>();
-                var resourceById = "";
-                string fileName = "";
-
+                
                 foreach (var item in ids)
                 {
-                    resourceById = string.Format("NotaFiscalXML?&id={0}", item);
-                    var res = RestHelper.ExecuteGetRequest<JObject>(resourceById);
-                    if (res != null)
-                        response.Add(res);
-                    
-                }
-
-                if (response == null)
-                    return null;
-                
-                using (var memoryStream = new MemoryStream())
-                {
-                    using (var ziparchive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
+                    try
                     {
-                        response.ToList().ForEach(item =>
-                        {
-                            fileName = "NFe" + item.Value<string>("numNotaFiscal");
-
-                            string xml = item.Value<string>("xml");
-                            xml = xml.Replace("\\", "");
-                            Session.Add(fileName, xml);
-                            byte[] data = Convert.FromBase64String(Base64Helper.CodificaBase64(Session[fileName].ToString()));
-
-                            AddToArchive(ziparchive, fileName + ".xml", data);
-                        });
+                        var resourceById = string.Format("NotaFiscalXML?&id={0}", item);
+                        var res = RestHelper.ExecuteGetRequest<JObject>(resourceById);
+                        if (res != null)
+                            response.Add(res);
                     }
-                    return File(memoryStream.ToArray(), "application/zip", "arquivosXML.zip");
+                    catch (Exception)
+                    {
+                        continue;
+                    }
                 }
+
+                if (response.Count == 0)
+                    return JsonResponseStatus.GetFailure("Os XMLs solicitados não estão disponíveis para download");
+
+                Session["responseValue"] = JsonConvert.SerializeObject(response);
+            
+                return JsonResponseStatus.GetJson(new { downloadAddress = Url.Action("DownloadXMLs", new { idsXML = idsXML}) });
             }
             catch (Exception ex)
             {
                 ErrorInfo error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
                 return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
+        [OperationRole(NotApply = true)]
+        [HttpGet]
+        public ActionResult DownloadXMLs(string idsXML)
+        {
+            var sessionValue = Session["responseValue"];
+            var response = JsonConvert.DeserializeObject<List<JObject>>(sessionValue.ToString());
+
+            var fileName = "";
+            using (var memoryStream = new MemoryStream())
+            {
+                using (var ziparchive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
+                {
+                    response.ToList().ForEach(item =>
+                    {
+                        fileName = "NFe" + item.Value<string>("numNotaFiscal");
+
+                        string xml = item.Value<string>("xml");
+                        xml = xml.Replace("\\", "");
+                        Session.Add(fileName, xml);
+                        byte[] data = Convert.FromBase64String(Base64Helper.CodificaBase64(Session[fileName].ToString()));
+
+                        AddToArchive(ziparchive, fileName + ".xml", data);
+                    });
+                }
+                return File(memoryStream.ToArray(), "application/zip", "arquivosXML.zip");
             }
         }
 

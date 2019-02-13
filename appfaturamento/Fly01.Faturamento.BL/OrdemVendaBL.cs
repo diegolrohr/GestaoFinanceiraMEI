@@ -182,6 +182,7 @@ namespace Fly01.Faturamento.BL
             notaFiscal.PesoLiquido = entity.PesoLiquido;
             notaFiscal.QuantidadeVolumes = entity.QuantidadeVolumes;
             notaFiscal.FormaPagamentoId = entity.FormaPagamentoId;
+            notaFiscal.CentroCustoId = entity.CentroCustoId;
             notaFiscal.CondicaoParcelamentoId = entity.CondicaoParcelamentoId;
             notaFiscal.CategoriaId = entity.CategoriaId;
             notaFiscal.DataVencimento = entity.DataVencimento;

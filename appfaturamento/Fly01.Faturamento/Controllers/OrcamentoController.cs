@@ -244,7 +244,7 @@ namespace Fly01.Faturamento.Controllers
                 Label = "Centro de Custo",
                 DataUrl = Url.Action("CentroCusto", "AutoComplete"),
                 LabelId = "centroCustoDescricao",
-                DataUrlPost = Url.Action("FormModal", "CentroCusto"),
+                DataUrlPostModal = Url.Action("FormModal", "CentroCusto"),
                 DataPostField = "descricao"
             }, ResourceHashConst.FaturamentoCadastrosCentroCustos));
 

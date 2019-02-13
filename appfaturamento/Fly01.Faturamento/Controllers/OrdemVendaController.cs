@@ -632,6 +632,16 @@ namespace Fly01.Faturamento.Controllers
                 DataUrl = @Url.Action("Categoria", "AutoComplete"),
                 LabelId = "categoriaDescricao",
             });
+            config.Elements.Add(new AutoCompleteUI
+            {
+                Id = "centroCustoId",
+                Class = "col s12 m6",
+                Label = "Centro de Custo",
+                Disabled = true,
+                DataUrl = @Url.Action("CentroCusto", "AutoComplete"),
+                LabelId = "centroCustoDescricao",
+            });
+
             config.Elements.Add(new InputDateUI { Id = "dataVencimento", Class = "col s12 m6", Label = "Data Vencimento", Disabled = true });
 
             config.Elements.Add(new SelectUI
@@ -646,7 +656,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "transportadoraId",
-                Class = "col s12 m6",
+                Class = "col s12",
                 Label = "Transportadora",
                 Disabled = true,
                 DataUrl = Url.Action("Transportadora", "AutoComplete"),

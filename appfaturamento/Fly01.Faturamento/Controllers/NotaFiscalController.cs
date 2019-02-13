@@ -22,7 +22,7 @@ namespace Fly01.Faturamento.Controllers
     {
         public NotaFiscalController()
         {
-            ExpandProperties = "cliente($select=nome),ordemVendaOrigem($select=id,numero),categoria,serieNotaFiscal";
+            ExpandProperties = "cliente($select=nome),ordemVendaOrigem($select=id,numero),categoria,serieNotaFiscal,centroCusto";
         }
 
         public override Dictionary<string, string> GetQueryStringDefaultGridLoad()

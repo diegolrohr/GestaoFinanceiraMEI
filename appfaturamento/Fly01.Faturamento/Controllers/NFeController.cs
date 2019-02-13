@@ -126,13 +126,22 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "categoriaId",
-                Class = "col s12 m6",
+                Class = "col s12 m4",
                 Label = "Categoria",
                 Disabled = true,
                 DataUrl = @Url.Action("Categoria", "AutoComplete"),
                 LabelId = "categoriaDescricao",
             });
-            config.Elements.Add(new InputDateUI { Id = "dataVencimento", Class = "col s12 m6", Label = "Data Vencimento", Disabled = true });
+            config.Elements.Add(new AutoCompleteUI
+            {
+                Id = "centroCustoId",
+                Class = "col s12 m4",
+                Label = "Centro de Custo",
+                Disabled = true,
+                DataUrl = @Url.Action("CentroCusto", "AutoComplete"),
+                LabelId = "centroCustoDescricao",
+            });
+            config.Elements.Add(new InputDateUI { Id = "dataVencimento", Class = "col s12 m4", Label = "Data Vencimento", Disabled = true });
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "transportadoraId",

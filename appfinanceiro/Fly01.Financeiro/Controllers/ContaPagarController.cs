@@ -475,7 +475,7 @@ namespace Fly01.Financeiro.Controllers
                 Label = "Centro de Custo",
                 DataUrl = @Url.Action("CentroCusto", "AutoComplete"),
                 LabelId = "centroCustoDescricao",
-                DataUrlPost = Url.Action("FormModal", "CentroCusto"),
+                DataUrlPostModal = Url.Action("FormModal", "CentroCusto"),
                 DataPostField = "descricao"
             }, ResourceHashConst.FinanceiroCadastrosCentroCustos));
 
@@ -731,7 +731,7 @@ namespace Fly01.Financeiro.Controllers
 
             config2.Elements.Add(new InputTextUI { Id = "descricaoRenegociacao", Class = "col s12 m6 l6", Label = "Descrição", Required = true, MaxLength = 200 });
             config2.Elements.Add(new InputDateUI { Id = "dataEmissao", Class = "col s12 m3 l3", Label = "Emissão", Required = true });
-            config2.Elements.Add(new InputDateUI { Id = "dtVencimento", Class = "col s12 m3 l3", Label = "Vencimento", Required = true });
+            config2.Elements.Add(new InputDateUI { Id = "dtVencimento", Class = "col s12 m3 l3", Label = "Data Referência", Required = true });
             config2.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "formaPagamentoId",
@@ -766,6 +766,17 @@ namespace Fly01.Financeiro.Controllers
                 LabelId = "categoriaDescricao",
                 DataUrlPost = Url.Action("NovaCategoriaDespesa")
             }, ResourceHashConst.FinanceiroCadastrosCategoria));
+
+            config2.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            {
+                Id = "centroCustoId",
+                Class = "col s12 l6",
+                Label = "Centro de Custo",
+                DataUrl = @Url.Action("CentroCusto", "AutoComplete"),
+                LabelId = "centroCustoDescricao",
+                DataUrlPostModal = Url.Action("FormModal", "CentroCusto"),
+                DataPostField = "descricao"
+            }, ResourceHashConst.FinanceiroCadastrosCentroCustos));
 
             cfg.Content.Add(config2);
 

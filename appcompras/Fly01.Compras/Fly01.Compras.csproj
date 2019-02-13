@@ -69,6 +69,7 @@
     <Compile Include="Controllers\AutoCompleteController.cs" />
     <Compile Include="Controllers\AvaliacaoAppController.cs" />
     <Compile Include="Controllers\CartaCorrecaoController.cs" />
+    <Compile Include="Controllers\CentroCustoController.cs" />
     <Compile Include="Controllers\NFeImportacaoCobrancaController.cs" />
     <Compile Include="Controllers\NFeImportacaoProdutoController.cs" />
     <Compile Include="Controllers\NFeImportacaoController.cs" />

@@ -93,6 +93,9 @@ namespace Fly01.Financeiro.ViewModel
         [JsonProperty("numero")]
         public int Numero { get; set; }
 
+        [JsonProperty("centroCustoId")]
+        public Guid? CentroCustoId { get; set; }
+
         [JsonProperty("contaFinanceiraRepeticaoPai")]
         public virtual ContaFinanceiraVM ContaFinanceiraRepeticaoPai { get; set; }
 
@@ -113,5 +116,8 @@ namespace Fly01.Financeiro.ViewModel
 
         [JsonProperty("contaBancaria")]
         public virtual ContaBancariaVM ContaBancaria { get; set; }
+
+        [JsonProperty("centroCusto")]
+        public virtual CentroCustoVM CentroCusto { get; set; }
     }
 }

@@ -69,6 +69,7 @@
     <Compile Include="Controllers\AutoCompleteController.cs" />
     <Compile Include="Controllers\AvaliacaoAppController.cs" />
     <Compile Include="Controllers\CartaCorrecaoController.cs" />
+    <Compile Include="Controllers\CentroCustoController.cs" />
     <Compile Include="Controllers\NFeImportacaoCobrancaController.cs" />
     <Compile Include="Controllers\NFeImportacaoProdutoController.cs" />
     <Compile Include="Controllers\NFeImportacaoController.cs" />
@@ -405,6 +406,8 @@
     <Content Include="Views\NFeImportacao\Functions\_fnExcluirNFeImportacao.cshtml" />
     <Content Include="Views\SerieNotaFiscal\Functions\_fnChangeTipoOperacao.cshtml" />
     <Content Include="Views\SerieNotaFiscal\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\NotaFiscalEntrada\Functions\_fnFormReadyNotasFiscais.cshtml" />
+    <Content Include="Views\NotaFiscalEntrada\Functions\_fnBaixarXMLNFeZip.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

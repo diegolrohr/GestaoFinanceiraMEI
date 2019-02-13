@@ -31,7 +31,7 @@ namespace Fly01.Financeiro.Controllers
     {
         public ContaReceberController()
         {
-            ExpandProperties = "condicaoParcelamento($select=descricao,qtdParcelas,condicoesParcelamento),pessoa($select=nome),categoria($select=descricao),formaPagamento($select=descricao)";
+            ExpandProperties = "condicaoParcelamento($select=descricao,qtdParcelas,condicoesParcelamento),pessoa($select=nome),categoria($select=descricao),formaPagamento($select=descricao),centroCusto";
         }
 
         public override ActionResult ImprimirRecibo(Guid id)
@@ -453,7 +453,7 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "formaPagamentoId",
-                Class = "col s12 l6",
+                Class = "col s12 l4",
                 Label = "Forma Pagamento",
                 Required = true,
                 DataUrl = @Url.Action("FormaPagamento", "AutoComplete"),
@@ -466,13 +466,24 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "categoriaId",
-                Class = "col s12 l6",
+                Class = "col s12 l4",
                 Label = "Categoria Financeira",
                 Required = true,
                 DataUrl = @Url.Action("CategoriaCR", "AutoComplete"),
                 LabelId = "categoriaDescricao",
                 DataUrlPost = Url.Action("NovaCategoriaReceita")
             }, ResourceHashConst.FinanceiroCadastrosCategoria));
+
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            {
+                Id = "centroCustoId",
+                Class = "col s12 l4",
+                Label = "Centro de Custo",
+                DataUrl = @Url.Action("CentroCusto", "AutoComplete"),
+                LabelId = "centroCustoDescricao",
+                DataUrlPost = Url.Action("FormModal", "CentroCusto"),
+                DataPostField = "descricao"
+            }, ResourceHashConst.FinanceiroCadastrosCentroCustos));
 
             config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
 

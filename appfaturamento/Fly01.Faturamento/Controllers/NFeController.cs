@@ -355,65 +355,6 @@ namespace Fly01.Faturamento.Controllers
         }
 
         [OperationRole(PermissionValue = EPermissionValue.Read)]
-        [HttpGet]
-        public ActionResult BaixarXMLs(string idsXML)
-        {
-            try
-            {
-                var ids = idsXML.Split(',');
-                var response = new List<JObject>();
-                var resourceById = "";
-                string fileName = "";
-
-                foreach (var item in ids)
-                {
-                    resourceById = string.Format("NotaFiscalXML?&id={0}", item);
-                    var res = RestHelper.ExecuteGetRequest<JObject>(resourceById);
-                    if (res != null)
-                        response.Add(res);
-                    
-                }
-
-                if (response == null)
-                    return null;
-                
-                using (var memoryStream = new MemoryStream())
-                {
-                    using (var ziparchive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
-                    {
-                        response.ToList().ForEach(item =>
-                        {
-                            fileName = "NFe" + item.Value<string>("numNotaFiscal");
-
-                            string xml = item.Value<string>("xml");
-                            xml = xml.Replace("\\", "");
-                            Session.Add(fileName, xml);
-                            byte[] data = Convert.FromBase64String(Base64Helper.CodificaBase64(Session[fileName].ToString()));
-
-                            AddToArchive(ziparchive, fileName + ".xml", data);
-                        });
-                    }
-                    return File(memoryStream.ToArray(), "application/zip", "arquivosXML.zip");
-                }
-            }
-            catch (Exception ex)
-            {
-                ErrorInfo error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
-                return JsonResponseStatus.GetFailure(error.Message);
-            }
-        }
-
-        private void AddToArchive(ZipArchive ziparchive, string fileName, byte[] attach)
-        {
-            var zipEntry = ziparchive.CreateEntry(fileName, CompressionLevel.Optimal);
-            using (var zipStream = zipEntry.Open())
-            using (var streamIn = new MemoryStream(attach))
-            {
-                streamIn.CopyTo(zipStream);
-            }
-        }
-
-        [OperationRole(PermissionValue = EPermissionValue.Read)]
         public ActionResult BaixarPDF(Guid id)
         {
             try

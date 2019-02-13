@@ -15,6 +15,10 @@ using Fly01.Core.Presentation;
 using Fly01.Core.ViewModels;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.uiJS.Enums;
+using Fly01.Faturamento.Helpers;
+using Fly01.Core.Mensageria;
+using System.IO;
+using System.Text;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -23,7 +27,7 @@ namespace Fly01.Faturamento.Controllers
     {
         public NotaFiscalController()
         {
-            ExpandProperties = "cliente($select=nome),ordemVendaOrigem($select=id,numero),categoria,serieNotaFiscal";
+            ExpandProperties = "cliente($select=nome, email),ordemVendaOrigem($select=id,numero),categoria,serieNotaFiscal";
         }
 
         public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
@@ -49,6 +53,7 @@ namespace Fly01.Faturamento.Controllers
                 statusValue = EnumHelper.GetValue(typeof(StatusNotaFiscal), x.Status),
                 data = x.Data.ToString("dd/MM/yyyy"),
                 cliente_nome = x.Cliente.Nome,
+                cliente_email = x.Cliente?.Email,
                 ordemVendaOrigem_numero = x.OrdemVendaOrigem?.Numero.ToString(),
                 tipoVenda = x.TipoVenda,
                 tipoVendaDescription = EnumHelper.GetDescription(typeof(TipoCompraVenda), x.TipoVenda),
@@ -82,6 +87,91 @@ namespace Fly01.Faturamento.Controllers
             return target;
         }
 
+        private byte[] GetXMLFile(NotaFiscalVM notafiscal)
+        {
+
+            try
+            {
+                var resourceById = string.Format("NotaFiscalXML?&id={0}", notafiscal.Id);
+                var response = RestHelper.ExecuteGetRequest<JObject>(resourceById);
+
+                string xml = response.Value<string>("xml");
+                xml = xml.Replace("\\", "");
+
+                byte[] bytes = Encoding.ASCII.GetBytes(xml);
+
+                return bytes;
+            }
+            catch (Exception ex)
+            {
+                ErrorInfo error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                throw new Exception(error.Message);
+            }
+        }
+
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
+        private byte[] GetPDFFile(NotaFiscalVM notafiscal)
+        {
+            try
+            {
+                var resourceById = string.Format("NotaFiscalPDF?&id={0}", notafiscal.Id);
+                var response = RestHelper.ExecuteGetRequest<JObject>(resourceById);
+
+                string fileBase64 = response.Value<string>("pdf");
+
+                byte[] bytes = Encoding.ASCII.GetBytes(fileBase64);
+
+                return bytes;
+            }
+            catch (Exception ex)
+            {
+                ErrorInfo error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                throw new Exception(error.Message);
+            }
+        }
+
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
+        public JsonResult EnviaEmailNotaFiscal(string id)
+        {
+            try
+            {
+                var empresa = GetDadosEmpresa();
+                var notaFiscal = Get(Guid.Parse(id));
+
+                if (notaFiscal.Cliente == null)
+                {
+                    return JsonResponseStatus.GetFailure("Nenhum cliente foi encontrado.");
+                }
+
+                if (string.IsNullOrEmpty(notaFiscal.Cliente.Email))
+                {
+                    return JsonResponseStatus.GetFailure("Não foi encontrado um email válido para este cliente.");
+                }
+
+                if (string.IsNullOrEmpty(empresa.Email))
+                {
+                    return JsonResponseStatus.GetFailure("Você ainda não configurou um email válido para sua empresa.");
+                }
+              
+                var anexo = File(GetXMLFile(notaFiscal), ".xml");// File(GetPDFFile(ordemVenda), "application/pdf");// XML e Danfe
+                var anexo2 = File(GetPDFFile(notaFiscal), ".pdf");
+                var tituloEmail = $"{empresa.NomeFantasia} {notaFiscal.TipoNotaFiscal} - Nº {notaFiscal.NumNotaFiscal}".ToUpper();
+                var mensagemPrincipal = $"Você está recebendo uma cópia do XML e Danfe da sua {notaFiscal.TipoNotaFiscal}.".ToUpper();
+                var conteudoEmail = Mail.FormataMensagem(EmailFilesHelper.GetTemplate("Templates.OrdemVenda.html").Value, tituloEmail, mensagemPrincipal, empresa.Email);
+                var arquivoAnexo = new FileStreamResult(new MemoryStream(anexo.FileContents), ".xml");
+
+
+                Mail.Send(empresa.NomeFantasia, notaFiscal.Cliente.Email, tituloEmail, conteudoEmail, arquivoAnexo.FileStream, arquivoAnexo.ContentType);
+
+                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
         public ContentResult ListNotaFiscal(string gridLoad = "GridLoad")
         {
             var buttonLabel = "Mostrar todas as notas";
@@ -103,7 +193,7 @@ namespace Fly01.Faturamento.Controllers
                     Buttons = new List<HtmlUIButton>(GetListButtonsOnHeaderCustom(buttonLabel, buttonOnClick))
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
-                Functions = new List<string>() {"fnFormReadyNotasFiscais"}
+                Functions = new List<string>() { "fnFormReadyNotasFiscais" }
             };
 
             var cfgForm = new FormUI
@@ -183,7 +273,8 @@ namespace Fly01.Faturamento.Controllers
                 new DataTableUIAction { OnClickFn = "fnBaixarXMLUnicoNFSe", Label = "Baixar XML TSS", ShowIf = "((row.status == 'NaoAutorizada' || row.status == 'Transmitida' || row.status == 'FalhaTransmissao') && row.tipoNotaFiscal == 'NFSe')" },
                 new DataTableUIAction { OnClickFn = "fnCancelarNFe", Label = "Cancelar", ShowIf = "((row.status == 'Autorizada' || row.status == 'FalhaNoCancelamento') && row.tipoNotaFiscal == 'NFe')" },
                 new DataTableUIAction { OnClickFn = "fnCancelarNFSe", Label = "Cancelar", ShowIf = "((row.status == 'Autorizada' || row.status == 'FalhaNoCancelamento') && row.tipoNotaFiscal == 'NFSe')" },
-                new DataTableUIAction { OnClickFn = "fnFormCartaCorrecao", Label = "Carta de Correção", ShowIf = "(row.status == 'Autorizada')" }
+                new DataTableUIAction { OnClickFn = "fnFormCartaCorrecao", Label = "Carta de Correção", ShowIf = "(row.status == 'Autorizada')" },
+                new DataTableUIAction { OnClickFn = "fnEnviarEmailNotaFiscal", Label = "Enviar por e-mail", ShowIf = "(row.status != 'NaoTransmitida')" }
             }));
 
             config.Columns.Add(new DataTableUIColumn { DataField = "serieNotaFiscal_serie", DisplayName = "Série", Priority = 1 });

@@ -28,7 +28,8 @@ namespace Fly01.Core.Presentation.Controllers
 
             if (UserCanWrite)
             {
-                target.Add(new HtmlUIButton { Id = "cancel", Label = "Voltar", OnClickFn = "fnCancelar", Position = HtmlUIButtonPosition.Out });
+                target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar", Position = HtmlUIButtonPosition.Out });
+                target.Add(new HtmlUIButton { Id = "saveNew", Label = "Salvar e Novo", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Out });
                 target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main });
             }
 
@@ -63,7 +64,8 @@ namespace Fly01.Core.Presentation.Controllers
                     Create = @Url.Action("Create"),
                     Edit = @Url.Action("Edit"),
                     Get = @Url.Action("Json") + "/",
-                    List = Url.Action("List")
+                    List = Url.Action("List"),
+                    Form = Url.Action("Form")
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };

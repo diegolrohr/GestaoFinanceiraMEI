@@ -108,5 +108,27 @@ namespace Fly01.Core.Presentation.Controllers
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
         }
+
+        public ContentResult FormModal()
+        {
+            ModalUIForm config = new ModalUIForm()
+            {
+                Title = "Adicionar Centro de Custo",
+                ConfirmAction = new ModalUIAction() { Label = "Salvar" },
+                CancelAction = new ModalUIAction() { Label = "Cancelar" },
+                Action = new FormUIAction
+                {
+                    Create = @Url.Action("Create"),
+                    Edit = @Url.Action("Edit"),
+                    Get = @Url.Action("Json") + "/",
+                },
+                Id = "fly01mdlfrmCentroCusto",
+            };
+            config.Elements.Add(new InputHiddenUI { Id = "id" });
+            config.Elements.Add(new InputTextUI { Id = "codigo", Class = "col s12 m6", Label = "Codigo", Required = true, MaxLength = 100 });
+            config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12 m6", Label = "Descrição", Required = true, MaxLength = 100 });
+
+            return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
+        }
     }
 }

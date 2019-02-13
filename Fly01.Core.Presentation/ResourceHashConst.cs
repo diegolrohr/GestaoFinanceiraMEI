@@ -30,6 +30,7 @@
         public const string FinanceiroCadastrosCategoria = "825866CE-C89E-4D3D-B593-BF898DEA7284";
         public const string FinanceiroCadastrosFormasPagamento = "D0D55E22-5885-4CB6-82C3-120501841417";
         public const string FinanceiroCadastrosContasBancarias = "32BA1FB4-E3A7-44D8-B16E-40227890BA15";
+        public const string FinanceiroCadastrosCentroCustos = "CB84DD4D-893D-4313-8F03-35DBCECB69B5";
 
         public const string FinanceiroConfiguracoes = "27C86F80-A8BF-4DD0-B7D2-CEDC39CDD39F";
         public const string FinanceiroConfiguracoesNotificacoes = "1F555A14-2C41-46E1-8AFF-05BE0552F93D";
@@ -61,6 +62,7 @@
         public const string FaturamentoCadastrosCategoria = "13D0BD8E-06FA-4CC2-BB1B-25AC17D24363";
         public const string FaturamentoCadastrosSubstituicaoTributaria = "25503866-3DFC-445A-A13D-677798AD6E89";
         public const string FaturamentoCadastrosKit = "0B083814-AD86-4FC0-A0F4-8A903C2813A7";
+        public const string FaturamentoCadastrosCentroCustos = "4F17720D-ADCE-4BC5-A8FE-A95FD383F301";
 
         public const string FaturamentoConfiguracoes = "0A6B803C-215C-4CAD-89AF-F9AD96D87EBB";
         public const string FaturamentoConfiguracoesCertificadoDigital = "A4EF868D-E45F-48DB-8483-6EB222CC685B";
@@ -110,7 +112,8 @@
         public const string ComprasCadastrosCategoria = "C7BA2B5A-CB3C-4E30-86E0-7571D5CB2836";
         public const string ComprasCadastrosSubstituicaoTributaria = "361B7CF8-BC9D-4C96-800C-9CA58611E3FA";
         public const string ComprasCadastrosKit = "E9261063-39DA-45CA-BA45-82C9811B89E3";
-        
+        public const string ComprasCadastrosCentroCustos = "8CE80FFD-2D6B-482E-81B5-D16E9C2E8F80";
+
         public const string ComprasConfiguracoes = "6CC410A7-0059-4C0C-9E77-64C5F401BFA3";
         public const string ComprasConfiguracoesCertificadoDigital = "41996A68-7DF5-4CA2-ABDA-839B52AE5DF3";
         public const string ComprasConfiguracoesParametrosTributarios = "D3C4072E-ACAD-40DF-8C11-DFC52347FD52";

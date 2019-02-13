@@ -1,8 +1,8 @@
-﻿using Fly01.Core.Entities.Domains.Commons;
+﻿using Fly01.Core.ViewModels.Presentation.Commons;
 using Newtonsoft.Json;
 using System;
 
-namespace Fly01.Core.ViewModels.Presentation.Commons
+namespace Fly01.Compras.ViewModel
 {
     public class NFeImportacaoVM : DomainBaseVM
     {
@@ -87,19 +87,24 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [JsonProperty("pedidoId")]
         public Guid? PedidoId { get; set; }
 
+        [JsonProperty("centroCustoId")]
+        public Guid? CentroCustoId { get; set; }
+
         #region navigations
         [JsonProperty("pedido")]
-        public virtual Pedido Pedido { get; set; }
+        public virtual PedidoVM Pedido { get; set; }
         [JsonProperty("fornecedor")]
-        public virtual Pessoa Fornecedor { get; set; }
+        public virtual PessoaVM Fornecedor { get; set; }
         [JsonProperty("transportadora")]
-        public virtual Pessoa Transportadora { get; set; }
+        public virtual PessoaVM Transportadora { get; set; }
         [JsonProperty("condicaoParcelamento")]
-        public virtual CondicaoParcelamento CondicaoParcelamento { get; set; }
+        public virtual CondicaoParcelamentoVM CondicaoParcelamento { get; set; }
         [JsonProperty("formaPagamento")]
-        public virtual FormaPagamento FormaPagamento { get; set; }
+        public virtual FormaPagamentoVM FormaPagamento { get; set; }
         [JsonProperty("categoria")]
-        public virtual Categoria Categoria { get; set; }
+        public virtual CategoriaVM Categoria { get; set; }
+        [JsonProperty("centroCusto")]
+        public virtual CentroCustoVM CentroCusto { get; set; }
         #endregion
 
 

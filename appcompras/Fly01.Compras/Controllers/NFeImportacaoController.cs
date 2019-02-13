@@ -20,6 +20,7 @@ using System.Xml.Serialization;
 using Fly01.EmissaoNFE.Domain.Entities.NFe;
 using Fly01.Core.ViewModels;
 using System.Dynamic;
+using Fly01.Compras.ViewModel;
 
 namespace Fly01.Compras.Controllers
 {

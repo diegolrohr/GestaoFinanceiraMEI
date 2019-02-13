@@ -127,6 +127,10 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="ViewModel\NFeEntradaVM.cs" />
+    <Compile Include="ViewModel\NFeImportacaoCobrancaVM.cs" />
+    <Compile Include="ViewModel\NFeImportacaoFormVM.cs" />
+    <Compile Include="ViewModel\NFeImportacaoProdutoVM.cs" />
+    <Compile Include="ViewModel\NFeImportacaoVM.cs" />
     <Compile Include="ViewModel\NFeProdutoEntradaVM.cs" />
     <Compile Include="ViewModel\NotaFiscalCartaCorrecaoEntradaVM.cs" />
     <Compile Include="ViewModel\NotaFiscalEntradaVM.cs" />

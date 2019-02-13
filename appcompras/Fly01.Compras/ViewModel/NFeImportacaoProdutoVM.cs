@@ -1,8 +1,9 @@
 ﻿using Fly01.Core.Entities.Domains.Commons;
+using Fly01.Core.ViewModels.Presentation.Commons;
 using Newtonsoft.Json;
 using System;
 
-namespace Fly01.Core.ViewModels.Presentation.Commons
+namespace Fly01.Compras.ViewModel
 {
     public class NFeImportacaoProdutoVM : DomainBaseVM
     {

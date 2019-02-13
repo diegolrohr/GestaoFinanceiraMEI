@@ -65,6 +65,7 @@
     <Compile Include="Controllers\AvaliacaoAppController.cs" />
     <Compile Include="Controllers\Base\BoletoController.cs" />
     <Compile Include="Controllers\Base\ContaFinanceiraController.cs" />
+    <Compile Include="Controllers\CentroCustoController.cs" />
     <Compile Include="Controllers\MinhaContaController.cs" />
     <Compile Include="Controllers\CnabController.cs" />
     <Compile Include="Controllers\ContaFinanceiraBaixaMultiplaController.cs" />

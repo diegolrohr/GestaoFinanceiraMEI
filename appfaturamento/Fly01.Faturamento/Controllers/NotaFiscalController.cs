@@ -26,7 +26,7 @@ namespace Fly01.Faturamento.Controllers
     {
         public NotaFiscalController()
         {
-            ExpandProperties = "cliente($select=nome),ordemVendaOrigem($select=id,numero),categoria,serieNotaFiscal";
+            ExpandProperties = "cliente($select=nome),ordemVendaOrigem($select=id,numero),categoria,serieNotaFiscal,centroCusto";
         }
 
         public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
@@ -52,6 +52,7 @@ namespace Fly01.Faturamento.Controllers
                 statusValue = EnumHelper.GetValue(typeof(StatusNotaFiscal), x.Status),
                 data = x.Data.ToString("dd/MM/yyyy"),
                 cliente_nome = x.Cliente.Nome,
+                cliente_email = x.Cliente?.Email,
                 ordemVendaOrigem_numero = x.OrdemVendaOrigem?.Numero.ToString(),
                 tipoVenda = x.TipoVenda,
                 tipoVendaDescription = EnumHelper.GetDescription(typeof(TipoCompraVenda), x.TipoVenda),

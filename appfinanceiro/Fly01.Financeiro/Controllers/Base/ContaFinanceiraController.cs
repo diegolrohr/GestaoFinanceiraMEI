@@ -617,7 +617,7 @@ namespace Fly01.Financeiro.Controllers.Base
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "formaPagamentoId",
-                Class = "col s12 m6 l6",
+                Class = "col s12 m4",
                 Label = "Forma Pagamento",
                 Disabled = true,
                 DataUrl = @Url.Action("FormaPagamento", "AutoComplete"),
@@ -626,11 +626,21 @@ namespace Fly01.Financeiro.Controllers.Base
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "condicaoParcelamentoId",
-                Class = "col s12 m6 l6",
+                Class = "col s12 m4",
                 Label = "Condição Parcelamento",
                 Disabled = true,
                 DataUrl = @Url.Action("CondicaoParcelamento", "AutoComplete"),
                 LabelId = "condicaoParcelamentoDescricao"
+            });
+
+            config.Elements.Add(new AutoCompleteUI
+            {
+                Id = "centroCustoId",
+                Class = "col s12 m4",
+                Label = "Centro de Custo",
+                Disabled = true,
+                DataUrl = @Url.Action("CentroCusto", "AutoComplete"),
+                LabelId = "centroCustoDescricao"
             });
 
             config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", Disabled = true, MaxLength = 200 });

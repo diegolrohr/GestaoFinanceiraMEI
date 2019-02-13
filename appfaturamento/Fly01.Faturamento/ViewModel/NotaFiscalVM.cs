@@ -111,6 +111,9 @@ namespace Fly01.Faturamento.ViewModel
         [JsonProperty("sefazId")]
         public string SefazId { get; set; }
 
+        [JsonProperty("centroCustoId")]
+        public Guid? CentroCustoId { get; set; }
+
         [JsonProperty("ordemVendaOrigem")]
         public virtual OrdemVendaVM OrdemVendaOrigem { get; set; }
 
@@ -134,5 +137,8 @@ namespace Fly01.Faturamento.ViewModel
 
         [JsonProperty("serieNotaFiscal")]
         public virtual SerieNotaFiscalVM SerieNotaFiscal { get; set; }
+
+        [JsonProperty("centroCusto")]
+        public virtual CentroCustoVM CentroCusto { get; set; }
     }
 }

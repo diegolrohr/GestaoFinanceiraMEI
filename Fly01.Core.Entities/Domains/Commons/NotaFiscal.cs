@@ -123,6 +123,8 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public Guid? ContaFinanceiraParcelaPaiIdServicos { get; set; }
 
+        public Guid? CentroCustoId { get; set; }
+
         public virtual OrdemVenda OrdemVendaOrigem { get; set; }
         public virtual Pessoa Cliente { get; set; }
         public virtual Pessoa Transportadora { get; set; }
@@ -131,5 +133,6 @@ namespace Fly01.Core.Entities.Domains.Commons
         public virtual FormaPagamento FormaPagamento { get; set; }
         public virtual Categoria Categoria { get; set; }
         public virtual SerieNotaFiscal SerieNotaFiscal { get; set; }
+        public virtual CentroCusto CentroCusto { get; set; }
     }
 }

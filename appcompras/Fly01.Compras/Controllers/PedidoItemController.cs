@@ -18,7 +18,7 @@ namespace Fly01.Compras.Controllers
     {
         public PedidoItemController()
         {
-            ExpandProperties = "produto,grupoTributario";
+            ExpandProperties = "produto($select=id,descricao),grupoTributario($select=id,descricao,tipoTributacaoICMS)";
         }
 
         public override Func<PedidoItemVM, object> GetDisplayData()

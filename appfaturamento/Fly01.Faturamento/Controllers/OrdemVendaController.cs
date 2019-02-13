@@ -322,6 +322,13 @@ namespace Fly01.Faturamento.Controllers
             return dtOrdemVendaServicosCfg;
         }
 
+        public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
+        {
+            var queryString = base.GetQueryStringDefaultGridLoad();
+            queryString.Add("$select", "id,numero,tipoOrdemVenda,data,status,tipoVenda,geraNotaFiscal");
+            return queryString;
+        }
+
         public override Func<OrdemVendaVM, object> GetDisplayData()
         {
             return x => new
@@ -702,7 +709,7 @@ namespace Fly01.Faturamento.Controllers
                 }
             });
 
-            config.Elements.Add(new InputCurrencyUI { Id = "totalProdutosDt", Class = "col s12 m4 right", Label = "Total produtos", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalProdutosDt", Class = "col s12 m4 right", Label = "Total Produtos", Readonly = true });
 
             config.Elements.Add(new LabelSetUI { Id = "labelSetServico", Class = "col s12", Label = "Serviços" });
             config.Elements.Add(new TableUI

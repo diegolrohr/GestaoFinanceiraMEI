@@ -324,13 +324,10 @@ namespace Fly01.Compras.Controllers
                     new OptionUI { Label = "Fornecedor", Value = "1"},
                     new OptionUI { Label = "Quant.", Value = "2"},
                     new OptionUI { Label = "Valor",Value = "3"},
-                    new OptionUI { Label = "Desconto",Value = "4"},
-                    new OptionUI { Label = "Outras Retenções",Value = "5"},
+                    new OptionUI { Label = "Desconto",Value = "4"},                    
                     new OptionUI { Label = "Total",Value = "5"},
                 }
-            });
-
-            config.Elements.Add(new InputCurrencyUI { Id = "totalProdutosDt", Class = "col s12 m4 right", Label = "Total produtos", Readonly = true });
+            });            
 
             return Content(JsonConvert.SerializeObject(config, uiJS.Defaults.JsonSerializerSetting.Front), "application/json");
         }

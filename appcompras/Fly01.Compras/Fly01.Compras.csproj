@@ -406,6 +406,8 @@
     <Content Include="Views\NFeImportacao\Functions\_fnExcluirNFeImportacao.cshtml" />
     <Content Include="Views\SerieNotaFiscal\Functions\_fnChangeTipoOperacao.cshtml" />
     <Content Include="Views\SerieNotaFiscal\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\NotaFiscalEntrada\Functions\_fnFormReadyNotasFiscais.cshtml" />
+    <Content Include="Views\NotaFiscalEntrada\Functions\_fnBaixarXMLNFeZip.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

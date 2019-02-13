@@ -67,7 +67,7 @@ namespace Fly01.Compras.BL
                 var notaFiscal = All.AsNoTracking().Where(x => x.Id == id).FirstOrDefault();
                 if (!string.IsNullOrEmpty(notaFiscal.XML))
                 {
-                    return new { xml = notaFiscal.XML, numNotaFiscal = notaFiscal.NumNotaFiscal };
+                    return new { xml = notaFiscal.XML, numNotaFiscal = notaFiscal.NumNotaFiscal, tipoNotaFiscal = notaFiscal.TipoNotaFiscal.ToString() };
                 }
                 else
                 {

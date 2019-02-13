@@ -91,7 +91,7 @@ namespace Fly01.Compras.BL
 
         public EntidadeVM RetornaEntidade()
         {
-            string estadoNome = empresa.EstadoNome;
+            string estadoNome = empresa?.Cidade?.Estado?.Nome;
             var estado = EstadoBL.All.FirstOrDefault(x => x.Nome == estadoNome);
 
             var entidade = new EmpresaVM

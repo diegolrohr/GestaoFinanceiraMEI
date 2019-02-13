@@ -14,6 +14,10 @@ using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Presentation;
 using Fly01.Core.ViewModels;
 using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.uiJS.Enums;
+using System.IO;
+using System.IO.Compression;
+using System.Linq;
 
 namespace Fly01.Compras.Controllers
 {
@@ -69,7 +73,8 @@ namespace Fly01.Compras.Controllers
 
             if (UserCanWrite)
             {
-                target.Add(new HtmlUIButton { Id = "atualizarStatus", Label = "Atualizar Status", OnClickFn = "fnAtualizarStatus" });
+                target.Add(new HtmlUIButton { Id = "baixarTodosXmls", Label = "Baixar Xmls", OnClickFn = "fnBaixarXMLNFeZip", Position = HtmlUIButtonPosition.Out });
+                target.Add(new HtmlUIButton { Id = "atualizarStatus", Label = "Atualizar Status", OnClickFn = "fnAtualizarStatus",Position = HtmlUIButtonPosition.Main });
                 target.Add(new HtmlUIButton { Id = "new", Label = "Novo Pedido", OnClickFn = "fnNovoPedido" });
                 target.Add(new HtmlUIButton { Id = "filterGrid", Label = buttonLabel, OnClickFn = buttonOnClick });
                 target.Add(new HtmlUIButton { Id = "newNFInutilizada", Label = "Inutilizar Nota Fiscal", OnClickFn = "fnNotaFiscalInutilizadaList" });
@@ -98,7 +103,8 @@ namespace Fly01.Compras.Controllers
                     Title = "Notas Fiscais",
                     Buttons = new List<HtmlUIButton>(GetListButtonsOnHeaderCustom(buttonLabel, buttonOnClick))
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                Functions = new List<string>() { "fnFormReadyNotasFiscais" }
             };
 
             var cfgForm = new FormUI
@@ -155,6 +161,7 @@ namespace Fly01.Compras.Controllers
                 Functions = new List<string>() { "fnRenderEnum" },
                 Options = new DataTableUIConfig
                 {
+                    Select = new { style = "multi" },
                     OrderColumn = 6,
                     OrderDir = "desc"
                 }
@@ -265,5 +272,83 @@ namespace Fly01.Compras.Controllers
                 return JsonResponseStatus.GetFailure(error.Message);
             }
         }
+
+
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
+        [HttpGet]
+        public ActionResult BaixarXMLs(string idsXML)
+        {
+            try
+            {
+                var ids = idsXML.Split(',');
+                var response = new List<JObject>();
+
+                foreach (var item in ids)
+                {
+                    try
+                    {
+                        var resourceById = string.Format("NotaFiscalXML?&id={0}", item);
+                        var res = RestHelper.ExecuteGetRequest<JObject>(resourceById);
+                        if (res != null)
+                            response.Add(res);
+                    }
+                    catch (Exception)
+                    {
+                        continue;
+                    }
+                }
+
+                if (response.Count == 0)
+                    return JsonResponseStatus.GetFailure("Os XMLs solicitados não estão disponíveis para download");
+
+                Session["responseValue"] = JsonConvert.SerializeObject(response);
+
+                return JsonResponseStatus.GetJson(new { downloadAddress = Url.Action("DownloadXMLs", new { idsXML = idsXML }) });
+            }
+            catch (Exception ex)
+            {
+                ErrorInfo error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
+        [OperationRole(NotApply = true)]
+        [HttpGet]
+        public ActionResult DownloadXMLs(string idsXML)
+        {
+            var sessionValue = Session["responseValue"];
+            var response = JsonConvert.DeserializeObject<List<JObject>>(sessionValue.ToString());
+
+            var fileName = "";
+            using (var memoryStream = new MemoryStream())
+            {
+                using (var ziparchive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
+                {
+                    response.ToList().ForEach(item =>
+                    {
+                        fileName = item.Value<string>("tipoNotaFiscal") + item.Value<string>("numNotaFiscal");
+
+                        string xml = item.Value<string>("xml");
+                        xml = xml.Replace("\\", "");
+                        Session.Add(fileName, xml);
+                        byte[] data = Convert.FromBase64String(Base64Helper.CodificaBase64(Session[fileName].ToString()));
+
+                        AddToArchive(ziparchive, fileName + ".xml", data);
+                    });
+                }
+                return File(memoryStream.ToArray(), "application/zip", "arquivosXML.zip");
+            }
+        }
+
+        private void AddToArchive(ZipArchive ziparchive, string fileName, byte[] attach)
+        {
+            var zipEntry = ziparchive.CreateEntry(fileName, CompressionLevel.Optimal);
+            using (var zipStream = zipEntry.Open())
+            using (var streamIn = new MemoryStream(attach))
+            {
+                streamIn.CopyTo(zipStream);
+            }
+        }
+
     }
 }

@@ -113,6 +113,9 @@ namespace Fly01.Faturamento.ViewModel
         [JsonProperty("nFeRefComplementarIsDevolucao")]
         public bool NFeRefComplementarIsDevolucao { get; set; }
 
+        [JsonProperty("centroCustoId")]
+        public Guid? CentroCustoId { get; set; }
+
         [JsonProperty("cliente")]
         public virtual PessoaVM Cliente { get; set; }
 
@@ -133,5 +136,8 @@ namespace Fly01.Faturamento.ViewModel
 
         [JsonProperty("categoria")]
         public virtual CategoriaVM Categoria { get; set; }
+
+        [JsonProperty("centroCusto")]
+        public virtual CentroCustoVM CentroCusto { get; set; }
     }
 }

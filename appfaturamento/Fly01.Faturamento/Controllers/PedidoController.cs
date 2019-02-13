@@ -136,7 +136,7 @@ namespace Fly01.Faturamento.Controllers
                     {
                         Title = "Financeiro",
                         Id = "stepFinanceiro",
-                        Quantity = 5,
+                        Quantity = 6,
                     },
                     new FormWizardUIStep()
                     {
@@ -308,7 +308,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "condicaoParcelamentoId",
-                Class = "col s12 m6",
+                Class = "col s12 m4",
                 Label = "Condição Parcelamento",
                 DataUrl = Url.Action("CondicaoParcelamento", "AutoComplete"),
                 LabelId = "condicaoParcelamentoDescricao",
@@ -319,13 +319,24 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "categoriaId",
-                Class = "col s12 m6",
+                Class = "col s12 m4",
                 Label = "Categoria",
                 PreFilter = "tipoCarteira",
-                DataUrl = @Url.Action("Categoria", "AutoComplete"),
+                DataUrl = Url.Action("Categoria", "AutoComplete"),
                 LabelId = "categoriaDescricao",
-                DataUrlPost = @Url.Action("NovaCategoria")
+                DataUrlPost = Url.Action("NovaCategoria")
             }, ResourceHashConst.FaturamentoCadastrosCategoria));
+
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            {
+                Id = "centroCustoId",
+                Class = "col s12 m4",
+                Label = "Centro de Custo",
+                DataUrl = Url.Action("CentroCusto", "AutoComplete"),
+                LabelId = "centroCustoDescricao",
+                DataUrlPost = Url.Action("FormModal", "CentroCusto"),
+                DataPostField = "descricao"
+            }, ResourceHashConst.FaturamentoCadastrosCentroCustos));
 
             #endregion
 

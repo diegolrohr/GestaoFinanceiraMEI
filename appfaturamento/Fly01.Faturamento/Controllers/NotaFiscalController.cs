@@ -48,6 +48,7 @@ namespace Fly01.Faturamento.Controllers
                 statusValue = EnumHelper.GetValue(typeof(StatusNotaFiscal), x.Status),
                 data = x.Data.ToString("dd/MM/yyyy"),
                 cliente_nome = x.Cliente.Nome,
+                cliente_email = x.Cliente?.Email,
                 ordemVendaOrigem_numero = x.OrdemVendaOrigem?.Numero.ToString(),
                 tipoVenda = x.TipoVenda,
                 tipoVendaDescription = EnumHelper.GetDescription(typeof(TipoCompraVenda), x.TipoVenda),

@@ -667,6 +667,7 @@ namespace Fly01.Faturamento.BL
                         Descricao = GetDescricaoTitulo(TipoItem.Produto, entity),
                         Observacao = GetObservacaoTitulo(TipoItem.Produto, entity),
                         FormaPagamentoId = entity.FormaPagamentoId.Value,
+                        CentroCustoId = entity.CentroCustoId,
                         PlataformaId = PlataformaUrl,
                         UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao
                     };
@@ -763,6 +764,7 @@ namespace Fly01.Faturamento.BL
                 Descricao = GetDescricaoTitulo(tipoItem, entity),
                 Observacao = GetObservacaoTitulo(tipoItem, entity),
                 FormaPagamentoId = entity.FormaPagamentoId.Value,
+                CentroCustoId = entity.CentroCustoId,
                 PlataformaId = PlataformaUrl,
                 UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao
             };
@@ -797,6 +799,7 @@ namespace Fly01.Faturamento.BL
                 Descricao = GetDescricaoTitulo(tipoItem, entity),
                 Observacao = GetObservacaoTitulo(tipoItem, entity),
                 FormaPagamentoId = entity.FormaPagamentoId.Value,
+                CentroCustoId = entity.CentroCustoId,
                 PlataformaId = PlataformaUrl,
                 UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao
             };

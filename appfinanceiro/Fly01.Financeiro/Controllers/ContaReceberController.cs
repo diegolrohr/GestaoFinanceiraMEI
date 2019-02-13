@@ -453,7 +453,7 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "formaPagamentoId",
-                Class = "col s12 l4",
+                Class = "col s12 m4",
                 Label = "Forma Pagamento",
                 Required = true,
                 DataUrl = @Url.Action("FormaPagamento", "AutoComplete"),
@@ -466,7 +466,7 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "categoriaId",
-                Class = "col s12 l4",
+                Class = "col s12 m4",
                 Label = "Categoria Financeira",
                 Required = true,
                 DataUrl = @Url.Action("CategoriaCR", "AutoComplete"),
@@ -477,7 +477,7 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "centroCustoId",
-                Class = "col s12 l4",
+                Class = "col s12 m4",
                 Label = "Centro de Custo",
                 DataUrl = @Url.Action("CentroCusto", "AutoComplete"),
                 LabelId = "centroCustoDescricao",

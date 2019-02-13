@@ -97,7 +97,7 @@ namespace Fly01.Faturamento.Controllers
                     {
                         Title = "Financeiro",
                         Id = "stepFinanceiro",
-                        Quantity = 4,
+                        Quantity = 5,
                     },
                     new FormWizardUIStep()
                     {
@@ -229,15 +229,26 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "categoriaId",
-                Class = "col s12 m6",
+                Class = "col s12 m5",
                 Label = "Categoria",
                 PreFilter = "tipoCarteira",
-                DataUrl = @Url.Action("Categoria", "AutoComplete"),
+                DataUrl = Url.Action("Categoria", "AutoComplete"),
                 LabelId = "categoriaDescricao",
-                DataUrlPost = @Url.Action("NovaCategoria")
+                DataUrlPost = Url.Action("NovaCategoria")
             }, ResourceHashConst.FaturamentoCadastrosCategoria));
 
-            config.Elements.Add(new InputDateUI { Id = "dataVencimento", Class = "col s12 m3", Label = "Data Vencimento" });
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            {
+                Id = "centroCustoId",
+                Class = "col s12 m5",
+                Label = "Centro de Custo",
+                DataUrl = Url.Action("CentroCusto", "AutoComplete"),
+                LabelId = "centroCustoDescricao",
+                DataUrlPost = Url.Action("FormModal", "CentroCusto"),
+                DataPostField = "descricao"
+            }, ResourceHashConst.FaturamentoCadastrosCentroCustos));
+
+            config.Elements.Add(new InputDateUI { Id = "dataVencimento", Class = "col s12 m2", Label = "Data Vencimento" });
             #endregion
 
             #region step Transporte

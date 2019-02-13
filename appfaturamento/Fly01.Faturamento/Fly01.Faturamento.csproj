@@ -363,11 +363,11 @@
     <Content Include="Views\KitItem\Functions\_fnFormReadyModalKitItens.cshtml" />
     <Content Include="Views\Pedido\Functions\_fnModalOrdemVendaKit.cshtml" />
     <Content Include="Views\OrdemVenda\Functions\_fnFormReadyOrdemVendaKit.cshtml" />
-    <Content Include="Views\Orcamento\Functions\_fnModalOrcamentoKit.cshtml" />
     <Content Include="Views\MinhaConta\Functions\_fnAtualizar.cshtml" />
     <Content Include="Views\MinhaConta\Functions\_fnRenderBoletos.cshtml" />
     <Content Include="Views\MinhaConta\Functions\_fnRenderSituacao.cshtml" />
     <Content Include="Views\MinhaConta\Functions\_fnRenderVencimento.cshtml" />
+    <Content Include="Views\Orcamento\Functions\_fnModalOrdemVendaKit.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

@@ -18,7 +18,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
         [EnableQuery(EnsureStableOrdering = false)]
         public override IHttpActionResult Get()
         {
-            return Ok(All().ToList());
+            return Ok(All().AsQueryable());
         }
     }
 }

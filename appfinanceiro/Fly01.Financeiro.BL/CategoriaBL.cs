@@ -25,24 +25,24 @@ namespace Fly01.Financeiro.BL
 
         public override void Update(Categoria entity)
         {
-            var categoriaPaiIdAlterada = All.AsNoTracking().Where(x => x.Id == entity.Id).Any(x => x.CategoriaPaiId != entity.CategoriaPaiId);
-            var previous = All.AsNoTracking().Where(x => x.Id == entity.Id).FirstOrDefault();
-            bool categoriaTemFilho = All.Where(x => x.CategoriaPaiId == entity.Id).Any();
+            var categoriaPaiIdAlterada = base.All.AsNoTracking().Where(x => x.Id == entity.Id).Any(x => x.CategoriaPaiId != entity.CategoriaPaiId);
+            var previous = base.All.AsNoTracking().Where(x => x.Id == entity.Id).FirstOrDefault();
+            bool categoriaTemFilho = base.All.Where(x => x.CategoriaPaiId == entity.Id).Any();
             bool temContaReceberRelacionada = contaFinanceiraBL.All.Where(e => e.CategoriaId == entity.Id && e.TipoContaFinanceira == TipoContaFinanceira.ContaReceber  && e.Ativo).Any();
             bool temContaPagarRelacionada = contaFinanceiraBL.All.Where(e => e.CategoriaId == entity.Id && e.TipoContaFinanceira == TipoContaFinanceira.ContaPagar && e.Ativo).Any();
 
 
             entity.Fail((previous != null) && (entity.TipoCarteira != previous.TipoCarteira) && (temContaPagarRelacionada && entity.TipoCarteira == TipoCarteira.Receita) || (temContaReceberRelacionada && entity.TipoCarteira == TipoCarteira.Despesa), AlterarTipoInvalidaFK);
             entity.Fail(categoriaTemFilho && entity.CategoriaPaiId.HasValue, AlteracaoCategoriaSuperiorInvalida);
-            entity.Fail(categoriaPaiIdAlterada && All.Any(x => x.CategoriaPaiId == entity.Id), AlteracaoCategoriaSuperiorInvalida);
-            entity.Fail(All.Any(x => x.CategoriaPaiId == entity.Id && x.TipoCarteira != entity.TipoCarteira), AlteracaoTipoInvalida);
+            entity.Fail(categoriaPaiIdAlterada && base.All.Any(x => x.CategoriaPaiId == entity.Id), AlteracaoCategoriaSuperiorInvalida);
+            entity.Fail(base.All.Any(x => x.CategoriaPaiId == entity.Id && x.TipoCarteira != entity.TipoCarteira), AlteracaoTipoInvalida);
             ValidaModel(entity);
             base.Update(entity);
         }
 
         public override void Delete(Categoria entityToDelete)
         {
-            entityToDelete.Fail(All.Any(x => x.CategoriaPaiId == entityToDelete.Id), ExclusaoInvalida);
+            entityToDelete.Fail(base.All.Any(x => x.CategoriaPaiId == entityToDelete.Id), ExclusaoInvalida);
             base.ValidaModel(entityToDelete);
             base.Delete(entityToDelete);
         }
@@ -77,15 +77,15 @@ namespace Fly01.Financeiro.BL
 
         public override void ValidaModel(Categoria entity)
         {
-            var categoriaPai = All.FirstOrDefault(x => x.Id == entity.CategoriaPaiId);
-            entity.Fail(categoriaPai != null && All.Any(x => categoriaPai.CategoriaPaiId != null), PaiJaEFilho);
+            var categoriaPai = base.All.FirstOrDefault(x => x.Id == entity.CategoriaPaiId);
+            entity.Fail(categoriaPai != null && base.All.Any(x => categoriaPai.CategoriaPaiId != null), PaiJaEFilho);
 
             TipoCarteiraBL.ValidaTipoCarteira(entity.TipoCarteira);
-            entity.Fail(All.Any(x => x.Id != entity.Id && x.Descricao.ToUpper() == entity.Descricao.ToUpper()),
-                new Error("Descrição já utilizada anteriormente.", "descricao", All.FirstOrDefault(x => x.Id != entity.Id && x.Descricao.ToUpper() == entity.Descricao.ToUpper())?.Id.ToString()));
+            entity.Fail(base.All.Any(x => x.Id != entity.Id && x.Descricao.ToUpper() == entity.Descricao.ToUpper()),
+                new Error("Descrição já utilizada anteriormente.", "descricao", base.All.FirstOrDefault(x => x.Id != entity.Id && x.Descricao.ToUpper() == entity.Descricao.ToUpper())?.Id.ToString()));
             entity.Fail(entity.Id == entity.CategoriaPaiId, CategoriaPropria);
 
-            entity.Fail(All.Where(x => x.Id == entity.CategoriaPaiId).Any(x => x.TipoCarteira != entity.TipoCarteira), TipoCarteiraDiferente);
+            entity.Fail(base.All.Where(x => x.Id == entity.CategoriaPaiId).Any(x => x.TipoCarteira != entity.TipoCarteira), TipoCarteiraDiferente);
             base.ValidaModel(entity);
         }
 

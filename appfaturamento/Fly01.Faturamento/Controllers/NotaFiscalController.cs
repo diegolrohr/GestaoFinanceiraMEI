@@ -15,6 +15,9 @@ using Fly01.Core.Presentation;
 using Fly01.Core.ViewModels;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.uiJS.Enums;
+using Fly01.Core.Mensageria;
+using System.IO;
+using Fly01.Faturamento.Helpers;
 
 namespace Fly01.Faturamento.Controllers
 {

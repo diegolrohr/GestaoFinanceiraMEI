@@ -20,7 +20,7 @@ namespace Fly01.OrdemServico.Controllers
         public ServicoController()
         {
             ExpandProperties = "nbs($select=id,descricao)";
-            SelectProperties = "id,codigoServico,descricao,registroFixo";
+            SelectPropertiesList = "id,codigoServico,descricao,registroFixo";
 
             GetDisplayDataSelect = x => new
             {

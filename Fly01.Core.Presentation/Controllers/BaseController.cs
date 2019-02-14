@@ -44,7 +44,9 @@ namespace Fly01.Core.Presentation
         }
         protected string ExpandProperties { get; set; }
 
-        protected string SelectProperties { get; set; }
+        protected string SelectPropertiesList { get; set; }
+
+        protected string SelectPropertiesForm { get; set; }
 
         protected string ResourceName
             => AppDefaults.GetResourceName(typeof(T));
@@ -424,7 +426,7 @@ namespace Fly01.Core.Presentation
             string resourceName = AppDefaults.GetResourceName(typeof(T));
             string resourceById = String.Format("{0}/{1}", ResourceName, id);
 
-            if (string.IsNullOrEmpty(ExpandProperties) && string.IsNullOrEmpty(SelectProperties))
+            if (string.IsNullOrEmpty(ExpandProperties) && string.IsNullOrEmpty(SelectPropertiesForm))
             {
                 return RestHelper.ExecuteGetRequest<T>(resourceById);
             }
@@ -435,9 +437,9 @@ namespace Fly01.Core.Presentation
                 {
                     queryString.Add("$expand", ExpandProperties);
                 }
-                if (!string.IsNullOrEmpty(SelectProperties))
+                if (!string.IsNullOrEmpty(SelectPropertiesForm))
                 {
-                    queryString.Add("select", SelectProperties);
+                    queryString.Add("select", SelectPropertiesForm);
                 }
 
                 return RestHelper.ExecuteGetRequest<T>(resourceById, queryString);
@@ -452,8 +454,8 @@ namespace Fly01.Core.Presentation
 
             if (!string.IsNullOrEmpty(ExpandProperties))
                 queryStringDefault.Add("$expand", ExpandProperties);
-            if (!string.IsNullOrEmpty(SelectProperties))
-                queryStringDefault.Add("$select", SelectProperties);
+            if (!string.IsNullOrEmpty(SelectPropertiesList))
+                queryStringDefault.Add("$select", SelectPropertiesList);
 
             return queryStringDefault;
         }

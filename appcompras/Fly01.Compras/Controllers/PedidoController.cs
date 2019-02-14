@@ -394,7 +394,7 @@ namespace Fly01.Compras.Controllers
                 LabelId = "centroCustoDescricao",
                 DataUrlPostModal = Url.Action("FormModal", "CentroCusto"),
                 DataPostField = "descricao"
-            }, ResourceHashConst.FaturamentoCadastrosCentroCustos));
+            }, ResourceHashConst.ComprasCadastrosCentroCustos));
 
             #endregion
 

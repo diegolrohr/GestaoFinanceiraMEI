@@ -25,7 +25,7 @@ namespace Fly01.OrdemServico.Controllers
         public ProdutoController()
         {
             ExpandProperties = "grupoProduto($select=id,descricao),unidadeMedida($select=id,descricao)";
-            SelectProperties = "id,codigoProduto,descricao,grupoProdutoId,tipoProduto,registroFixo,objetoDeManutencao";
+            SelectPropertiesList = "id,codigoProduto,descricao,grupoProdutoId,tipoProduto,registroFixo,objetoDeManutencao";
             GetDisplayDataSelect = x => new
             {
                 id = x.Id,
@@ -58,7 +58,7 @@ namespace Fly01.OrdemServico.Controllers
                 registroFixo = x.RegistroFixo,
             };
 
-            SelectProperties = "id,descricao,codigoProduto,unidadeMedidaId,valorVenda,valorCusto,saldoProduto";
+            SelectPropertiesList = "id,descricao,codigoProduto,unidadeMedidaId,valorVenda,valorCusto,saldoProduto";
             return GridLoad(filters);
         }
 
@@ -99,7 +99,7 @@ namespace Fly01.OrdemServico.Controllers
                 saldoProduto = x.SaldoProduto
             };
 
-            SelectProperties = "id,descricao,saldoProduto";
+            SelectPropertiesList = "id,descricao,saldoProduto";
 
             filters.AddParam("saldoProduto", "eq 0");
 
@@ -117,7 +117,7 @@ namespace Fly01.OrdemServico.Controllers
                 saldoProduto = x.SaldoProduto
             };
 
-            SelectProperties = "id,descricao,codigoProduto,saldoProduto";
+            SelectPropertiesList = "id,descricao,codigoProduto,saldoProduto";
 
             filters.AddParam("saldoProduto", "lt saldoMinimo");
 

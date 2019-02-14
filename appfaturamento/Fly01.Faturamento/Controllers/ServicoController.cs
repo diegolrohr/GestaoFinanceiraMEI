@@ -21,7 +21,7 @@ namespace Fly01.Faturamento.Controllers
         public ServicoController()
         {
             ExpandProperties = "nbs($select=id,descricao),iss,unidadeMedida";
-            SelectProperties = "id,codigoServico,descricao,registroFixo";
+            SelectPropertiesList = "id,codigoServico,descricao,registroFixo";
 
             GetDisplayDataSelect = x => new
             {

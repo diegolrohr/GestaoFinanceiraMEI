@@ -229,7 +229,7 @@ namespace Fly01.Compras.Controllers
                 LabelId = "centroCustoDescricao",
                 DataUrlPostModal = Url.Action("FormModal", "CentroCusto"),
                 DataPostField = "descricao"
-            }, ResourceHashConst.FaturamentoCadastrosCentroCustos));
+            }, ResourceHashConst.ComprasCadastrosCentroCustos));
 
             config.Elements.Add(new InputDateUI { Id = "dataVencimento", Class = "col s12 m2", Label = "Data Vencimento" });
             #endregion

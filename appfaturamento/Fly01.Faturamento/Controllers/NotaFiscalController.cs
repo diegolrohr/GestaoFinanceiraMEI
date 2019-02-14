@@ -322,8 +322,8 @@ namespace Fly01.Faturamento.Controllers
                 new DataTableUIAction { OnClickFn = "fnCancelarNFe", Label = "Cancelar", ShowIf = "((row.status == 'Autorizada' || row.status == 'FalhaNoCancelamento') && row.tipoNotaFiscal == 'NFe')" },
                 new DataTableUIAction { OnClickFn = "fnCancelarNFSe", Label = "Cancelar", ShowIf = "((row.status == 'Autorizada' || row.status == 'FalhaNoCancelamento') && row.tipoNotaFiscal == 'NFSe')" },
                 new DataTableUIAction { OnClickFn = "fnFormCartaCorrecao", Label = "Carta de Correção", ShowIf = "(row.status == 'Autorizada')" },
-                new DataTableUIAction { OnClickFn = "fnEnviarEmailNFe", Label = "Enviar por e-mail", ShowIf = "(row.status == 'Autorizada')" },
-                new DataTableUIAction { OnClickFn = "fnEnviarEmailNFSe", Label = "Enviar por e-mail", ShowIf = "((row.status != 'NaoTransmitida') && (row.tipoNotaFiscal == 'NFSe'))" }
+                new DataTableUIAction { OnClickFn = "fnEnviarEmailNFe", Label = "Enviar por e-mail", ShowIf = "(row.status == 'Autorizada') && (row.tipoNotaFiscal == 'NFe')" },
+                new DataTableUIAction { OnClickFn = "fnEnviarEmailNFSe", Label = "Enviar por e-mail", ShowIf = "((row.status == 'Autorizada') && (row.tipoNotaFiscal == 'NFSe'))" }
             }));
 
             config.Columns.Add(new DataTableUIColumn { DataField = "serieNotaFiscal_serie", DisplayName = "Série", Priority = 1 });

@@ -1,9 +1,9 @@
 ﻿<script>
-   function fnEnviarEmailNotaFiscal(idRecord) {
+   function fnEnviarEmailNFSe(idRecord) {
         $$$.loading.start();
 
         $.ajax({
-            url: '@Url.Action("EnviaEmailNotaFiscal", "NotaFiscal")',
+            url: '@Url.Action("EnviaEmailNFSe", "NotaFiscal")',
             data: { id: idRecord },
 			type: "POST",
 			success : function(data) {

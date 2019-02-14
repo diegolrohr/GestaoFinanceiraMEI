@@ -55,6 +55,44 @@ namespace Fly01.Core.Mensageria
             }
         }
 
+        public static void SendMultipleAttach(string emailDestinatario, string nomeRemetente, string tituloEmail, string corpoEmail, Stream[] anexos, string[] tiposAnexos)
+        {
+
+            var from = new MailAddress(ConfigurationManager.AppSettings["EmailRemetente"], nomeRemetente);
+            var to = new MailAddress(emailDestinatario);
+            var message = new MailMessage(from, to)
+            {
+                Subject = tituloEmail,
+                Body = corpoEmail,
+                IsBodyHtml = true
+            };
+
+            if (anexos.Length > 0)
+            {
+                int i = 0;
+                foreach (Stream anexo in anexos)
+                {
+                    if (tiposAnexos[i] == "application/pdf")
+                        message.Attachments.Add(new Attachment(anexo, $"{tituloEmail}.pdf", System.Net.Mime.MediaTypeNames.Application.Pdf));
+                    else
+                        message.Attachments.Add(new Attachment(anexo, $"{tituloEmail}" + tiposAnexos[i]));
+                    i++;
+                }              
+            }
+
+
+            try
+            {
+                SmtpClient client = ConfigSmtpClient();
+
+                client.Send(message);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         private static SmtpClient ConfigSmtpClient()
         {
             return new SmtpClient

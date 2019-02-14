@@ -480,6 +480,14 @@
     <Compile Include="Migrations\201902122110331_AddCentroCusto.Designer.cs">
       <DependentUpon>201902122110331_AddCentroCusto.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201902131542544_AlterOrdemVendaAddCentroCusto.cs" />
+    <Compile Include="Migrations\201902131542544_AlterOrdemVendaAddCentroCusto.Designer.cs">
+      <DependentUpon>201902131542544_AlterOrdemVendaAddCentroCusto.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201902132031262_AlterNotaFiscalAddCentroCusto.cs" />
+    <Compile Include="Migrations\201902132031262_AlterNotaFiscalAddCentroCusto.Designer.cs">
+      <DependentUpon>201902132031262_AlterNotaFiscalAddCentroCusto.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CFOPDataInitializer.cs" />
@@ -833,6 +841,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201902122110331_AddCentroCusto.resx">
       <DependentUpon>201902122110331_AddCentroCusto.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902131542544_AlterOrdemVendaAddCentroCusto.resx">
+      <DependentUpon>201902131542544_AlterOrdemVendaAddCentroCusto.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902132031262_AlterNotaFiscalAddCentroCusto.resx">
+      <DependentUpon>201902132031262_AlterNotaFiscalAddCentroCusto.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

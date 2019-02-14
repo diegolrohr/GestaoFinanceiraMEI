@@ -143,6 +143,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                     item.Descricao = entity.Descricao;
                     item.PessoaId = entity.PessoaId;
                     item.CategoriaId = entity.CategoriaId;
+                    item.CentroCustoId = entity.CentroCustoId;
                     item.FormaPagamentoId = entity.FormaPagamentoId;
                     item.Observacao = entity.Observacao;
 

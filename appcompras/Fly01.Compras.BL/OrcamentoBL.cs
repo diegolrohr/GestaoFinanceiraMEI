@@ -64,6 +64,7 @@ namespace Fly01.Compras.BL
                         Data = entity.Data,
                         FormaPagamentoId = entity.FormaPagamentoId,
                         CondicaoParcelamentoId = entity.CondicaoParcelamentoId,
+                        CentroCustoId = entity.CentroCustoId,
                         CategoriaId = entity.CategoriaId,
                         DataVencimento = entity.DataVencimento,
                         TipoOrdemCompra = TipoOrdemCompra.Pedido,

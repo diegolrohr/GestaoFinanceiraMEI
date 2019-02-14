@@ -340,6 +340,10 @@
     <Compile Include="Migrations\201902122109444_AddCentroCusto.Designer.cs">
       <DependentUpon>201902122109444_AddCentroCusto.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201902132112463_AlterOrdemCompraNotaFiscalAddCentroCusto.cs" />
+    <Compile Include="Migrations\201902132112463_AlterOrdemCompraNotaFiscalAddCentroCusto.Designer.cs">
+      <DependentUpon>201902132112463_AlterOrdemCompraNotaFiscalAddCentroCusto.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer7.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer6.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer5.cs" />
@@ -604,6 +608,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201902122109444_AddCentroCusto.resx">
       <DependentUpon>201902122109444_AddCentroCusto.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902132112463_AlterOrdemCompraNotaFiscalAddCentroCusto.resx">
+      <DependentUpon>201902132112463_AlterOrdemCompraNotaFiscalAddCentroCusto.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

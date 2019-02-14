@@ -125,7 +125,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Id = "fly01mdlfrmCentroCusto",
             };
             config.Elements.Add(new InputHiddenUI { Id = "id" });
-            config.Elements.Add(new InputTextUI { Id = "codigo", Class = "col s12 m6", Label = "Codigo", Required = true, MaxLength = 100 });
+            config.Elements.Add(new InputTextUI { Id = "codigo", Class = "col s12 m6", Label = "Código", Required = true, MaxLength = 100 });
             config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12 m6", Label = "Descrição", Required = true, MaxLength = 100 });
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");

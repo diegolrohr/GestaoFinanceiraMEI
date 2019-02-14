@@ -105,6 +105,9 @@ namespace Fly01.Financeiro.ViewModel
         [JsonProperty("motivo")]
         public string Motivo { get; set; }
 
+        [JsonProperty("centroCustoId")]
+        public string CentroCustoId { get; set; }
+
         [JsonProperty("categoria")]
         public virtual CategoriaVM Categoria { get; set; }
 
@@ -116,5 +119,8 @@ namespace Fly01.Financeiro.ViewModel
 
         [JsonProperty("formaPagamento")]
         public virtual FormaPagamentoVM FormaPagamento { get; set; }
+
+        [JsonProperty("centroCusto")]
+        public virtual CentroCustoVM CentroCusto { get; set; }
     }
 }

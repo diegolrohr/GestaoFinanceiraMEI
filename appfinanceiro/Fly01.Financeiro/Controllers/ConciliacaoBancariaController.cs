@@ -603,7 +603,7 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "conciliacaoBancariaItemId" });
             config.Elements.Add(new InputCurrencyUI { Id = "valorConciliado", Readonly = true });
 
-            config.Elements.Add(new InputTextUI { Id = "dataVencimento", Class = "col s12 l6", Label = "Data Vencimento", Required = true, Readonly = true });
+            config.Elements.Add(new InputTextUI { Id = "dataVencimento", Class = "col s12 l6", Label = "Data Referência", Required = true, Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "valorPrevisto", Class = "col s12 l6", Label = "Valor", Required = true, Readonly = true });
             config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12 l6", Label = "Descrição", Required = true });
 
@@ -647,13 +647,24 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "categoriaId",
-                Class = "col s12",
+                Class = "col s12 m6",
                 Label = "Categoria Financeira",
                 Required = true,
                 DataUrl = @Url.Action("Categoria" + actionCreate, "AutoComplete"),
                 LabelId = "categoriaDescricao",
                 DataUrlPost = tipoConta == "ContaPagar" ? Url.Action("NovaCategoriaDespesa") : Url.Action("NovaCategoriaReceita")
             }, ResourceHashConst.FinanceiroCadastrosCategoria));
+
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            {
+                Id = "centroCustoId",
+                Class = "col s12 m6",
+                Label = "Centro de Custo",
+                DataUrl = @Url.Action("CentroCusto", "AutoComplete"),
+                LabelId = "centroCustoDescricao",
+                DataUrlPostModal = Url.Action("FormModal", "CentroCusto"),
+                DataPostField = "descricao"
+            }, ResourceHashConst.FinanceiroCadastrosCentroCustos));
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }

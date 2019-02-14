@@ -24,7 +24,7 @@ namespace Fly01.Faturamento.Controllers
         //NFeVM e NFSeVM na mesma controller notaFiscal, direcionado as controller via javaScript
         public NFSeController()
         {
-            ExpandProperties = "ordemVendaOrigem($select=numero),cliente($select=id,nome),transportadora($select=id,nome),estadoPlacaVeiculo,condicaoParcelamento,formaPagamento,categoria,serieNotaFiscal";
+            ExpandProperties = "ordemVendaOrigem($select=numero),cliente($select=id,nome),transportadora($select=id,nome),estadoPlacaVeiculo,condicaoParcelamento,formaPagamento,categoria,serieNotaFiscal,centroCusto";
         }
 
         public override Func<NFSeVM, object> GetDisplayData() { throw new NotImplementedException(); }

@@ -53,6 +53,10 @@ namespace Fly01.Compras.API.Controllers.Api
                     await UnitSave();
                     ProcessProducers(listProducers);
                 }
+                else
+                {
+                    await UnitSave();
+                }
             }
             catch (Exception ex)
             {
@@ -61,7 +65,7 @@ namespace Fly01.Compras.API.Controllers.Api
                 {
                     UnitOfWork.CondicaoParcelamentoBL.Delete(condicaoJaSalva);
                     entity.CondicaoParcelamentoId = null;
-                    await UnitOfWork.Save();
+                    await UnitSave();
                 }
 
                 throw new BusinessException(ex.Message);

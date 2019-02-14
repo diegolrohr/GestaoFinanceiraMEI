@@ -20,7 +20,6 @@ namespace Fly01.OrdemServico.Controllers
     public class ProdutoController : BaseController<ProdutoVM>
     {
         protected Func<ProdutoVM, object> GetDisplayDataSelect { get; set; }
-        protected string SelectProperties { get; set; }
         private string GrupoProdutoResourceHash { get; set; }
 
         public ProdutoController()
@@ -40,15 +39,6 @@ namespace Fly01.OrdemServico.Controllers
                 objetoDeManutencaoDescricao = EnumHelper.GetDescription(typeof(ObjetoDeManutencao), x.ObjetoDeManutencao),
                 registroFixo = x.RegistroFixo,
             };
-        }
-
-        public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
-        {
-            var customFilters = base.GetQueryStringDefaultGridLoad();
-            customFilters.AddParam("$expand", ExpandProperties);
-            customFilters.AddParam("$select", SelectProperties);
-
-            return customFilters;
         }
 
         public override Func<ProdutoVM, object> GetDisplayData() => GetDisplayDataSelect;

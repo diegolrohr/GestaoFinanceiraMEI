@@ -44,6 +44,8 @@ namespace Fly01.Core.Presentation
         }
         protected string ExpandProperties { get; set; }
 
+        protected string SelectProperties { get; set; }
+
         protected string ResourceName
             => AppDefaults.GetResourceName(typeof(T));
 
@@ -422,15 +424,22 @@ namespace Fly01.Core.Presentation
             string resourceName = AppDefaults.GetResourceName(typeof(T));
             string resourceById = String.Format("{0}/{1}", ResourceName, id);
 
-            if (string.IsNullOrEmpty(ExpandProperties))
+            if (string.IsNullOrEmpty(ExpandProperties) && string.IsNullOrEmpty(SelectProperties))
             {
                 return RestHelper.ExecuteGetRequest<T>(resourceById);
             }
             else
             {
-                var queryString = new Dictionary<string, string> {
-                    { "$expand", ExpandProperties }
-                };
+                var queryString = new Dictionary<string, string>();
+                if (!string.IsNullOrEmpty(ExpandProperties))
+                {
+                    queryString.Add("$expand", ExpandProperties);
+                }
+                if (!string.IsNullOrEmpty(SelectProperties))
+                {
+                    queryString.Add("select", SelectProperties);
+                }
+
                 return RestHelper.ExecuteGetRequest<T>(resourceById, queryString);
             }
         }
@@ -443,6 +452,8 @@ namespace Fly01.Core.Presentation
 
             if (!string.IsNullOrEmpty(ExpandProperties))
                 queryStringDefault.Add("$expand", ExpandProperties);
+            if (!string.IsNullOrEmpty(SelectProperties))
+                queryStringDefault.Add("$select", SelectProperties);
 
             return queryStringDefault;
         }

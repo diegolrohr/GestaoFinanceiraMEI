@@ -29,7 +29,7 @@ namespace Fly01.Compras.Controllers
         //OrcamentoVM e PedidoVM na mesma controller ordemCompra(gridLoad, form), direcionado para a controller via javaScript
         public OrcamentoController()
         {
-            ExpandProperties = "condicaoParcelamento($select=id,descricao),formaPagamento($select=id,descricao),categoria";
+            ExpandProperties = "condicaoParcelamento($select=id,descricao),formaPagamento($select=id,descricao),categoria,centroCusto";
         }
 
         public override Func<OrcamentoVM, object> GetDisplayData()
@@ -140,7 +140,7 @@ namespace Fly01.Compras.Controllers
                     {
                         Title = "Financeiro",
                         Id = "stepFinanceiro",
-                        Quantity = 4,
+                        Quantity = 5,
                     },
                     new FormWizardUIStep()
                     {
@@ -220,7 +220,18 @@ namespace Fly01.Compras.Controllers
                 DataUrlPost = Url.Action("NovaCategoria")
             }, ResourceHashConst.ComprasCadastrosCategoria));
 
-            config.Elements.Add(new InputDateUI { Id = "dataVencimento", Class = "col s12 m3", Label = "Data Vencimento" });
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            {
+                Id = "centroCustoId",
+                Class = "col s12 m4",
+                Label = "Centro de Custo",
+                DataUrl = Url.Action("CentroCusto", "AutoComplete"),
+                LabelId = "centroCustoDescricao",
+                DataUrlPostModal = Url.Action("FormModal", "CentroCusto"),
+                DataPostField = "descricao"
+            }, ResourceHashConst.FaturamentoCadastrosCentroCustos));
+
+            config.Elements.Add(new InputDateUI { Id = "dataVencimento", Class = "col s12 m2", Label = "Data Vencimento" });
             #endregion
 
             #region step Finalizar

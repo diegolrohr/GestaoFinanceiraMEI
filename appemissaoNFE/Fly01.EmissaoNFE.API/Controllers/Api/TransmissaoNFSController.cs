@@ -65,28 +65,33 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 }
             };
 
-            var validacao = new NFSE001Prod.NFSE001().SCHEMAX(AppDefault.Token, entity.Producao, entity.ItemTransmissaoNFSVM.Prestador.CodigoMunicipioIBGE, notaSchema, false, false);
             var response = new TransmissaoNFSRetornoVM()
             {
                 NotaId = entity.ItemTransmissaoNFSVM.NotaId,
-                XMLUnicoTSS = xmlUnicoTssString,
-                XMLGerado = Encoding.UTF8.GetString(validacao[0].XML)
+                XMLUnicoTSS = xmlUnicoTssString
             };
 
-            if (!string.IsNullOrEmpty(validacao[0].MENSAGEM) && validacao[0].MENSAGEM.Trim().Length > 0)
+            ///Essa prefeitura não tem schema, o schema é validado pela prefeitura..
+            if (entity.ItemTransmissaoNFSVM.Prestador.CodigoMunicipioIBGE != "4104204")
             {
-                var schema = new SchemaXMLNFSRetornoVM
+                var validacao = new NFSE001Prod.NFSE001().SCHEMAX(AppDefault.Token, entity.Producao, entity.ItemTransmissaoNFSVM.Prestador.CodigoMunicipioIBGE, notaSchema, false, false);
+                response.XMLGerado = Encoding.UTF8.GetString(validacao[0]?.XML);
+
+                if (!string.IsNullOrEmpty(validacao[0]?.MENSAGEM) && validacao[0]?.MENSAGEM.Trim().Length > 0)
                 {
-                    Id = validacao[0].ID,
-                    Mensagem = validacao[0].MENSAGEM.Trim().Replace("\\", "").Replace("\n", "")
-                };
-                response.Error = schema;
+                    var schema = new SchemaXMLNFSRetornoVM
+                    {
+                        Id = validacao[0].ID,
+                        Mensagem = validacao[0].MENSAGEM.Trim().Replace("\\", "").Replace("\n", "")
+                    };
+                    response.Error = schema;
+                    return response;
+                }
             }
-            else
+
+            var NFSE = new NFSE001Prod.NFSE()
             {
-                var NFSE = new NFSE001Prod.NFSE()
-                {
-                    NOTAS = new NFSE001Prod.NFSES1[] {
+                NOTAS = new NFSE001Prod.NFSES1[] {
                         new NFSE001Prod.NFSES1()
                         {
                             ID = entity.ItemTransmissaoNFSVM.NotaId,
@@ -94,19 +99,18 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                             XML = Convert.FromBase64String(xmlBase64)
                         }
                     }
-                };
+            };
 
-                new NFSE001Prod.NFSE001().REMESSANFSE001(
-                    AppDefault.Token,
-                    entity.Producao,
-                    NFSE,
-                    entity.ItemTransmissaoNFSVM.Prestador.CodigoMunicipioIBGE,
-                    true,
-                    true,
-                    false,
-                    false
-                );
-            }
+            new NFSE001Prod.NFSE001().REMESSANFSE001(
+                        AppDefault.Token,
+                        entity.Producao,
+                        NFSE,
+                        entity.ItemTransmissaoNFSVM.Prestador.CodigoMunicipioIBGE,
+                        true,
+                        true,
+                        false,
+                        false
+                    );
 
             return response;
         }
@@ -128,28 +132,34 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 }
             };
 
-            var validacao = new NFSE001.NFSE001().SCHEMAX(AppDefault.Token, entity.Homologacao, entity.ItemTransmissaoNFSVM.Prestador.CodigoMunicipioIBGE, notaSchema, false, false);
             var response = new TransmissaoNFSRetornoVM()
             {
                 NotaId = entity.ItemTransmissaoNFSVM.NotaId,
-                XMLUnicoTSS = xmlUnicoTssString,
-                XMLGerado = Encoding.UTF8.GetString(validacao[0].XML)
+                XMLUnicoTSS = xmlUnicoTssString
             };
 
-            if (!string.IsNullOrEmpty(validacao[0].MENSAGEM) && validacao[0].MENSAGEM.Trim().Length > 0)
+            ///Essa prefeitura não tem schema, o schema é validado pela prefeitura..
+            if (entity.ItemTransmissaoNFSVM.Prestador.CodigoMunicipioIBGE != "4104204")
             {
-                var schema = new SchemaXMLNFSRetornoVM
+                var validacao = new NFSE001.NFSE001().SCHEMAX(AppDefault.Token, entity.Homologacao, entity.ItemTransmissaoNFSVM.Prestador.CodigoMunicipioIBGE, notaSchema, false, false);
+                response.XMLGerado = Encoding.UTF8.GetString(validacao[0]?.XML);
+
+                if (!string.IsNullOrEmpty(validacao[0].MENSAGEM) && validacao[0].MENSAGEM.Trim().Length > 0)
                 {
-                    Id = validacao[0].ID,
-                    Mensagem = validacao[0].MENSAGEM.Trim().Replace("\\", "").Replace("\n", "")
-                };
-                response.Error = schema;
+
+                    var schema = new SchemaXMLNFSRetornoVM
+                    {
+                        Id = validacao[0].ID,
+                        Mensagem = validacao[0].MENSAGEM.Trim().Replace("\\", "").Replace("\n", "")
+                    };
+                    response.Error = schema;
+                    return response;
+                }
             }
-            else
+
+            var NFSE = new NFSE001.NFSE()
             {
-                var NFSE = new NFSE001.NFSE()
-                {
-                    NOTAS = new NFSE001.NFSES1[] {
+                NOTAS = new NFSE001.NFSES1[] {
                         new NFSE001.NFSES1()
                         {
                             ID = entity.ItemTransmissaoNFSVM.NotaId,
@@ -157,19 +167,18 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                             XML = Convert.FromBase64String(xmlBase64)
                         }
                     }
-                };
+            };
 
-                var t = new NFSE001.NFSE001().REMESSANFSE001(
-                    AppDefault.Token,
-                    entity.Homologacao,
-                    NFSE,
-                    entity.ItemTransmissaoNFSVM.Prestador.CodigoMunicipioIBGE,
-                    true,
-                    true,
-                    false,
-                    false
-                );
-            }
+            var t = new NFSE001.NFSE001().REMESSANFSE001(
+                AppDefault.Token,
+                entity.Homologacao,
+                NFSE,
+                entity.ItemTransmissaoNFSVM.Prestador.CodigoMunicipioIBGE,
+                true,
+                true,
+                false,
+                false
+            );
 
             return response;
         }

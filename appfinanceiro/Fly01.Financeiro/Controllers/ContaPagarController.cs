@@ -615,7 +615,7 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "renegociacaoPessoaId",
-                Class = "col s12 m10 l10",
+                Class = "col s12 m8 l9",
                 Label = "Fornecedor",
                 Required = true,
                 DataUrl = @Url.Action("Fornecedor", "AutoComplete"),
@@ -628,7 +628,7 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new ButtonUI
             {
                 Id = "btnListaTitulos",
-                Class = "col s12 m2 l2",
+                Class = "col s12 m3 l3 visible",
                 Value = "Listar contas",
                 DomEvents = new List<DomEventUI>
                 {

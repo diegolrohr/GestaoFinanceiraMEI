@@ -20,13 +20,12 @@ namespace Fly01.OrdemServico.Controllers
     public class ProdutoController : BaseController<ProdutoVM>
     {
         protected Func<ProdutoVM, object> GetDisplayDataSelect { get; set; }
-        protected string SelectProperties { get; set; }
         private string GrupoProdutoResourceHash { get; set; }
 
         public ProdutoController()
         {
             ExpandProperties = "grupoProduto($select=id,descricao),unidadeMedida($select=id,descricao)";
-            SelectProperties = "id,codigoProduto,descricao,grupoProdutoId,tipoProduto,registroFixo,objetoDeManutencao";
+            SelectPropertiesList = "id,codigoProduto,descricao,grupoProdutoId,tipoProduto,registroFixo,objetoDeManutencao";
             GetDisplayDataSelect = x => new
             {
                 id = x.Id,
@@ -40,15 +39,6 @@ namespace Fly01.OrdemServico.Controllers
                 objetoDeManutencaoDescricao = EnumHelper.GetDescription(typeof(ObjetoDeManutencao), x.ObjetoDeManutencao),
                 registroFixo = x.RegistroFixo,
             };
-        }
-
-        public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
-        {
-            var customFilters = base.GetQueryStringDefaultGridLoad();
-            customFilters.AddParam("$expand", ExpandProperties);
-            customFilters.AddParam("$select", SelectProperties);
-
-            return customFilters;
         }
 
         public override Func<ProdutoVM, object> GetDisplayData() => GetDisplayDataSelect;
@@ -68,7 +58,7 @@ namespace Fly01.OrdemServico.Controllers
                 registroFixo = x.RegistroFixo,
             };
 
-            SelectProperties = "id,descricao,codigoProduto,unidadeMedidaId,valorVenda,valorCusto,saldoProduto";
+            SelectPropertiesList = "id,descricao,codigoProduto,unidadeMedidaId,valorVenda,valorCusto,saldoProduto";
             return GridLoad(filters);
         }
 
@@ -109,7 +99,7 @@ namespace Fly01.OrdemServico.Controllers
                 saldoProduto = x.SaldoProduto
             };
 
-            SelectProperties = "id,descricao,saldoProduto";
+            SelectPropertiesList = "id,descricao,saldoProduto";
 
             filters.AddParam("saldoProduto", "eq 0");
 
@@ -127,7 +117,7 @@ namespace Fly01.OrdemServico.Controllers
                 saldoProduto = x.SaldoProduto
             };
 
-            SelectProperties = "id,descricao,codigoProduto,saldoProduto";
+            SelectPropertiesList = "id,descricao,codigoProduto,saldoProduto";
 
             filters.AddParam("saldoProduto", "lt saldoMinimo");
 

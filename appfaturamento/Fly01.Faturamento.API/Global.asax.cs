@@ -54,6 +54,7 @@ namespace Fly01.Faturamento.API
             builder.EntitySet<Iss>("iss");
             builder.EntitySet<Kit>("kit");
             builder.EntitySet<KitItem>("kititem");
+            builder.EntitySet<CentroCusto>("centrocusto");
 
             builder.EnableLowerCamelCase();
 

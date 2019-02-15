@@ -1,0 +1,81 @@
+﻿<script>
+    @Html.Partial("Functions/_fnMain");
+    function fnSimulaParcelamento() {
+        $('#dtSimulacaoParcelamentoField').hide();
+        var tipoSimulacao = $("input#condicaoParcelamentoCondicoesParcelamento").val() != "" ? "CondParcelamento" : "QtdParcelas";
+
+        if ($("#condicaoParcelamentoDescricao").val() === "") {
+            $$$.toast("Selecione uma condição de parcelamento", 'error');
+            return false;
+        }
+
+        if (tipoSimulacao == "QtdParcelas" && $("#condicaoParcelamentoQtdParcelas").val() === "") {
+            $$$.toast("Quantidade de Parcelas não informadas na condicao selecionada", 'error');
+            return false;
+        }
+
+        if (tipoSimulacao == "CondParcelamento" && $("#condicaoParcelamentoCondicoesParcelamento").val() === "") {
+            $$$.toast("Intervalo de dias não informado na condição selecionada", 'error');
+            return false;
+        }
+
+        if (parseFloat(noComma($("#valorPrevisto").val())) <= 0.0) {
+            $$$.toast("Valor referência deve ser maior que R$ 0,00", 'error');
+            return false;
+        }
+
+        if ($("#valorPrevisto").val() == "") {
+            $$$.toast("Valor referência não informado", 'error');
+            return false;
+        }
+
+        if ($("#dataVencimento").val() == "") {
+            $$$.toast("Data Referência não informada", 'error');
+            return false;
+        }
+        if ($("#dataVencimento").val().length < "8") {
+            $$$.toast("Data Referência inválida.", 'error');
+            return false;
+        }
+
+        var dataRow = {
+            valorPrevisto: $("#valorPrevisto").val(),
+            dataVencimento: $("#dataVencimento").val(),
+            condicoesParcelamento: $("#condicaoParcelamentoCondicoesParcelamento").val(),
+            qtdParcelas: $("#condicaoParcelamentoQtdParcelas").val()
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("GridLoadSimulacao", "CondicaoParcelamento")",
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify(dataRow),
+            success: function (response) {
+                if (response.success) {
+                    $("#dtSimulacaoParcelamento").DataTable().destroy();
+
+                    var table = $("#dtSimulacaoParcelamento").DataTable({
+                        bSort: false,
+                        paging: false,
+                        bLengthChange: false,
+                        searching: false,
+                        ordering: false,
+                        info: false,
+                        data: response.data,
+                        columns: [
+                            { title: "Parcela", data: "descricaoParcela" },
+                            { title: "Data", data: "dataVencimentoString" },
+                            { title: "Valor", data: "valor" }]
+                    });
+                    $('#dtSimulacaoParcelamentoField').show();
+                } else {
+                    $$$.toast(response.message, 'error');
+                }
+            },
+            error: function (jXHR, textStatus, errorThrown) {
+                $$$.toast(errorThrown, 'error');
+            }
+        });
+    }
+</script>

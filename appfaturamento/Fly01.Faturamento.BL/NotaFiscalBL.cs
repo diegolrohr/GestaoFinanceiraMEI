@@ -70,7 +70,7 @@ namespace Fly01.Faturamento.BL
                 var notaFiscal = All.AsNoTracking().Where(x => x.Id == id).FirstOrDefault();
                 if (!string.IsNullOrEmpty(notaFiscal.XML))
                 {
-                    return new { xml = notaFiscal.XML, numNotaFiscal = notaFiscal.NumNotaFiscal };
+                    return new { xml = notaFiscal.XML, numNotaFiscal = notaFiscal.NumNotaFiscal, tipoNotaFiscal = notaFiscal.TipoNotaFiscal.ToString() };
                 }
                 else
                 {
@@ -111,7 +111,7 @@ namespace Fly01.Faturamento.BL
                     Homologacao = entidade.Homologacao,
                     Producao = entidade.Producao,
                     EntidadeAmbiente = entidade.EntidadeAmbiente,
-                    DanfeId = notaFiscal.SefazId.ToString()
+                    DanfeId = notaFiscal?.SefazId?.ToString()
                 };
 
                 var response = RestHelper.ExecutePostRequest<XMLVM>(AppDefaults.UrlEmissaoNfeApi, "danfeXML", JsonConvert.SerializeObject(danfe), null, header);

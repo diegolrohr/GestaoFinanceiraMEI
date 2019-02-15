@@ -54,6 +54,8 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public string Motivo { get; set; }
 
+        public Guid? CentroCustoId { get; set; }
+
         public virtual Categoria Categoria { get; set; }
 
         public virtual CondicaoParcelamento CondicaoParcelamento { get; set; }

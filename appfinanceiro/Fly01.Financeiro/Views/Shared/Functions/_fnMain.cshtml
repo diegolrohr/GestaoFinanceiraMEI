@@ -166,4 +166,10 @@
         }
         return retValue;
     }
+
+    function noComma(e) {
+        if (typeof e === "string") {
+            return e.replace(',', '.');
+        }
+    }
 </script>

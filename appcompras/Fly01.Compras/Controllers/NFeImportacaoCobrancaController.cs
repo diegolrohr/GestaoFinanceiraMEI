@@ -1,6 +1,6 @@
-﻿using Fly01.Core;
+﻿using Fly01.Compras.ViewModel;
+using Fly01.Core;
 using Fly01.Core.Presentation;
-using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.uiJS.Classes;
 using System;
 using System.Collections.Generic;

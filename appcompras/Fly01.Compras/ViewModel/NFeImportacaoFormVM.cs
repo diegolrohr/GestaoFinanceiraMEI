@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Fly01.Core.ViewModels.Presentation.Commons
+namespace Fly01.Compras.ViewModel
 {
     /// <summary>
     /// Does not support untyped value in non-open type

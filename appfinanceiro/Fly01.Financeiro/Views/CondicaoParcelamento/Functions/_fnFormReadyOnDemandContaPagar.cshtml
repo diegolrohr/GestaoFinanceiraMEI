@@ -1,0 +1,13 @@
+﻿<script>
+    function fnFormReadyOnDemandContaPagar() {
+        $("#TipoSimulacao").val($("input#condicoesParcelamento").val() != "" ? "CondParcelamento" : "QtdParcelas").change();
+
+        $(`#fly01mdlfrmCondicaoParcelamento #id`).on("change", function () {
+            var qtdParcelas = $(`#fly01mdlfrmCondicaoParcelamento #qtdParcelas`).val();
+            var condicoesParcelamento = $(`#fly01mdlfrmCondicaoParcelamento #condicoesParcelamento`).val();
+
+            $(`#fly01frmContaPagar #condicaoParcelamentoQtdParcelas`).val(qtdParcelas);
+            $(`#fly01frmContaPagar #condicaoParcelamentoCondicoesParcelamento`).val(condicoesParcelamento);
+        });
+    }
+</script>

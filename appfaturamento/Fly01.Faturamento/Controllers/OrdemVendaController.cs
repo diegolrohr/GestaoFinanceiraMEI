@@ -30,7 +30,7 @@ namespace Fly01.Faturamento.Controllers
     {
         public OrdemVendaController()
         {
-            ExpandProperties = "cliente($select=id,nome,email),grupoTributarioPadrao($select=id,descricao,tipoTributacaoICMS),transportadora($select=id,nome),estadoPlacaVeiculo,condicaoParcelamento,formaPagamento,categoria";
+            ExpandProperties = "cliente($select=id,nome,email),grupoTributarioPadrao($select=id,descricao,tipoTributacaoICMS),transportadora($select=id,nome),estadoPlacaVeiculo,condicaoParcelamento,formaPagamento,categoria,centroCusto";
         }
 
         private JsonResult GetJson(object data)
@@ -632,6 +632,16 @@ namespace Fly01.Faturamento.Controllers
                 DataUrl = @Url.Action("Categoria", "AutoComplete"),
                 LabelId = "categoriaDescricao",
             });
+            config.Elements.Add(new AutoCompleteUI
+            {
+                Id = "centroCustoId",
+                Class = "col s12 m6",
+                Label = "Centro de Custo",
+                Disabled = true,
+                DataUrl = @Url.Action("CentroCusto", "AutoComplete"),
+                LabelId = "centroCustoDescricao",
+            });
+
             config.Elements.Add(new InputDateUI { Id = "dataVencimento", Class = "col s12 m6", Label = "Data Vencimento", Disabled = true });
 
             config.Elements.Add(new SelectUI
@@ -646,7 +656,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "transportadoraId",
-                Class = "col s12 m6",
+                Class = "col s12",
                 Label = "Transportadora",
                 Disabled = true,
                 DataUrl = Url.Action("Transportadora", "AutoComplete"),
@@ -708,6 +718,9 @@ namespace Fly01.Faturamento.Controllers
                     new OptionUI { Label = "Total",Value = "4"},
                 }
             });
+
+            config.Elements.Add(new InputCurrencyUI { Id = "totalProdutosDt", Class = "col s12 m4 right", Label = "Total Produtos", Readonly = true });
+
             config.Elements.Add(new LabelSetUI { Id = "labelSetServico", Class = "col s12", Label = "Serviços" });
             config.Elements.Add(new TableUI
             {
@@ -725,6 +738,9 @@ namespace Fly01.Faturamento.Controllers
                     new OptionUI { Label = "Total",Value = "4"},
                 }
             });
+
+            config.Elements.Add(new InputCurrencyUI { Id = "totalServicosDt", Class = "col s12 m4 right", Label = "Total Serviços", Readonly = true });
+
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
 

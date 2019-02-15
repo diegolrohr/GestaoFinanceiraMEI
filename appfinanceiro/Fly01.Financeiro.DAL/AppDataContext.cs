@@ -95,5 +95,6 @@ namespace Fly01.Financeiro.API.Models.DAL
         public DbSet<ArquivoRemessa> ArquivoRemessa { get; set; }
         public DbSet<TemplateBoleto> TemplateBoleto { get; set; }
         public DbSet<StoneAntecipacaoRecebiveis> StoneAntecipacaoRecebiveis { get; set; }
+        public DbSet<CentroCusto> CentroCustos { get; set; }
     }
 }

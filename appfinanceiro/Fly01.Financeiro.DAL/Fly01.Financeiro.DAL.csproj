@@ -240,6 +240,18 @@
     <Compile Include="Migrations\201901021634288_AlterTableCnabAddColumnPessoaId.Designer.cs">
       <DependentUpon>201901021634288_AlterTableCnabAddColumnPessoaId.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201902122111057_AddCentroCusto.cs" />
+    <Compile Include="Migrations\201902122111057_AddCentroCusto.Designer.cs">
+      <DependentUpon>201902122111057_AddCentroCusto.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201902131249250_AlterContaFinanceiraAddCentroCusto.cs" />
+    <Compile Include="Migrations\201902131249250_AlterContaFinanceiraAddCentroCusto.Designer.cs">
+      <DependentUpon>201902131249250_AlterContaFinanceiraAddCentroCusto.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201902132000079_AlterContaFinanceiraRenegociacaoAddCentroCusto.cs" />
+    <Compile Include="Migrations\201902132000079_AlterContaFinanceiraRenegociacaoAddCentroCusto.Designer.cs">
+      <DependentUpon>201902132000079_AlterContaFinanceiraRenegociacaoAddCentroCusto.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer2.cs" />
@@ -406,6 +418,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201901021634288_AlterTableCnabAddColumnPessoaId.resx">
       <DependentUpon>201901021634288_AlterTableCnabAddColumnPessoaId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902122111057_AddCentroCusto.resx">
+      <DependentUpon>201902122111057_AddCentroCusto.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902131249250_AlterContaFinanceiraAddCentroCusto.resx">
+      <DependentUpon>201902131249250_AlterContaFinanceiraAddCentroCusto.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902132000079_AlterContaFinanceiraRenegociacaoAddCentroCusto.resx">
+      <DependentUpon>201902132000079_AlterContaFinanceiraRenegociacaoAddCentroCusto.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

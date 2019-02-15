@@ -136,7 +136,7 @@ namespace Fly01.Faturamento.Controllers
         }
 
         [OperationRole(PermissionValue = EPermissionValue.Read)]
-        public JsonResult EnviaEmailNFe(string id)
+        public JsonResult EnviarEmailNFe(string id)
         {
             try
             {
@@ -181,7 +181,7 @@ namespace Fly01.Faturamento.Controllers
         }
 
         [OperationRole(PermissionValue = EPermissionValue.Read)]
-        public JsonResult EnviaEmailNFSe(string id)
+        public JsonResult EnviarEmailNFSe(string id)
         {
             try
             {

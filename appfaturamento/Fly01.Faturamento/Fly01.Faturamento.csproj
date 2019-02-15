@@ -371,6 +371,8 @@
     <Content Include="Views\Orcamento\Functions\_fnModalOrdemVendaKit.cshtml" />
     <Content Include="Views\NotaFiscal\Functions\_fnFormReadyNotasFiscais.cshtml" />
     <Content Include="Views\NotaFiscal\Functions\_fnBaixarXMLNFeZip.cshtml" />
+    <Content Include="Views\NotaFiscal\Functions\_fnEnviarEmailNFSe.cshtml" />
+    <Content Include="Views\NotaFiscal\Functions\_fnEnviarEmailNFe.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

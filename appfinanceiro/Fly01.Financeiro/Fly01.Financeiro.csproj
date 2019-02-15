@@ -56,6 +56,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Views\CnabItem\Functions\" />
+    <Folder Include="Views\Relatorio\Functions\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\ArquivoRetornoController.cs" />
@@ -66,6 +67,10 @@
     <Compile Include="Controllers\Base\BoletoController.cs" />
     <Compile Include="Controllers\Base\ContaFinanceiraController.cs" />
     <Compile Include="Controllers\CentroCustoController.cs" />
+    <Compile Include="Controllers\RelatorioCentroCustoCRController.cs" />
+    <Compile Include="Controllers\RelatorioCentroCustoCPController.cs" />
+    <Compile Include="Controllers\RelatorioCentroCustoController.cs" />
+    <Compile Include="Controllers\RelatorioController.cs" />
     <Compile Include="Controllers\MinhaContaController.cs" />
     <Compile Include="Controllers\CnabController.cs" />
     <Compile Include="Controllers\ContaFinanceiraBaixaMultiplaController.cs" />
@@ -101,6 +106,7 @@
     </Compile>
     <Compile Include="Models\Reports\ReportFluxo.cs" />
     <Compile Include="Models\Reports\ReportExtrato.cs" />
+    <Compile Include="Models\Reports\ReportListContasCentroCusto.cs" />
     <Compile Include="Models\Reports\ReportListContas.cs" />
     <Compile Include="Models\Reports\ReportRecibo.cs" />
     <Compile Include="Models\Reports\ReportDre.cs" />
@@ -153,6 +159,7 @@
     <Compile Include="ViewModel\FluxoCaixaProjecaoVM.cs" />
     <Compile Include="ViewModel\FluxoCaixaSaldoVM.cs" />
     <Compile Include="ViewModel\ImprimirExtratoBancarioVM.cs" />
+    <Compile Include="ViewModel\RelatorioCentroCustoCPCRVM.cs" />
     <Compile Include="ViewModel\MovimentacaoPorCategoriaVM.cs" />
     <Compile Include="ViewModel\MovimentacaoVM.cs" />
     <Compile Include="ViewModel\PlatformEnvironmentVM.cs" />
@@ -427,6 +434,7 @@
     <Content Include="Views\ContaReceber\Functions\_fnHideSimulacaoCondicao.cshtml" />
     <Content Include="Views\ContaReceber\Functions\_fnSimulaParcelamento.cshtml" />
     <Content Include="Views\CondicaoParcelamento\Functions\_fnFormReadyOnDemandContaReceber.cshtml" />
+    <Content Include="Views\RelatorioCentroCusto\Functions\_fnImprimirCPCR.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -690,6 +698,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Reports\ReportExtrato.rdlc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Reports\ReportListContasCentroCusto.rdlc" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

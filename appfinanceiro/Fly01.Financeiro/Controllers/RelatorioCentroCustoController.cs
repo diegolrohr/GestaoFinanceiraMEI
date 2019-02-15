@@ -1,0 +1,207 @@
+﻿using Fly01.Core.Config;
+using Fly01.Core.Presentation;
+using Fly01.Core.Rest;
+using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.Financeiro.Models.Reports;
+using Fly01.Financeiro.ViewModel;
+using Fly01.uiJS.Classes;
+using Fly01.uiJS.Classes.Elements;
+using Fly01.uiJS.Defaults;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Web.Mvc;
+
+namespace Fly01.Financeiro.Controllers
+{
+    public abstract class RelatorioCentroCustoController : BaseController<DomainBaseVM>
+    {
+        protected string tipoConta;
+
+        public RelatorioCentroCustoController(string TipoConta)
+        {
+            tipoConta = TipoConta;
+        }
+
+        public override Func<DomainBaseVM, object> GetDisplayData()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override ContentUI FormJson()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override ContentResult List()
+        {
+            return Content(JsonConvert.SerializeObject(FormRelatorioJson(Url, Request.Url.Scheme), JsonSerializerSetting.Front), "application/json");
+        }
+
+        protected virtual ContentUI FormRelatorioJson(UrlHelper url, string scheme)
+        {
+            if (!UserCanRead)
+            {
+                return new ContentUIBase(Url.Action("Sidebar", "Home"));
+            }
+
+            var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
+            {
+                History = new ContentUIHistory { Default = url.Action("Index") },
+                Header = new HtmlUIHeader
+                {
+                    Title = $"Relatório -  Contas a {tipoConta.Replace("Conta", "")}",
+                    Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
+                },
+                UrlFunctions = url.Action("Functions") + "?fns="
+            };
+
+            var config = new FormUI
+            {
+                Id = "fly01frmRelatorio",
+                Action = new FormUIAction
+                {
+                    //Create = @Url.Action("Create"),
+                    //List = Url.Action("Form")
+                },
+                UrlFunctions = Url.Action("Functions") + "?fns="
+            };
+
+            config.Elements.Add(new InputHiddenUI { Id = "tipoId", Value = tipoConta });
+            config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12 m4", Label = "descricao", MaxLength = 200 });
+            config.Elements.Add(new AutoCompleteUI
+            {
+                Id = "clienteId",
+                Class = "col s12 m4",
+                Label = "Cliente",
+                DataUrl = Url.Action("Cliente", "AutoComplete"),
+                LabelId = "clienteNome"
+            });
+            config.Elements.Add(new AutoCompleteUI
+            {
+                Id = "formaPagamentoId",
+                Class = "col s12 m4",
+                Label = "Forma Pagamento",
+                DataUrl = Url.Action("FormaPagamento", "AutoComplete"),
+                LabelId = "formaPagamentoDescricao"
+            });
+            config.Elements.Add(new InputDateUI
+            {
+                Id = "dataEmissaoInicial",
+                Class = "col s6 m3",
+                Label = "Emissão Inicial",
+                Value = DateTime.Now.ToString("dd/MM/yyyy")
+            });
+            config.Elements.Add(new InputDateUI
+            {
+                Id = "dataEmissaoFinal",
+                Class = "col s6 m3",
+                Label = "Emissão Final",
+                Value = DateTime.Now.ToString("dd/MM/yyyy")
+            });
+            config.Elements.Add(new InputDateUI
+            {
+                Id = "dataInicial",
+                Class = "col s12 m3",
+                Label = "Data Inicial",
+                Value = DateTime.Now.ToString("dd/MM/yyyy"),
+                DomEvents = new List<DomEventUI>
+                {
+                    new DomEventUI { DomEvent = "change", Function = "" }
+                }
+            });
+            config.Elements.Add(new InputDateUI
+            {
+                Id = "dataFinal",
+                Class = "col s12 m3",
+                Label = "Data Final",
+                Value = DateTime.Now.ToString("dd/MM/yyyy"),
+                DomEvents = new List<DomEventUI>
+                {
+                    new DomEventUI { DomEvent = "change", Function = "" }
+                }
+            });
+            config.Elements.Add(new AutoCompleteUI
+            {
+                Id = "condicaoParcelamentoId",
+                Class = "col s12 m4",
+                Label = "Condição Parcelamento",
+                DataUrl = Url.Action("CondicaoParcelamento", "AutoComplete"),
+                LabelId = "condicaoParcelamentoDescricao"
+            });
+            config.Elements.Add(new AutoCompleteUI
+            {
+                Id = "categoriaId",
+                Class = "col s12 m4",
+                Label = "Categoria Financeira",
+                DataUrl = @Url.Action("Categoria", "AutoComplete"),
+                LabelId = "categoriaDescricao"
+            });
+            config.Elements.Add(new AutoCompleteUI
+            {
+                Id = "centroCustoId",
+                Class = "col s12 m4",
+                Label = "Centro custo",
+                //  DataUrl = @Url.Action("Categoria", "AutoComplete"),
+                // LabelId = "categoriaDescricao"
+            });
+            cfg.Content.Add(config);
+            return cfg;
+        }
+
+        public override List<HtmlUIButton> GetFormButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>();
+
+            if (UserCanWrite)
+            {
+                target.Add(new HtmlUIButton { Id = "imprimirRelatorio", Label = "Imprimir", OnClickFn = "fnImprimirCPCR"/*, Type = "submit" */});
+            }
+
+            return target;
+        }
+
+        [HttpGet]
+        public ActionResult Imprimir(DateTime dataInicial,
+            DateTime dataFinal,
+            DateTime dataEmissaoInicial,
+            DateTime dataEmissaoFinal,
+            Guid? clienteId,
+            Guid? formaPagamentoId,
+            Guid? condicaoParcelamentoId,
+            Guid? categoriaId,
+            Guid? centroCustoId)
+        {
+            var queryString = new Dictionary<string, string>
+            {
+                { "dataInicial", dataInicial.ToString("yyyy-MM-dd")},
+                { "dataFinal", dataFinal.ToString("yyyy-MM-dd")},
+                { "dataEmissaoInicial", dataEmissaoInicial.ToString("yyyy-MM-dd")},
+                { "dataEmissaoFinal", dataEmissaoFinal.ToString("yyyy-MM-dd")},
+                { "clienteId", clienteId.ToString()},
+                { "formaPagamentoId", formaPagamentoId.ToString()},
+                { "condicaoParcelamentoId", condicaoParcelamentoId.ToString()},
+                { "categoriaId", categoriaId.ToString()},
+                { "centroCustoId", centroCustoId.ToString()},
+                { "tipo", tipoConta},
+            };
+
+            List<ContaFinanceiraVM> reportItens = new List<ContaFinanceiraVM>();
+            var resultRelatorio = RestHelper.ExecuteGetRequest<List<ContaFinanceiraVM>>("RelatorioCentroCustoCPCRVM", queryString);
+
+            foreach (var item in resultRelatorio)
+            {
+                reportItens.Add(new ContaFinanceiraVM
+                {
+                    Descricao = item.Descricao,
+                    ValorPago = item.ValorPago,
+                    ValorPrevisto = item.ValorPrevisto,
+                    Observacao = item.Observacao
+                });
+            }
+
+            var reportViewer = new WebReportViewer<ContaFinanceiraVM>(ReportListContasCentroCusto.Instance);
+            return File(reportViewer.Print(reportItens, SessionManager.Current.UserData.PlatformUrl), "application/pdf");
+        }
+    }
+}

@@ -33,9 +33,20 @@ namespace Fly01.Compras.API.Controllers.Api
                 entity.ParametroValidoNFS = true;
                 model.CopyChangedValues(entity);
 
-                unitOfWork.ParametroTributarioBL.EnviaParametroTributario(entity);
+                Parallel.Invoke(() =>
+                {
+                    EnviaParametrosTSS(entity);
+                });
 
                 return await base.Put(entity.Id, model);
+            }
+        }
+
+        private void EnviaParametrosTSS(ParametroTributario entity)
+        {
+            using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
+            {
+                unitOfWork.ParametroTributarioBL.EnviaParametroTributario(entity);
             }
         }
 
@@ -48,8 +59,12 @@ namespace Fly01.Compras.API.Controllers.Api
                     if (unitOfWork.ParametroTributarioBL.ParametroAtualValido().Any())
                         return BadRequest("Ja existe Parametro Tributario cadastrado para esta plataforma.");
 
-                    unitOfWork.ParametroTributarioBL.EnviaParametroTributario(entity);
                     entity.ParametroValidoNFS = true;
+
+                    Parallel.Invoke(() =>
+                    {
+                        EnviaParametrosTSS(entity);
+                    });
 
                     return await base.Post(entity);
                 }

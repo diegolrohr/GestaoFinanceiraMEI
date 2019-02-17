@@ -2,22 +2,161 @@
     function fnFormReady() {
         //Na ediacao, se Calcula checked, habilita campos
         //ICMS
-            fnShowICMS();
+        fnShowICMS();
         //IPI
-            fnShowIPI();
+        fnShowIPI();
         //PIS
-            fnShowPIS();
+        fnShowPIS();
         //COFINS
-            fnShowCOFINS();
+        fnShowCOFINS();
         //ISS
-            fnShowISS();
+        fnShowISS();
         //ST
-            fnShowST();
+        fnShowST();
         //CSLL
-            fnShowCSLL();
+        fnShowCSLL();
         //INSS
-            fnShowINSS();
+        fnShowINSS();
         //ImpostoRenda
-            fnShowImpostoRenda();
+        fnShowImpostoRenda();
+
+        fnCollapseImpostos();
+    }
+
+    function fnCollapseImpostos() {
+        fnCollapseNFe();
+        fnCollapseAmbos();
+        fnCollapseNFSe();
+        $('.collapsible').collapsible();
+    }
+
+    function fnCollapseNFe() {
+        var nfe = [
+            document.getElementById("stLabelField"),
+            document.getElementById("calculaSubstituicaoTributariaField"),
+            //createElem("div", { "class": "col s12 visible", "id": "divSt" },
+            document.getElementById("aplicaIpiBaseSTField"),
+                document.getElementById("aplicaFreteBaseSTField"),
+                document.getElementById("aplicaDespesaBaseSTField"),
+            //),
+            document.getElementById("icmsLabelField"),
+            document.getElementById("calculaIcmsField"),
+            document.getElementById("tipoTributacaoICMSField"),
+            document.getElementById("calculaIcmsDifalField"),
+            document.getElementById("aplicaIpiBaseIcmsField"),
+            document.getElementById("aplicaFreteBaseIcmsField"),
+            document.getElementById("aplicaDespesaBaseIcmsField"),
+            document.getElementById("ipiLabelField"),
+            document.getElementById("calculaIpiField"),
+            document.getElementById("tipoTributacaoIPIField"),
+            document.getElementById("aplicaFreteBaseIpiField"),
+            document.getElementById("aplicaDespesaBaseIpiField")
+        ];
+
+        $("#collapseNFeField").append(createElem("ul",
+              { "class": "collapsible", "data-collapsible": "accordion" },
+              createElem("li", null, [
+                  createElem("div", { "class": "collapsible-header" }, createElem("h6", { "class": "orange-text light" }, "Impostos NF-e")),
+                  createElem("div", { "class": "collapsible-body" }, nfe)
+              ])
+          ));
+
+        $('#stLabelField').css('float', 'none');
+        $('#calculaSubstituicaoTributariaField').css('float', 'none');
+        $('#aplicaIpiBaseSTField').css('float', 'none');
+        $('#aplicaFreteBaseSTField').css('float', 'none');
+        $('#aplicaDespesaBaseSTField').css('float', 'none');
+        $('#icmsLabelField').css('float', 'none');
+        $('#calculaIcmsField').css('float', 'none');
+        $('#tipoTributacaoICMSField').css('float', 'none');
+        $('#calculaIcmsDifalField').css('float', 'none');
+        $('#aplicaIpiBaseIcmsField').css('float', 'none');
+        $('#aplicaFreteBaseIcmsField').css('float', 'none');
+        $('#aplicaDespesaBaseIcmsField').css('float', 'none');
+        $('#ipiLabelField').css('float', 'none');
+        $('#calculaIpiField').css('float', 'none');
+        $('#tipoTributacaoIPIField').css('float', 'none');
+        $('#aplicaFreteBaseIpiField').css('float', 'none');
+        $('#aplicaDespesaBaseIpiField').css('float', 'none');
+    }
+
+    function fnCollapseAmbos() {
+        var ambos = [
+            document.getElementById("pisLabelField"),
+            document.getElementById("calculaPisField"),
+            document.getElementById("retemPisField"),
+            document.getElementById("tipoTributacaoPISField"),
+            document.getElementById("aplicaFreteBasePisField"),
+            document.getElementById("aplicaDespesaBasePisField"),
+            document.getElementById("cofinsLabelField"),
+            document.getElementById("calculaCofinsField"),
+            document.getElementById("retemCofinsField"),
+            document.getElementById("tipoTributacaoCOFINSField"),
+            document.getElementById("aplicaFreteBaseCofinsField"),
+            document.getElementById("aplicaDespesaBaseCofinsField"),
+        ];
+
+        $("#collapseAmbosField").append(createElem("ul",
+              { "class": "collapsible", "data-collapsible": "accordion" },
+              createElem("li", null, [
+                  createElem("div", { "class": "collapsible-header" }, createElem("h6", { "class": "orange-text light" }, "Impostos comuns NF-e e NFS-e")),
+                  createElem("div", { "class": "collapsible-body" }, ambos)
+              ])
+          ));
+        $("#pisLabelField").css('float', 'none');
+        $("#calculaPisField").css('float', 'none');
+        $("#retemPisField").css('float', 'none');
+        $("#tipoTributacaoPISField").css('float', 'none');
+        $("#aplicaFreteBasePisField").css('float', 'none');
+        $("#aplicaDespesaBasePisField").css('float', 'none');
+        $("#cofinsLabelField").css('float', 'none');
+        $("#calculaCofinsField").css('float', 'none');
+        $("#retemCofinsField").css('float', 'none');
+        $("#tipoTributacaoCOFINSField").css('float', 'none');
+        $("#aplicaFreteBaseCofinsField").css('float', 'none');
+        $("#aplicaDespesaBaseCofinsField").css('float', 'none');
+    }
+
+    function fnCollapseNFSe() {
+        var nfse = [
+            document.getElementById("issLabelField"),
+            document.getElementById("calculaIssField"),
+            document.getElementById("retemISSField"),
+            document.getElementById("tipoTributacaoISSField"),
+            document.getElementById("tipoPagamentoImpostoISSField"),
+            document.getElementById("tipoCFPSField"),
+            document.getElementById("csllLabelField"),
+            document.getElementById("calculaCSLLField"),
+            document.getElementById("retemCSLLField"),
+            document.getElementById("inssLabelField"),
+            document.getElementById("calculaINSSField"),
+            document.getElementById("retemINSSField"),
+            document.getElementById("impostoRendaLabelField"),
+            document.getElementById("calculaImpostoRendaField"),
+            document.getElementById("retemImpostoRendaField"),
+        ];
+
+        $("#collapseNFSeField").append(createElem("ul",
+              { "class": "collapsible", "data-collapsible": "accordion" },
+              createElem("li", null, [
+                  createElem("div", { "class": "collapsible-header" }, createElem("h6", { "class": "orange-text light" }, "Impostos NFS-e")),
+                  createElem("div", { "class": "collapsible-body" }, nfse)
+              ])
+          ));
+        $("#issLabelField").css('float', 'none');
+        $("#calculaIssField").css('float', 'none');
+        $("#retemISSField").css('float', 'none');
+        $("#tipoTributacaoISSField").css('float', 'none');
+        $("#tipoPagamentoImpostoISSField").css('float', 'none');
+        $("#tipoCFPSField").css('float', 'none');
+        $("#csllLabelField").css('float', 'none');
+        $("#calculaCSLLField").css('float', 'none');
+        $("#retemCSLLField").css('float', 'none');
+        $("#inssLabelField").css('float', 'none');
+        $("#calculaINSSField").css('float', 'none');
+        $("#retemINSSField").css('float', 'none');
+        $("#impostoRendaLabelField").css('float', 'none');
+        $("#calculaImpostoRendaField").css('float', 'none');
+        $("#retemImpostoRendaField").css('float', 'none');
     }
 </script>

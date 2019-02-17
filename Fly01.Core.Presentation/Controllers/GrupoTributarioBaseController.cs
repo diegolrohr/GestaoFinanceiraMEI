@@ -17,7 +17,7 @@ namespace Fly01.Core.Presentation.Controllers
     {
         public GrupoTributarioBaseController()
         {
-            ExpandProperties = "cfop";
+            ExpandProperties = "cfop($select=descricao)";
         }
 
         public override Func<T, object> GetDisplayData()

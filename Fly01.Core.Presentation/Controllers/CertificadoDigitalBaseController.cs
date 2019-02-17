@@ -29,7 +29,6 @@ namespace Fly01.Core.Presentation.Controllers
         {
             var response = RestHelper.ExecuteGetRequest<ResultBase<CertificadoDigitalVM>>("certificadodigital");
 
-
             if (response == null || response.Data == null)
                 return null;
 
@@ -57,6 +56,7 @@ namespace Fly01.Core.Presentation.Controllers
                             subInfo = "Atualize o certificado digital.",
                             entidadeHomologacao = certificadoDigital.EntidadeHomologacao,
                             entidadeProducao = certificadoDigital.EntidadeProducao,
+                            id = certificadoDigital.Id
                         }, JsonRequestBehavior.AllowGet);
                     }
                     else if (certificadoDigital.DataExpiracao.Date.CompareTo(DateTime.Now.AddDays(-30).Date) < 1)
@@ -69,6 +69,7 @@ namespace Fly01.Core.Presentation.Controllers
                             subInfo = "Providêncie a atualização do seu certificado digital.",
                             entidadeHomologacao = certificadoDigital.EntidadeHomologacao,
                             entidadeProducao = certificadoDigital.EntidadeProducao,
+                            id = certificadoDigital.Id
                         }, JsonRequestBehavior.AllowGet);
                     }
                     else
@@ -80,6 +81,7 @@ namespace Fly01.Core.Presentation.Controllers
                             mainInfo = "O certificado digital atual é válido até " + dtExpStr + ".",
                             entidadeHomologacao = certificadoDigital.EntidadeHomologacao,
                             entidadeProducao = certificadoDigital.EntidadeProducao,
+                            id = certificadoDigital.Id
                         }, JsonRequestBehavior.AllowGet);
                     }
                 }
@@ -92,6 +94,7 @@ namespace Fly01.Core.Presentation.Controllers
                     subInfo = "Envie o arquivo e informe a senha de um certificado digital válido.",
                     entidadeHomologacao = "",
                     entidadeProducao = "",
+                    id = "",
                 }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -105,6 +108,7 @@ namespace Fly01.Core.Presentation.Controllers
                     subInfo = "Envie o arquivo e informe a senha de um certificado válido.",
                     entidadeHomologacao = "",
                     entidadeProducao = "",
+                    id = "",
                     message = error.Message
                 };
 
@@ -208,7 +212,7 @@ namespace Fly01.Core.Presentation.Controllers
             return cfg;
         }
 
-        public JsonResult ImportaCertificado(string conteudo, string senha)
+        public JsonResult ImportaCertificado(string id, string conteudo, string senha)
         {
             try
             {
@@ -221,19 +225,20 @@ namespace Fly01.Core.Presentation.Controllers
                     md5 = Base64Helper.CalculaMD5Hash(conteudo)
                 };
 
-                var certificadoExistente = GetCertificado();
-
                 CertificadoDigitalVM arquivoRetorno;
 
-                if (certificadoExistente == null)
+                if (string.IsNullOrEmpty(id))
+                {
                     arquivoRetorno = RestHelper.ExecutePostRequest<CertificadoDigitalVM>(ResourceName, JsonConvert.SerializeObject(arquivoCertificado, JsonSerializerSetting.Default));
+                    id = arquivoRetorno?.Id.ToString();
+                }
                 else
-                    arquivoRetorno = RestHelper.ExecutePutRequest<CertificadoDigitalVM>($"{ResourceName}/{certificadoExistente.Id}", JsonConvert.SerializeObject(arquivoCertificado, JsonSerializerSetting.Default));
+                    arquivoRetorno = RestHelper.ExecutePutRequest<CertificadoDigitalVM>($"{ResourceName}/{id}", JsonConvert.SerializeObject(arquivoCertificado, JsonSerializerSetting.Default));
 
                 return Json(new
                 {
                     success = true,
-                    data = arquivoRetorno,
+                    id = id,
                     message = "Certificado digital cadastrado com sucesso.",
                     recordsFiltered = 1,
                     recordsTotal = 1

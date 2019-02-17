@@ -3,6 +3,7 @@ using Fly01.Core.BL;
 using Fly01.Core.Defaults;
 using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Helpers;
 using Fly01.Core.Notifications;
 using Fly01.Core.Rest;
 using Fly01.EmissaoNFE.Domain.ViewModelNFS;
@@ -116,6 +117,13 @@ namespace Fly01.Faturamento.BL
                 (entity.SerieNotaFiscalId != previous.SerieNotaFiscalId || entity.NumNotaFiscal != previous.NumNotaFiscal)
                 , new Error("Para alterar série e número, somente notas fiscais que ainda não foram transmitidas", "status"));
 
+            if(entity.Status == StatusNotaFiscal.Transmitida)
+            {
+                var empresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
+                var cidadeHomologadaTss = (!string.IsNullOrEmpty(empresa?.Cidade?.CodigoIbge) && NFSeTssHelper.IbgesCidadesHomologadasTssNFSe.Contains(empresa?.Cidade?.CodigoIbge));
+                entity.Fail(!cidadeHomologadaTss,new Error("A cidade informada nos dados da sua empresa, não está homologada pelo TSS para transmissão de NFS-e"));
+            }
+
             ValidaModel(entity);
 
             if (entity.Status == StatusNotaFiscal.Transmitida && entity.SerieNotaFiscalId.HasValue && entity.NumNotaFiscal.HasValue && entity.IsValid())
@@ -132,7 +140,7 @@ namespace Fly01.Faturamento.BL
             {
                 if (!TotalTributacaoBL.ConfiguracaoTSSOKNFS(PlataformaUrl))
                 {
-                    throw new BusinessException("Configuração inválida para comunicação com TSS");
+                    throw new BusinessException("Configuração inválida para comunicação com TSS, verifique os dados da empresa, seu certificado digital e parâmetros tributários");
                 }
                 else
                 {

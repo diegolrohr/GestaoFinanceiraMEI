@@ -93,7 +93,7 @@ namespace Fly01.Faturamento.BL
         {
             if (!TotalTributacaoBL.ConfiguracaoTSSOK())
             {
-                throw new BusinessException("Configuração inválida para comunicação com TSS, verifique seu certificado digital e parâmetros tributários");
+                throw new BusinessException("Configuração inválida para comunicação com TSS, verifique os dados da empresa, seu certificado digital e parâmetros tributários");
             }
             else
             {
@@ -142,7 +142,7 @@ namespace Fly01.Faturamento.BL
                 {
                     if (!TotalTributacaoBL.ConfiguracaoTSSOK())
                     {
-                        throw new BusinessException("Configuração inválida para comunicação com TSS, verifique seu certificado digital e parâmetros tributários");
+                        throw new BusinessException("Configuração inválida para comunicação com TSS, verifique os dados da empresa, seu certificado digital e parâmetros tributários");
                     }
                     else
                     {
@@ -224,7 +224,7 @@ namespace Fly01.Faturamento.BL
         {
             if (!TotalTributacaoBL.ConfiguracaoTSSOKNFS(PlataformaUrl))
             {
-                throw new BusinessException("Configuração inválida para comunicação com TSS");
+                throw new BusinessException("Configuração inválida para comunicação com TSS, verifique os dados da empresa, seu certificado digital e parâmetros tributários");
             }
 
             var header = new Dictionary<string, string>()
@@ -261,7 +261,7 @@ namespace Fly01.Faturamento.BL
         {
             if (!TotalTributacaoBL.ConfiguracaoTSSOK())
             {
-                throw new BusinessException("Configuração inválida para comunicação com TSS, verifique seu certificado digital e parâmetros tributários");
+                throw new BusinessException("Configuração inválida para comunicação com TSS, verifique os dados da empresa, seu certificado digital e parâmetros tributários");
             }
 
             var header = new Dictionary<string, string>()
@@ -323,7 +323,7 @@ namespace Fly01.Faturamento.BL
 
                 if (!TotalTributacaoBL.ConfiguracaoTSSOK())
                 {
-                    throw new BusinessException("Configuração inválida para comunicação com TSS, verifique seu certificado digital e parâmetros tributários");
+                    throw new BusinessException("Configuração inválida para comunicação com TSS, verifique os dados da empresa, seu certificado digital e parâmetros tributários");
                 }
                 else
                 {

@@ -148,7 +148,7 @@ namespace Fly01.Faturamento.BL
             {
                 if (!TotalTributacaoBL.ConfiguracaoTSSOK())
                 {
-                    throw new BusinessException("Configuração inválida para comunicação com TSS, verifique seu certificado digital e parâmetros tributários");
+                    throw new BusinessException("Configuração inválida para comunicação com TSS, verifique os dados da empresa, seu certificado digital e parâmetros tributários");
                 }
                 else
                 {

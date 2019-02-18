@@ -185,6 +185,14 @@ namespace Fly01.Core.Presentation.Controllers
 
             form1.Elements.Add(new InputCustommaskUI
             {
+                Id = "aliquotaFCP",
+                Class = "col s12 m3",
+                Label = "Fundo de Combate à Pobreza",
+                Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
+            });
+
+            form1.Elements.Add(new InputCustommaskUI
+            {
                 Id = "aliquotaPISPASEP",
                 Class = "col s12 m3",
                 Label = "PIS/PASEP",
@@ -196,14 +204,6 @@ namespace Fly01.Core.Presentation.Controllers
                 Id = "aliquotaCOFINS",
                 Class = "col s12 m3",
                 Label = "COFINS",
-                Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
-            });
-
-            form1.Elements.Add(new InputCustommaskUI
-            {
-                Id = "aliquotaFCP",
-                Class = "col s12 m3",
-                Label = "Fundo de Combate à Pobreza",
                 Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
             });
 

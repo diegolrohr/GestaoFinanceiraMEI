@@ -60,9 +60,11 @@ namespace Fly01.Faturamento.Controllers
             });
 
             var classCard = "col s12 m4";
-            
+            var empresa = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
+            var cidadeHomologadaTss = (!string.IsNullOrEmpty(empresa?.Cidade?.CodigoIbge) && NFSeTssHelper.IbgesCidadesHomologadasTssNFSe.Contains(empresa?.Cidade?.CodigoIbge));
+            if (cidadeHomologadaTss)
             {
-                classCard = "col s12 m6 l3";
+                classCard = "col s12 m3";
                 cfg.Content.Add(new AppUI()
                 {
                     Id = "nfsenormal",

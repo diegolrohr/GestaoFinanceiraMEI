@@ -23,6 +23,8 @@
     }
 
     function fnFormReadyPedidoItem() {
+        setNFERequiredFields("fly01mdlfrmPedidoItem", ["grupoTributarioDescricaoProduto", "valor"]);
+
         var id = $("form#fly01mdlfrmPedidoItem input#id").val();
 
         if (id.length == 0) {

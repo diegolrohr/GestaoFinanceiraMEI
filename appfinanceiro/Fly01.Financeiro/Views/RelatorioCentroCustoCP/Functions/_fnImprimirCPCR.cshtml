@@ -2,11 +2,11 @@
 <script>
     @Html.Partial("Functions/_fnImprimir");
 
-    function fnImprimir() {
+    function fnImprimirCPCR() {
         debugger;
-        if ($('input#dataEmissaoInicial').val() === "" || $('input#dataEmissaoFinal').val() === "") 
+        if ($('input#dataEmissaoInicial').val() === "" || $('input#dataEmissaoFinal').val() === "")
             $$$.toast("Informe a data de emissão final e inicial.", 'error');
-        else if ($('input#dataInicial').val() === "" || $('input#dataFinal').val() === "") 
+        else if ($('input#dataInicial').val() === "" || $('input#dataFinal').val() === "")
             $$$.toast("Informe a data inicial e a data final.", 'error');
         else {
                 var dataEmissaoInicialDisplay = moment($('input#dataEmissaoInicial').val(), "DD/MM/YYYY");
@@ -21,11 +21,11 @@
                 var dataFinalDisplay = moment($('input#dataFinal').val(), "DD/MM/YYYY");
                 var dataFinal = moment(dataFinalDisplay).format('YYYY-MM-DD');
 
-                var clienteId = $("clienteId").val();
-                var formaPagamentoId = $("formaPagamentoId").val();    
-                var condicaoParcelamentoId = $("condicaoParcelamentoId").val();
-                var categoriaId = $("categoriaId").val();
-                var centroCustoId = $("centroCustoId").val();
+                var clienteId = $("#clienteId").val();
+                var formaPagamentoId = $("#formaPagamentoId").val();
+                var condicaoParcelamentoId = $("#condicaoParcelamentoId").val();
+                var categoriaId = $("#categoriaId").val();
+                var centroCustoId = $("#centroCustoId").val();
 
             var url = '@Url.Action("Imprimir", "RelatorioCentroCusto")?dataInicial=' + dataInicial +
                 "&dataFinal=" + dataFinal +
@@ -35,7 +35,7 @@
                 "&condicaoParcelamentoId=" + condicaoParcelamentoId +
                 "&categoriaId=" + categoriaId +
                 "&centroCustoId=" + centroCustoId +
-                "&clienteId=" + clienteId ;
+                "&clienteId=" + clienteId;
 
                 fnImprimir(url);
              }

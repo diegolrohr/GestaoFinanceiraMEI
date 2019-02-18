@@ -1,5 +1,6 @@
 ﻿using Fly01.Core.Config;
 using Fly01.Core.Presentation;
+using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.Financeiro.Models.Reports;
@@ -138,14 +139,16 @@ namespace Fly01.Financeiro.Controllers
                 DataUrl = @Url.Action("Categoria", "AutoComplete"),
                 LabelId = "categoriaDescricao"
             });
-            config.Elements.Add(new AutoCompleteUI
+
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "centroCustoId",
                 Class = "col s12 m4",
-                Label = "Centro custo",
-                //  DataUrl = @Url.Action("Categoria", "AutoComplete"),
-                // LabelId = "categoriaDescricao"
-            });
+                Label = "Centro de Custo",
+                DataUrl = @Url.Action("CentroCusto", "AutoComplete"),
+                LabelId = "centroCustoDescricao",
+            }, ResourceHashConst.FinanceiroCadastrosCentroCustos));
+
             cfg.Content.Add(config);
             return cfg;
         }
@@ -156,7 +159,7 @@ namespace Fly01.Financeiro.Controllers
 
             //if (UserCanWrite)
             //{
-            target.Add(new HtmlUIButton { Id = "imprimirRelatorio", Label = "Imprimir", OnClickFn = "fnImprimirCPCR"});
+            target.Add(new HtmlUIButton { Id = "imprimirRelatorioId", Label = "Imprimir", OnClickFn = "fnImprimirCPCR"});
             //}
 
             return target;

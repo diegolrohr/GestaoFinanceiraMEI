@@ -1,4 +1,5 @@
-﻿using Fly01.Core.Config;
+﻿using Fly01.Core;
+using Fly01.Core.Config;
 using Fly01.Core.Presentation;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
@@ -11,6 +12,7 @@ using Fly01.uiJS.Defaults;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace Fly01.Financeiro.Controllers
@@ -209,17 +211,24 @@ namespace Fly01.Financeiro.Controllers
 
         private static List<ContaFinanceiraVM> GetContaFinanceira(Dictionary<string, string> queryString, string tipo)
         {
-            var result = new List<ContaFinanceiraVM>();
-            if (tipo == "ContaPagar")
+            try
             {
-                result = RestHelper.ExecuteGetRequest<List<ContaFinanceiraVM>>("contapagar", queryString);
+                var result = new List<ContaFinanceiraVM>();
+                if (tipo == "ContaPagar")
+                {
+                    var response = RestHelper.ExecuteGetRequest<ResultBase<ContaFinanceiraVM>>("contapagar", queryString);
+                    result.AddRange(response.Data.Cast<ContaFinanceiraVM>().ToList());
+                }
+                else {
+                    var response = RestHelper.ExecuteGetRequest<ResultBase<ContaFinanceiraVM>>("contareceber", queryString);
+                    result.AddRange(response.Data.Cast<ContaFinanceiraVM>().ToList());
+                }
+                return result;
             }
-            else
+            catch (Exception ex)
             {
-                result = RestHelper.ExecuteGetRequest<List<ContaFinanceiraVM>>("contareceber", queryString);
+                throw new Exception(ex.Message);
             }
-
-            return result;
         }
     }
 }

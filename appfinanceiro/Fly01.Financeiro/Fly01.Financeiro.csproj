@@ -56,7 +56,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Views\CnabItem\Functions\" />
-    <Folder Include="Views\Relatorio\Functions\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\ArquivoRetornoController.cs" />

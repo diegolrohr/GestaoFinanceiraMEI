@@ -33,7 +33,7 @@ namespace Fly01.Compras.Controllers
         //OrcamentoVM e PedidoVM na mesma controller ordemCompra(gridLoad, form), direcionado para a controller via javaScript
         public PedidoController()
         {
-            ExpandProperties = "condicaoParcelamento,formaPagamento,fornecedor,transportadora,orcamentoOrigem,categoria";
+            ExpandProperties = "condicaoParcelamento($select=id,descricao),formaPagamento($select=id,descricao),fornecedor($select=id,nome),transportadora($select=id,nome),categoria,centroCusto";
         }
 
         [HttpPost]
@@ -242,7 +242,7 @@ namespace Fly01.Compras.Controllers
                     {
                         Title = "Financeiro",
                         Id = "stepFinanceiro",
-                        Quantity = 5,
+                        Quantity = 6,
                     },
                     new FormWizardUIStep()
                     {
@@ -366,7 +366,7 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "condicaoParcelamentoId",
-                Class = "col s12 m6",
+                Class = "col s12 m4",
                 Label = "Condição Parcelamento",
                 DataUrl = Url.Action("CondicaoParcelamento", "AutoComplete"),
                 LabelId = "condicaoParcelamentoDescricao",
@@ -377,13 +377,24 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "categoriaId",
-                Class = "col s12 m6",
+                Class = "col s12 m4",
                 Label = "Categoria",
                 PreFilter = "tipoCarteira",
                 DataUrl = @Url.Action("Categoria", "AutoComplete"),
                 LabelId = "categoriaDescricao",
                 DataUrlPost = @Url.Action("NovaCategoriaDespesa")
             }, ResourceHashConst.ComprasCadastrosCategoria));
+
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            {
+                Id = "centroCustoId",
+                Class = "col s12 m4",
+                Label = "Centro de Custo",
+                DataUrl = Url.Action("CentroCusto", "AutoComplete"),
+                LabelId = "centroCustoDescricao",
+                DataUrlPostModal = Url.Action("FormModal", "CentroCusto"),
+                DataPostField = "descricao"
+            }, ResourceHashConst.ComprasCadastrosCentroCustos));
 
             #endregion
 
@@ -718,6 +729,9 @@ namespace Fly01.Compras.Controllers
                     new OptionUI { Label = "Total",Value = "4"},
                 }
             });
+
+            config.Elements.Add(new InputCurrencyUI { Id = "totalProdutosDt", Class = "col s12 m4 right", Label = "Total Produtos", Readonly = true });
+
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
 

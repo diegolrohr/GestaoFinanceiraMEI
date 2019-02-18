@@ -11,6 +11,7 @@ using Fly01.Core.Rest;
 using System.Configuration;
 using Fly01.uiJS.Classes.Widgets;
 using Fly01.Core.Presentation;
+using Fly01.Core.Helpers;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -58,22 +59,29 @@ namespace Fly01.Faturamento.Controllers
                 }
             });
 
-            cfg.Content.Add(new AppUI()
+            var classCard = "col s12 m4";
+            var empresa = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
+            var cidadeHomologadaTss = (!string.IsNullOrEmpty(empresa?.Cidade?.CodigoIbge) && NFSeTssHelper.IbgesCidadesHomologadasTssNFSe.Contains(empresa?.Cidade?.CodigoIbge));
+            if (cidadeHomologadaTss)
             {
-                Id = "nfsenormal",
-                Class = "col s12 m6 l3",
-                Title = "NFS-e Serviço",
-                Icon = "https://mpn.azureedge.net/img/icon/nfe/servico.svg",
-                Target = new LinkUI
+                classCard = "col s12 m3";
+                cfg.Content.Add(new AppUI()
                 {
-                    Go = Url.Action("FormPedido", "Pedido", new { isEdit = "false", tipoVenda = "Normal" })
-                }
-            });
+                    Id = "nfsenormal",
+                    Class = classCard,
+                    Title = "NFS-e Serviço",
+                    Icon = "https://mpn.azureedge.net/img/icon/nfe/servico.svg",
+                    Target = new LinkUI
+                    {
+                        Go = Url.Action("FormPedido", "Pedido", new { isEdit = "false", tipoVenda = "Normal" })
+                    }
+                });
+            }
 
             cfg.Content.Add(new AppUI()
             {
                 Id = "nfenormal",
-                Class = "col s12 m6 l3",
+                Class = classCard,
                 Title = "NF-e Normal",
                 Icon = "https://mpn.azureedge.net/img/icon/nfe/normal.svg",
                 Target = new LinkUI
@@ -85,7 +93,7 @@ namespace Fly01.Faturamento.Controllers
             cfg.Content.Add(new AppUI()
             {
                 Id = "nfedevolucao",
-                Class = "col s12 m6 l3",
+                Class = classCard,
                 Title = "NF-e Devolução",
                 Icon = "https://mpn.azureedge.net/img/icon/nfe/devolucao.svg",
                 Target = new LinkUI
@@ -97,7 +105,7 @@ namespace Fly01.Faturamento.Controllers
             cfg.Content.Add(new AppUI()
             {
                 Id = "nfecomplemento",
-                Class = "col s12 m6 l3",
+                Class = classCard,
                 Title = "NF-e Complemento",
                 Icon = "https://mpn.azureedge.net/img/icon/nfe/complemento.svg",
                 Target = new LinkUI
@@ -145,7 +153,8 @@ namespace Fly01.Faturamento.Controllers
                         new LinkUI() { Class = ResourceHashConst.FaturamentoCadastrosFormasPagamento, Label = "Forma Pagamento", OnClick = @Url.Action("List", "FormaPagamento") },
                         new LinkUI() { Class = ResourceHashConst.FaturamentoCadastrosCategoria, Label = "Categoria", OnClick = @Url.Action("List", "Categoria") },
                         new LinkUI() { Class = ResourceHashConst.FaturamentoCadastrosSubstituicaoTributaria, Label = "Substituição Tributária", OnClick = @Url.Action("List", "SubstituicaoTributaria") },
-                        new LinkUI() { Class = ResourceHashConst.FaturamentoCadastrosKit, Label = "Kit Produtos/Serviços", OnClick = @Url.Action("List", "Kit") }
+                        new LinkUI() { Class = ResourceHashConst.FaturamentoCadastrosKit, Label = "Kit Produtos/Serviços", OnClick = @Url.Action("List", "Kit") },
+                        //new LinkUI() { Class = ResourceHashConst.FaturamentoCadastrosCentroCustos, Label = "Centro de Custos", OnClick = @Url.Action("List", "CentroCusto") }
                     }
                 },
                 new SidebarUIMenu()

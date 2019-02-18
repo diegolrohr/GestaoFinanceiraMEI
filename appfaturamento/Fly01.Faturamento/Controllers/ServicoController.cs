@@ -17,12 +17,11 @@ namespace Fly01.Faturamento.Controllers
     public class ServicoController : BaseController<ServicoVM>
     {
         protected Func<ServicoVM, object> GetDisplayDataSelect { get; set; }
-        protected string SelectProperties { get; set; }
 
         public ServicoController()
         {
             ExpandProperties = "nbs($select=id,descricao),iss,unidadeMedida";
-            SelectProperties = "id,codigoServico,descricao,registroFixo";
+            SelectPropertiesList = "id,codigoServico,descricao,registroFixo";
 
             GetDisplayDataSelect = x => new
             {
@@ -36,15 +35,6 @@ namespace Fly01.Faturamento.Controllers
         public override Func<ServicoVM, object> GetDisplayData()
         {
             return GetDisplayDataSelect;
-        }
-
-        public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
-        {
-            var customFilters = base.GetQueryStringDefaultGridLoad();
-            customFilters.AddParam("$expand", ExpandProperties);
-            customFilters.AddParam("$select", SelectProperties);
-
-            return customFilters;
         }
 
         public override ContentResult List()
@@ -117,6 +107,7 @@ namespace Fly01.Faturamento.Controllers
                     List = Url.Action("List"),
                     Form = Url.Action("Form")
                 },
+                ReadyFn = "fnFormReady",
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
 

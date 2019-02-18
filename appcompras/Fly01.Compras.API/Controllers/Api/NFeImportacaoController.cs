@@ -289,6 +289,7 @@ namespace Fly01.Compras.API.Controllers.Api
                                 Observacao = string.Format("Conta a Pagar gerada através da importação do XML da nota {0} - {1} - Nº Duplicata: {2}, aplicativo Bemacash Compras", entity.Serie, entity.Numero, item.Numero),
                                 Descricao = string.Format("Importação do XML, nota {0} - {1}", entity.Serie, entity.Numero),
                                 FormaPagamentoId = entity.FormaPagamentoId.Value,
+                                CentroCustoId = entity.CentroCustoId
                             };
                             UnitOfWork.NFeImportacaoCobrancaBL.Update(item);
                             listProducers.Add(new NFeImportacaoFinalizarProducer() { Entity = contaPagar, Verbo = RabbitConfig.EnHttpVerb.POST });
@@ -310,6 +311,7 @@ namespace Fly01.Compras.API.Controllers.Api
                             Descricao = string.Format("Importação do XML, nota {0} - {1}", entity.Serie, entity.Numero),
                             Observacao = string.Format("Conta a Pagar gerada através da importação do XML da nota {0} - {1}, aplicativo Bemacash Compras", entity.Serie, entity.Numero),
                             FormaPagamentoId = entity.FormaPagamentoId.Value,
+                            CentroCustoId = entity.CentroCustoId
                         };
                         listProducers.Add(new NFeImportacaoFinalizarProducer() { Entity = contaPagar, Verbo = RabbitConfig.EnHttpVerb.POST });
                     }
@@ -367,6 +369,7 @@ namespace Fly01.Compras.API.Controllers.Api
                         CategoriaId = entity.CategoriaId,
                         CondicaoParcelamentoId = entity.CondicaoParcelamentoId,
                         DataVencimento = entity.DataVencimento,
+                        CentroCustoId = entity.CentroCustoId,
                         Observacao = string.Format("Pedido gerado através da importação do XML da nota {0} - {1}.", entity.Serie, entity.Numero)
                     };
 

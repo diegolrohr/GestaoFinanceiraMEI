@@ -70,7 +70,7 @@ namespace Fly01.Faturamento.BL
                 var notaFiscal = All.AsNoTracking().Where(x => x.Id == id).FirstOrDefault();
                 if (!string.IsNullOrEmpty(notaFiscal.XML))
                 {
-                    return new { xml = notaFiscal.XML, numNotaFiscal = notaFiscal.NumNotaFiscal };
+                    return new { xml = notaFiscal.XML, numNotaFiscal = notaFiscal.NumNotaFiscal, tipoNotaFiscal = notaFiscal.TipoNotaFiscal.ToString() };
                 }
                 else
                 {
@@ -94,7 +94,7 @@ namespace Fly01.Faturamento.BL
         {
             if (!TotalTributacaoBL.ConfiguracaoTSSOK())
             {
-                throw new BusinessException("Configuração inválida para comunicação com TSS");
+                throw new BusinessException("Configuração inválida para comunicação com TSS, verifique os dados da empresa, seu certificado digital e parâmetros tributários");
             }
             else
             {
@@ -111,7 +111,7 @@ namespace Fly01.Faturamento.BL
                     Homologacao = entidade.Homologacao,
                     Producao = entidade.Producao,
                     EntidadeAmbiente = entidade.EntidadeAmbiente,
-                    DanfeId = notaFiscal.SefazId.ToString()
+                    DanfeId = notaFiscal?.SefazId?.ToString()
                 };
 
                 var response = RestHelper.ExecutePostRequest<XMLVM>(AppDefaults.UrlEmissaoNfeApi, "danfeXML", JsonConvert.SerializeObject(danfe), null, header);
@@ -143,7 +143,7 @@ namespace Fly01.Faturamento.BL
                 {
                     if (!TotalTributacaoBL.ConfiguracaoTSSOK())
                     {
-                        throw new BusinessException("Configuração inválida para comunicação com TSS");
+                        throw new BusinessException("Configuração inválida para comunicação com TSS, verifique os dados da empresa, seu certificado digital e parâmetros tributários");
                     }
                     else
                     {
@@ -225,7 +225,7 @@ namespace Fly01.Faturamento.BL
         {
             if (!TotalTributacaoBL.ConfiguracaoTSSOKNFS(PlataformaUrl))
             {
-                throw new BusinessException("Configuração inválida para comunicação com TSS");
+                throw new BusinessException("Configuração inválida para comunicação com TSS, verifique os dados da empresa, seu certificado digital e parâmetros tributários");
             }
 
             var header = new Dictionary<string, string>()
@@ -262,7 +262,7 @@ namespace Fly01.Faturamento.BL
         {
             if (!TotalTributacaoBL.ConfiguracaoTSSOK())
             {
-                throw new BusinessException("Configuração inválida para comunicação com TSS");
+                throw new BusinessException("Configuração inválida para comunicação com TSS, verifique os dados da empresa, seu certificado digital e parâmetros tributários");
             }
 
             var header = new Dictionary<string, string>()
@@ -324,7 +324,7 @@ namespace Fly01.Faturamento.BL
 
                 if (!TotalTributacaoBL.ConfiguracaoTSSOK())
                 {
-                    throw new BusinessException("Configuração inválida para comunicação com TSS");
+                    throw new BusinessException("Configuração inválida para comunicação com TSS, verifique os dados da empresa, seu certificado digital e parâmetros tributários");
                 }
                 else
                 {

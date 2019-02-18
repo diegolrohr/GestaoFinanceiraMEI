@@ -69,6 +69,7 @@
     <Compile Include="Controllers\AutoCompleteController.cs" />
     <Compile Include="Controllers\AvaliacaoAppController.cs" />
     <Compile Include="Controllers\CartaCorrecaoController.cs" />
+    <Compile Include="Controllers\CentroCustoController.cs" />
     <Compile Include="Controllers\NFeImportacaoCobrancaController.cs" />
     <Compile Include="Controllers\NFeImportacaoProdutoController.cs" />
     <Compile Include="Controllers\NFeImportacaoController.cs" />
@@ -126,6 +127,10 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="ViewModel\NFeEntradaVM.cs" />
+    <Compile Include="ViewModel\NFeImportacaoCobrancaVM.cs" />
+    <Compile Include="ViewModel\NFeImportacaoFormVM.cs" />
+    <Compile Include="ViewModel\NFeImportacaoProdutoVM.cs" />
+    <Compile Include="ViewModel\NFeImportacaoVM.cs" />
     <Compile Include="ViewModel\NFeProdutoEntradaVM.cs" />
     <Compile Include="ViewModel\NotaFiscalCartaCorrecaoEntradaVM.cs" />
     <Compile Include="ViewModel\NotaFiscalEntradaVM.cs" />
@@ -273,7 +278,6 @@
     <Content Include="Views\CertificadoDigital\Functions\_fnGetStatusCertificado.cshtml" />
     <Content Include="Views\NotaFiscalInutilizada\Functions\_fnAtualizarStatusInutilizada.cshtml" />
     <Content Include="Views\NotaFiscalInutilizada\Functions\_fnVisualizarRetornoSefaz.cshtml" />
-    <Content Include="Views\SerieNotaFiscal\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\Shared\Functions\_fnNotaFiscalInutilizadaList.cshtml" />
     <Content Include="Views\Pedido\Functions\_fnCancelarPedido.cshtml" />
     <Content Include="Views\Pedido\Functions\_fnChangeFinalidade.cshtml" />
@@ -337,7 +341,6 @@
     <Content Include="Views\CartaCorrecao\Functions\_fnVisualizarCartaCorrecao.cshtml" />
     <Content Include="Views\CartaCorrecao\NotaFiscal.cshtml" />
     <Content Include="Views\CartaCorrecao\Novo.cshtml" />
-    <Content Include="Views\SerieNotaFiscal\Functions\_fnChangeTipoOperacao.cshtml" />
     <Content Include="Views\ParametroTributario\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\ParametroTributario\Functions\_fnAtualizaParametro.cshtml" />
     <Content Include="Views\GrupoTributario\Functions\_fnShowCSLL.cshtml" />
@@ -405,6 +408,10 @@
     <Content Include="Views\NFeImportacao\Functions\_fnVisualizar.cshtml" />
     <Content Include="Views\NFeImportacao\Functions\_fnFormReadyVisualizarImportacao.cshtml" />
     <Content Include="Views\NFeImportacao\Functions\_fnExcluirNFeImportacao.cshtml" />
+    <Content Include="Views\SerieNotaFiscal\Functions\_fnChangeTipoOperacao.cshtml" />
+    <Content Include="Views\SerieNotaFiscal\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\NotaFiscalEntrada\Functions\_fnFormReadyNotasFiscais.cshtml" />
+    <Content Include="Views\NotaFiscalEntrada\Functions\_fnBaixarXMLNFeZip.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

@@ -67,13 +67,13 @@ namespace Fly01.Compras.BL
                 var notaFiscal = All.AsNoTracking().Where(x => x.Id == id).FirstOrDefault();
                 if (!string.IsNullOrEmpty(notaFiscal.XML))
                 {
-                    return new { xml = notaFiscal.XML, numNotaFiscal = notaFiscal.NumNotaFiscal };
+                    return new { xml = notaFiscal.XML, numNotaFiscal = notaFiscal.NumNotaFiscal, tipoNotaFiscal = notaFiscal.TipoNotaFiscal.ToString() };
                 }
                 else
                 {
                     if (!TotalTributacaoBL.ConfiguracaoTSSOK())
                     {
-                        throw new BusinessException("Configuração inválida para comunicação com TSS");
+                        throw new BusinessException("Configuração inválida para comunicação com TSS, verifique os dados da empresa, seu certificado digital e parâmetros tributários");
                     }
                     else
                     {
@@ -130,7 +130,7 @@ namespace Fly01.Compras.BL
                 {
                     if (!TotalTributacaoBL.ConfiguracaoTSSOK())
                     {
-                        throw new BusinessException("Configuração inválida para comunicação com TSS");
+                        throw new BusinessException("Configuração inválida para comunicação com TSS, verifique os dados da empresa, seu certificado digital e parâmetros tributários");
                     }
                     else
                     {
@@ -184,7 +184,7 @@ namespace Fly01.Compras.BL
             }
             else if (!TotalTributacaoBL.ConfiguracaoTSSOK())
             {
-                throw new BusinessException("Configuração inválida para comunicação com TSS");
+                throw new BusinessException("Configuração inválida para comunicação com TSS, verifique os dados da empresa, seu certificado digital e parâmetros tributários");
             }
             else
             {
@@ -257,7 +257,7 @@ namespace Fly01.Compras.BL
 
                 if (!TotalTributacaoBL.ConfiguracaoTSSOK())
                 {
-                    throw new BusinessException("Configuração inválida para comunicação com TSS");
+                    throw new BusinessException("Configuração inválida para comunicação com TSS, verifique os dados da empresa, seu certificado digital e parâmetros tributários");
                 }
                 else
                 {

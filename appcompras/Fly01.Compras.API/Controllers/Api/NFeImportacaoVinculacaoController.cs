@@ -26,7 +26,8 @@ namespace Fly01.Compras.API.Controllers.Api
                                 x => x.FormaPagamento,
                                 x => x.CondicaoParcelamento,
                                 x => x.Categoria,
-                                x => x.Pedido).Where(x => x.Id == id).FirstOrDefault();
+                                x => x.Pedido,
+                                x => x.CentroCusto).Where(x => x.Id == id).FirstOrDefault();
 
                     
                     return Ok(item);

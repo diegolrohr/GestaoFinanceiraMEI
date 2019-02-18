@@ -86,6 +86,7 @@
     <Compile Include="Attribute\InputMask.cs" />
     <Compile Include="Attribute\SubtitleAttribute.cs" />
     <Compile Include="Base64Helper.cs" />
+    <Compile Include="NFSeTssHelper.cs" />
     <Compile Include="ConversorHelper.cs" />
     <Compile Include="ConvertHTMLToPDF.cs" />
     <Compile Include="EnumHelper.cs" />

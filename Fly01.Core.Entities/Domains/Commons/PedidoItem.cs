@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {
@@ -25,6 +24,5 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public virtual GrupoTributario GrupoTributario { get; set; }
         public virtual Pedido Pedido { get; set; }
-        //public virtual NFeImportacaoProduto NFeImportacaoProduto { get; set; }
     }
 }

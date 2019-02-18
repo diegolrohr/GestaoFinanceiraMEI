@@ -67,6 +67,9 @@ namespace Fly01.Compras.ViewModel
         [JsonProperty("total")]
         public double? Total { get; set; }
 
+        [JsonProperty("centroCustoId")]
+        public Guid? CentroCustoId { get; set; }
+
         [JsonProperty("estadoPlacaVeiculo")]
         public virtual EstadoVM EstadoPlacaVeiculo { get; set; }
 
@@ -82,6 +85,7 @@ namespace Fly01.Compras.ViewModel
         [JsonProperty("grupoTributarioPadrao")]
         public virtual GrupoTributarioVM GrupoTributarioPadrao { get; set; }
 
-
+        [JsonProperty("centroCusto")]
+        public virtual CentroCustoVM CentroCusto { get; set; }
     }
 }

@@ -65,6 +65,7 @@
     <Compile Include="Controllers\AvaliacaoAppController.cs" />
     <Compile Include="Controllers\Base\BoletoController.cs" />
     <Compile Include="Controllers\Base\ContaFinanceiraController.cs" />
+    <Compile Include="Controllers\CentroCustoController.cs" />
     <Compile Include="Controllers\MinhaContaController.cs" />
     <Compile Include="Controllers\CnabController.cs" />
     <Compile Include="Controllers\ContaFinanceiraBaixaMultiplaController.cs" />
@@ -418,6 +419,14 @@
     <Content Include="Views\MinhaConta\Functions\_fnRenderBoletos.cshtml" />
     <Content Include="Views\MinhaConta\Functions\_fnRenderVencimento.cshtml" />
     <Content Include="Views\MinhaConta\Functions\_fnRenderSituacao.cshtml" />
+    <Content Include="Views\ContaPagar\Functions\_fnSimulaParcelamento.cshtml" />
+    <Content Include="Views\ContaPagar\Functions\_fnChangeCondicaoParcelamento.cshtml" />
+    <Content Include="Views\CondicaoParcelamento\Functions\_fnFormReadyOnDemandContaPagar.cshtml" />
+    <Content Include="Views\ContaPagar\Functions\_fnHideSimulacaoCondicao.cshtml" />
+    <Content Include="Views\ContaReceber\Functions\_fnChangeCondicaoParcelamento.cshtml" />
+    <Content Include="Views\ContaReceber\Functions\_fnHideSimulacaoCondicao.cshtml" />
+    <Content Include="Views\ContaReceber\Functions\_fnSimulaParcelamento.cshtml" />
+    <Content Include="Views\CondicaoParcelamento\Functions\_fnFormReadyOnDemandContaReceber.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

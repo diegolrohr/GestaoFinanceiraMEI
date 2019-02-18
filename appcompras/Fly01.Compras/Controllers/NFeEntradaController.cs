@@ -23,7 +23,7 @@ namespace Fly01.Compras.Controllers
         //NFeVM e NFSeVM na mesma controller notaFiscal, direcionado as controller via javaScript
         public NFeEntradaController()
         {
-            ExpandProperties = "ordemCompraOrigem($select=numero),fornecedor($select=id,nome),transportadora($select=id,nome),estadoPlacaVeiculo,condicaoParcelamento,formaPagamento,categoria,serieNotaFiscal";
+            ExpandProperties = "ordemCompraOrigem($select=numero),fornecedor($select=id,nome),transportadora($select=id,nome),estadoPlacaVeiculo,condicaoParcelamento,formaPagamento,categoria,serieNotaFiscal,centroCusto";
         }
 
         public override Func<NFeEntradaVM, object> GetDisplayData()
@@ -129,6 +129,15 @@ namespace Fly01.Compras.Controllers
                 Disabled = true,
                 DataUrl = @Url.Action("Categoria", "AutoComplete"),
                 LabelId = "categoriaDescricao",
+            });
+            config.Elements.Add(new AutoCompleteUI
+            {
+                Id = "centroCustoId",
+                Class = "col s12 m6",
+                Label = "Centro de Custo",
+                Disabled = true,
+                DataUrl = @Url.Action("CentroCusto", "AutoComplete"),
+                LabelId = "centroCustoDescricao",
             });
             config.Elements.Add(new InputDateUI { Id = "dataVencimento", Class = "col s12 m6", Label = "Data Vencimento", Disabled = true });
             config.Elements.Add(new AutoCompleteUI

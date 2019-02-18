@@ -182,6 +182,7 @@ namespace Fly01.Faturamento.BL
             notaFiscal.PesoLiquido = entity.PesoLiquido;
             notaFiscal.QuantidadeVolumes = entity.QuantidadeVolumes;
             notaFiscal.FormaPagamentoId = entity.FormaPagamentoId;
+            notaFiscal.CentroCustoId = entity.CentroCustoId;
             notaFiscal.CondicaoParcelamentoId = entity.CondicaoParcelamentoId;
             notaFiscal.CategoriaId = entity.CategoriaId;
             notaFiscal.DataVencimento = entity.DataVencimento;
@@ -407,7 +408,7 @@ namespace Fly01.Faturamento.BL
 
         protected void CopiaDadosNFeReferenciada(OrdemVenda entity)
         {
-            Guid idPedidoReferenciado = default(Guid);
+            Guid? idPedidoReferenciado = default(Guid);
             var NFe = NFeBL.All.AsNoTracking().Where(x => x.SefazId.ToUpper() == entity.ChaveNFeReferenciada.ToUpper()).FirstOrDefault();
 
             if (NFe != null)
@@ -667,6 +668,7 @@ namespace Fly01.Faturamento.BL
                         Descricao = GetDescricaoTitulo(TipoItem.Produto, entity),
                         Observacao = GetObservacaoTitulo(TipoItem.Produto, entity),
                         FormaPagamentoId = entity.FormaPagamentoId.Value,
+                        CentroCustoId = entity.CentroCustoId,
                         PlataformaId = PlataformaUrl,
                         UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao
                     };
@@ -763,6 +765,7 @@ namespace Fly01.Faturamento.BL
                 Descricao = GetDescricaoTitulo(tipoItem, entity),
                 Observacao = GetObservacaoTitulo(tipoItem, entity),
                 FormaPagamentoId = entity.FormaPagamentoId.Value,
+                CentroCustoId = entity.CentroCustoId,
                 PlataformaId = PlataformaUrl,
                 UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao
             };
@@ -797,6 +800,7 @@ namespace Fly01.Faturamento.BL
                 Descricao = GetDescricaoTitulo(tipoItem, entity),
                 Observacao = GetObservacaoTitulo(tipoItem, entity),
                 FormaPagamentoId = entity.FormaPagamentoId.Value,
+                CentroCustoId = entity.CentroCustoId,
                 PlataformaId = PlataformaUrl,
                 UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao
             };

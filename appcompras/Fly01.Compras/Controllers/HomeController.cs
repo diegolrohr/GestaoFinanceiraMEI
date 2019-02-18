@@ -293,7 +293,8 @@ namespace Fly01.Compras.Controllers
                         new LinkUI() { Class = ResourceHashConst.ComprasCadastrosGrupoProdutos, Label = "Grupo de Produtos", OnClick = @Url.Action("List", "GrupoProduto")},
                         new LinkUI() { Class = ResourceHashConst.ComprasCadastrosCategoria, Label = "Categoria", OnClick = @Url.Action("List", "Categoria")},
                         new LinkUI() { Class = ResourceHashConst.ComprasCadastrosSubstituicaoTributaria, Label = "Substituição Tributária", OnClick = @Url.Action("List", "SubstituicaoTributaria")},
-                        new LinkUI() { Class = ResourceHashConst.FaturamentoCadastrosKit, Label = "Kit Produtos/Serviços", OnClick = @Url.Action("List", "Kit") }
+                        new LinkUI() { Class = ResourceHashConst.ComprasCadastrosKit, Label = "Kit Produtos/Serviços", OnClick = @Url.Action("List", "Kit") },
+                        //new LinkUI() { Class = ResourceHashConst.ComprasCadastrosCentroCustos, Label = "Centro de Custos", OnClick = @Url.Action("List", "CentroCusto") }
                     }
                 },
                 new SidebarUIMenu()

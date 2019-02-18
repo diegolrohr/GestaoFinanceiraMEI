@@ -78,7 +78,7 @@ namespace Fly01.Faturamento.BL
         public override void ValidaModel(Categoria entity)
         {
             var categoriaPai = base.All.FirstOrDefault(x => x.Id == entity.CategoriaPaiId);
-            entity.Fail(categoriaPai != null && base.All.Any(x => categoriaPai.CategoriaPaiId != null), PaiJaEFilho);
+            entity.Fail(categoriaPai != null && All.Any(x => categoriaPai.CategoriaPaiId != null), PaiJaEFilho);
 
             TipoCarteiraBL.ValidaTipoCarteira(entity.TipoCarteira);
             entity.Fail(base.All.Any(x => x.Id != entity.Id && x.Descricao.ToUpper() == entity.Descricao.ToUpper()),

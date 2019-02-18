@@ -17,7 +17,7 @@ namespace Fly01.Compras.Controllers
     {
         public OrcamentoItemController()
         {
-            ExpandProperties = "produto,fornecedor";
+            ExpandProperties = "produto($select=id,descricao),fornecedor($select=id,nome)";
         }
 
         public override Func<OrcamentoItemVM, object> GetDisplayData()

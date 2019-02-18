@@ -8,7 +8,6 @@ namespace Fly01.Compras.ViewModel
     [Serializable]
     public class NotaFiscalEntradaVM : DomainBaseVM
     {
-
         [JsonProperty("numeracaoVolumesTrans")]
         public string NumeracaoVolumesTrans { get; set; }
 
@@ -16,7 +15,7 @@ namespace Fly01.Compras.ViewModel
         public string Marca { get; set; }
 
         [JsonProperty("ordemCompraOrigemId")]
-        public Guid OrdemCompraOrigemId { get; set; }
+        public Guid? OrdemCompraOrigemId { get; set; }
 
         [JsonProperty("TipoNotaFiscal")]
         [APIEnum("TipoNotaFiscal")]
@@ -106,6 +105,9 @@ namespace Fly01.Compras.ViewModel
         [JsonProperty("sefazId")]
         public string SefazId { get; set; }
 
+        [JsonProperty("centroCustoId")]
+        public Guid? CentroCustoId { get; set; }
+
         [JsonProperty("ordemCompraOrigem")]
         public virtual OrdemCompraVM OrdemCompraOrigem { get; set; }
 
@@ -129,5 +131,8 @@ namespace Fly01.Compras.ViewModel
 
         [JsonProperty("serieNotaFiscal")]
         public virtual SerieNotaFiscalVM SerieNotaFiscal { get; set; }
+
+        [JsonProperty("centroCusto")]
+        public virtual CentroCustoVM CentroCusto { get; set; }
     }
 }

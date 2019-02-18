@@ -80,16 +80,6 @@ namespace Fly01.Compras.DAL
               .HasOptional(s => s.PedidoItem)
               .WithMany()
               .HasForeignKey(s => s.PedidoItemId);
-
-            //builder.Entity<Pedido>()
-            //  .HasOptional(s => s.NFeImportacao)
-            //  .WithMany()
-            //  .HasForeignKey(s => s.NFeImportacaoId);
-
-            //builder.Entity<PedidoItem>()
-            //  .HasOptional(s => s.NFeImportacaoProduto)              
-            //  .WithMany()
-            //  .HasForeignKey(s => s.NFeImportacaoProdutoId);
             #endregion
         }
 
@@ -127,5 +117,6 @@ namespace Fly01.Compras.DAL
         public DbSet<NFeImportacao> NFeImportacoes { get; set; }
         public DbSet<NFeImportacaoProduto> NFeImportacaoProdutos { get; set; }
         public DbSet<NFeImportacaoCobranca> NFeImportacaoCobrancas { get; set; }
+        public DbSet<CentroCusto> CentroCustos { get; set; }
     }
 }

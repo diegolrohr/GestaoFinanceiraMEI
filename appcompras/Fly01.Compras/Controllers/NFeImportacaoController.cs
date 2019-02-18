@@ -20,6 +20,7 @@ using System.Xml.Serialization;
 using Fly01.EmissaoNFE.Domain.Entities.NFe;
 using Fly01.Core.ViewModels;
 using System.Dynamic;
+using Fly01.Compras.ViewModel;
 
 namespace Fly01.Compras.Controllers
 {
@@ -28,7 +29,7 @@ namespace Fly01.Compras.Controllers
     {
         public NFeImportacaoController()
         {
-            ExpandProperties = "fornecedor($select=nome),transportadora($select=nome),condicaoParcelamento,formaPagamento,categoria";
+            ExpandProperties = "fornecedor($select=nome),transportadora($select=nome),condicaoParcelamento,formaPagamento,categoria,centroCusto";
         }
 
         public override Func<NFeImportacaoVM, object> GetDisplayData()
@@ -46,6 +47,13 @@ namespace Fly01.Compras.Controllers
                 serie = x.Serie,
                 numero = x.Numero
             };
+        }
+
+        public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
+        {
+            var queryString = base.GetQueryStringDefaultGridLoad();
+            queryString.Add("$select", "id,status,valorTotal,dataEmissao,serie,numero");
+            return queryString;
         }
 
         public List<HtmlUIButton> GetListButtonsOnHeaderCustom(string buttonLabel, string buttonOnClick)
@@ -254,7 +262,7 @@ namespace Fly01.Compras.Controllers
                     {
                         Title = "Financeiro",
                         Id = "stepFinanceiro",
-                        Quantity = 8,
+                        Quantity = 9,
                     },
                     new FormWizardUIStep()
                     {
@@ -456,6 +464,18 @@ namespace Fly01.Compras.Controllers
                 LabelId = "categoriaDescricao",
                 DataUrlPost = @Url.Action("NovaCategoriaDespesa")
             }, ResourceHashConst.ComprasCadastrosCategoria));
+
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            {
+                Id = "centroCustoId",
+                Class = "col s12 m4",
+                Label = "Centro de Custo",
+                DataUrl = Url.Action("CentroCusto", "AutoComplete"),
+                LabelId = "centroCustoDescricao",
+                DataUrlPostModal = Url.Action("FormModal", "CentroCusto"),
+                DataPostField = "descricao"
+            }, ResourceHashConst.ComprasCadastrosCentroCustos));
+
             config.Elements.Add(new InputDateUI { Id = "dataVencimento", Class = "col s12 m4", Label = "Data Vencimento" });
             config.Elements.Add(new LabelSetUI { Id = "labelSetCobrancas", Label = "Cobranças importadas XML", Class = "col s12" });
             config.Elements.Add(new DivElementUI { Id = "cobrancas", Class = "col s12 visible" });

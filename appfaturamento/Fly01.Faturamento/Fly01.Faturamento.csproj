@@ -61,7 +61,6 @@
   <ItemGroup>
     <Folder Include="Views\NFeProduto\Functions\" />
     <Folder Include="Views\NFSeServico\Functions\" />
-    <Folder Include="Views\Servico\Functions\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
@@ -373,6 +372,7 @@
     <Content Include="Views\NotaFiscal\Functions\_fnBaixarXMLNFeZip.cshtml" />
     <Content Include="Views\NotaFiscal\Functions\_fnEnviarEmailNFSe.cshtml" />
     <Content Include="Views\NotaFiscal\Functions\_fnEnviarEmailNFe.cshtml" />
+    <Content Include="Views\Servico\Functions\_fnFormReady.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

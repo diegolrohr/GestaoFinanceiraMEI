@@ -40,13 +40,6 @@ namespace Fly01.Faturamento.Controllers
             return queryString;
         }
 
-        public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
-        {
-            var queryString = base.GetQueryStringDefaultGridLoad();
-            queryString.Add("$select", "id,tipoNotaFiscal,status,data,tipoVenda,numNotaFiscal");
-            return queryString;
-        }
-
         //NFeVM e NFSeVM na mesma controller notaFiscal, direcionado as controller via javaScript
         public override Func<NotaFiscalVM, object> GetDisplayData()
         {
@@ -505,4 +498,4 @@ namespace Fly01.Faturamento.Controllers
         }
     }
 }
-
+

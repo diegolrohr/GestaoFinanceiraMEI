@@ -316,7 +316,7 @@ namespace Fly01.Financeiro.Controllers
                         new LinkUI() { Class = ResourceHashConst.FinanceiroCadastrosCategoria, Label = "Categoria", OnClick = @Url.Action("List", "Categoria")},
                         new LinkUI() { Class = ResourceHashConst.FinanceiroCadastrosFormasPagamento, Label = "Formas de Pagamento",OnClick = @Url.Action("List", "FormaPagamento")},
                         new LinkUI() { Class = ResourceHashConst.FinanceiroCadastrosContasBancarias, Label = "Contas Bancárias", OnClick = @Url.Action("List", "ContaBancaria")},
-                        new LinkUI() { Class = ResourceHashConst.FinanceiroCadastrosCentroCustos, Label = "Centro de Custos", OnClick = @Url.Action("List", "CentroCusto") }
+                        //new LinkUI() { Class = ResourceHashConst.FinanceiroCadastrosCentroCustos, Label = "Centro de Custos", OnClick = @Url.Action("List", "CentroCusto") }
                     }
                 },
                 new SidebarUIMenu()

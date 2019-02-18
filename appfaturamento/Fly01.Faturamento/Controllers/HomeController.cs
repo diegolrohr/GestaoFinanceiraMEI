@@ -60,7 +60,6 @@ namespace Fly01.Faturamento.Controllers
             });
 
             var classCard = "col s12 m4";
-            
             {
                 classCard = "col s12 m6 l3";
                 cfg.Content.Add(new AppUI()
@@ -152,7 +151,7 @@ namespace Fly01.Faturamento.Controllers
                         new LinkUI() { Class = ResourceHashConst.FaturamentoCadastrosCategoria, Label = "Categoria", OnClick = @Url.Action("List", "Categoria") },
                         new LinkUI() { Class = ResourceHashConst.FaturamentoCadastrosSubstituicaoTributaria, Label = "Substituição Tributária", OnClick = @Url.Action("List", "SubstituicaoTributaria") },
                         new LinkUI() { Class = ResourceHashConst.FaturamentoCadastrosKit, Label = "Kit Produtos/Serviços", OnClick = @Url.Action("List", "Kit") },
-                        new LinkUI() { Class = ResourceHashConst.FaturamentoCadastrosCentroCustos, Label = "Centro de Custos", OnClick = @Url.Action("List", "CentroCusto") }
+                        //new LinkUI() { Class = ResourceHashConst.FaturamentoCadastrosCentroCustos, Label = "Centro de Custos", OnClick = @Url.Action("List", "CentroCusto") }
                     }
                 },
                 new SidebarUIMenu()

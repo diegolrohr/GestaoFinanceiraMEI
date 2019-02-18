@@ -368,6 +368,10 @@
                 EstoqueNegativoETotal();
             }
         });
+
+        setNFERequiredFields("fly01frm", ["btnDevolucao", "btnComplementar", "chaveNFeReferenciada", "tipoNfeComplementar", "tipoFrete", "naturezaOperacao", "mensagemPadraoNota" ]);
+        setNFSERequiredFields("fly01frm", ["informacoesCompletamentaresNFS"]);
+        setNFEAndNFSERequiredFields("fly01frm", ["btnNormal", "data", "clienteNome", "geraNotaFiscal"]);
     }
 
     $("#stepFinanceiro .step-actions button.next-step, #stepTransporte:not(.active) .step-title, #stepFinalizar .step-actions button.previous-step").on("click", () => {

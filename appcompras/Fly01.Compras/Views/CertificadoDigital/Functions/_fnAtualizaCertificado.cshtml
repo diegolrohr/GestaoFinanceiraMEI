@@ -22,11 +22,13 @@
     function processData(event) {
         var pfx = event.target.result;
         var senha = $("#senha").val();
+        var id = $("#id").val();
 
         $.ajax({
             type: "POST",
             url: "@Url.Action("ImportaCertificado", "CertificadoDigital")",
             data: {
+                id: id,
                 conteudo: pfx,
                 senha: senha
             },

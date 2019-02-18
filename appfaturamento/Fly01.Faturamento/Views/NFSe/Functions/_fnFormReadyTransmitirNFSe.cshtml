@@ -71,7 +71,15 @@
         });
     };
 
+    function fnSetInformacoes() {
+        if ($('#cidadeHomologadaTss').val() == "False") {
+            $("#infoCidadeHomologadaField").text('A cidade informada nos dados da sua empresa, não está homologada para transmissão de NFS-e, conforme link: http://tdn.totvs.com/pages/viewpage.action?pageId=4814340');
+            $("#infoCidadeHomologadaField").css("white-space", "normal");
+        }
+    }
+
     function fnFormReadyTransmitirNFSe() {
+        fnSetInformacoes();
         calculaTotalNFSeTransmitir();
         fnOverrideSubmit();
     }

@@ -1,4 +1,5 @@
 ﻿using Fly01.Core;
+using Fly01.Core.Config;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
 using Fly01.Core.Presentation;
@@ -162,7 +163,6 @@ namespace Fly01.Faturamento.Controllers
                 Title = "Transmitir NFS-e",
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 CancelAction = new ModalUIAction() { Label = "Cancelar" },
-                ConfirmAction = new ModalUIAction() { Label = "Confirmar" },
                 Action = new FormUIAction
                 {
                     Edit = @Url.Action("Transmitir"),
@@ -172,7 +172,14 @@ namespace Fly01.Faturamento.Controllers
                 ReadyFn = "fnFormReadyTransmitirNFSe",
                 Id = "fly01mdlfrmTransmitirNFSe"
             };
+            var empresa = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
+            var cidadeHomologadaTss = (!string.IsNullOrEmpty(empresa?.Cidade?.CodigoIbge) && NFSeTssHelper.IbgesCidadesHomologadasTssNFSe.Contains(empresa?.Cidade?.CodigoIbge));
+            if (cidadeHomologadaTss)
+            {
+                config.ConfirmAction = new ModalUIAction() { Label = "Confirmar" };
+            }
 
+            config.Elements.Add(new InputHiddenUI { Id = "cidadeHomologadaTss", Value = cidadeHomologadaTss.ToString() });
             config.Elements.Add(new InputHiddenUI { Id = "idNFSe", Name = "id" });
             config.Elements.Add(new SelectUI
             {
@@ -202,25 +209,31 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosServicosNaoAgrega", Class = "col s12 m6", Label = "Total de impostos não incidentes", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalNotaFiscalNFSe", Class = "col s12 m6", Label = "Total (serviços - retenções)", Readonly = true, Name = "totalNotaFiscal" });
 
-            config.Elements.Add(new AutoCompleteUI
+            if (cidadeHomologadaTss)
             {
-                Id = "serieNotaFiscalIdNFSe",
-                Class = "col s12 m6",
-                Label = "Série",
-                Required = true,
-                Name = "serieNotaFiscalId",
-                DataUrl = Url.Action("SerieNFSe", "AutoComplete"),
-                LabelId = "serieNotaFiscalSerieNFSe",
-                LabelName = "serieNotaFiscalSerie",
-                DomEvents = new List<DomEventUI>
+                config.Elements.Add(new AutoCompleteUI
+                {
+                    Id = "serieNotaFiscalIdNFSe",
+                    Class = "col s12 m6",
+                    Label = "Série",
+                    Required = true,
+                    Name = "serieNotaFiscalId",
+                    DataUrl = Url.Action("SerieNFSe", "AutoComplete"),
+                    LabelId = "serieNotaFiscalSerieNFSe",
+                    LabelName = "serieNotaFiscalSerie",
+                    DomEvents = new List<DomEventUI>
                 {
                     new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeSerieNFSe" }
                 },
-                DataUrlPostModal = Url.Action("FormModalNFSe", "SerieNotaFiscal"),
-                DataPostField = "serie"
-            });
-            config.Elements.Add(new InputNumbersUI { Id = "numNotaFiscalNFSe", Class = "col s12 m6", Label = "Número Nota Fiscal", Required = true, MinLength = 1, MaxLength = 9, Name = "numNotaFiscal" });
-
+                    DataUrlPostModal = Url.Action("FormModalNFSe", "SerieNotaFiscal"),
+                    DataPostField = "serie"
+                });
+                config.Elements.Add(new InputNumbersUI { Id = "numNotaFiscalNFSe", Class = "col s12 m6", Label = "Número Nota Fiscal", Required = true, MinLength = 1, MaxLength = 9, Name = "numNotaFiscal" });
+            }
+            else
+            {
+                config.Elements.Add(new DivElementUI { Id = "infoCidadeHomologada", Class = "col s12 text-justify visible", Label = "Informação" });
+            }
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }

@@ -119,75 +119,7 @@ namespace Fly01.Core.Presentation.Controllers
                 LabelId = "cfopDescricao"
             });
 
-            config.Elements.Add(new DivElementUI { Id = "collapseNFe", Class = "col s12 visible" });
-
-            //ST
-            config.Elements.Add(new LabelSetUI { Id = "stLabel", Class = "col s12", Label = "Substituição Tributária" });
-            config.Elements.Add(new InputCheckboxUI
-            {
-                Id = "calculaSubstituicaoTributaria",
-                Class = "col s12 l12",
-                Label = "Calcula Substituição Tributária",
-                DomEvents = new List<DomEventUI>()
-                {
-                    new DomEventUI() { DomEvent = "change", Function = "fnShowST" }
-                }
-            });
-
-            config.Elements.Add(new InputCheckboxUI { Id = "aplicaIpiBaseST", Class = "col s12 m4", Label = "Aplica valor do IPI na base de cálculo", Disabled = true });
-            config.Elements.Add(new InputCheckboxUI { Id = "aplicaFreteBaseST", Class = "col s12 m4", Label = "Aplica FRETE na base de cálculo", Disabled = true });
-            config.Elements.Add(new InputCheckboxUI { Id = "aplicaDespesaBaseST", Class = "col s12 m4", Label = "Aplica DESPESAS na base de cálculo", Disabled = true });
-
-
-            //ICMS
-            config.Elements.Add(new LabelSetUI { Id = "icmsLabel", Class = "col s12", Label = "ICMS" });
-            config.Elements.Add(new InputCheckboxUI
-            {
-                Id = "calculaIcms",
-                Class = "col s12 l12",
-                Label = "Calcula ICMS",
-                DomEvents = new List<DomEventUI>()
-                {
-                    new DomEventUI() { DomEvent = "change", Function = "fnShowICMS" }
-                }
-            });
-            config.Elements.Add(new SelectUI
-            {
-                Id = "tipoTributacaoICMS",
-                Class = "col s12 l12",
-                Label = "Situação da Operação no Simples Nacional",
-                ConstrainWidth = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoTributacaoICMS)))
-            });
-            config.Elements.Add(new InputCheckboxUI { Id = "calculaIcmsDifal", Class = "col s12 m6 l6", Label = "Calcula ICMS DIFAL", Disabled = true });
-            config.Elements.Add(new InputCheckboxUI { Id = "aplicaIpiBaseIcms", Class = "col s12 m6 l6", Label = "Aplica valor do IPI na base de cálculo", Disabled = true });
-            config.Elements.Add(new InputCheckboxUI { Id = "aplicaFreteBaseIcms", Class = "col s12 m6 l6", Label = "Aplica FRETE na base de cálculo", Disabled = true });
-            config.Elements.Add(new InputCheckboxUI { Id = "aplicaDespesaBaseIcms", Class = "col s12 m6 l6", Label = "Aplica DESPESAS na base de cálculo", Disabled = true });
-
-            //IPI
-            config.Elements.Add(new LabelSetUI { Id = "ipiLabel", Class = "col s12", Label = "IPI" });
-            config.Elements.Add(new InputCheckboxUI
-            {
-                Id = "calculaIpi",
-                Class = "col s12 l12",
-                Label = "Calcula IPI",
-                DomEvents = new List<DomEventUI>()
-                {
-                    new DomEventUI() { DomEvent = "change", Function = "fnShowIPI" }
-                }
-            });
-            config.Elements.Add(new SelectUI
-            {
-                Id = "tipoTributacaoIPI",
-                Class = "col s12 l12",
-                Label = "Situação Tributária",
-                Disabled = true,
-                ConstrainWidth = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoTributacaoIPI)))
-            });
-            config.Elements.Add(new InputCheckboxUI { Id = "aplicaFreteBaseIpi", Class = "col s12 m6 l6", Label = "Aplica FRETE na base de cálculo", Disabled = true });
-            config.Elements.Add(new InputCheckboxUI { Id = "aplicaDespesaBaseIpi", Class = "col s12 m6 l6", Label = "Aplica DESPESAS na base de cálculo", Disabled = true });
-
+            #region Ambos
             config.Elements.Add(new DivElementUI { Id = "collapseAmbos", Class = "col s12 visible" });
 
             //PIS
@@ -237,7 +169,79 @@ namespace Fly01.Core.Presentation.Controllers
             });
             config.Elements.Add(new InputCheckboxUI { Id = "aplicaFreteBaseCofins", Class = "col s12 m6 l6", Label = "Aplica FRETE na base de cálculo", Disabled = true });
             config.Elements.Add(new InputCheckboxUI { Id = "aplicaDespesaBaseCofins", Class = "col s12 m6 l6", Label = "Aplica DESPESAS na base de cálculo", Disabled = true });
+            #endregion
 
+            #region NFe
+            config.Elements.Add(new DivElementUI { Id = "collapseNFe", Class = "col s12 visible" });
+
+            //ST
+            config.Elements.Add(new LabelSetUI { Id = "stLabel", Class = "col s12", Label = "Substituição Tributária" });
+            config.Elements.Add(new InputCheckboxUI
+            {
+                Id = "calculaSubstituicaoTributaria",
+                Class = "col s12 l12",
+                Label = "Calcula Substituição Tributária",
+                DomEvents = new List<DomEventUI>()
+                {
+                    new DomEventUI() { DomEvent = "change", Function = "fnShowST" }
+                }
+            });
+
+            config.Elements.Add(new InputCheckboxUI { Id = "aplicaIpiBaseST", Class = "col s12 m4", Label = "Aplica valor do IPI na base de cálculo", Disabled = true });
+            config.Elements.Add(new InputCheckboxUI { Id = "aplicaFreteBaseST", Class = "col s12 m4", Label = "Aplica FRETE na base de cálculo", Disabled = true });
+            config.Elements.Add(new InputCheckboxUI { Id = "aplicaDespesaBaseST", Class = "col s12 m4", Label = "Aplica DESPESAS na base de cálculo", Disabled = true });
+
+            //ICMS
+            config.Elements.Add(new LabelSetUI { Id = "icmsLabel", Class = "col s12", Label = "ICMS" });
+            config.Elements.Add(new InputCheckboxUI
+            {
+                Id = "calculaIcms",
+                Class = "col s12 l12",
+                Label = "Calcula ICMS",
+                DomEvents = new List<DomEventUI>()
+                {
+                    new DomEventUI() { DomEvent = "change", Function = "fnShowICMS" }
+                }
+            });
+            config.Elements.Add(new SelectUI
+            {
+                Id = "tipoTributacaoICMS",
+                Class = "col s12 l12",
+                Label = "Situação da Operação no Simples Nacional",
+                ConstrainWidth = true,
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoTributacaoICMS)))
+            });
+            config.Elements.Add(new InputCheckboxUI { Id = "calculaIcmsDifal", Class = "col s12 m6 l6", Label = "Calcula ICMS DIFAL", Disabled = true });
+            config.Elements.Add(new InputCheckboxUI { Id = "aplicaIpiBaseIcms", Class = "col s12 m6 l6", Label = "Aplica valor do IPI na base de cálculo", Disabled = true });
+            config.Elements.Add(new InputCheckboxUI { Id = "aplicaFreteBaseIcms", Class = "col s12 m6 l6", Label = "Aplica FRETE na base de cálculo", Disabled = true });
+            config.Elements.Add(new InputCheckboxUI { Id = "aplicaDespesaBaseIcms", Class = "col s12 m6 l6", Label = "Aplica DESPESAS na base de cálculo", Disabled = true });
+
+            //IPI
+            config.Elements.Add(new LabelSetUI { Id = "ipiLabel", Class = "col s12", Label = "IPI" });
+            config.Elements.Add(new InputCheckboxUI
+            {
+                Id = "calculaIpi",
+                Class = "col s12 l12",
+                Label = "Calcula IPI",
+                DomEvents = new List<DomEventUI>()
+                {
+                    new DomEventUI() { DomEvent = "change", Function = "fnShowIPI" }
+                }
+            });
+            config.Elements.Add(new SelectUI
+            {
+                Id = "tipoTributacaoIPI",
+                Class = "col s12 l12",
+                Label = "Situação Tributária",
+                Disabled = true,
+                ConstrainWidth = true,
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoTributacaoIPI)))
+            });
+            config.Elements.Add(new InputCheckboxUI { Id = "aplicaFreteBaseIpi", Class = "col s12 m6 l6", Label = "Aplica FRETE na base de cálculo", Disabled = true });
+            config.Elements.Add(new InputCheckboxUI { Id = "aplicaDespesaBaseIpi", Class = "col s12 m6 l6", Label = "Aplica DESPESAS na base de cálculo", Disabled = true });
+            #endregion
+
+            #region NFSe
             config.Elements.Add(new DivElementUI { Id = "collapseNFSe", Class = "col s12 visible" });
             //ISS
             config.Elements.Add(new LabelSetUI { Id = "issLabel", Class = "col s12", Label = "ISS" });
@@ -324,6 +328,7 @@ namespace Fly01.Core.Presentation.Controllers
                 }
             });
             config.Elements.Add(new InputCheckboxUI { Id = "retemImpostoRenda", Class = "col s12 m6 l6", Label = "Retém Imposto de Renda", Disabled = true });
+            #endregion
 
             #region Helpers
             config.Helpers.Add(new TooltipUI

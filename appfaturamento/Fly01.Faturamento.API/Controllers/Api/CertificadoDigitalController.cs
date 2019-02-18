@@ -33,9 +33,20 @@ namespace Fly01.Faturamento.API.Controllers.Api
 
                 model.CopyChangedValues(entity);
 
-                unitOfWork.CertificadoDigitalBL.ProcessEntity(entity);
+                Parallel.Invoke(() =>
+                {
+                    EnviaCertificadoTSS(entity);
+                });
 
                 return await base.Put(entity.Id, model);
+            }
+        }
+
+        private void EnviaCertificadoTSS(CertificadoDigital entity)
+        {
+            using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
+            {
+                unitOfWork.CertificadoDigitalBL.ProcessEntity(entity);
             }
         }
 
@@ -48,8 +59,12 @@ namespace Fly01.Faturamento.API.Controllers.Api
                     if (unitOfWork.CertificadoDigitalBL.CertificadoAtualValido().Any())
                         throw new Exception("Já existe um certificado cadastrado para esta plataforma.");
 
-                    entity = unitOfWork.CertificadoDigitalBL.ProcessEntity(entity);
                     entity.CertificadoValidoNFS = true;
+
+                    Parallel.Invoke(() =>
+                    {
+                        EnviaCertificadoTSS(entity);
+                    });
 
                     return await base.Post(entity);
                 }

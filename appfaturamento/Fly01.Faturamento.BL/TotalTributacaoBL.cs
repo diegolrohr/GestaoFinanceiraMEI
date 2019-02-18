@@ -413,10 +413,10 @@ namespace Fly01.Faturamento.BL
                     }
                     if (responseTributacao.ImpostoRenda != null)
                     {
-                        itemRetorno.ImpostoRendaBase = responseTributacao.Inss.Base;
-                        itemRetorno.ImpostoRendaAliquota = responseTributacao.Inss.Aliquota;
-                        itemRetorno.ImpostoRendaValor = responseTributacao.Inss.Valor;
-                        itemRetorno.ImpostoRendaValorRetencao = responseTributacao.Inss.ValorRetencao;
+                        itemRetorno.ImpostoRendaBase = responseTributacao.ImpostoRenda.Base;
+                        itemRetorno.ImpostoRendaAliquota = responseTributacao.ImpostoRenda.Aliquota;
+                        itemRetorno.ImpostoRendaValor = responseTributacao.ImpostoRenda.Valor;
+                        itemRetorno.ImpostoRendaValorRetencao = responseTributacao.ImpostoRenda.ValorRetencao;
                     }
 
                     result.Add(itemRetorno);

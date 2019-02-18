@@ -127,7 +127,7 @@ namespace Fly01.Compras.BL
             {
                 if (!TotalTributacaoBL.ConfiguracaoTSSOK())
                 {
-                    throw new BusinessException("Configuração inválida para comunicação com TSS");
+                    throw new BusinessException("Configuração inválida para comunicação com TSS, verifique os dados da empresa, seu certificado digital e parâmetros tributários");
                 }
                 else
                 {

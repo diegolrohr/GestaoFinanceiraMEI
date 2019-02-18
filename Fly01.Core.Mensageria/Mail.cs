@@ -9,21 +9,21 @@ namespace Fly01.Core.Mensageria
 {
     public class Mail
     {
-        public static void Send(string nomeRemetente, string emailDestinatario, string tituloEmail, string corpoEmail, Stream anexo)
+        public static void Send(string nomeRemetente, string emailDestinatario, string tituloEmail, string corpoEmail, Stream anexo, string tipoAnexo = ".pdf")
         {
             var emailsDestintario = emailDestinatario.Split(';');
             if (emailsDestintario.Length > 1)
             {
                 foreach (var item in emailsDestintario)
                 {
-                    SendEmail(item, nomeRemetente, tituloEmail, corpoEmail, anexo);
+                    SendEmail(item, nomeRemetente, tituloEmail, corpoEmail, anexo, tipoAnexo);
                 }
             }
             else 
-                SendEmail(emailDestinatario, nomeRemetente, tituloEmail, corpoEmail, anexo);            
+                SendEmail(emailDestinatario, nomeRemetente, tituloEmail, corpoEmail, anexo, tipoAnexo);            
         }
 
-        private static void SendEmail(string emailDestinatario, string nomeRemetente, string tituloEmail, string corpoEmail, Stream anexo) {
+        private static void SendEmail(string emailDestinatario, string nomeRemetente, string tituloEmail, string corpoEmail, Stream anexo, string tipoAnexo) {
 
             var from = new MailAddress(ConfigurationManager.AppSettings["EmailRemetente"], nomeRemetente);
             var to = new MailAddress(emailDestinatario);
@@ -35,7 +35,51 @@ namespace Fly01.Core.Mensageria
             };
 
             if (anexo.Length > 0)
-                message.Attachments.Add(new Attachment(anexo, $"{tituloEmail}.pdf", System.Net.Mime.MediaTypeNames.Application.Pdf));
+            {
+                if (tipoAnexo != ".pdf")
+                    message.Attachments.Add(new Attachment(anexo, $"{tituloEmail}" + tipoAnexo));
+                else
+                    message.Attachments.Add(new Attachment(anexo, $"{tituloEmail}" + tipoAnexo, System.Net.Mime.MediaTypeNames.Application.Pdf));
+            }
+                
+
+            try
+            {
+                SmtpClient client = ConfigSmtpClient();
+
+                client.Send(message);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static void SendMultipleAttach(string emailDestinatario, string nomeRemetente, string tituloEmail, string corpoEmail, Stream[] anexos, string[] tiposAnexos)
+        {
+
+            var from = new MailAddress(ConfigurationManager.AppSettings["EmailRemetente"], nomeRemetente);
+            var to = new MailAddress(emailDestinatario);
+            var message = new MailMessage(from, to)
+            {
+                Subject = tituloEmail,
+                Body = corpoEmail,
+                IsBodyHtml = true
+            };
+
+            if (anexos.Length > 0)
+            {
+                int i = 0;
+                foreach (Stream anexo in anexos)
+                {
+                    if (tiposAnexos[i] == "application/pdf")
+                        message.Attachments.Add(new Attachment(anexo, $"{tituloEmail}.pdf", System.Net.Mime.MediaTypeNames.Application.Pdf));
+                    else
+                        message.Attachments.Add(new Attachment(anexo, $"{tituloEmail}" + tiposAnexos[i]));
+                    i++;
+                }              
+            }
+
 
             try
             {

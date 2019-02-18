@@ -42,7 +42,6 @@ namespace Fly01.Core.Presentation.Controllers
             if (parametroTributario == null)
                 return Json(new
                 {
-                    id = default(Guid).ToString(),
                     aliquotaSimplesNacional = "0",
                     aliquotaISS = "5",
                     aliquotaPISPASEP = "0,65",
@@ -391,7 +390,7 @@ namespace Fly01.Core.Presentation.Controllers
         }
 
         [OperationRole(PermissionValue = EPermissionValue.Write)]
-        public JsonResult ImportaParametro(string mensagem, double simplesNacional, double fcp, double iss, double pispasep, double cofins,
+        public JsonResult ImportaParametro(string id, string mensagem, double simplesNacional, double fcp, double iss, double pispasep, double cofins,
             string numeroRetorno, string modalidade, string versao, string ambiente, string tipoPresencaComprador, string horarioVerao,
             string tipoHorario, string versaoNFSe, string usuarioWebServer, string senhaWebServer, string chaveAutenticacao, string autorizacao,
               string  tipoTributacaoNFS, string tipoAmbienteNFS, double csll, double inss, double impostoRenda, bool incentivoCultura, bool formatarCodigoISS, string tipoRegimeEspecialTributacao)
@@ -400,6 +399,7 @@ namespace Fly01.Core.Presentation.Controllers
             {
                 var dadosParametro = new
                 {
+                    id = string.IsNullOrEmpty(id) ? Guid.NewGuid() : Guid.Parse(id),
                     simplesNacional = "True",
                     aliquotaSimplesNacional = double.IsNaN(simplesNacional) ? 0 : simplesNacional,
                     aliquotaFCP = fcp,
@@ -437,17 +437,18 @@ namespace Fly01.Core.Presentation.Controllers
 
                 ParametroTributarioVM parametroRetorno;
 
-                var existeParametro = GetParametro();
-
-                if (existeParametro == null)
+                if (string.IsNullOrEmpty(id))
+                {
                     parametroRetorno = RestHelper.ExecutePostRequest<ParametroTributarioVM>(ResourceName, JsonConvert.SerializeObject(dadosParametro, JsonSerializerSetting.Default));
+                    id = parametroRetorno?.Id.ToString();
+                }
                 else
-                    parametroRetorno = RestHelper.ExecutePutRequest<ParametroTributarioVM>($"{ResourceName}/{existeParametro.Id}", JsonConvert.SerializeObject(dadosParametro, JsonSerializerSetting.Edit));
+                    parametroRetorno = RestHelper.ExecutePutRequest<ParametroTributarioVM>($"{ResourceName}/{id}", JsonConvert.SerializeObject(dadosParametro, JsonSerializerSetting.Edit));
 
                 return Json(new
                 {
                     success = true,
-                    data = parametroRetorno,
+                    id = id,
                     recordsFiltered = 1,
                     recordsTotal = 1
                 }, JsonRequestBehavior.AllowGet);

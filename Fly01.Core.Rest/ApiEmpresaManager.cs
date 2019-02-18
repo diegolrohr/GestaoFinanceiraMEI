@@ -1,7 +1,5 @@
-﻿using Fly01.Core.Config;
-using Fly01.Core.Helpers;
+﻿using Fly01.Core.Helpers;
 using Fly01.Core.ViewModels;
-using System.Collections.Generic;
 
 namespace Fly01.Core.Rest
 {

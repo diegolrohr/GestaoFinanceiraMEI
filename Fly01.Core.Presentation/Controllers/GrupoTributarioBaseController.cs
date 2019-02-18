@@ -17,7 +17,7 @@ namespace Fly01.Core.Presentation.Controllers
     {
         public GrupoTributarioBaseController()
         {
-            ExpandProperties = "cfop";
+            ExpandProperties = "cfop($select=descricao)";
         }
 
         public override Func<T, object> GetDisplayData()
@@ -119,6 +119,8 @@ namespace Fly01.Core.Presentation.Controllers
                 LabelId = "cfopDescricao"
             });
 
+            config.Elements.Add(new DivElementUI { Id = "collapseNFe", Class = "col s12 visible" });
+
             //ST
             config.Elements.Add(new LabelSetUI { Id = "stLabel", Class = "col s12", Label = "Substituição Tributária" });
             config.Elements.Add(new InputCheckboxUI
@@ -131,13 +133,14 @@ namespace Fly01.Core.Presentation.Controllers
                     new DomEventUI() { DomEvent = "change", Function = "fnShowST" }
                 }
             });
+
             config.Elements.Add(new InputCheckboxUI { Id = "aplicaIpiBaseST", Class = "col s12 m4", Label = "Aplica valor do IPI na base de cálculo", Disabled = true });
             config.Elements.Add(new InputCheckboxUI { Id = "aplicaFreteBaseST", Class = "col s12 m4", Label = "Aplica FRETE na base de cálculo", Disabled = true });
             config.Elements.Add(new InputCheckboxUI { Id = "aplicaDespesaBaseST", Class = "col s12 m4", Label = "Aplica DESPESAS na base de cálculo", Disabled = true });
 
 
             //ICMS
-            config.Elements.Add(new LabelSetUI { Id = "simulatorLabel", Class = "col s12", Label = "ICMS" });
+            config.Elements.Add(new LabelSetUI { Id = "icmsLabel", Class = "col s12", Label = "ICMS" });
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "calculaIcms",
@@ -162,7 +165,7 @@ namespace Fly01.Core.Presentation.Controllers
             config.Elements.Add(new InputCheckboxUI { Id = "aplicaDespesaBaseIcms", Class = "col s12 m6 l6", Label = "Aplica DESPESAS na base de cálculo", Disabled = true });
 
             //IPI
-            config.Elements.Add(new LabelSetUI { Id = "simulatorLabel", Class = "col s12", Label = "IPI" });
+            config.Elements.Add(new LabelSetUI { Id = "ipiLabel", Class = "col s12", Label = "IPI" });
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "calculaIpi",
@@ -185,8 +188,10 @@ namespace Fly01.Core.Presentation.Controllers
             config.Elements.Add(new InputCheckboxUI { Id = "aplicaFreteBaseIpi", Class = "col s12 m6 l6", Label = "Aplica FRETE na base de cálculo", Disabled = true });
             config.Elements.Add(new InputCheckboxUI { Id = "aplicaDespesaBaseIpi", Class = "col s12 m6 l6", Label = "Aplica DESPESAS na base de cálculo", Disabled = true });
 
+            config.Elements.Add(new DivElementUI { Id = "collapseAmbos", Class = "col s12 visible" });
+
             //PIS
-            config.Elements.Add(new LabelSetUI { Id = "simulatorLabel", Class = "col s12", Label = "PIS" });
+            config.Elements.Add(new LabelSetUI { Id = "pisLabel", Class = "col s12", Label = "PIS" });
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "calculaPis",
@@ -210,7 +215,7 @@ namespace Fly01.Core.Presentation.Controllers
             config.Elements.Add(new InputCheckboxUI { Id = "aplicaDespesaBasePis", Class = "col s12 m6 l6", Label = "Aplica DESPESAS na base de cálculo", Disabled = true });
 
             //COFINS
-            config.Elements.Add(new LabelSetUI { Id = "simulatorLabel", Class = "col s12", Label = "COFINS" });
+            config.Elements.Add(new LabelSetUI { Id = "cofinsLabel", Class = "col s12", Label = "COFINS" });
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "calculaCofins",
@@ -233,8 +238,9 @@ namespace Fly01.Core.Presentation.Controllers
             config.Elements.Add(new InputCheckboxUI { Id = "aplicaFreteBaseCofins", Class = "col s12 m6 l6", Label = "Aplica FRETE na base de cálculo", Disabled = true });
             config.Elements.Add(new InputCheckboxUI { Id = "aplicaDespesaBaseCofins", Class = "col s12 m6 l6", Label = "Aplica DESPESAS na base de cálculo", Disabled = true });
 
+            config.Elements.Add(new DivElementUI { Id = "collapseNFSe", Class = "col s12 visible" });
             //ISS
-            config.Elements.Add(new LabelSetUI { Id = "simulatorLabel", Class = "col s12", Label = "ISS" });
+            config.Elements.Add(new LabelSetUI { Id = "issLabel", Class = "col s12", Label = "ISS" });
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "calculaIss",
@@ -278,7 +284,7 @@ namespace Fly01.Core.Presentation.Controllers
             //});
 
             //CSLL
-            config.Elements.Add(new LabelSetUI { Id = "simulatorLabel", Class = "col s12", Label = "CSLL" });
+            config.Elements.Add(new LabelSetUI { Id = "csllLabel", Class = "col s12", Label = "CSLL" });
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "calculaCSLL",
@@ -292,7 +298,7 @@ namespace Fly01.Core.Presentation.Controllers
             config.Elements.Add(new InputCheckboxUI { Id = "retemCSLL", Class = "col s12 m6 l6", Label = "Retém CSLL", Disabled = true });
 
             //INSS
-            config.Elements.Add(new LabelSetUI { Id = "simulatorLabel", Class = "col s12", Label = "INSS" });
+            config.Elements.Add(new LabelSetUI { Id = "inssLabel", Class = "col s12", Label = "INSS" });
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "calculaINSS",
@@ -306,7 +312,7 @@ namespace Fly01.Core.Presentation.Controllers
             config.Elements.Add(new InputCheckboxUI { Id = "retemINSS", Class = "col s12 m6 l6", Label = "Retém INSS", Disabled = true });
 
             //Imposto de Renda
-            config.Elements.Add(new LabelSetUI { Id = "simulatorLabel", Class = "col s12", Label = "Imposto de Renda" });
+            config.Elements.Add(new LabelSetUI { Id = "impostoRendaLabel", Class = "col s12", Label = "Imposto de Renda" });
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "calculaImpostoRenda",

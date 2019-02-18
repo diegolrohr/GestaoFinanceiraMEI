@@ -16,12 +16,11 @@ namespace Fly01.OrdemServico.Controllers
     public class ServicoController : BaseController<ServicoVM>
     {
         protected Func<ServicoVM, object> GetDisplayDataSelect { get; set; }
-        protected string SelectProperties { get; set; }
 
         public ServicoController()
         {
             ExpandProperties = "nbs($select=id,descricao)";
-            SelectProperties = "id,codigoServico,descricao,registroFixo";
+            SelectPropertiesList = "id,codigoServico,descricao,registroFixo";
 
             GetDisplayDataSelect = x => new
             {
@@ -35,16 +34,7 @@ namespace Fly01.OrdemServico.Controllers
         public override Func<ServicoVM, object> GetDisplayData()
         {
             return GetDisplayDataSelect;
-        }
-
-        public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
-        {
-            var customFilters = base.GetQueryStringDefaultGridLoad();
-            customFilters.AddParam("$expand", ExpandProperties);
-            customFilters.AddParam("$select", SelectProperties);
-
-            return customFilters;
-        }
+        }       
 
         public override ContentResult List()
         {

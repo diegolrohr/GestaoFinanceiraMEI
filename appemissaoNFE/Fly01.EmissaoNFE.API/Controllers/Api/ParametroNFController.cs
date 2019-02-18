@@ -5,6 +5,7 @@ using Fly01.Core.API;
 using System;
 using System.Web.Http;
 using Fly01.Core.Helpers;
+using System.Threading.Tasks;
 
 namespace Fly01.EmissaoNFE.API.Controllers.Api
 {
@@ -21,8 +22,13 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
 
                 try
                 {
-                    EnviarParametrosNFe(entity);
-                    EnviarParametrosNFSe(entity);
+                    Parallel.Invoke(() =>
+                    {
+                        EnviarParametrosNFe(entity);
+                    },() =>
+                    {
+                        EnviarParametrosNFSe(entity);
+                    });
 
                     return Ok(new { success = true });
                 }

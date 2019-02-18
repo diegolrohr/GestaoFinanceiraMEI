@@ -12,6 +12,7 @@
                 if (data.entidadeHomologacao != "" || data.entidadeProducao != "") {
                     $("input#entidadeHomologacao").val(data.entidadeHomologacao);
                     $("input#entidadeProducao").val(data.entidadeProducao);
+                    $("input#id").val(data.id);
                     $("#entidadeHomologacaoField").show();
                     $("#entidadeProducaoField").show();
                     $$$.fn.updateTextFields();

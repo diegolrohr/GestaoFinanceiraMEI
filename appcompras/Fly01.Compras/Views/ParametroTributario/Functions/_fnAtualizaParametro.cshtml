@@ -36,7 +36,8 @@
         $.ajax({
             url: '@Url.Action("ImportaParametro", "ParametroTributario")',
             type: "POST",
-            data: {                
+            data: {
+                id: $('#id').val(),
                 mensagem: $('#mensagemPadraoNota').val(),
                 simplesnacional: $("#aliquotaSimplesNacional").val(),
                 fcp: $("#aliquotaFCP").val(),
@@ -66,6 +67,7 @@
             },
             success: function (response) {
                 if (response.success) {
+                    $('#id').val(response.id);
                     $$$.fn.updateTextFields();
                     $$$.toast("Parâmetros Atualizados", 'success', '4000');
                 }

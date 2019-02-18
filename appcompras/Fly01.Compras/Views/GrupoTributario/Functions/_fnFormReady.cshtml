@@ -1,4 +1,6 @@
 ﻿<script>
+    @Html.Partial("Functions/_fnMain");
+
     function fnFormReady() {
         //Na ediacao, se Calcula checked, habilita campos
         //ICMS
@@ -21,6 +23,9 @@
         fnShowImpostoRenda();
 
         fnCollapseImpostos();
+        setNFERequiredFields("fly01frm", ["cfopDescricao", "tipoTributacaoPIS", "aplicaFreteBasePis", "aplicaDespesaBasePis", "aplicaFreteBaseCofins", "aplicaDespesaBaseCofins", "tipoTributacaoCOFINS"]);
+        setNFSERequiredFields("fly01frm", ["retemPis", "retemCofins", ]);
+        setNFEAndNFSERequiredFields("fly01frm", ["calculaPis", "calculaCofins"]);
     }
 
     function fnCollapseImpostos() {

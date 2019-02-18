@@ -22,6 +22,8 @@
         $('form#fly01mdlfrmOrdemVendaServico input#quantidade').on('change', function () {
             fnChangeTotalServico();
         });
+
+        setNFSERequiredFields("fly01mdlfrmOrdemVendaServico", ["servicoDescricao", "grupoTributarioDescricaoServico", "quantidade", "valor", "descricaoOutrasRetencoes", "valorOutrasRetencoes", "isServicoPrioritario"]);
     }
 
     function fnOverrideSubmitOrdemVendaServico() {

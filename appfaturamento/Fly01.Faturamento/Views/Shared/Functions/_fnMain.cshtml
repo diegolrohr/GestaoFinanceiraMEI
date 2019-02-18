@@ -199,4 +199,46 @@
         }
     }
 
+    function setNFERequiredFields(form, fields) {
+        addNFTip(fields, "orange");
+        addNFLegend(form, "orange", "Notas Fiscais de Produtos");
+    }
+
+    function setNFSERequiredFields(form, fields) {
+        addNFTip(fields, "blue");
+        addNFLegend(form, "blue", "Notas Fiscais de Serviços");
+    }
+
+    function setNFEAndNFSERequiredFields(form, fields) {
+        addNFTip(fields, "green");
+        addNFLegend(form, "green", "ambos tipos de Notas Fiscais");
+    }
+
+    function addNFTip(fields, color) {
+        if (Array.isArray(fields)) {
+            fields.forEach((i) => {
+                var element = `label[for=${i}]`;
+                $(`${element}:not(.nfe-tipped)`).append(createElem("i", { "class": `material-icons nfe-tip ${color}-text` }, "monetization_on"));
+                $(`${element}`).addClass("nfe-tipped");
+            });
+        }
+    }
+
+    function addNFLegend(formId, color, complement) {
+        if ($(`form#${formId} .nfe-info-tip`).length == 0) {
+            $(`form#${formId}`).append(createElem("div", { "class": "col s12 nfe-info-tip " }));
+        }
+        var legends = [];
+        if ($(`.nfe-tip.${color}-text`).length > 0)
+            legends.push(
+            createElem("div", { "class": `${color}-text` }, [
+            createElem("i", { "class": "material-icons nfe-tip" }, "monetization_on"),
+            createElem("small", { "class": "" }, ` Campos necessários para a emissão de ${complement}`)
+            ])
+            );
+
+        $(`form#${formId} .nfe-info-tip`).append(legends);
+        $(".nfe-tip").css({ "display": "contents", "font-size": "14px" });
+    }
+
 </script>

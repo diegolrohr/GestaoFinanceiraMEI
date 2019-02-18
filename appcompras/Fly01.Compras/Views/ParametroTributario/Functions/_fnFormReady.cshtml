@@ -1,4 +1,6 @@
 ﻿<script>
+    @Html.Partial("Functions/_fnMain");
+
     function fnFormReady() {
         $$$.loading.start();
         $.ajax({
@@ -49,5 +51,9 @@
                 $$$.toast(data.message, 'error');
             }
         });
+
+        setNFERequiredFields("fly01frm", ["aliquotaSimplesNacional", "aliquotaFCP", ]);
+        setNFSERequiredFields("fly01frm", ["aliquotaISS", "aliquotaCSLL", "aliquotaINSS", "aliquotaImpostoRenda"]);
+        setNFEAndNFSERequiredFields("fly01frm", ["aliquotaPISPASEP", "aliquotaCOFINS"]);
     }
 </script>

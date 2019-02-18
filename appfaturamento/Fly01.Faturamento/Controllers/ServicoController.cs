@@ -107,6 +107,7 @@ namespace Fly01.Faturamento.Controllers
                     List = Url.Action("List"),
                     Form = Url.Action("Form")
                 },
+                ReadyFn = "fnFormReady",
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
 

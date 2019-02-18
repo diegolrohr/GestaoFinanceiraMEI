@@ -7,6 +7,7 @@ namespace Fly01.Core.Helpers
         /// <summary>
         /// Rodar o comando no console, na página do TDN da Totvs com os Ibges homologados
         /// var string = ""; $('td:first-child').each(function() { string += '"' +$(this).text() + '"' + ','}); console.log(string);
+        /// Alterar também em fnFormReady dados da empresa manager
         /// </summary>
         public static List<string> IbgesCidadesHomologadasTssNFSe
         {

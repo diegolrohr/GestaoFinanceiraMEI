@@ -38,7 +38,9 @@ namespace Fly01.Financeiro.API.Controllers.Api
             bool.TryParse(allUrlKeyValues.LastOrDefault(x => x.Key.ToLower() == "excluirrecorrencias").Value, out excluirRecorrencias);
 
             if (excluirRecorrencias)
+            {
                 return DeleteAll(key);
+            }
 
             return base.Delete(key);
         }
@@ -46,15 +48,21 @@ namespace Fly01.Financeiro.API.Controllers.Api
         public async Task<IHttpActionResult> DeleteAll(Guid key)
         {
             if (key == default(Guid))
+            {
                 return BadRequest();
+            }
 
             var entity = Find(key);
 
             if (entity == null || !entity.Ativo)
+            {
                 throw new BusinessException("Registro não encontrado ou já excluído");
+            }
 
             if (entity.RegistroFixo)
+            {
                 throw new BusinessException("Registro não pode ser excluído (RegistroFixo)");
+            }
 
             using (var unitOfWork = new UnitOfWork(ContextInitialize))
             {
@@ -64,7 +72,10 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 {
                     Delete(child);
                     await unitOfWork.Save();
-                    if (MustProduceMessageServiceBus) Producer<ContaPagar>.Send(child.GetType().Name, AppUser, PlataformaUrl, child, RabbitConfig.EnHttpVerb.DELETE);
+                    if (MustProduceMessageServiceBus)
+                    {
+                        Producer<ContaPagar>.Send(child.GetType().Name, AppUser, PlataformaUrl, child, RabbitConfig.EnHttpVerb.DELETE);
+                    }
                 }
             }
 
@@ -75,15 +86,21 @@ namespace Fly01.Financeiro.API.Controllers.Api
         public override async Task<IHttpActionResult> Put([FromODataUri] Guid key, Delta<ContaPagar> model)
         {
             if (model == null || key == default(Guid) || key == null)
+            {
                 return BadRequest(ModelState);
+            }
 
             var entity = Find(key);
 
             if (entity == null || !entity.Ativo)
+            {
                 throw new BusinessException("Registro não encontrado ou já excluído");
+            }
 
             if (entity.RegistroFixo)
+            {
                 throw new BusinessException("Registro não pode ser editado (RegistroFixo)");
+            }
 
             var numero = entity.Numero;
             ModelState.Clear();
@@ -104,7 +121,9 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 bool.TryParse(allUrlKeyValues.LastOrDefault(x => x.Key.ToLower() == "editarrecorrencias").Value, out editarRecorrencias);
 
                 if (editarRecorrencias)
+                {
                     await PutAllRecorrenciasAsync(entity);
+                }
             }
 
             try
@@ -112,14 +131,20 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 await UnitSave();
 
                 if (MustProduceMessageServiceBus)
+                {
                     Producer<ContaPagar>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity, RabbitConfig.EnHttpVerb.PUT);
+                }
             }
             catch (DbUpdateConcurrencyException)
             {
                 if (!Exists(key))
+                {
                     return NotFound();
+                }
                 else
+                {
                     throw;
+                }
             }
 
             return Ok();
@@ -152,7 +177,9 @@ namespace Fly01.Financeiro.API.Controllers.Api
                     await unitOfWork.Save();
 
                     if (MustProduceMessageServiceBus)
+                    {
                         Producer<ContaPagar>.Send(item.GetType().Name, AppUser, PlataformaUrl, item, RabbitConfig.EnHttpVerb.PUT);
+                    }
                 }
             }
             return Ok();
@@ -164,9 +191,32 @@ namespace Fly01.Financeiro.API.Controllers.Api
             List<ContaPagar> recorrencias;
 
             if (isParent)
+            {
                 return recorrencias = unitOfWork.ContaPagarBL.All.Where(x => (x.ContaFinanceiraRepeticaoPaiId == entity.Id || x.Id == entity.Id) && x.StatusContaBancaria == StatusContaBancaria.EmAberto).ToList();
+            }
             else
+            {
                 return recorrencias = unitOfWork.ContaPagarBL.All.Where(x => (x.ContaFinanceiraRepeticaoPaiId == entity.ContaFinanceiraRepeticaoPaiId) && x.StatusContaBancaria == StatusContaBancaria.EmAberto && x.Numero >= entity.Numero).ToList();
+            }
+        }
+
+        [HttpGet]
+        public IHttpActionResult Get(DateTime dataInicial,
+                                     DateTime dataFinal,
+                                     DateTime dataEmissaoInicial,
+                                     DateTime dataEmissaoFinal,
+                                     Guid? clienteId,
+                                     Guid? formaPagamentoId,
+                                     Guid? condicaoParcelamentoId,
+                                     Guid? categoriaId,
+                                     Guid? centroCustoId)
+        {
+
+            using (var unitOfWork = new UnitOfWork(ContextInitialize))
+            {
+                var data = unitOfWork.ContaPagarBL.Get(dataInicial, dataFinal, dataEmissaoInicial, dataEmissaoFinal, clienteId, formaPagamentoId, condicaoParcelamentoId, categoriaId, centroCustoId);
+                return Ok(new { value = data });
+            }
         }
     }
 }

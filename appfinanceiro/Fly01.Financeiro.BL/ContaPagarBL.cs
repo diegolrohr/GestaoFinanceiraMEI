@@ -192,6 +192,21 @@ namespace Fly01.Financeiro.BL
             return false;
         }
 
+        public List<ContaPagar> Get(DateTime dataInicial, DateTime dataFinal, DateTime dataEmissaoInicial, DateTime dataEmissaoFinal, Guid? clienteId, Guid? formaPagamentoId, Guid? condicaoParcelamentoId, Guid? categoriaId, Guid? centroCustoId)
+        {
+            
+            return All.Where(x =>
+                x.DataVencimento >= dataInicial &&
+                x.DataVencimento <= dataFinal &&
+                x.DataEmissao >= dataEmissaoInicial &&
+                x.DataEmissao <= dataEmissaoFinal &&
+                x.PessoaId == clienteId &&
+                x.FormaPagamentoId == formaPagamentoId &&
+                x.CondicaoParcelamentoId == condicaoParcelamentoId &&
+                x.CategoriaId == categoriaId &&
+                x.CentroCustoId == centroCustoId).ToList();
+        }
+
         public static Error RepeticoesInvalidas = new Error("Número de repetições inválido. Somente até 48 Meses (4 Anos / 208 Semanas).");
         public static Error AlteracaoCondicaoParcelamento = new Error("Não é permitido alterar a condição de parcelamento.");
         public static Error AlteracaoConfiguracaoRecorrencia = new Error("Não é permitido alterar as configurações de recorrência.");

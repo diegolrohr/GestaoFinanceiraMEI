@@ -53,7 +53,8 @@ namespace Fly01.Financeiro.Controllers
                     Title = $"Relatório -  Contas a {tipoConta.Replace("Conta", "")}",
                     Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
-                UrlFunctions = url.Action("Functions") + "?fns="
+                UrlFunctions = url.Action("Functions") + "?fns=",
+                Functions = new List<string> { "fnImprimirCPCR" },
             };
 
             var config = new FormUI
@@ -153,24 +154,24 @@ namespace Fly01.Financeiro.Controllers
         {
             var target = new List<HtmlUIButton>();
 
-            if (UserCanWrite)
-            {
-                target.Add(new HtmlUIButton { Id = "imprimirRelatorio", Label = "Imprimir", OnClickFn = "fnImprimirCPCR"/*, Type = "submit" */});
-            }
+            //if (UserCanWrite)
+            //{
+            target.Add(new HtmlUIButton { Id = "imprimirRelatorio", Label = "Imprimir", OnClickFn = "fnImprimirCPCR"});
+            //}
 
             return target;
         }
 
         [HttpGet]
         public ActionResult Imprimir(DateTime dataInicial,
-            DateTime dataFinal,
-            DateTime dataEmissaoInicial,
-            DateTime dataEmissaoFinal,
-            Guid? clienteId,
-            Guid? formaPagamentoId,
-            Guid? condicaoParcelamentoId,
-            Guid? categoriaId,
-            Guid? centroCustoId)
+                                     DateTime dataFinal,
+                                     DateTime dataEmissaoInicial,
+                                     DateTime dataEmissaoFinal,
+                                     Guid? clienteId,
+                                     Guid? formaPagamentoId,
+                                     Guid? condicaoParcelamentoId,
+                                     Guid? categoriaId,
+                                     Guid? centroCustoId)
         {
             var queryString = new Dictionary<string, string>
             {
@@ -183,11 +184,10 @@ namespace Fly01.Financeiro.Controllers
                 { "condicaoParcelamentoId", condicaoParcelamentoId.ToString()},
                 { "categoriaId", categoriaId.ToString()},
                 { "centroCustoId", centroCustoId.ToString()},
-                { "tipo", tipoConta},
             };
 
             List<ContaFinanceiraVM> reportItens = new List<ContaFinanceiraVM>();
-            var resultRelatorio = RestHelper.ExecuteGetRequest<List<ContaFinanceiraVM>>("RelatorioCentroCustoCPCRVM", queryString);
+            List<ContaFinanceiraVM> resultRelatorio = GetContaFinanceira(queryString, tipoConta);
 
             foreach (var item in resultRelatorio)
             {
@@ -202,6 +202,21 @@ namespace Fly01.Financeiro.Controllers
 
             var reportViewer = new WebReportViewer<ContaFinanceiraVM>(ReportListContasCentroCusto.Instance);
             return File(reportViewer.Print(reportItens, SessionManager.Current.UserData.PlatformUrl), "application/pdf");
+        }
+
+        private static List<ContaFinanceiraVM> GetContaFinanceira(Dictionary<string, string> queryString, string tipo)
+        {
+            var result = new List<ContaFinanceiraVM>();
+            if (tipo == "ContaPagar")
+            {
+                result = RestHelper.ExecuteGetRequest<List<ContaFinanceiraVM>>("contapagar", queryString);
+            }
+            else
+            {
+                result = RestHelper.ExecuteGetRequest<List<ContaFinanceiraVM>>("contareceber", queryString);
+            }
+
+            return result;
         }
     }
 }

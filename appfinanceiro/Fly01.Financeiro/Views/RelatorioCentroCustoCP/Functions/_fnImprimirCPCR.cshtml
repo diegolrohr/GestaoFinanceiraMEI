@@ -3,6 +3,7 @@
     @Html.Partial("Functions/_fnImprimir");
 
     function fnImprimir() {
+        debugger;
         if ($('input#dataEmissaoInicial').val() === "" || $('input#dataEmissaoFinal').val() === "") 
             $$$.toast("Informe a data de emissão final e inicial.", 'error');
         else if ($('input#dataInicial').val() === "" || $('input#dataFinal').val() === "") 

@@ -7,6 +7,8 @@ using Fly01.Core.Entities.Domains.Commons;
 using System.Linq;
 using Fly01.Core.Notifications;
 using Fly01.Compras.BL;
+using Fly01.Core.ServiceBus;
+using System.Data.Entity.Infrastructure;
 
 namespace Fly01.Compras.API.Controllers.Api
 {
@@ -17,7 +19,7 @@ namespace Fly01.Compras.API.Controllers.Api
         {
             MustProduceMessageServiceBus = true;
         }
-           
+
         public override async Task<IHttpActionResult> Put([FromODataUri] Guid key, Delta<ParametroTributario> model)
         {
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
@@ -31,23 +33,50 @@ namespace Fly01.Compras.API.Controllers.Api
                 var entity = Find(key);
 
                 entity.ParametroValidoNFS = true;
-                model.CopyChangedValues(entity);
 
-                Parallel.Invoke(() =>
+                ModelState.Clear();
+                model.Patch(entity);
+                Update(entity);
+
+                Validate(entity);
+
+                if (!ModelState.IsValid)
+                    AddErrorModelState(ModelState);
+
+                EnviaParametrosTSSAsync(entity);
+
+                try
                 {
-                    EnviaParametrosTSS(entity);
-                });
+                    await UnitSave();
 
-                return await base.Put(entity.Id, model);
+                    if (MustProduceMessageServiceBus)
+                        Producer<ParametroTributario>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity, RabbitConfig.EnHttpVerb.PUT);
+
+                    if (MustExecuteAfterSave)
+                        AfterSave(entity);
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!Exists(key))
+                        return NotFound();
+                    else
+                        throw;
+                }
+
+                return Ok();
             }
         }
 
-        private void EnviaParametrosTSS(ParametroTributario entity)
+        private void EnviaParametrosTSSAsync(ParametroTributario entity)
         {
-            using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
+            Task.Factory.StartNew(async () =>
             {
-                unitOfWork.ParametroTributarioBL.EnviaParametroTributario(entity);
-            }
+                using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
+                {
+                    unitOfWork.ParametroTributarioBL.EnviaParametroTributario(entity);
+                    await unitOfWork.Save();
+                }
+            });
         }
 
         public override async Task<IHttpActionResult> Post(ParametroTributario entity)
@@ -56,15 +85,12 @@ namespace Fly01.Compras.API.Controllers.Api
             {
                 using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
                 {
-                    if (unitOfWork.ParametroTributarioBL.ParametroAtualValido().Any())
+                    if (unitOfWork.ParametroTributarioBL.ParametroAtualValido() != null)
                         return BadRequest("Ja existe Parametro Tributario cadastrado para esta plataforma.");
 
                     entity.ParametroValidoNFS = true;
 
-                    Parallel.Invoke(() =>
-                    {
-                        EnviaParametrosTSS(entity);
-                    });
+                    EnviaParametrosTSSAsync(entity);
 
                     return await base.Post(entity);
                 }
@@ -78,7 +104,12 @@ namespace Fly01.Compras.API.Controllers.Api
         {
             try
             {
-                return Ok(UnitOfWork.ParametroTributarioBL.ParametroAtualValido());
+                var result = UnitOfWork.ParametroTributarioBL.ParametroAtualValido();
+                if (result != null)
+                {
+                    return Ok(result);
+                }
+                return Ok();
             }
             catch (Exception ex)
             {

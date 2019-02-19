@@ -17,11 +17,11 @@ namespace Fly01.Compras.API.Controllers.Api
             {
                 using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
                 {
-                    if (!unitOfWork.CertificadoDigitalBL.CertificadoAtualValido().Any())
+                    if (unitOfWork.CertificadoDigitalBL.CertificadoAtualValido() == null)
                     {
                         throw new BusinessException("Cadastre o seu Certificado Digital em Configurações");
                     }
-                    if (!unitOfWork.ParametroTributarioBL.ParametroAtualValido().Any())
+                    if (unitOfWork.ParametroTributarioBL.ParametroAtualValido() == null)
                     {
                         throw new BusinessException("Cadastre os Parâmetros Tributários em Configurações");
                     }

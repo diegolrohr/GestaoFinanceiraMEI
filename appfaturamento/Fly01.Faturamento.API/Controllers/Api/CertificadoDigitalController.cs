@@ -1,7 +1,9 @@
 ﻿using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Notifications;
+using Fly01.Core.ServiceBus;
 using Fly01.Faturamento.BL;
 using System;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -31,14 +33,40 @@ namespace Fly01.Faturamento.API.Controllers.Api
                 var entity = Find(key);
                 entity.CertificadoValidoNFS = true;
 
-                model.CopyChangedValues(entity);
 
-                Parallel.Invoke(() =>
+                ModelState.Clear();
+                model.Patch(entity);
+                Update(entity);
+
+                Validate(entity);
+
+                if (!ModelState.IsValid)
+                    AddErrorModelState(ModelState);
+
+                try
                 {
-                    EnviaCertificadoTSS(entity);
-                });
+                    Parallel.Invoke(() =>
+                    {
+                        EnviaCertificadoTSS(entity);
+                    });
 
-                return await base.Put(entity.Id, model);
+                    await UnitSave();
+
+                    if (MustProduceMessageServiceBus)
+                        Producer<CertificadoDigital>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity, RabbitConfig.EnHttpVerb.PUT);
+
+                    if (MustExecuteAfterSave)
+                        AfterSave(entity);
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!Exists(key))
+                        return NotFound();
+                    else
+                        throw;
+                }
+
+                return Ok();
             }
         }
 
@@ -56,7 +84,7 @@ namespace Fly01.Faturamento.API.Controllers.Api
             {
                 using (var unitOfWork = new UnitOfWork(ContextInitialize))
                 {
-                    if (unitOfWork.CertificadoDigitalBL.CertificadoAtualValido().Any())
+                    if (unitOfWork.CertificadoDigitalBL.CertificadoAtualValido() != null)
                         throw new Exception("Já existe um certificado cadastrado para esta plataforma.");
 
                     entity.CertificadoValidoNFS = true;
@@ -79,14 +107,17 @@ namespace Fly01.Faturamento.API.Controllers.Api
         {
             try
             {
-                return Ok(UnitOfWork.CertificadoDigitalBL.CertificadoAtualValido());
+                var result = UnitOfWork.CertificadoDigitalBL.CertificadoAtualValido();
+                if(result != null)
+                {
+                    return Ok(result);
+                }
+                return Ok();
             }
             catch (Exception ex)
             {
                 throw new BusinessException(ex.Message);
             }
         }
-
-
     }
 }

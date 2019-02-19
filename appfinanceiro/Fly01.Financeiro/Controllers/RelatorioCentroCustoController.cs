@@ -168,10 +168,10 @@ namespace Fly01.Financeiro.Controllers
         }
 
         [HttpGet]
-        public ActionResult Imprimir(DateTime dataInicial,
-                                     DateTime dataFinal,
-                                     DateTime dataEmissaoInicial,
-                                     DateTime dataEmissaoFinal,
+        public ActionResult Imprimir(DateTime? dataInicial,
+                                     DateTime? dataFinal,
+                                     DateTime? dataEmissaoInicial,
+                                     DateTime? dataEmissaoFinal,
                                      Guid? clienteId,
                                      Guid? formaPagamentoId,
                                      Guid? condicaoParcelamentoId,
@@ -180,15 +180,16 @@ namespace Fly01.Financeiro.Controllers
         {
             var queryString = new Dictionary<string, string>
             {
-                { "dataInicial", dataInicial.ToString("yyyy-MM-dd")},
-                { "dataFinal", dataFinal.ToString("yyyy-MM-dd")},
-                { "dataEmissaoInicial", dataEmissaoInicial.ToString("yyyy-MM-dd")},
-                { "dataEmissaoFinal", dataEmissaoFinal.ToString("yyyy-MM-dd")},
+                { "dataInicial", dataInicial != null ? dataInicial.Value.ToString("yyyy-MM-dd") : ""},
+                { "dataFinal", dataFinal != null ? dataFinal.Value.ToString("yyyy-MM-dd") : ""},
+                { "dataEmissaoInicial", dataEmissaoInicial != null ? dataEmissaoInicial.Value.ToString("yyyy-MM-dd") : ""},
+                { "dataEmissaoFinal", dataEmissaoFinal != null ? dataEmissaoFinal.Value.ToString("yyyy-MM-dd") : ""},
                 { "clienteId", clienteId.ToString()},
                 { "formaPagamentoId", formaPagamentoId.ToString()},
                 { "condicaoParcelamentoId", condicaoParcelamentoId.ToString()},
                 { "categoriaId", categoriaId.ToString()},
                 { "centroCustoId", centroCustoId.ToString()},
+                { "tipoConta", tipoConta.ToString()},
             };
 
             List<ContaFinanceiraVM> reportItens = new List<ContaFinanceiraVM>();
@@ -216,7 +217,7 @@ namespace Fly01.Financeiro.Controllers
                 var result = new List<ContaFinanceiraVM>();
                 if (tipo == "ContaPagar")
                 {
-                    var response = RestHelper.ExecuteGetRequest<ResultBase<ContaFinanceiraVM>>("contapagar", queryString);
+                    var response = RestHelper.ExecuteGetRequest<ResultBase<ContaFinanceiraVM>>("relatorioContaFinanceira", queryString);
                     result.AddRange(response.Data.Cast<ContaFinanceiraVM>().ToList());
                 }
                 else {

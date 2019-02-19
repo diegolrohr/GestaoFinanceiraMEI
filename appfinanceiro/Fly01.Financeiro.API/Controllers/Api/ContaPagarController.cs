@@ -199,24 +199,5 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 return recorrencias = unitOfWork.ContaPagarBL.All.Where(x => (x.ContaFinanceiraRepeticaoPaiId == entity.ContaFinanceiraRepeticaoPaiId) && x.StatusContaBancaria == StatusContaBancaria.EmAberto && x.Numero >= entity.Numero).ToList();
             }
         }
-
-        [HttpGet]
-        public IHttpActionResult Get(DateTime dataInicial,
-                                     DateTime dataFinal,
-                                     DateTime dataEmissaoInicial,
-                                     DateTime dataEmissaoFinal,
-                                     Guid? clienteId,
-                                     Guid? formaPagamentoId,
-                                     Guid? condicaoParcelamentoId,
-                                     Guid? categoriaId,
-                                     Guid? centroCustoId)
-        {
-
-            using (var unitOfWork = new UnitOfWork(ContextInitialize))
-            {
-                var data = unitOfWork.ContaPagarBL.Get(dataInicial, dataFinal, dataEmissaoInicial, dataEmissaoFinal, clienteId, formaPagamentoId, condicaoParcelamentoId, categoriaId, centroCustoId);
-                return Ok(new { value = data });
-            }
-        }
     }
 }

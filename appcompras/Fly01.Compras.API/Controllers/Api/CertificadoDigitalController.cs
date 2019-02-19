@@ -1,7 +1,9 @@
 ﻿using Fly01.Compras.BL;
 using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Notifications;
+using Fly01.Core.ServiceBus;
 using System;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -17,6 +19,7 @@ namespace Fly01.Compras.API.Controllers.Api
         {
             MustProduceMessageServiceBus = true;
         }
+
         public override async Task<IHttpActionResult> Put([FromODataUri] Guid key, Delta<CertificadoDigital> model)
         {
             using (var unitOfWork = new UnitOfWork(ContextInitialize))
@@ -30,11 +33,48 @@ namespace Fly01.Compras.API.Controllers.Api
                 var entity = Find(key);
                 entity.CertificadoValidoNFS = true;
 
-                model.CopyChangedValues(entity);
 
+                ModelState.Clear();
+                model.Patch(entity);
+                Update(entity);
+
+                Validate(entity);
+
+                if (!ModelState.IsValid)
+                    AddErrorModelState(ModelState);
+
+                try
+                {
+                    Parallel.Invoke(() =>
+                    {
+                        EnviaCertificadoTSS(entity);
+                    });
+
+                    await UnitSave();
+
+                    if (MustProduceMessageServiceBus)
+                        Producer<CertificadoDigital>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity, RabbitConfig.EnHttpVerb.PUT);
+
+                    if (MustExecuteAfterSave)
+                        AfterSave(entity);
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!Exists(key))
+                        return NotFound();
+                    else
+                        throw;
+                }
+
+                return Ok();
+            }
+        }
+
+        private void EnviaCertificadoTSS(CertificadoDigital entity)
+        {
+            using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
+            {
                 unitOfWork.CertificadoDigitalBL.ProcessEntity(entity);
-
-                return await base.Put(entity.Id, model);
             }
         }
 

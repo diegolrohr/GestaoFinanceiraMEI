@@ -18,6 +18,9 @@ using Fly01.uiJS.Enums;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Text;
+using Fly01.Core.Mensageria;
+using Fly01.Compras.Helpers;
 
 namespace Fly01.Compras.Controllers
 {
@@ -26,7 +29,7 @@ namespace Fly01.Compras.Controllers
     {
         public NotaFiscalEntradaController()
         {
-            ExpandProperties = "fornecedor($select=id,nome),ordemCompraOrigem($select=id,numero),categoria($select=id,descricao),serieNotaFiscal($select=id,serie),centroCusto";
+            ExpandProperties = "fornecedor($select=id,nome, email),ordemCompraOrigem($select=id,numero),categoria($select=id,descricao),serieNotaFiscal($select=id,serie),centroCusto";
         }
 
         public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
@@ -51,6 +54,7 @@ namespace Fly01.Compras.Controllers
                 statusValue = EnumHelper.GetValue(typeof(StatusNotaFiscal), x.Status),
                 data = x.Data.ToString("dd/MM/yyyy"),
                 fornecedor_nome = x.Fornecedor.Nome,
+                fornecedor_email = x.Fornecedor.Email,
                 ordemCompraOrigem_numero = x.OrdemCompraOrigem?.Numero.ToString(),
                 tipoCompra = x.TipoCompra,
                 tipoCompraDescription = EnumHelper.GetDescription(typeof(TipoCompraVenda), x.TipoCompra),
@@ -176,7 +180,8 @@ namespace Fly01.Compras.Controllers
                 new DataTableUIAction { OnClickFn = "fnBaixarXMLNFe", Label = "Baixar XML", ShowIf = "((row.status == 'NaoAutorizada' || row.status == 'Autorizada'|| row.status == 'Transmitida') && row.tipoNotaFiscal == 'NFe')" },
                 new DataTableUIAction { OnClickFn = "fnBaixarPDFNFe", Label = "Baixar PDF", ShowIf = "(row.status == 'Autorizada' && row.tipoNotaFiscal == 'NFe')" },
                 new DataTableUIAction { OnClickFn = "fnCancelarNFe", Label = "Cancelar", ShowIf = "((row.status == 'Autorizada' || row.status == 'FalhaNoCancelamento') && row.tipoNotaFiscal == 'NFe')" },
-                new DataTableUIAction { OnClickFn = "fnFormCartaCorrecao", Label = "Carta de Correção", ShowIf = "(row.status == 'Autorizada')" }
+                new DataTableUIAction { OnClickFn = "fnFormCartaCorrecao", Label = "Carta de Correção", ShowIf = "(row.status == 'Autorizada')" },
+                new DataTableUIAction { OnClickFn = "fnEnviarEmailNFe", Label = "Enviar por e-mail", ShowIf = "(row.status == 'Autorizada') && (row.tipoNotaFiscal == 'NFe')" }
             }));
 
             config.Columns.Add(new DataTableUIColumn { DataField = "serieNotaFiscal_serie", DisplayName = "Série", Priority = 1 });
@@ -273,6 +278,95 @@ namespace Fly01.Compras.Controllers
             }
         }
 
+        private byte[] GetXMLFile(NotaFiscalEntradaVM notafiscal)
+        {
+
+            try
+            {
+                var resourceById = string.Format("NotaFiscalXML?&id={0}", notafiscal.Id);
+                var response = RestHelper.ExecuteGetRequest<JObject>(resourceById);
+
+                string fileName = notafiscal.TipoNotaFiscal + response.Value<string>("numNotaFiscal") + ".xml";
+                string xml = response.Value<string>("xml");
+                xml = xml.Replace("\\", "");
+
+                byte[] bytes = Encoding.ASCII.GetBytes(xml);
+
+                return bytes;
+            }
+            catch (Exception ex)
+            {
+                ErrorInfo error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                throw new Exception(error.Message);
+            }
+        }
+
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
+        private byte[] GetPDFFile(NotaFiscalEntradaVM notafiscal)
+        {
+            try
+            {
+                var resourceById = string.Format("NotaFiscalPDF?&id={0}", notafiscal.Id);
+                var response = RestHelper.ExecuteGetRequest<JObject>(resourceById);
+
+                string fileName = "Danfe - NFe" + response.Value<string>("numNotaFiscal") + ".pdf";
+                string fileBase64 = response.Value<string>("pdf");
+
+                byte[] bytes = Convert.FromBase64String(fileBase64);
+
+                return bytes;
+            }
+            catch (Exception ex)
+            {
+                ErrorInfo error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                throw new Exception(error.Message);
+            }
+        }
+
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
+        public JsonResult EnviarEmailNFe(string id)
+        {
+            try
+            {
+                var empresa = GetDadosEmpresa();
+                var notaFiscal = Get(Guid.Parse(id));
+
+                if (notaFiscal.Fornecedor == null)
+                {
+                    return JsonResponseStatus.GetFailure("Nenhum fornecedor foi encontrado.");
+                }
+
+                if (string.IsNullOrEmpty(notaFiscal.Fornecedor.Email))
+                {
+                    return JsonResponseStatus.GetFailure("Não foi encontrado um email válido para este fornecedor.");
+                }
+
+                if (string.IsNullOrEmpty(empresa.Email))
+                {
+                    return JsonResponseStatus.GetFailure("Você ainda não configurou um email válido para sua empresa.");
+                }
+
+                var pdf = File(GetPDFFile(notaFiscal), "application/pdf");
+                var xml = File(GetXMLFile(notaFiscal), ".xml");
+                var tituloEmail = $"{empresa.NomeFantasia} {notaFiscal.TipoNotaFiscal} - Nº {notaFiscal.NumNotaFiscal}".ToUpper();
+                var mensagemPrincipal = $"Você está recebendo uma cópia do XML e Danfe da sua {notaFiscal.TipoNotaFiscal}.".ToUpper();
+                var conteudoEmail = Mail.FormataMensagem(EmailFilesHelper.GetTemplate("Templates.OrdemCompra.html").Value, tituloEmail, mensagemPrincipal, empresa.Email);
+                var arquivoPdf = new FileStreamResult(new MemoryStream(pdf.FileContents), pdf.ContentType);
+                var arquivoXml = new FileStreamResult(new MemoryStream(xml.FileContents), xml.ContentType);
+
+                Stream[] anexos = new[] { arquivoPdf.FileStream, arquivoXml.FileStream };
+                string[] tiposAnexos = new[] { arquivoPdf.ContentType, arquivoXml.ContentType };
+
+                Mail.SendMultipleAttach(notaFiscal.Fornecedor.Email, empresa.NomeFantasia, tituloEmail, conteudoEmail, anexos, tiposAnexos);
+
+                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
 
         [OperationRole(PermissionValue = EPermissionValue.Read)]
         [HttpGet]

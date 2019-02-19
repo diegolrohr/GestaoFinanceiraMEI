@@ -27,17 +27,12 @@ namespace Fly01.Core.Presentation.Controllers
 
         private CertificadoDigitalVM GetCertificado()
         {
-            var response = RestHelper.ExecuteGetRequest<ResultBase<CertificadoDigitalVM>>("certificadodigital");
-
-            if (response == null || response.Data == null)
-                return null;
-
-            return response.Data.FirstOrDefault();
+            return RestHelper.ExecuteGetRequest<CertificadoDigitalVM>("certificadodigital");
         }
 
         public JsonResult StatusCard()
         {
-            var empresa = GetDadosEmpresa();
+            //var empresa = GetDadosEmpresa();
 
             try
             {
@@ -90,7 +85,8 @@ namespace Fly01.Core.Presentation.Controllers
                 {
                     success = true,
                     color = "blue",
-                    mainInfo = "O CNPJ (" + empresa.CNPJ + ") não possui certificado digital cadastrado.",
+                    //mainInfo = "O CNPJ (" + empresa.CNPJ + ") não possui certificado digital cadastrado.",
+                    mainInfo = "O CNPJ informado nos dados da empresa, não possui certificado digital cadastrado.",
                     subInfo = "Envie o arquivo e informe a senha de um certificado digital válido.",
                     entidadeHomologacao = "",
                     entidadeProducao = "",
@@ -104,7 +100,8 @@ namespace Fly01.Core.Presentation.Controllers
                 {
                     success = false,
                     color = "blue",
-                    mainInfo = "O CNPJ (" + empresa.CNPJ + ") não possui Certificado digital cadastrado.",
+                    //mainInfo = "O CNPJ (" + empresa.CNPJ + ") não possui Certificado digital cadastrado.",
+                    mainInfo = "O CNPJ informado nos dados da empresa, não possui certificado digital cadastrado.",
                     subInfo = "Envie o arquivo e informe a senha de um certificado válido.",
                     entidadeHomologacao = "",
                     entidadeProducao = "",

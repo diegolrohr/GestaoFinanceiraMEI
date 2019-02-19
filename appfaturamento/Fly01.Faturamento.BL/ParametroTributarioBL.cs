@@ -20,6 +20,8 @@ namespace Fly01.Faturamento.BL
         private string empresaUF;
         protected EntidadeBL EntidadeBL { get; set; }
 
+        //public override IQueryable<ParametroTributario> All => base.All.Where(x => x.PlataformaId == PlataformaUrl && x.Ativo);
+
         public ParametroTributarioBL(AppDataContextBase context, EntidadeBL entidadeBL) : base(context)
         {
             empresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
@@ -97,10 +99,10 @@ namespace Fly01.Faturamento.BL
             }
         }
         
-        public IQueryable<ParametroTributario> ParametroAtualValido()
+        public ParametroTributario ParametroAtualValido()
         {
             //retorna conforme os dados atuais da empresa
-            return All.Where(x => x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).AsQueryable();
+            return All.FirstOrDefault(x => x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF);
         }
 
         public override void ValidaModel(ParametroTributario entity)

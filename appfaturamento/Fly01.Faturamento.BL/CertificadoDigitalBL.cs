@@ -207,10 +207,10 @@ namespace Fly01.Faturamento.BL
             return retorno;
         }
 
-        public IQueryable<CertificadoDigital> CertificadoAtualValido()
+        public CertificadoDigital CertificadoAtualValido()
         {
             //retorna conforme os dados atuais da empresa
-            return All.Where(x => x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).AsQueryable();
+            return All.FirstOrDefault(x => x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF);
         }
     }
 }

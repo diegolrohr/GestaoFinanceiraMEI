@@ -44,7 +44,7 @@ namespace Fly01.Compras.API.Controllers.Api
             {
                 using (var unitOfWork = new UnitOfWork(ContextInitialize))
                 {
-                    if (unitOfWork.CertificadoDigitalBL.CertificadoAtualValido().Any())
+                    if (unitOfWork.CertificadoDigitalBL.CertificadoAtualValido() != null)
                         throw new Exception("Já existe um certificado cadastrado para esta plataforma.");
 
                     entity = unitOfWork.CertificadoDigitalBL.ProcessEntity(entity);
@@ -63,7 +63,12 @@ namespace Fly01.Compras.API.Controllers.Api
         {
             try
             {
-                return Ok(UnitOfWork.CertificadoDigitalBL.CertificadoAtualValido());
+                var result = UnitOfWork.CertificadoDigitalBL.CertificadoAtualValido();
+                if (result != null)
+                {
+                    return Ok(result);
+                }
+                return Ok();
             }
             catch (Exception ex)
             {

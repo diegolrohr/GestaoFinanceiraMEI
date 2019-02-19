@@ -40,7 +40,6 @@ namespace Fly01.Compras.BL
         
         public void EnviaParametroTributario(ParametroTributario parametroTributario)
         {
-
             #region ResgataDadosEmpresa
 
             parametroTributario.Cnpj = empresa.CNPJ;
@@ -98,9 +97,9 @@ namespace Fly01.Compras.BL
             }
         }
         
-        public IQueryable<ParametroTributario> ParametroAtualValido()
+        public ParametroTributario ParametroAtualValido()
         {
-            return All.Where(x => x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).AsQueryable();
+            return All.FirstOrDefault(x => x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF);
         }
 
         public override void ValidaModel(ParametroTributario entity)

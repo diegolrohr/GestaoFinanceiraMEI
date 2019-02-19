@@ -180,9 +180,9 @@ namespace Fly01.Compras.BL
             return retorno;
         }
 
-        public IQueryable<CertificadoDigital> CertificadoAtualValido()
+        public CertificadoDigital CertificadoAtualValido()
         {
-            return All.Where(x => x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).AsQueryable();
+            return All.FirstOrDefault(x => x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF);
         }
     }
 }

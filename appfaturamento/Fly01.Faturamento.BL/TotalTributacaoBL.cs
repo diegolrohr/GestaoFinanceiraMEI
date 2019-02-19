@@ -176,7 +176,7 @@ namespace Fly01.Faturamento.BL
 
                 if (entidade != null)
                 {
-                    var certificado = CertificadoDigitalBL.CertificadoAtualValido().FirstOrDefault(x => x.PlataformaId == plataformaId);
+                    var certificado = CertificadoDigitalBL.CertificadoAtualValido();
                     if(certificado != null && !certificado.CertificadoValidoNFS)
                     {
                         throw new BusinessException("Para transmitir NFS, reenvie o seu Certificado Digital em Configurações");

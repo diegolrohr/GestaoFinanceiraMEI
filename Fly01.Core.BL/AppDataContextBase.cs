@@ -49,6 +49,7 @@ namespace Fly01.Core.BL
 
         public AppDataContextBase(string conn) : base(conn)
         {
+            //Configuration.UseDatabaseNullSemantics = true;
             Configuration.LazyLoadingEnabled = false;
             Configuration.ProxyCreationEnabled = false;
         }

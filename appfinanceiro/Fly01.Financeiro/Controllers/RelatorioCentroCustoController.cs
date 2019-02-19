@@ -202,7 +202,8 @@ namespace Fly01.Financeiro.Controllers
                     Descricao = item.Descricao,
                     ValorPago = item.ValorPago,
                     ValorPrevisto = item.ValorPrevisto,
-                    Observacao = item.Observacao
+                    Observacao = item.Observacao,
+                    Titulo = tipoConta == "ContasPagar" ? "Contas a Pagar" : "Contas a Receber",
                 });
             }
 

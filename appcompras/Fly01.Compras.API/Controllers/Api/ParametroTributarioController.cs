@@ -90,10 +90,7 @@ namespace Fly01.Compras.API.Controllers.Api
 
                     entity.ParametroValidoNFS = true;
 
-                    Parallel.Invoke(() =>
-                    {
-                        EnviaParametrosTSSAsync(entity);
-                    });
+                    EnviaParametrosTSSAsync(entity);
 
                     return await base.Post(entity);
                 }

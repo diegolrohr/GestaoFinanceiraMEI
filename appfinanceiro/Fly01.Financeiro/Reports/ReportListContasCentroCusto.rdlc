@@ -18,10 +18,10 @@
               <Width>9.65525cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>8.50604cm</Width>
+              <Width>4.39125cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>4.24626cm</Width>
+              <Width>8.36105cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -420,14 +420,14 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox58">
+                    <Textbox Name="Textbox8">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Descricao</Value>
+                              <Value />
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -438,7 +438,7 @@
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox58</rd:DefaultName>
+                      <rd:DefaultName>Textbox8</rd:DefaultName>
                       <Style>
                         <Border>
                           <Style>None</Style>
@@ -709,7 +709,7 @@
       </Style>
     </PageHeader>
     <PageFooter>
-      <Height>0.9525cm</Height>
+      <Height>1.02718cm</Height>
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
       <ReportItems>
@@ -733,8 +733,7 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox2</rd:DefaultName>
-          <Top>0.03528cm</Top>
-          <Left>0.14114cm</Left>
+          <Left>0.17642cm</Left>
           <Height>0.73201cm</Height>
           <Width>24.44419cm</Width>
           <Style>
@@ -765,7 +764,7 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox26</rd:DefaultName>
-          <Top>0.05733cm</Top>
+          <Top>0.13201cm</Top>
           <Left>24.76172cm</Left>
           <Height>0.6cm</Height>
           <Width>2.5cm</Width>

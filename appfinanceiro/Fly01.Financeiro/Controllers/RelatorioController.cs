@@ -70,7 +70,7 @@ namespace Fly01.Financeiro.Controllers
                 Action = new LinkUI
                 {
                     Label = "Relatório centro custo CR",
-                    OnClick = @Url.Action("List", "ContaReceber")
+                    OnClick = @Url.Action("List", "RelatorioCentroCustoCR")
                 }
             });
 

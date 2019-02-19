@@ -57,7 +57,7 @@ namespace Fly01.Financeiro.Controllers
                     Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
                 UrlFunctions = url.Action("Functions") + "?fns=",
-                Functions = new List<string> { "fnImprimirCPCR" },
+                //Functions = new List<string> { "fnImprimirCPCR" },
             };
 
             var config = new FormUI

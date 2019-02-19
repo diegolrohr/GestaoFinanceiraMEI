@@ -44,13 +44,10 @@ namespace Fly01.Faturamento.API.Controllers.Api
                 if (!ModelState.IsValid)
                     AddErrorModelState(ModelState);
 
+                EnviaParametrosTSSAsync(entity);
+
                 try
                 {
-                    Parallel.Invoke(() =>
-                    {
-                        EnviaParametrosTSS(entity);
-                    });
-
                     await UnitSave();
 
                     if (MustProduceMessageServiceBus)
@@ -71,12 +68,16 @@ namespace Fly01.Faturamento.API.Controllers.Api
             }
         }
 
-        private void EnviaParametrosTSS(ParametroTributario entity)
+        private void EnviaParametrosTSSAsync(ParametroTributario entity)
         {
-            using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
+            Task.Factory.StartNew(async () =>
             {
-                unitOfWork.ParametroTributarioBL.EnviaParametroTributario(entity);
-            }
+                using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
+                {
+                    unitOfWork.ParametroTributarioBL.EnviaParametroTributario(entity);
+                    await unitOfWork.Save();
+                }
+            });
         }
 
         public override async Task<IHttpActionResult> Post(ParametroTributario entity)

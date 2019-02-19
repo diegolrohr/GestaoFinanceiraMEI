@@ -63,7 +63,7 @@ namespace Fly01.Faturamento.API.Controllers.Api
                     else
                         throw;
                 }
-                
+
                 return Ok();
             }
         }
@@ -91,10 +91,7 @@ namespace Fly01.Faturamento.API.Controllers.Api
 
                     entity.ParametroValidoNFS = true;
 
-                    Parallel.Invoke(() =>
-                    {
-                        EnviaParametrosTSSAsync(entity);
-                    });
+                    EnviaParametrosTSSAsync(entity);
 
                     return await base.Post(entity);
                 }

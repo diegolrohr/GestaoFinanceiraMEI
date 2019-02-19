@@ -56,7 +56,7 @@ namespace Fly01.Compras.API.Controllers.Api
             {
                 using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
                 {
-                    if (unitOfWork.ParametroTributarioBL.ParametroAtualValido().Any())
+                    if (unitOfWork.ParametroTributarioBL.ParametroAtualValido() != null)
                         return BadRequest("Ja existe Parametro Tributario cadastrado para esta plataforma.");
 
                     entity.ParametroValidoNFS = true;
@@ -78,7 +78,12 @@ namespace Fly01.Compras.API.Controllers.Api
         {
             try
             {
-                return Ok(UnitOfWork.ParametroTributarioBL.ParametroAtualValido());
+                var result = UnitOfWork.ParametroTributarioBL.ParametroAtualValido();
+                if (result != null)
+                {
+                    return Ok(result);
+                }
+                return Ok();
             }
             catch (Exception ex)
             {

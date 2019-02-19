@@ -27,12 +27,7 @@ namespace Fly01.Core.Presentation.Controllers
 
         public ParametroTributarioVM GetParametro()
         {
-            var response = RestHelper.ExecuteGetRequest<ResultBase<ParametroTributarioVM>>(ResourceName);
-
-            if (response == null || response.Data == null)
-                return null;
-
-            return response.Data.FirstOrDefault();
+            return RestHelper.ExecuteGetRequest<ParametroTributarioVM>(ResourceName);
         }
 
         public JsonResult CarregaParametro()

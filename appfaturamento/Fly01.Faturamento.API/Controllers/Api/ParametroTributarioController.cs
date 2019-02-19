@@ -7,6 +7,9 @@ using Fly01.Faturamento.BL;
 using Fly01.Core.Entities.Domains.Commons;
 using System.Linq;
 using Fly01.Core.Notifications;
+using System.Diagnostics;
+using Fly01.Core.ServiceBus;
+using System.Data.Entity.Infrastructure;
 
 namespace Fly01.Faturamento.API.Controllers.Api
 {
@@ -28,17 +31,43 @@ namespace Fly01.Faturamento.API.Controllers.Api
                 if (model == null || key == default(Guid) || key == null)
                     return BadRequest(ModelState);
 
-                var entity = Find(key);                
+                var entity = Find(key);
 
                 entity.ParametroValidoNFS = true;
-                model.CopyChangedValues(entity);
 
-                Parallel.Invoke(() =>
+                ModelState.Clear();
+                model.Patch(entity);
+                Update(entity);
+
+                Validate(entity);
+
+                if (!ModelState.IsValid)
+                    AddErrorModelState(ModelState);
+
+                try
                 {
-                    EnviaParametrosTSS(entity);
-                });
+                    Parallel.Invoke(() =>
+                    {
+                        EnviaParametrosTSS(entity);
+                    });
 
-                return await base.Put(entity.Id, model);
+                    await UnitSave();
+
+                    if (MustProduceMessageServiceBus)
+                        Producer<ParametroTributario>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity, RabbitConfig.EnHttpVerb.PUT);
+
+                    if (MustExecuteAfterSave)
+                        AfterSave(entity);
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!Exists(key))
+                        return NotFound();
+                    else
+                        throw;
+                }
+                
+                return Ok();
             }
         }
 

@@ -93,7 +93,7 @@ namespace Fly01.Faturamento.API.Controllers.Api
 
                     Parallel.Invoke(() =>
                     {
-                        EnviaParametrosTSS(entity);
+                        EnviaParametrosTSSAsync(entity);
                     });
 
                     return await base.Post(entity);

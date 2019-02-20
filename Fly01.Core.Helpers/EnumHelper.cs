@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Collections.Generic;
 using Fly01.Core.Helpers.Attribute;
+using System.Reflection;
+using System.ComponentModel;
 
 namespace Fly01.Core.Helpers
 {
@@ -103,6 +105,22 @@ namespace Fly01.Core.Helpers
                 list.Add(SubtitleDataAnotation(item));
 
             return list;
+        }
+
+        public static string GetEnumDescription(Enum value)
+        {
+            FieldInfo fi = value.GetType().GetField(value.ToString());
+
+            DescriptionAttribute[] attributes =
+                (DescriptionAttribute[])fi.GetCustomAttributes(
+                typeof(DescriptionAttribute),
+                false);
+
+            if (attributes != null &&
+                attributes.Length > 0)
+                return attributes[0].Description;
+            else
+                return value.ToString();
         }
     }
 }

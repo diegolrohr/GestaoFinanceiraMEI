@@ -277,10 +277,10 @@ namespace Fly01.Faturamento.Controllers
         {
             try
             {
-                var response = RestHelper.ExecuteGetRequest<ResultBase<ParametroTributarioVM>>("parametrotributario");
+                var response = RestHelper.ExecuteGetRequest<ParametroTributarioVM>("parametrotributario");
 
                 return Json(
-                    new { success = true, imposto = response.Data.FirstOrDefault() },
+                    new { success = true, imposto = response },
                     JsonRequestBehavior.AllowGet
                 );
             }

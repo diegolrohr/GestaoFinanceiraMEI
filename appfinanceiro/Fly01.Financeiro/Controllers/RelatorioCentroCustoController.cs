@@ -1,10 +1,13 @@
 ﻿using Fly01.Core;
 using Fly01.Core.Config;
+using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Helpers;
 using Fly01.Core.Presentation;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.Financeiro.Models.Reports;
+using Fly01.Financeiro.Models.ViewModel;
 using Fly01.Financeiro.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
@@ -192,22 +195,28 @@ namespace Fly01.Financeiro.Controllers
                 { "tipoConta", tipoConta.ToString()},
             };
 
-            List<ContaFinanceiraVM> reportItens = new List<ContaFinanceiraVM>();
+            List<ImprimirListContasVM> reportItens = new List<ImprimirListContasVM>();
             List<ContaFinanceiraVM> resultRelatorio = GetContaFinanceira(queryString, tipoConta);
 
+            var descriptionStatus = "";
             foreach (var item in resultRelatorio)
             {
-                reportItens.Add(new ContaFinanceiraVM
+                descriptionStatus = EnumHelper.GetEnumDescription((StatusContaBancaria)Convert.ToInt64(item.StatusContaBancaria));
+                reportItens.Add(new ImprimirListContasVM
                 {
+                    Id = item.Id,
+                    Status = descriptionStatus == "EmAberto" ? "Em Aberto" : descriptionStatus,
                     Descricao = item.Descricao,
-                    ValorPago = item.ValorPago,
-                    ValorPrevisto = item.ValorPrevisto,
-                    Observacao = item.Observacao,
-                    Titulo = tipoConta == "ContasPagar" ? "Contas a Pagar" : "Contas a Receber",
+                    Valor = item.ValorPrevisto.ToString(),
+                    FormaPagamento = item.FormaPagamento != null ? item.FormaPagamento.Descricao : string.Empty,
+                    Fornecedor = item.Pessoa != null ? item.Pessoa.Nome : string.Empty,
+                    Vencimento = item.DataVencimento,
+                    Titulo = tipoConta == "ContaPagar" ? "Contas a Pagar" : "Contas a Receber",
+                    Numero = item.Numero
                 });
             }
 
-            var reportViewer = new WebReportViewer<ContaFinanceiraVM>(ReportListContasCentroCusto.Instance);
+            var reportViewer = new WebReportViewer<ImprimirListContasVM>(ReportListContasCentroCusto.Instance);
             return File(reportViewer.Print(reportItens, SessionManager.Current.UserData.PlatformUrl), "application/pdf");
         }
 

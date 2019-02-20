@@ -51,11 +51,11 @@ namespace Fly01.Financeiro.Controllers
                 Class = "col s12 m4",
                 Color = "totvs-blue",
                 Id = "fly01cardCPCentroCusto",
-                Title = "Centro custo CP",
+                Title = "Contas a pagar",
                 Placeholder = "",
                 Action = new LinkUI
                 {
-                    Label = "Relatório centro custo CP",
+                    Label = "Relatório CP",
                     OnClick = @Url.Action("List", "RelatorioCentroCustoCP")
                 }
             });
@@ -65,11 +65,11 @@ namespace Fly01.Financeiro.Controllers
                 Class = "col s12 m4",
                 Color = "totvs-blue",
                 Id = "fly01cardCRCentroCusto",
-                Title = "Centro custo CR",
+                Title = "Contas a receber",
                 Placeholder = "",
                 Action = new LinkUI
                 {
-                    Label = "Relatório centro custo CR",
+                    Label = "Relatório CR",
                     OnClick = @Url.Action("List", "RelatorioCentroCustoCR")
                 }
             });

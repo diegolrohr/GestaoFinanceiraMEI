@@ -219,7 +219,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Numero</Value>
+                              <Value>Núm.</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -253,7 +253,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Fornecedor</Value>
+                              <Value>=IIf(Fields!TipoConta.Value = "ContaPagar", "Fornecedor", "Cliente")</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -492,14 +492,14 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="PersonName">
+                    <Textbox Name="Textbox1">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!Fornecedor.Value</Value>
+                              <Value>=IIf(Fields!TipoConta.Value = "ContaPagar", Fields!Fornecedor.Value, Fields!Cliente.Value)</Value>
                               <Style />
                             </TextRun>
                           </TextRuns>
@@ -508,7 +508,7 @@
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>PersonName</rd:DefaultName>
+                      <rd:DefaultName>Textbox1</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -1145,7 +1145,7 @@
         </Field>
         <Field Name="Valor">
           <DataField>Valor</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Double</rd:TypeName>
         </Field>
         <Field Name="FormaPagamento">
           <DataField>FormaPagamento</DataField>
@@ -1171,10 +1171,34 @@
           <DataField>Titulo</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="Cliente">
+          <DataField>Cliente</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="CentroCusto">
+          <DataField>CentroCusto</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Categoria">
+          <DataField>Categoria</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="CondicaoParcelamento">
+          <DataField>CondicaoParcelamento</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Parcela">
+          <DataField>Parcela</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="TipoConta">
+          <DataField>TipoConta</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>DataSetReports</rd:DataSetName>
-        <rd:SchemaPath>C:\git\Fly01.Apps\appfinanceiro\Fly01.Financeiro\Reports\DataSetReports.xsd</rd:SchemaPath>
+        <rd:SchemaPath>C:\SaaS\Fly01.Apps\appfinanceiro\Fly01.Financeiro\Reports\DataSetReports.xsd</rd:SchemaPath>
         <rd:TableName>ListContas</rd:TableName>
         <rd:TableAdapterFillMethod />
         <rd:TableAdapterGetDataMethod />

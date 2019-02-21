@@ -194,42 +194,19 @@ namespace Fly01.Financeiro.Controllers
                 { "tipoConta", tipoConta.ToString()},
             };
 
-            List<ImprimirListContasVM> reportItens = new List<ImprimirListContasVM>();
-            List<ContaFinanceiraVM> resultRelatorio = GetContaFinanceira(queryString, tipoConta);
-
-            foreach (var item in resultRelatorio)
-            {
-                reportItens.Add(new ImprimirListContasVM
-                {
-                    Id = item.Id,
-                    Status = EnumHelper.GetValue(typeof(StatusContaBancaria), item.StatusContaBancaria),
-                    Descricao = item.Descricao,
-                    Valor = item.ValorPrevisto.ToString(),
-                    FormaPagamento = item.FormaPagamento != null ? item.FormaPagamento.Descricao : string.Empty,
-                    Fornecedor = item.Pessoa != null ? item.Pessoa.Nome : string.Empty,
-                    Cliente = item.Pessoa != null ? item.Pessoa.Nome : string.Empty,
-                    Vencimento = item.DataVencimento,
-                    Titulo = tipoConta == "ContaPagar" ? "Contas a Pagar" : "Contas a Receber",
-                    Numero = item.Numero,
-                    Categoria = item.Categoria.Descricao,
-                    CentroCusto = item.CentroCusto?.Descricao,
-                    CondicaoParcelamento = item.CondicaoParcelamento.Descricao,
-                    Parcela = item.DescricaoParcela,
-                    TipoConta = tipoConta
-                });
-            }
-
+            List<ImprimirListContasVM> reportItens = GetContaFinanceira(queryString, tipoConta);
+                    
             var reportViewer = new WebReportViewer<ImprimirListContasVM>(ReportListContasCentroCusto.Instance);
             return File(reportViewer.Print(reportItens, SessionManager.Current.UserData.PlatformUrl), "application/pdf");
         }
 
-        private static List<ContaFinanceiraVM> GetContaFinanceira(Dictionary<string, string> queryString, string tipo)
+        private static List<ImprimirListContasVM> GetContaFinanceira(Dictionary<string, string> queryString, string tipo)
         {
             try
             {
-                var result = new List<ContaFinanceiraVM>();
-                var response = RestHelper.ExecuteGetRequest<ResultBase<ContaFinanceiraVM>>("relatorioContaFinanceira", queryString);
-                result.AddRange(response.Data?.Cast<ContaFinanceiraVM>().ToList());
+                var result = new List<ImprimirListContasVM>();
+                var response = RestHelper.ExecuteGetRequest<ResultBase<ImprimirListContasVM>>("relatorioContaFinanceira", queryString);
+                result.AddRange(response.Data?.Cast<ImprimirListContasVM>().ToList());
                 return result;
             }
             catch (Exception ex)

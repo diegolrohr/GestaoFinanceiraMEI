@@ -219,7 +219,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Numero</Value>
+                              <Value>Núm.</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>

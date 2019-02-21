@@ -49,28 +49,28 @@ namespace Fly01.Financeiro.Controllers
             cfg.Content.Add(new CardUI
             {
                 Class = "col s12 m4",
-                Color = "totvs-blue",
+                Color = "red",
                 Id = "fly01cardCPCentroCusto",
                 Title = "Contas a pagar",
                 Placeholder = "",
                 Action = new LinkUI
                 {
-                    Label = "Relatório CP",
-                    OnClick = @Url.Action("List", "RelatorioCentroCustoCP")
+                    Label = "Relatório Contas Pagar",
+                    OnClick = @Url.Action("List", "RelatorioContaPagar")
                 }
             });
 
             cfg.Content.Add(new CardUI
             {
                 Class = "col s12 m4",
-                Color = "totvs-blue",
+                Color = "green",
                 Id = "fly01cardCRCentroCusto",
                 Title = "Contas a receber",
                 Placeholder = "",
                 Action = new LinkUI
                 {
-                    Label = "Relatório CR",
-                    OnClick = @Url.Action("List", "RelatorioCentroCustoCR")
+                    Label = "Relatório Contas Receber",
+                    OnClick = @Url.Action("List", "RelatorioContaReceber")
                 }
             });
 

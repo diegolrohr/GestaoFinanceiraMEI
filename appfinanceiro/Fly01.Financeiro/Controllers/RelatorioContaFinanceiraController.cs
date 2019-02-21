@@ -20,11 +20,11 @@ using System.Web.Mvc;
 
 namespace Fly01.Financeiro.Controllers
 {
-    public abstract class RelatorioCentroCustoController : BaseController<DomainBaseVM>
+    public abstract class RelatorioContaFinanceiraController : BaseController<DomainBaseVM>
     {
         protected string tipoConta;
 
-        public RelatorioCentroCustoController(string TipoConta)
+        public RelatorioContaFinanceiraController(string TipoConta)
         {
             tipoConta = TipoConta;
         }
@@ -60,7 +60,6 @@ namespace Fly01.Financeiro.Controllers
                     Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
                 UrlFunctions = url.Action("Functions") + "?fns=",
-                //Functions = new List<string> { "fnImprimirCPCR" },
             };
 
             var config = new FormUI
@@ -75,7 +74,7 @@ namespace Fly01.Financeiro.Controllers
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "tipoId", Value = tipoConta });
-            config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12 m4", Label = "descricao", MaxLength = 200 });
+            config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12 m4", Label = "Descrição", MaxLength = 200 });
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "clienteId",
@@ -110,7 +109,7 @@ namespace Fly01.Financeiro.Controllers
             {
                 Id = "dataInicial",
                 Class = "col s12 m3",
-                Label = "Data Inicial",
+                Label = "Vencimento Inicial",
                 Value = DateTime.Now.ToString("dd/MM/yyyy"),
                 DomEvents = new List<DomEventUI>
                 {
@@ -121,7 +120,7 @@ namespace Fly01.Financeiro.Controllers
             {
                 Id = "dataFinal",
                 Class = "col s12 m3",
-                Label = "Data Final",
+                Label = "Vencimento Final",
                 Value = DateTime.Now.ToString("dd/MM/yyyy"),
                 DomEvents = new List<DomEventUI>
                 {
@@ -164,7 +163,7 @@ namespace Fly01.Financeiro.Controllers
 
             //if (UserCanWrite)
             //{
-            target.Add(new HtmlUIButton { Id = "imprimirRelatorioId", Label = "Imprimir", OnClickFn = "fnImprimirCPCR"});
+            target.Add(new HtmlUIButton { Id = "imprimirRelatorioId", Label = "Imprimir", OnClickFn = "fnImprimirRelatorioCPCR" });
             //}
 
             return target;
@@ -198,21 +197,25 @@ namespace Fly01.Financeiro.Controllers
             List<ImprimirListContasVM> reportItens = new List<ImprimirListContasVM>();
             List<ContaFinanceiraVM> resultRelatorio = GetContaFinanceira(queryString, tipoConta);
 
-            var descriptionStatus = "";
             foreach (var item in resultRelatorio)
             {
-                descriptionStatus = EnumHelper.GetEnumDescription((StatusContaBancaria)Convert.ToInt64(item.StatusContaBancaria));
                 reportItens.Add(new ImprimirListContasVM
                 {
                     Id = item.Id,
-                    Status = descriptionStatus == "EmAberto" ? "Em Aberto" : descriptionStatus,
+                    Status = EnumHelper.GetValue(typeof(StatusContaBancaria), item.StatusContaBancaria),
                     Descricao = item.Descricao,
                     Valor = item.ValorPrevisto.ToString(),
                     FormaPagamento = item.FormaPagamento != null ? item.FormaPagamento.Descricao : string.Empty,
                     Fornecedor = item.Pessoa != null ? item.Pessoa.Nome : string.Empty,
+                    Cliente = item.Pessoa != null ? item.Pessoa.Nome : string.Empty,
                     Vencimento = item.DataVencimento,
                     Titulo = tipoConta == "ContaPagar" ? "Contas a Pagar" : "Contas a Receber",
-                    Numero = item.Numero
+                    Numero = item.Numero,
+                    Categoria = item.Categoria.Descricao,
+                    CentroCusto = item.CentroCusto?.Descricao,
+                    CondicaoParcelamento = item.CondicaoParcelamento.Descricao,
+                    Parcela = item.DescricaoParcela,
+                    TipoConta = tipoConta
                 });
             }
 
@@ -225,15 +228,8 @@ namespace Fly01.Financeiro.Controllers
             try
             {
                 var result = new List<ContaFinanceiraVM>();
-                if (tipo == "ContaPagar")
-                {
-                    var response = RestHelper.ExecuteGetRequest<ResultBase<ContaFinanceiraVM>>("relatorioContaFinanceira", queryString);
-                    result.AddRange(response.Data.Cast<ContaFinanceiraVM>().ToList());
-                }
-                else {
-                    var response = RestHelper.ExecuteGetRequest<ResultBase<ContaFinanceiraVM>>("contareceber", queryString);
-                    result.AddRange(response.Data.Cast<ContaFinanceiraVM>().ToList());
-                }
+                var response = RestHelper.ExecuteGetRequest<ResultBase<ContaFinanceiraVM>>("relatorioContaFinanceira", queryString);
+                result.AddRange(response.Data?.Cast<ContaFinanceiraVM>().ToList());
                 return result;
             }
             catch (Exception ex)

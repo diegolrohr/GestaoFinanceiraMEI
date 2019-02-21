@@ -1579,6 +1579,18 @@ namespace Fly01.Financeiro.Reports {
             
             private global::System.Data.DataColumn columnTitulo;
             
+            private global::System.Data.DataColumn columnCliente;
+            
+            private global::System.Data.DataColumn columnCentroCusto;
+            
+            private global::System.Data.DataColumn columnCategoria;
+            
+            private global::System.Data.DataColumn columnCondicaoParcelamento;
+            
+            private global::System.Data.DataColumn columnParcela;
+            
+            private global::System.Data.DataColumn columnTipoConta;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public ListContasDataTable() {
@@ -1694,6 +1706,54 @@ namespace Fly01.Financeiro.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ClienteColumn {
+                get {
+                    return this.columnCliente;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CentroCustoColumn {
+                get {
+                    return this.columnCentroCusto;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CategoriaColumn {
+                get {
+                    return this.columnCategoria;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CondicaoParcelamentoColumn {
+                get {
+                    return this.columnCondicaoParcelamento;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ParcelaColumn {
+                get {
+                    return this.columnParcela;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn TipoContaColumn {
+                get {
+                    return this.columnTipoConta;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -1729,7 +1789,23 @@ namespace Fly01.Financeiro.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public ListContasRow AddListContasRow(string Id, string Status, string Descricao, double Valor, string FormaPagamento, string Parcelas, string Fornecedor, System.DateTime Vencimento, string Numero, string Titulo) {
+            public ListContasRow AddListContasRow(
+                        string Id, 
+                        string Status, 
+                        string Descricao, 
+                        double Valor, 
+                        string FormaPagamento, 
+                        string Parcelas, 
+                        string Fornecedor, 
+                        System.DateTime Vencimento, 
+                        string Numero, 
+                        string Titulo, 
+                        string Cliente, 
+                        string CentroCusto, 
+                        string Categoria, 
+                        string CondicaoParcelamento, 
+                        string Parcela, 
+                        string TipoConta) {
                 ListContasRow rowListContasRow = ((ListContasRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Id,
@@ -1741,7 +1817,13 @@ namespace Fly01.Financeiro.Reports {
                         Fornecedor,
                         Vencimento,
                         Numero,
-                        Titulo};
+                        Titulo,
+                        Cliente,
+                        CentroCusto,
+                        Categoria,
+                        CondicaoParcelamento,
+                        Parcela,
+                        TipoConta};
                 rowListContasRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowListContasRow);
                 return rowListContasRow;
@@ -1774,6 +1856,12 @@ namespace Fly01.Financeiro.Reports {
                 this.columnVencimento = base.Columns["Vencimento"];
                 this.columnNumero = base.Columns["Numero"];
                 this.columnTitulo = base.Columns["Titulo"];
+                this.columnCliente = base.Columns["Cliente"];
+                this.columnCentroCusto = base.Columns["CentroCusto"];
+                this.columnCategoria = base.Columns["Categoria"];
+                this.columnCondicaoParcelamento = base.Columns["CondicaoParcelamento"];
+                this.columnParcela = base.Columns["Parcela"];
+                this.columnTipoConta = base.Columns["TipoConta"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1799,6 +1887,18 @@ namespace Fly01.Financeiro.Reports {
                 base.Columns.Add(this.columnNumero);
                 this.columnTitulo = new global::System.Data.DataColumn("Titulo", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTitulo);
+                this.columnCliente = new global::System.Data.DataColumn("Cliente", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCliente);
+                this.columnCentroCusto = new global::System.Data.DataColumn("CentroCusto", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCentroCusto);
+                this.columnCategoria = new global::System.Data.DataColumn("Categoria", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCategoria);
+                this.columnCondicaoParcelamento = new global::System.Data.DataColumn("CondicaoParcelamento", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCondicaoParcelamento);
+                this.columnParcela = new global::System.Data.DataColumn("Parcela", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnParcela);
+                this.columnTipoConta = new global::System.Data.DataColumn("TipoConta", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTipoConta);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2323,6 +2423,18 @@ namespace Fly01.Financeiro.Reports {
             
             private global::System.Data.DataColumn columnTitulo;
             
+            private global::System.Data.DataColumn columnTipoConta;
+            
+            private global::System.Data.DataColumn columnCliente;
+            
+            private global::System.Data.DataColumn columnCentroCusto;
+            
+            private global::System.Data.DataColumn columnCategoria;
+            
+            private global::System.Data.DataColumn columnCondicaoParcelamento;
+            
+            private global::System.Data.DataColumn columnParcela;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public ContasCentroCustoDataTable() {
@@ -2430,6 +2542,54 @@ namespace Fly01.Financeiro.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn TipoContaColumn {
+                get {
+                    return this.columnTipoConta;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ClienteColumn {
+                get {
+                    return this.columnCliente;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CentroCustoColumn {
+                get {
+                    return this.columnCentroCusto;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CategoriaColumn {
+                get {
+                    return this.columnCategoria;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CondicaoParcelamentoColumn {
+                get {
+                    return this.columnCondicaoParcelamento;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ParcelaColumn {
+                get {
+                    return this.columnParcela;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -2465,7 +2625,7 @@ namespace Fly01.Financeiro.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public ContasCentroCustoRow AddContasCentroCustoRow(string Status, string Descricao, string Valor, string FormaPagamento, string Parcelas, string Fornecedor, string Vencimento, string Numero, string Titulo) {
+            public ContasCentroCustoRow AddContasCentroCustoRow(string Status, string Descricao, double Valor, string FormaPagamento, string Parcelas, string Fornecedor, string Vencimento, string Numero, string Titulo, string TipoConta, string Cliente, string CentroCusto, string Categoria, string CondicaoParcelamento, string Parcela) {
                 ContasCentroCustoRow rowContasCentroCustoRow = ((ContasCentroCustoRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Status,
@@ -2476,7 +2636,13 @@ namespace Fly01.Financeiro.Reports {
                         Fornecedor,
                         Vencimento,
                         Numero,
-                        Titulo};
+                        Titulo,
+                        TipoConta,
+                        Cliente,
+                        CentroCusto,
+                        Categoria,
+                        CondicaoParcelamento,
+                        Parcela};
                 rowContasCentroCustoRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowContasCentroCustoRow);
                 return rowContasCentroCustoRow;
@@ -2508,6 +2674,12 @@ namespace Fly01.Financeiro.Reports {
                 this.columnVencimento = base.Columns["Vencimento"];
                 this.columnNumero = base.Columns["Numero"];
                 this.columnTitulo = base.Columns["Titulo"];
+                this.columnTipoConta = base.Columns["TipoConta"];
+                this.columnCliente = base.Columns["Cliente"];
+                this.columnCentroCusto = base.Columns["CentroCusto"];
+                this.columnCategoria = base.Columns["Categoria"];
+                this.columnCondicaoParcelamento = base.Columns["CondicaoParcelamento"];
+                this.columnParcela = base.Columns["Parcela"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2517,7 +2689,7 @@ namespace Fly01.Financeiro.Reports {
                 base.Columns.Add(this.columnStatus);
                 this.columnDescricao = new global::System.Data.DataColumn("Descricao", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDescricao);
-                this.columnValor = new global::System.Data.DataColumn("Valor", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnValor = new global::System.Data.DataColumn("Valor", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnValor);
                 this.columnFormaPagamento = new global::System.Data.DataColumn("FormaPagamento", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnFormaPagamento);
@@ -2531,6 +2703,18 @@ namespace Fly01.Financeiro.Reports {
                 base.Columns.Add(this.columnNumero);
                 this.columnTitulo = new global::System.Data.DataColumn("Titulo", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTitulo);
+                this.columnTipoConta = new global::System.Data.DataColumn("TipoConta", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTipoConta);
+                this.columnCliente = new global::System.Data.DataColumn("Cliente", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCliente);
+                this.columnCentroCusto = new global::System.Data.DataColumn("CentroCusto", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCentroCusto);
+                this.columnCategoria = new global::System.Data.DataColumn("Categoria", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCategoria);
+                this.columnCondicaoParcelamento = new global::System.Data.DataColumn("CondicaoParcelamento", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCondicaoParcelamento);
+                this.columnParcela = new global::System.Data.DataColumn("Parcela", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnParcela);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -3699,6 +3883,102 @@ namespace Fly01.Financeiro.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string Cliente {
+                get {
+                    try {
+                        return ((string)(this[this.tableListContas.ClienteColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Cliente\' in table \'ListContas\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableListContas.ClienteColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string CentroCusto {
+                get {
+                    try {
+                        return ((string)(this[this.tableListContas.CentroCustoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CentroCusto\' in table \'ListContas\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableListContas.CentroCustoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string Categoria {
+                get {
+                    try {
+                        return ((string)(this[this.tableListContas.CategoriaColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Categoria\' in table \'ListContas\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableListContas.CategoriaColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string CondicaoParcelamento {
+                get {
+                    try {
+                        return ((string)(this[this.tableListContas.CondicaoParcelamentoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CondicaoParcelamento\' in table \'ListContas\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableListContas.CondicaoParcelamentoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string Parcela {
+                get {
+                    try {
+                        return ((string)(this[this.tableListContas.ParcelaColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Parcela\' in table \'ListContas\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableListContas.ParcelaColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string TipoConta {
+                get {
+                    try {
+                        return ((string)(this[this.tableListContas.TipoContaColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TipoConta\' in table \'ListContas\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableListContas.TipoContaColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsIdNull() {
                 return this.IsNull(this.tableListContas.IdColumn);
             }
@@ -3815,6 +4095,78 @@ namespace Fly01.Financeiro.Reports {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetTituloNull() {
                 this[this.tableListContas.TituloColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsClienteNull() {
+                return this.IsNull(this.tableListContas.ClienteColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetClienteNull() {
+                this[this.tableListContas.ClienteColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCentroCustoNull() {
+                return this.IsNull(this.tableListContas.CentroCustoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCentroCustoNull() {
+                this[this.tableListContas.CentroCustoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCategoriaNull() {
+                return this.IsNull(this.tableListContas.CategoriaColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCategoriaNull() {
+                this[this.tableListContas.CategoriaColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCondicaoParcelamentoNull() {
+                return this.IsNull(this.tableListContas.CondicaoParcelamentoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCondicaoParcelamentoNull() {
+                this[this.tableListContas.CondicaoParcelamentoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsParcelaNull() {
+                return this.IsNull(this.tableListContas.ParcelaColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetParcelaNull() {
+                this[this.tableListContas.ParcelaColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsTipoContaNull() {
+                return this.IsNull(this.tableListContas.TipoContaColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetTipoContaNull() {
+                this[this.tableListContas.TipoContaColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -4161,10 +4513,10 @@ namespace Fly01.Financeiro.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string Valor {
+            public double Valor {
                 get {
                     try {
-                        return ((string)(this[this.tableContasCentroCusto.ValorColumn]));
+                        return ((double)(this[this.tableContasCentroCusto.ValorColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'Valor\' in table \'ContasCentroCusto\' is DBNull.", e);
@@ -4268,6 +4620,103 @@ namespace Fly01.Financeiro.Reports {
                 }
                 set {
                     this[this.tableContasCentroCusto.TituloColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string TipoConta {
+                get {
+                    try {
+                        return ((string)(this[this.tableContasCentroCusto.TipoContaColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TipoConta\' in table \'ContasCentroCusto\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableContasCentroCusto.TipoContaColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string Cliente {
+                get {
+                    try {
+                        return ((string)(this[this.tableContasCentroCusto.ClienteColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Cliente\' in table \'ContasCentroCusto\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableContasCentroCusto.ClienteColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string CentroCusto {
+                get {
+                    try {
+                        return ((string)(this[this.tableContasCentroCusto.CentroCustoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CentroCusto\' in table \'ContasCentroCusto\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableContasCentroCusto.CentroCustoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string Categoria {
+                get {
+                    try {
+                        return ((string)(this[this.tableContasCentroCusto.CategoriaColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Categoria\' in table \'ContasCentroCusto\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableContasCentroCusto.CategoriaColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string CondicaoParcelamento {
+                get {
+                    try {
+                        return ((string)(this[this.tableContasCentroCusto.CondicaoParcelamentoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CondicaoParcelamento\' in table \'ContasCentroCusto\' is DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tableContasCentroCusto.CondicaoParcelamentoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string Parcela {
+                get {
+                    try {
+                        return ((string)(this[this.tableContasCentroCusto.ParcelaColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Parcela\' in table \'ContasCentroCusto\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableContasCentroCusto.ParcelaColumn] = value;
                 }
             }
             
@@ -4377,6 +4826,78 @@ namespace Fly01.Financeiro.Reports {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetTituloNull() {
                 this[this.tableContasCentroCusto.TituloColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsTipoContaNull() {
+                return this.IsNull(this.tableContasCentroCusto.TipoContaColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetTipoContaNull() {
+                this[this.tableContasCentroCusto.TipoContaColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsClienteNull() {
+                return this.IsNull(this.tableContasCentroCusto.ClienteColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetClienteNull() {
+                this[this.tableContasCentroCusto.ClienteColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCentroCustoNull() {
+                return this.IsNull(this.tableContasCentroCusto.CentroCustoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCentroCustoNull() {
+                this[this.tableContasCentroCusto.CentroCustoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCategoriaNull() {
+                return this.IsNull(this.tableContasCentroCusto.CategoriaColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCategoriaNull() {
+                this[this.tableContasCentroCusto.CategoriaColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCondicaoParcelamentoNull() {
+                return this.IsNull(this.tableContasCentroCusto.CondicaoParcelamentoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCondicaoParcelamentoNull() {
+                this[this.tableContasCentroCusto.CondicaoParcelamentoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsParcelaNull() {
+                return this.IsNull(this.tableContasCentroCusto.ParcelaColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetParcelaNull() {
+                this[this.tableContasCentroCusto.ParcelaColumn] = global::System.Convert.DBNull;
             }
         }
         

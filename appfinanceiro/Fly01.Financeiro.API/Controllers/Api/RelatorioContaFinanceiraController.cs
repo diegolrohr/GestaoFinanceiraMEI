@@ -29,29 +29,47 @@ namespace Fly01.Financeiro.API.Controllers.Api
 
                 if (tipoConta == "ContaPagar")
                 {
-                     result = unitOfWork.ContaPagarBL.All.Where(x =>
-                        (dataInicial == null || x.DataVencimento >= dataInicial) &&  
-                        ( dataFinal == null || x.DataVencimento <= dataFinal) &&
-                        (dataEmissaoInicial == null || x.DataEmissao >= dataEmissaoInicial ) &&
-                        (dataEmissaoFinal == null || x.DataEmissao <= dataEmissaoFinal)&&
-                        (clienteId == null || x.PessoaId == clienteId) &&
-                        (formaPagamentoId  == null || x.FormaPagamentoId == formaPagamentoId) &&
-                        (condicaoParcelamentoId == null || x.CondicaoParcelamentoId == condicaoParcelamentoId) &&
-                        (categoriaId  == null || x.CategoriaId == categoriaId) &&
-                        (centroCustoId == null || x.CentroCustoId == centroCustoId)).ToList();
+                    result = unitOfWork.ContaPagarBL
+                       .AllIncluding(
+                           x => x.FormaPagamento.Descricao,
+                           x => x.Pessoa.Nome,
+                           x => x.CentroCusto.Descricao,
+                           x => x.CondicaoParcelamento.Descricao,
+                           x => x.Categoria.Descricao
+                       )
+                       .Where(x =>
+                           (dataInicial == null || x.DataVencimento >= dataInicial) &&
+                           (dataFinal == null || x.DataVencimento <= dataFinal) &&
+                           (dataEmissaoInicial == null || x.DataEmissao >= dataEmissaoInicial) &&
+                           (dataEmissaoFinal == null || x.DataEmissao <= dataEmissaoFinal) &&
+                           (clienteId == null || x.PessoaId == clienteId) &&
+                           (formaPagamentoId == null || x.FormaPagamentoId == formaPagamentoId) &&
+                           (condicaoParcelamentoId == null || x.CondicaoParcelamentoId == condicaoParcelamentoId) &&
+                           (categoriaId == null || x.CategoriaId == categoriaId) &&
+                           (centroCustoId == null || x.CentroCustoId == centroCustoId)
+                       ).ToList();
                 }
                 else
                 {
-                    result = unitOfWork.ContaReceberBL.All.Where(x =>
-                        (dataInicial == null || x.DataVencimento >= dataInicial) &&
-                        (dataFinal == null || x.DataVencimento <= dataFinal) &&
-                        (dataEmissaoInicial == null || x.DataEmissao >= dataEmissaoInicial) &&
-                        (dataEmissaoFinal == null || x.DataEmissao <= dataEmissaoFinal) &&
-                        (clienteId == null || x.PessoaId == clienteId) &&
-                        (formaPagamentoId == null || x.FormaPagamentoId == formaPagamentoId) &&
-                        (condicaoParcelamentoId == null || x.CondicaoParcelamentoId == condicaoParcelamentoId) &&
-                        (categoriaId == null || x.CategoriaId == categoriaId) &&
-                        (centroCustoId == null || x.CentroCustoId == centroCustoId)).ToList();
+                    result = unitOfWork.ContaReceberBL
+                        .AllIncluding(
+                            x => x.FormaPagamento.Descricao,
+                            x => x.Pessoa.Nome,
+                            x => x.CentroCusto.Descricao,
+                            x => x.CondicaoParcelamento.Descricao,
+                            x => x.Categoria.Descricao
+                        )
+                        .Where(x =>
+                            (dataInicial == null || x.DataVencimento >= dataInicial) &&
+                            (dataFinal == null || x.DataVencimento <= dataFinal) &&
+                            (dataEmissaoInicial == null || x.DataEmissao >= dataEmissaoInicial) &&
+                            (dataEmissaoFinal == null || x.DataEmissao <= dataEmissaoFinal) &&
+                            (clienteId == null || x.PessoaId == clienteId) &&
+                            (formaPagamentoId == null || x.FormaPagamentoId == formaPagamentoId) &&
+                            (condicaoParcelamentoId == null || x.CondicaoParcelamentoId == condicaoParcelamentoId) &&
+                            (categoriaId == null || x.CategoriaId == categoriaId) &&
+                            (centroCustoId == null || x.CentroCustoId == centroCustoId)
+                        ).ToList();
                 }
 
                 return Ok(new { value = result });

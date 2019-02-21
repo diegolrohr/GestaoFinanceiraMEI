@@ -56,6 +56,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Views\CnabItem\Functions\" />
+    <Folder Include="Views\RelatorioContaPagar\Functions\" />
+    <Folder Include="Views\RelatorioContaReceber\Functions\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\ArquivoRetornoController.cs" />
@@ -66,9 +68,9 @@
     <Compile Include="Controllers\Base\BoletoController.cs" />
     <Compile Include="Controllers\Base\ContaFinanceiraController.cs" />
     <Compile Include="Controllers\CentroCustoController.cs" />
-    <Compile Include="Controllers\RelatorioCentroCustoCRController.cs" />
-    <Compile Include="Controllers\RelatorioCentroCustoCPController.cs" />
-    <Compile Include="Controllers\RelatorioCentroCustoController.cs" />
+    <Compile Include="Controllers\RelatorioContaReceberController.cs" />
+    <Compile Include="Controllers\RelatorioContaPagarController.cs" />
+    <Compile Include="Controllers\RelatorioContaFinanceiraController.cs" />
     <Compile Include="Controllers\RelatorioController.cs" />
     <Compile Include="Controllers\MinhaContaController.cs" />
     <Compile Include="Controllers\CnabController.cs" />
@@ -433,8 +435,7 @@
     <Content Include="Views\ContaReceber\Functions\_fnHideSimulacaoCondicao.cshtml" />
     <Content Include="Views\ContaReceber\Functions\_fnSimulaParcelamento.cshtml" />
     <Content Include="Views\CondicaoParcelamento\Functions\_fnFormReadyOnDemandContaReceber.cshtml" />
-    <Content Include="Views\RelatorioCentroCustoCP\Functions\_fnImprimirCPCR.cshtml" />
-    <Content Include="Views\RelatorioCentroCustoCR\Functions\_fnImprimirCPCR.cshtml" />
+    <Content Include="Views\Shared\Functions\_fnImprimirRelatorioCPCR.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

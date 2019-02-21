@@ -1,8 +1,7 @@
 ﻿
 <script>
-    @Html.Partial("Functions/_fnImprimir");
-    debugger;
-    function fnImprimirCPCR() {
+    @Html.Partial("Functions/_fnImprimir");    
+    function fnImprimirRelatorioCPCR() {
 
         var countValues = 0;
         var valueItens = [$('input#dataEmissaoInicial').val(), $('input#dataEmissaoFinal').val(), $('input#dataInicial').val(), $('input#dataFinal').val(), $("#clienteId").val(), $("#formaPagamentoId").val(), $("#condicaoParcelamentoId").val(), $("#categoriaId").val(), $("#centroCustoId").val()];
@@ -14,7 +13,7 @@
         });
 
         if (countValues === 0)
-            $$$.toast("Inform ao menos um parametro para continuar.", 'error');
+            $$$.toast("Inform ao menos um parâmetro para continuar.", 'error');
         else {
             var dataEmissaoInicialDisplay = moment($('input#dataEmissaoInicial').val(), "DD/MM/YYYY");
             var dataEmissaoInicial = moment(dataEmissaoInicialDisplay).format('YYYY-MM-DD');
@@ -34,8 +33,8 @@
             var categoriaId = $("#categoriaId").val();
             var centroCustoId = $("#centroCustoId").val();
 
-            var tipoUrl = $('#tipoId').val() === "ContaPagar" ? "@Url.Action("Imprimir", "RelatorioCentroCustoCP")" : "@Url.Action("Imprimir", "RelatorioCentroCustoCR")";
-
+            var tipoUrl = "@Url.Action("Imprimir")";
+            console.log(tipoUrl);
             var url = tipoUrl+'?dataInicial=' + dataInicial +
                 "&dataFinal=" + dataFinal +
                 "&dataEmissaoInicial=" + dataEmissaoInicial +

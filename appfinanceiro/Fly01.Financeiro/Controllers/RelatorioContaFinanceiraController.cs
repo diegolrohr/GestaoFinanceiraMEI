@@ -1,14 +1,11 @@
 ﻿using Fly01.Core;
 using Fly01.Core.Config;
-using Fly01.Core.Entities.Domains.Enum;
-using Fly01.Core.Helpers;
 using Fly01.Core.Presentation;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.Financeiro.Models.Reports;
 using Fly01.Financeiro.Models.ViewModel;
-using Fly01.Financeiro.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;

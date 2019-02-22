@@ -78,7 +78,6 @@ namespace Fly01.Financeiro.Controllers
                 Id = "pessoaId",
                 Class = "col s12 m4",
                 Label = tipoConta == "ContaPagar" ? "Fornecedor" : "Cliente",
-                Required = true,
                 DataUrl = tipoConta == "ContaPagar" ? @Url.Action("Fornecedor", "AutoComplete") : Url.Action("Cliente", "AutoComplete"),
                 LabelId = "pessoaNome",
             }, tipoConta == "ContaPagar" ? ResourceHashConst.FinanceiroCadastrosFornecedores : ResourceHashConst.FinanceiroCadastrosClientes));

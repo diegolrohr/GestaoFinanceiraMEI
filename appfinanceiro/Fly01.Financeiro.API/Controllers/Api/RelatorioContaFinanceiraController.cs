@@ -30,7 +30,8 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 Numero = x.Numero,
                 CondicaoParcelamento = x.CondicaoParcelamento.Descricao,
                 Parcela = x.DescricaoParcela,
-                TipoConta = tipoReport
+                TipoConta = tipoReport, 
+                Emissao = x.DataEmissao
             };
         }
 

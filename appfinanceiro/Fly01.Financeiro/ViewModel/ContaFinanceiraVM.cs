@@ -119,5 +119,8 @@ namespace Fly01.Financeiro.ViewModel
 
         [JsonProperty("centroCusto")]
         public virtual CentroCustoVM CentroCusto { get; set; }
+
+        [JsonIgnore]
+        public string Titulo { get; set; }
     }
 }

@@ -10,7 +10,7 @@
 
         public string Cnpj { get; set; }
 
-        public string CodigoIBGE { get; set; }
+        public string CodigoIBGECidade { get; set; }
 
         public string CodigoPais { get; set; }
 

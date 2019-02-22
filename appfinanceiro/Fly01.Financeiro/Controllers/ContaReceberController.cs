@@ -31,7 +31,7 @@ namespace Fly01.Financeiro.Controllers
     {
         public ContaReceberController()
         {
-            ExpandProperties = "condicaoParcelamento($select=descricao,qtdParcelas,condicoesParcelamento),pessoa($select=nome),categoria($select=descricao),formaPagamento($select=descricao),centroCusto";
+            ExpandProperties = "condicaoParcelamento($select=descricao,qtdParcelas,condicoesParcelamento),pessoa($select=nome),categoria($select=descricao),formaPagamento($select=descricao,tipoFormaPagamento),centroCusto";
         }
 
         public override ActionResult ImprimirRecibo(Guid id)

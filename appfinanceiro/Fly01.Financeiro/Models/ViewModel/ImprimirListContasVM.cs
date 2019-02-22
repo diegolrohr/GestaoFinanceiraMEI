@@ -24,6 +24,8 @@ namespace Fly01.Financeiro.Models.ViewModel
         public string Cliente { get; set; }
         [JsonProperty("vencimento")]
         public DateTime? Vencimento { get; set; }
+        [JsonProperty("emissao")]
+        public DateTime? Emissao { get; set; }
         [JsonProperty("titulo")]
         public string Titulo { get; set; }
         [JsonProperty("centroCusto")]

@@ -2435,6 +2435,8 @@ namespace Fly01.Financeiro.Reports {
             
             private global::System.Data.DataColumn columnParcela;
             
+            private global::System.Data.DataColumn columnEmissao;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public ContasCentroCustoDataTable() {
@@ -2590,6 +2592,14 @@ namespace Fly01.Financeiro.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn EmissaoColumn {
+                get {
+                    return this.columnEmissao;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -2625,7 +2635,23 @@ namespace Fly01.Financeiro.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public ContasCentroCustoRow AddContasCentroCustoRow(string Status, string Descricao, double Valor, string FormaPagamento, string Parcelas, string Fornecedor, string Vencimento, string Numero, string Titulo, string TipoConta, string Cliente, string CentroCusto, string Categoria, string CondicaoParcelamento, string Parcela) {
+            public ContasCentroCustoRow AddContasCentroCustoRow(
+                        string Status, 
+                        string Descricao, 
+                        double Valor, 
+                        string FormaPagamento, 
+                        string Parcelas, 
+                        string Fornecedor, 
+                        string Vencimento, 
+                        string Numero, 
+                        string Titulo, 
+                        string TipoConta, 
+                        string Cliente, 
+                        string CentroCusto, 
+                        string Categoria, 
+                        string CondicaoParcelamento, 
+                        string Parcela, 
+                        string Emissao) {
                 ContasCentroCustoRow rowContasCentroCustoRow = ((ContasCentroCustoRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Status,
@@ -2642,7 +2668,8 @@ namespace Fly01.Financeiro.Reports {
                         CentroCusto,
                         Categoria,
                         CondicaoParcelamento,
-                        Parcela};
+                        Parcela,
+                        Emissao};
                 rowContasCentroCustoRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowContasCentroCustoRow);
                 return rowContasCentroCustoRow;
@@ -2680,6 +2707,7 @@ namespace Fly01.Financeiro.Reports {
                 this.columnCategoria = base.Columns["Categoria"];
                 this.columnCondicaoParcelamento = base.Columns["CondicaoParcelamento"];
                 this.columnParcela = base.Columns["Parcela"];
+                this.columnEmissao = base.Columns["Emissao"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2715,6 +2743,8 @@ namespace Fly01.Financeiro.Reports {
                 base.Columns.Add(this.columnCondicaoParcelamento);
                 this.columnParcela = new global::System.Data.DataColumn("Parcela", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnParcela);
+                this.columnEmissao = new global::System.Data.DataColumn("Emissao", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnEmissao);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -4722,6 +4752,22 @@ namespace Fly01.Financeiro.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string Emissao {
+                get {
+                    try {
+                        return ((string)(this[this.tableContasCentroCusto.EmissaoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Emissao\' in table \'ContasCentroCusto\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableContasCentroCusto.EmissaoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsStatusNull() {
                 return this.IsNull(this.tableContasCentroCusto.StatusColumn);
             }
@@ -4898,6 +4944,18 @@ namespace Fly01.Financeiro.Reports {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetParcelaNull() {
                 this[this.tableContasCentroCusto.ParcelaColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsEmissaoNull() {
+                return this.IsNull(this.tableContasCentroCusto.EmissaoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetEmissaoNull() {
+                this[this.tableContasCentroCusto.EmissaoColumn] = global::System.Convert.DBNull;
             }
         }
         

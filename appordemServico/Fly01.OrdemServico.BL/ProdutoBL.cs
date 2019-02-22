@@ -40,7 +40,7 @@ namespace Fly01.OrdemServico.BL
         {
             if (!entity.UnidadeMedidaId.HasValue && !string.IsNullOrEmpty(entity.AbreviacaoUnidadeMedida))
             {
-                var dadosUnidadeMedida = UnidadeMedidaBL.All.FirstOrDefault(x => x.Abreviacao == entity.AbreviacaoUnidadeMedida);
+                var dadosUnidadeMedida = UnidadeMedidaBL.All.AsNoTracking().FirstOrDefault(x => x.Abreviacao == entity.AbreviacaoUnidadeMedida);
                 if (dadosUnidadeMedida != null)
                     entity.UnidadeMedidaId = dadosUnidadeMedida.Id;
             }
@@ -50,7 +50,7 @@ namespace Fly01.OrdemServico.BL
         {
             if (!entity.CestId.HasValue && !string.IsNullOrEmpty(entity.CodigoCest) && entity.NcmId.HasValue)
             {
-                var dadosCest = CestBL.All.FirstOrDefault(x => x.Codigo == entity.CodigoCest && x.NcmId == entity.NcmId);
+                var dadosCest = CestBL.All.AsNoTracking().FirstOrDefault(x => x.Codigo == entity.CodigoCest && x.NcmId == entity.NcmId);
                 if (dadosCest != null)
                     entity.CestId = dadosCest.Id;
             }
@@ -60,7 +60,7 @@ namespace Fly01.OrdemServico.BL
         {
             if (!entity.EnquadramentoLegalIPIId.HasValue && !string.IsNullOrEmpty(entity.CodigoEnquadramentoLegalIPI))
             {
-                var dadosEnquadramentoLegalIPI = EnquadramentoLegalIPIBL.All.FirstOrDefault(x => x.Codigo == entity.CodigoEnquadramentoLegalIPI);
+                var dadosEnquadramentoLegalIPI = EnquadramentoLegalIPIBL.All.AsNoTracking().FirstOrDefault(x => x.Codigo == entity.CodigoEnquadramentoLegalIPI);
                 if (dadosEnquadramentoLegalIPI != null)
                     entity.EnquadramentoLegalIPIId = dadosEnquadramentoLegalIPI.Id;
             }

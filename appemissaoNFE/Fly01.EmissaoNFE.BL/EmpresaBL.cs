@@ -29,14 +29,15 @@ namespace Fly01.EmissaoNFE.BL
 
         public override void ValidaModel(EmpresaVM entity)
         {
-            entity.Fail(entity.CodigoIBGE == null, CodigoIBGERequerido);
-            entity.Fail(entity.Endereco == null, EnderecoRequerido);
-            entity.Fail(entity.NIRE == null, NIRERequerido);
-            entity.Fail(entity.Nome == null, NomeRequerido);
-            entity.Fail(entity.Cpf == null && entity.Cnpj == null, CpfOuCnpjRequeridos);
-            entity.Fail(entity.Cpf != null && (!ValidaCPF(entity.Cpf) | entity.Cpf.Length != 11), CpfInvalido);
-            entity.Fail(entity.Cnpj != null && (!ValidaCNPJ(entity.Cnpj) | entity.Cnpj.Length != 14), CnpjInvalido);
-            entity.Fail(entity.Cep == null, CEPRequerido);
+            entity.Fail(string.IsNullOrEmpty(entity.CodigoIBGECidade), CodigoIBGERequerido);
+            entity.Fail(string.IsNullOrEmpty(entity.Endereco), EnderecoRequerido);
+            entity.Fail(string.IsNullOrEmpty(entity.NIRE), NIRERequerido);
+            entity.Fail(string.IsNullOrEmpty(entity.Nome), NomeRequerido);
+            entity.Fail(string.IsNullOrEmpty(entity.UF), UFRequerida);
+            entity.Fail(string.IsNullOrEmpty(entity.Cpf) && string.IsNullOrEmpty(entity.Cnpj), CpfOuCnpjRequeridos);
+            entity.Fail(!string.IsNullOrEmpty(entity.Cpf) && (!ValidaCPF(entity.Cpf) | entity.Cpf.Length != 11), CpfInvalido);
+            entity.Fail(!string.IsNullOrEmpty(entity.Cnpj) && (!ValidaCNPJ(entity.Cnpj) | entity.Cnpj.Length != 14), CnpjInvalido);
+            entity.Fail(string.IsNullOrEmpty(entity.Cep), CEPRequerido);
             entity.Fail(entity.Cep != null && !ValidaCEP(entity.Cep), CEPInvalido);
             entity.Fail(entity.Email != null && !ValidaEmail(entity.Email), EmailInvalido);
             if(entity.InscricaoEstadual != null)
@@ -67,20 +68,20 @@ namespace Fly01.EmissaoNFE.BL
             base.ValidaModel(entity);
         }
 
-        public static Error CodigoIBGERequerido = new Error("Código IBGE é um campo obrigatório.", "CodigoIBGE");
-        public static Error EnderecoRequerido = new Error("Endereço é um campo obrigatório.", "Endereco");
-        public static Error NIRERequerido = new Error("NIRE é um campo obrigatório.", "NIRE");
-        public static Error NomeRequerido = new Error("Nome é um campo obrigatório.", "Nome");
-        public static Error CpfOuCnpjRequeridos = new Error("CPF ou CNPJ precisa ser informado.", "Cnpj");
-        public static Error CpfInvalido = new Error("CPF inválido.", "Cpf");
-        public static Error CnpjInvalido = new Error("CNPJ inválido.", "Cnpj");
-        public static Error CEPRequerido = new Error("CEP é um campo obrigatório.", "Cep");
-        public static Error CEPInvalido = new Error("CEP inválido", "Cep");
-        public static Error EmailInvalido = new Error("E-mail inválido.", "Email");
+        public static Error CodigoIBGERequerido = new Error("Código IBGE da cidade da empresa é um campo obrigatório.", "CodigoIBGECidade");
+        public static Error EnderecoRequerido = new Error("Endereço da empresa é um campo obrigatório.", "Endereco");
+        public static Error NIRERequerido = new Error("NIRE da empresa é um campo obrigatório.", "NIRE");
+        public static Error NomeRequerido = new Error("Nome da empresa é um campo obrigatório.", "Nome");
+        public static Error CpfOuCnpjRequeridos = new Error("CPF ou CNPJ da empresa precisa ser informado.", "Cnpj");
+        public static Error CpfInvalido = new Error("CPF da empresa inválido.", "Cpf");
+        public static Error CnpjInvalido = new Error("CNPJ da empresa inválido.", "Cnpj");
+        public static Error CEPRequerido = new Error("CEP da empresa é um campo obrigatório.", "Cep");
+        public static Error CEPInvalido = new Error("CEP da empresa inválido", "Cep");
+        public static Error EmailInvalido = new Error("E-mail da empresa inválido.", "Email");
         public static Error IEDigitoVerificador = new Error("Digito verificador inválido (para este estado).", "InscricaoEstadual");
         public static Error IEQuantidadeDeDigitos = new Error("Quantidade de dígitos inválido (para este estado).", "InscricaoEstadual");
         public static Error IEInvalida = new Error("Inscrição Estadual inválida (para este estado).", "InscricaoEstadual");
-        public static Error UFInvalida = new Error("Sigla da UF inválida.", "UF");
+        public static Error UFInvalida = new Error("Sigla da UF da empresa inválida.", "UF");
         public static Error UFRequerida = new Error("UF é um campo obrigatório.", "UF");
 
 

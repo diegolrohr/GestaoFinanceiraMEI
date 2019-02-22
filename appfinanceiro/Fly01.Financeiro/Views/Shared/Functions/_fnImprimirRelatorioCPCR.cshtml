@@ -4,7 +4,7 @@
     function fnImprimirRelatorioCPCR() {
 
         var countValues = 0;
-        var valueItens = [$('input#dataEmissaoInicial').val(), $('input#dataEmissaoFinal').val(), $('input#dataInicial').val(), $('input#dataFinal').val(), $("#clienteId").val(), $("#formaPagamentoId").val(), $("#condicaoParcelamentoId").val(), $("#categoriaId").val(), $("#centroCustoId").val()];
+        var valueItens = [$('input#dataEmissaoInicial').val(), $('input#dataEmissaoFinal').val(), $('input#dataInicial').val(), $('input#dataFinal').val(), $("#clienteId").val(), $("#formaPagamentoId").val(), $("#condicaoParcelamentoId").val(), $("#categoriaId").val(), $("#centroCustoId").val(), $('#descricao').val()];
         valueItens.forEach(function (item) {
             if (item !== "") {
                 countValues ++;
@@ -27,7 +27,8 @@
             var dataFinalDisplay = moment($('input#dataFinal').val(), "DD/MM/YYYY");
             var dataFinal = moment(dataFinalDisplay).format('YYYY-MM-DD');
 
-            var clienteId = $("#clienteId").val();
+            var descricao = $('#descricao').val();
+            var pessoaId = $("#pessoaId").val();
             var formaPagamentoId = $("#formaPagamentoId").val();
             var condicaoParcelamentoId = $("#condicaoParcelamentoId").val();
             var categoriaId = $("#categoriaId").val();
@@ -39,11 +40,12 @@
                 "&dataFinal=" + dataFinal +
                 "&dataEmissaoInicial=" + dataEmissaoInicial +
                 "&dataEmissaoFinal=" + dataEmissaoFinal +
+                "&pessoaId=" + pessoaId + 
                 "&formaPagamentoId=" + formaPagamentoId +
                 "&condicaoParcelamentoId=" + condicaoParcelamentoId +
                 "&categoriaId=" + categoriaId +
                 "&centroCustoId=" + centroCustoId +
-                "&clienteId=" + clienteId;
+                "&descricao=" + descricao;
 
             fnImprimir(url);
         }

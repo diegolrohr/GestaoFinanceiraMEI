@@ -1,5 +1,6 @@
 ﻿using Fly01.Core;
 using Fly01.Core.Config;
+using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Presentation;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
@@ -72,14 +73,16 @@ namespace Fly01.Financeiro.Controllers
 
             config.Elements.Add(new InputHiddenUI { Id = "tipoId", Value = tipoConta });
             config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12 m4", Label = "Descrição", MaxLength = 200 });
-            config.Elements.Add(new AutoCompleteUI
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
-                Id = "clienteId",
+                Id = "pessoaId",
                 Class = "col s12 m4",
-                Label = "Cliente",
-                DataUrl = Url.Action("Cliente", "AutoComplete"),
-                LabelId = "clienteNome"
-            });
+                Label = tipoConta == "ContaPagar" ? "Fornecedor" : "Cliente",
+                Required = true,
+                DataUrl = tipoConta == "ContaPagar" ? @Url.Action("Fornecedor", "AutoComplete") : Url.Action("Cliente", "AutoComplete"),
+                LabelId = "pessoaNome",
+            }, tipoConta == "ContaPagar" ? ResourceHashConst.FinanceiroCadastrosFornecedores : ResourceHashConst.FinanceiroCadastrosClientes));
+
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "formaPagamentoId",
@@ -132,14 +135,15 @@ namespace Fly01.Financeiro.Controllers
                 DataUrl = Url.Action("CondicaoParcelamento", "AutoComplete"),
                 LabelId = "condicaoParcelamentoDescricao"
             });
-            config.Elements.Add(new AutoCompleteUI
+
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "categoriaId",
                 Class = "col s12 m4",
                 Label = "Categoria Financeira",
-                DataUrl = @Url.Action("Categoria", "AutoComplete"),
-                LabelId = "categoriaDescricao"
-            });
+                DataUrl = tipoConta == "ContaPagar" ? @Url.Action("CategoriaCP", "AutoComplete") : @Url.Action("CategoriaCR", "AutoComplete"),
+                LabelId = "categoriaDescricao",
+            }, ResourceHashConst.FinanceiroCadastrosCategoria));
 
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
@@ -171,11 +175,12 @@ namespace Fly01.Financeiro.Controllers
                                      DateTime? dataFinal,
                                      DateTime? dataEmissaoInicial,
                                      DateTime? dataEmissaoFinal,
-                                     Guid? clienteId,
+                                     Guid? pessoaId,
                                      Guid? formaPagamentoId,
                                      Guid? condicaoParcelamentoId,
                                      Guid? categoriaId,
-                                     Guid? centroCustoId)
+                                     Guid? centroCustoId,
+                                     string descricao)
         {
             var queryString = new Dictionary<string, string>
             {
@@ -183,12 +188,13 @@ namespace Fly01.Financeiro.Controllers
                 { "dataFinal", dataFinal != null ? dataFinal.Value.ToString("yyyy-MM-dd") : ""},
                 { "dataEmissaoInicial", dataEmissaoInicial != null ? dataEmissaoInicial.Value.ToString("yyyy-MM-dd") : ""},
                 { "dataEmissaoFinal", dataEmissaoFinal != null ? dataEmissaoFinal.Value.ToString("yyyy-MM-dd") : ""},
-                { "clienteId", clienteId.ToString()},
+                { "pessoaId", pessoaId.ToString()},
                 { "formaPagamentoId", formaPagamentoId.ToString()},
                 { "condicaoParcelamentoId", condicaoParcelamentoId.ToString()},
                 { "categoriaId", categoriaId.ToString()},
                 { "centroCustoId", centroCustoId.ToString()},
                 { "tipoConta", tipoConta.ToString()},
+                { "descricao", descricao},
             };
 
             List<ImprimirListContasVM> reportItens = GetContaFinanceira(queryString, tipoConta);
@@ -196,7 +202,7 @@ namespace Fly01.Financeiro.Controllers
             var reportViewer = new WebReportViewer<ImprimirListContasVM>(ReportListContasCentroCusto.Instance);
             return File(reportViewer.Print(reportItens, SessionManager.Current.UserData.PlatformUrl), "application/pdf");
         }
-
+        
         private static List<ImprimirListContasVM> GetContaFinanceira(Dictionary<string, string> queryString, string tipo)
         {
             try

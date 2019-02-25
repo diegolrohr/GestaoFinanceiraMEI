@@ -672,7 +672,7 @@ namespace Fly01.Compras.BL
         {
             if (!entity.EstadoPlacaVeiculoId.HasValue && !string.IsNullOrEmpty(entity.EstadoCodigoIbge))
             {
-                var dadosEstado = EstadoBL.All.FirstOrDefault(x => x.CodigoIbge == entity.EstadoCodigoIbge);
+                var dadosEstado = EstadoBL.All.AsNoTracking().FirstOrDefault(x => x.CodigoIbge == entity.EstadoCodigoIbge);
                 if (dadosEstado != null)
                 {
                     entity.EstadoPlacaVeiculoId = dadosEstado.Id;

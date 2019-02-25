@@ -3,6 +3,7 @@ using Fly01.Core.BL;
 using Fly01.Core.Notifications;
 using Fly01.Core.Entities.Domains.Commons;
 using System;
+using System.Data.Entity;
 
 namespace Fly01.Compras.BL
 {
@@ -34,7 +35,7 @@ namespace Fly01.Compras.BL
         {
             if ((entity.EstadoOrigemId == null || entity.EstadoOrigemId == default(Guid)) && !string.IsNullOrEmpty(entity.EstadoOrigemCodigoIbge))
             {
-                var dadosEstadoOrigem = EstadoBL.All.FirstOrDefault(x => x.CodigoIbge == entity.EstadoOrigemCodigoIbge);
+                var dadosEstadoOrigem = EstadoBL.All.AsNoTracking().FirstOrDefault(x => x.CodigoIbge == entity.EstadoOrigemCodigoIbge);
                 if (dadosEstadoOrigem != null)
                 {
                     entity.EstadoOrigemId = dadosEstadoOrigem.Id;
@@ -42,7 +43,7 @@ namespace Fly01.Compras.BL
             }
             if ((entity.EstadoDestinoId == null || entity.EstadoDestinoId == default(Guid)) && !string.IsNullOrEmpty(entity.EstadoDestinoCodigoIbge))
             {
-                var dadosEstadoDestino = EstadoBL.All.FirstOrDefault(x => x.CodigoIbge == entity.EstadoDestinoCodigoIbge);
+                var dadosEstadoDestino = EstadoBL.All.AsNoTracking().FirstOrDefault(x => x.CodigoIbge == entity.EstadoDestinoCodigoIbge);
                 if (dadosEstadoDestino != null)
                 {
                     entity.EstadoDestinoId = dadosEstadoDestino.Id;
@@ -54,7 +55,7 @@ namespace Fly01.Compras.BL
         {
             if ((entity.NcmId == null || entity.NcmId == default(Guid)) && !string.IsNullOrEmpty(entity.CodigoNcm))
             {
-                var dadosNcm = NcmBL.All.FirstOrDefault(x => x.Codigo == entity.CodigoNcm);
+                var dadosNcm = NcmBL.All.AsNoTracking().FirstOrDefault(x => x.Codigo == entity.CodigoNcm);
                 if (dadosNcm != null)
                     entity.NcmId = dadosNcm.Id;
             }
@@ -64,7 +65,7 @@ namespace Fly01.Compras.BL
         {
             if (entity.CestId.HasValue && !string.IsNullOrEmpty(entity.CodigoCest))
             {
-                var dadosCest = CestBL.All.FirstOrDefault(x => x.Codigo == entity.CodigoCest);
+                var dadosCest = CestBL.All.AsNoTracking().FirstOrDefault(x => x.Codigo == entity.CodigoCest);
                 if (dadosCest != null)
                     entity.CestId = dadosCest.Id;
             }

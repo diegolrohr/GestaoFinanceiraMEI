@@ -8,6 +8,7 @@ using Fly01.Core.BL;
 using Fly01.Core.Notifications;
 using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Entities.Domains.Enum;
+using System.Data.Entity;
 
 namespace Fly01.Financeiro.BL
 {
@@ -147,7 +148,7 @@ namespace Fly01.Financeiro.BL
         {
             if (!entity.CidadeId.HasValue && !entity.EstadoId.HasValue && !string.IsNullOrEmpty(entity.CidadeCodigoIbge))
             {
-                var dadosCidade = CidadeBL.All.FirstOrDefault(x => x.CodigoIbge == entity.CidadeCodigoIbge);
+                var dadosCidade = CidadeBL.All.AsNoTracking().FirstOrDefault(x => x.CodigoIbge == entity.CidadeCodigoIbge);
                 if (dadosCidade != null)
                 {
                     entity.EstadoId = dadosCidade.EstadoId;
@@ -156,7 +157,7 @@ namespace Fly01.Financeiro.BL
             }
             else if (!entity.CidadeId.HasValue && !entity.EstadoId.HasValue && !string.IsNullOrEmpty(entity.EstadoCodigoIbge))
             {
-                var dadosEstado = EstadoBL.All.FirstOrDefault(x => x.CodigoIbge == entity.EstadoCodigoIbge);
+                var dadosEstado = EstadoBL.All.AsNoTracking().FirstOrDefault(x => x.CodigoIbge == entity.EstadoCodigoIbge);
                 if (dadosEstado != null)
                 {
                     entity.EstadoId = dadosEstado.Id;
@@ -231,7 +232,7 @@ namespace Fly01.Financeiro.BL
 
         public Guid BuscaPessoaNome(string nomePessoa, bool cliente, bool fornecedor)
         {
-            var pessoaPadrao = All.FirstOrDefault(x => x.Nome == nomePessoa && x.Cliente == cliente && x.Fornecedor == fornecedor && x.Ativo == true && x.RegistroFixo == true);
+            var pessoaPadrao = All.AsNoTracking().FirstOrDefault(x => x.Nome == nomePessoa && x.Cliente == cliente && x.Fornecedor == fornecedor && x.Ativo == true && x.RegistroFixo == true);
 
             //Se Pessoa nao existe, insere
             if (pessoaPadrao == null)

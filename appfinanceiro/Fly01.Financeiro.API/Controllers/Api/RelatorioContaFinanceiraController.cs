@@ -49,7 +49,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                              string descricao)
         {
 
-            Func<ContaFinanceira, bool> filterPredicate = x => (
+            Func<ContaFinanceira, bool> filterPredicate = (x => (
                 ((!dataInicial.HasValue) || (x.DataVencimento >= dataInicial)) &&
                 ((!dataFinal.HasValue) || (x.DataVencimento <= dataFinal)) &&
                 ((!dataEmissaoInicial.HasValue) || (x.DataEmissao >= dataEmissaoInicial)) &&
@@ -58,8 +58,8 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 ((!formaPagamentoId.HasValue) || (x.FormaPagamentoId == formaPagamentoId)) &&
                 ((!condicaoParcelamentoId.HasValue) || (x.CondicaoParcelamentoId == condicaoParcelamentoId)) &&
                 ((!categoriaId.HasValue) || (x.CategoriaId == categoriaId)) &&
-                ((!(descricao != "")) || (x.Descricao == descricao)) &&
-                ((!centroCustoId.HasValue) || (x.CentroCustoId == centroCustoId))
+                ((!(descricao != null)) || (x.Descricao == descricao)) &&
+                ((!centroCustoId.HasValue) || (x.CentroCustoId == centroCustoId)))
             );
 
             using (var unitOfWork = new UnitOfWork(ContextInitialize))
@@ -75,8 +75,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                            x => x.CentroCusto,
                            x => x.CondicaoParcelamento,
                            x => x.Categoria
-                       )
-                       .Where(filterPredicate)
+                       ).Where(filterPredicate)
                        .Select(GetDisplayData(tipoConta)).ToList();
                 }
                 else

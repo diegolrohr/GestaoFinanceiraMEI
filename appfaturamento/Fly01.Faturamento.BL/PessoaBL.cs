@@ -7,6 +7,7 @@ using Fly01.Core.ValueObjects;
 using Fly01.Core.BL;
 using Fly01.Core.Notifications;
 using Fly01.Core.Entities.Domains.Commons;
+using System.Data.Entity;
 
 namespace Fly01.Faturamento.BL
 {
@@ -146,7 +147,7 @@ namespace Fly01.Faturamento.BL
         {
             if (!entity.CidadeId.HasValue && !entity.EstadoId.HasValue && !string.IsNullOrEmpty(entity.CidadeCodigoIbge))
             {
-                var dadosCidade = CidadeBL.All.FirstOrDefault(x => x.CodigoIbge == entity.CidadeCodigoIbge);
+                var dadosCidade = CidadeBL.All.AsNoTracking().FirstOrDefault(x => x.CodigoIbge == entity.CidadeCodigoIbge);
                 if (dadosCidade != null)
                 {
                     entity.EstadoId = dadosCidade.EstadoId;
@@ -155,7 +156,7 @@ namespace Fly01.Faturamento.BL
             }
             else if (!entity.CidadeId.HasValue && !entity.EstadoId.HasValue && !string.IsNullOrEmpty(entity.EstadoCodigoIbge))
             {
-                var dadosEstado = EstadoBL.All.FirstOrDefault(x => x.CodigoIbge == entity.EstadoCodigoIbge);
+                var dadosEstado = EstadoBL.All.AsNoTracking().FirstOrDefault(x => x.CodigoIbge == entity.EstadoCodigoIbge);
                 if (dadosEstado != null)
                 {
                     entity.EstadoId = dadosEstado.Id;

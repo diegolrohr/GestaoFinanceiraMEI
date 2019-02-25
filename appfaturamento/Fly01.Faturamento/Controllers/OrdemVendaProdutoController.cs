@@ -280,7 +280,7 @@ namespace Fly01.Faturamento.Controllers
                 var response = RestHelper.ExecuteGetRequest<ParametroTributarioVM>("parametrotributario");
 
                 return Json(
-                    new { success = true, imposto = response},
+                    new { success = true, imposto = response.Data.FirstOrDefault() },
                     JsonRequestBehavior.AllowGet
                 );
             }

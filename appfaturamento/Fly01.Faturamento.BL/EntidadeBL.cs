@@ -44,7 +44,7 @@ namespace Fly01.Faturamento.BL
                 Nome = empresa.RazaoSocial,
                 NIRE = empresa.Nire,
                 Municipio = empresa.Cidade?.Nome,
-                CodigoIBGE = empresa.Cidade?.CodigoIbge,
+                CodigoIBGECidade = empresa.Cidade?.CodigoIbge,
                 InscricaoMunicipal = empresa.InscricaoMunicipal,
                 InscricaoEstadual = empresa.InscricaoEstadual,
                 Fone = empresa.Telefone,

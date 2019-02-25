@@ -5,6 +5,7 @@ using Fly01.Financeiro.Models.ViewModel;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Collections.Generic;
 using System.Web.Http;
 
 namespace Fly01.Financeiro.API.Controllers.Api
@@ -12,7 +13,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
     [RoutePrefix("api/relatorioContaFinanceira")]
     public class RelatorioContaFinanceiraController : ApiBaseController
     {
-        private Func<ContaFinanceira, object> GetDisplayData(string tipoReport)
+        private Func<ContaFinanceira, ImprimirListContasVM> GetDisplayData(string tipoReport)
         {
             return x => new ImprimirListContasVM()
             {
@@ -30,7 +31,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 Numero = x.Numero,
                 CondicaoParcelamento = x.CondicaoParcelamento.Descricao,
                 Parcela = x.DescricaoParcela,
-                TipoConta = tipoReport, 
+                TipoConta = tipoReport,
                 Emissao = x.DataEmissao
             };
         }
@@ -45,7 +46,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                              Guid? condicaoParcelamentoId,
                              Guid? categoriaId,
                              Guid? centroCustoId,
-                             string tipoConta, 
+                             string tipoConta,
                              string descricao)
         {
 
@@ -64,11 +65,9 @@ namespace Fly01.Financeiro.API.Controllers.Api
 
             using (var unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                dynamic result;
-
                 if (tipoConta == "ContaPagar")
                 {
-                    result = unitOfWork.ContaPagarBL
+                    List<ImprimirListContasVM> result = unitOfWork.ContaPagarBL
                        .AllIncluding(
                            x => x.FormaPagamento,
                            x => x.Pessoa,
@@ -76,23 +75,27 @@ namespace Fly01.Financeiro.API.Controllers.Api
                            x => x.CondicaoParcelamento,
                            x => x.Categoria
                        ).Where(filterPredicate)
+                       .Take(2000)
                        .Select(GetDisplayData(tipoConta)).ToList();
+
+                    return Ok(new { count = result.Count, value = result });
                 }
                 else
                 {
-                    result = unitOfWork.ContaReceberBL
-                        .AllIncluding(
-                            x => x.FormaPagamento,
-                            x => x.Pessoa,
-                            x => x.CentroCusto,
-                            x => x.CondicaoParcelamento,
-                            x => x.Categoria
-                        )
-                        .Where(filterPredicate)
-                        .Select(GetDisplayData(tipoConta)).ToList();
-                }
+                    List<ImprimirListContasVM> result = unitOfWork.ContaReceberBL
+                    .AllIncluding(
+                        x => x.FormaPagamento,
+                        x => x.Pessoa,
+                        x => x.CentroCusto,
+                        x => x.CondicaoParcelamento,
+                        x => x.Categoria
+                    )
+                    .Where(filterPredicate)
+                    .Take(2000)
+                    .Select(GetDisplayData(tipoConta)).ToList();
 
-                return Ok(new { value = result });
+                    return Ok(new { count = result.Count, value = result });
+                }
             }
         }
     }

@@ -9,6 +9,7 @@ using Fly01.Financeiro.Models.Reports;
 using Fly01.Financeiro.Models.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
+using Fly01.uiJS.Classes.Helpers;
 using Fly01.uiJS.Defaults;
 using Newtonsoft.Json;
 using System;
@@ -153,6 +154,15 @@ namespace Fly01.Financeiro.Controllers
                 LabelId = "centroCustoDescricao",
             }, ResourceHashConst.FinanceiroCadastrosCentroCustos));
 
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "descricao",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Exibido o limite de até 2000 registros do resultado da busca. Se necessário aprimorar o resultado, informe todos os parâmetros possíveis."
+                }
+            });
+
             cfg.Content.Add(config);
             return cfg;
         }
@@ -208,7 +218,7 @@ namespace Fly01.Financeiro.Controllers
             {
                 var result = new List<ImprimirListContasVM>();
                 var response = RestHelper.ExecuteGetRequest<ResultBase<ImprimirListContasVM>>("relatorioContaFinanceira", queryString);
-                result.AddRange(response.Data?.Cast<ImprimirListContasVM>().ToList());
+                result.AddRange(response?.Data);
                 return result;
             }
             catch (Exception ex)

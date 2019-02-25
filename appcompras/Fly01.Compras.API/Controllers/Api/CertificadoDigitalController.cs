@@ -45,10 +45,7 @@ namespace Fly01.Compras.API.Controllers.Api
 
                 try
                 {
-                    Parallel.Invoke(() =>
-                    {
-                        EnviaCertificadoTSS(entity);
-                    });
+                    EnviaCertificadoTSS(entity);
 
                     await UnitSave();
 
@@ -87,8 +84,8 @@ namespace Fly01.Compras.API.Controllers.Api
                     if (unitOfWork.CertificadoDigitalBL.CertificadoAtualValido() != null)
                         throw new Exception("Já existe um certificado cadastrado para esta plataforma.");
 
-                    entity = unitOfWork.CertificadoDigitalBL.ProcessEntity(entity);
                     entity.CertificadoValidoNFS = true;
+                    EnviaCertificadoTSS(entity);
 
                     return await base.Post(entity);
                 }

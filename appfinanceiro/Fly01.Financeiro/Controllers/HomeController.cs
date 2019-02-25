@@ -261,7 +261,8 @@ namespace Fly01.Financeiro.Controllers
                         new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroExtrato, Label = "Extrato", OnClick = @Url.Action("List", "Extrato")},
                         new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroContasPagar, Label = "Contas a Pagar", OnClick = @Url.Action("List", "ContaPagar")},
                         new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroContasReceber, Label = "Contas a Receber", OnClick = @Url.Action("List", "ContaReceber")},
-                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroRelatorioDRE, Label = "Relatório DRE", OnClick = @Url.Action("List", "DemonstrativoResultadoExercicio")},
+                        //new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroRelatorioDRE, Label = "Relatório DRE", OnClick = @Url.Action("List", "DemonstrativoResultadoExercicio")},
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroRelatorioDRE, Label = "Relatórios", OnClick = @Url.Action("List", "Relatorio")},
                         new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroConciliacaoBancaria, Label = "Conciliação Bancária", OnClick = @Url.Action("List", "ConciliacaoBancaria")},
                         
                     }
@@ -316,7 +317,7 @@ namespace Fly01.Financeiro.Controllers
                         new LinkUI() { Class = ResourceHashConst.FinanceiroCadastrosCategoria, Label = "Categoria", OnClick = @Url.Action("List", "Categoria")},
                         new LinkUI() { Class = ResourceHashConst.FinanceiroCadastrosFormasPagamento, Label = "Formas de Pagamento",OnClick = @Url.Action("List", "FormaPagamento")},
                         new LinkUI() { Class = ResourceHashConst.FinanceiroCadastrosContasBancarias, Label = "Contas Bancárias", OnClick = @Url.Action("List", "ContaBancaria")},
-                        //new LinkUI() { Class = ResourceHashConst.FinanceiroCadastrosCentroCustos, Label = "Centro de Custos", OnClick = @Url.Action("List", "CentroCusto") }
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroCadastrosCentroCustos, Label = "Centro de Custos", OnClick = @Url.Action("List", "CentroCusto") }
                     }
                 },
                 new SidebarUIMenu()

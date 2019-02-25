@@ -36,7 +36,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
                 var troco = item.Pagamento.ValorTroco.HasValue ? item.Pagamento.ValorTroco : 0;
 
                 if (!isSemPagamento)
-                {                    
+                {
                     entity.Fail((somaPagamentos > valorTotalNF) && ((somaPagamentos - troco) != valorTotalNF), new Error("Valor do troco inválido ou não informado. Troco = (total pagamentos - total nota). Item[" + nItem + "].Pagamento.ValorTroco."));
                 }
 

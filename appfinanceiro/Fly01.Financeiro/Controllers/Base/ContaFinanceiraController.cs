@@ -157,9 +157,11 @@ namespace Fly01.Financeiro.Controllers.Base
                     Valor = ListContas.ValorPrevisto.ToString(),
                     FormaPagamento = ListContas.FormaPagamento != null ? ListContas.FormaPagamento.Descricao : string.Empty,
                     Fornecedor = ListContas.Pessoa != null ? ListContas.Pessoa.Nome : string.Empty,
+                    Cliente = ListContas.Pessoa != null ? ListContas.Pessoa.Nome : string.Empty,
                     Vencimento = ListContas.DataVencimento,
                     Titulo = titulo,
-                    Numero = ListContas.Numero
+                    Numero = ListContas.Numero,
+                    TipoConta = ResourceName
                 });
 
             var reportViewer = new WebReportViewer<ImprimirListContasVM>(ReportListContas.Instance);

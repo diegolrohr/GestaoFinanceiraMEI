@@ -2,6 +2,7 @@
 using Fly01.EmissaoNFE.BL;
 using Fly01.EmissaoNFE.Domain.ViewModel;
 using Fly01.Core.API;
+using Fly01.Core.Entities.Domains.Enum;
 using System;
 using System.Web.Http;
 
@@ -19,7 +20,13 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 
                 try
                 {
-                    var pdf = (int)entity.EntidadeAmbiente == 2 ? Homologacao(entity) : Producao(entity);
+                    var pdf = entity.EntidadeAmbiente == TipoAmbiente.Homologacao ? Homologacao(entity) : Producao(entity);
+                    //tenta recuperar invertendo o ambiente, pode ser que foi emitido em outro ambiente do atual configurado
+                    //posteriormente começou a se salvar as configuração de cada transmissão
+                    if (pdf == null || (pdf != null && string.IsNullOrEmpty(pdf?.PDF)))
+                    {
+                        pdf = entity.EntidadeAmbiente == TipoAmbiente.Homologacao ? Producao(entity) : Homologacao(entity);
+                    }
 
                     return Ok(pdf);
                 }

@@ -29,7 +29,7 @@ namespace Fly01.Compras.BL
         {
             if (!entity.NcmId.HasValue && !string.IsNullOrEmpty(entity.CodigoNcm))
             {
-                var dadosNCM = NCMBL.All.FirstOrDefault(x => x.Codigo == entity.CodigoNcm);
+                var dadosNCM = NCMBL.All.AsNoTracking().FirstOrDefault(x => x.Codigo == entity.CodigoNcm);                
                 if (dadosNCM != null)
                     entity.NcmId = dadosNCM.Id;
             }
@@ -39,7 +39,7 @@ namespace Fly01.Compras.BL
         {
             if (!entity.UnidadeMedidaId.HasValue && !string.IsNullOrEmpty(entity.AbreviacaoUnidadeMedida))
             {
-                var dadosUnidadeMedida = UnidadeMedidaBL.All.FirstOrDefault(x => x.Abreviacao == entity.AbreviacaoUnidadeMedida);
+                var dadosUnidadeMedida = UnidadeMedidaBL.All.AsNoTracking().FirstOrDefault(x => x.Abreviacao == entity.AbreviacaoUnidadeMedida);
                 if (dadosUnidadeMedida != null)
                     entity.UnidadeMedidaId = dadosUnidadeMedida.Id;
             }
@@ -49,7 +49,7 @@ namespace Fly01.Compras.BL
         {
             if (!entity.CestId.HasValue && !string.IsNullOrEmpty(entity.CodigoCest) && entity.NcmId.HasValue)
             {
-                var dadosCest = CestBL.All.FirstOrDefault(x => x.Codigo == entity.CodigoCest && x.NcmId == entity.NcmId);
+                var dadosCest = CestBL.All.AsNoTracking().FirstOrDefault(x => x.Codigo == entity.CodigoCest && x.NcmId == entity.NcmId);
                 if (dadosCest != null)
                     entity.CestId = dadosCest.Id;
             }
@@ -59,7 +59,7 @@ namespace Fly01.Compras.BL
         {
             if (!entity.EnquadramentoLegalIPIId.HasValue && !string.IsNullOrEmpty(entity.CodigoEnquadramentoLegalIPI))
             {
-                var dadosEnquadramentoLegalIPI = EnquadramentoLegalIPIBL.All.FirstOrDefault(x => x.Codigo == entity.CodigoEnquadramentoLegalIPI);
+                var dadosEnquadramentoLegalIPI = EnquadramentoLegalIPIBL.All.AsNoTracking().FirstOrDefault(x => x.Codigo == entity.CodigoEnquadramentoLegalIPI);
                 if (dadosEnquadramentoLegalIPI != null)
                     entity.EnquadramentoLegalIPIId = dadosEnquadramentoLegalIPI.Id;
             }
@@ -70,7 +70,6 @@ namespace Fly01.Compras.BL
             entity.Fail(entity.UnidadeMedidaId == null, UnidadeMedidaInvalida);
             entity.Fail(string.IsNullOrEmpty(entity.Descricao), DescricaoEmBranco);
             entity.Fail(All.Where(x => x.Descricao == entity.Descricao).Any(x => x.Id != entity.Id), DescricaoDuplicada);
-            entity.Fail(entity.GrupoProdutoId != null && entity.TipoProduto != GrupoProdutoBL.All.AsNoTracking().Where(x => x.Id == entity.GrupoProdutoId).FirstOrDefault().TipoProduto, TipoProdutoDiferente);
 
             if (!string.IsNullOrWhiteSpace(entity.CodigoProduto))
             {
@@ -103,8 +102,7 @@ namespace Fly01.Compras.BL
         public static Error DescricaoEmBranco = new Error("Descrição não foi informada.", "descricao");
         public static Error DescricaoDuplicada = new Error("Descrição do produto já utilizada anteriormente.", "descricao");
         public static Error UnidadeMedidaInvalida = new Error("Unidade de medida não foi informada.", "unidadeMedidaId");
-        public static Error CodigoProdutoDuplicado = new Error("Código do produto já utilizado anteriormente.", "codigoProduto");
-        public static Error TipoProdutoDiferente = new Error("Tipo do produto é diferente do tipo do grupo de produto.", "tipoProduto");
+        public static Error CodigoProdutoDuplicado = new Error("Código do produto já utilizado anteriormente.", "codigoProduto");        
 
         public static List<string> ColunasParaImportacao()
         {

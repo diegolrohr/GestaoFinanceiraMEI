@@ -154,7 +154,7 @@ namespace Fly01.Faturamento.Controllers
                         new LinkUI() { Class = ResourceHashConst.FaturamentoCadastrosCategoria, Label = "Categoria", OnClick = @Url.Action("List", "Categoria") },
                         new LinkUI() { Class = ResourceHashConst.FaturamentoCadastrosSubstituicaoTributaria, Label = "Substituição Tributária", OnClick = @Url.Action("List", "SubstituicaoTributaria") },
                         new LinkUI() { Class = ResourceHashConst.FaturamentoCadastrosKit, Label = "Kit Produtos/Serviços", OnClick = @Url.Action("List", "Kit") },
-                        //new LinkUI() { Class = ResourceHashConst.FaturamentoCadastrosCentroCustos, Label = "Centro de Custos", OnClick = @Url.Action("List", "CentroCusto") }
+                        new LinkUI() { Class = ResourceHashConst.FaturamentoCadastrosCentroCustos, Label = "Centro de Custos", OnClick = @Url.Action("List", "CentroCusto") }
                     }
                 },
                 new SidebarUIMenu()

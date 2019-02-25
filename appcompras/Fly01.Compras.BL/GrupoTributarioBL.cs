@@ -2,6 +2,7 @@
 using Fly01.Core.BL;
 using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Notifications;
+using System.Data.Entity;
 
 namespace Fly01.Compras.BL
 {
@@ -38,7 +39,7 @@ namespace Fly01.Compras.BL
         {
             if (!entity.CfopId.HasValue && !string.IsNullOrEmpty(entity.CodigoCfop.ToString()))
             {
-                var dadosCfop = CfopBL.All.FirstOrDefault(x => x.Codigo == entity.CodigoCfop);
+                var dadosCfop = CfopBL.All.AsNoTracking().FirstOrDefault(x => x.Codigo == entity.CodigoCfop);
                 if (dadosCfop != null)
                     entity.CfopId = dadosCfop.Id;
             }

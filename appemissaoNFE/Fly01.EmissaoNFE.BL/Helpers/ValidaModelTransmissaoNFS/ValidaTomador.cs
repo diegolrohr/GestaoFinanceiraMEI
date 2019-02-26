@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Fly01.Core.Notifications;
+using Fly01.Core.ValueObjects;
 using Fly01.EmissaoNFE.Domain.ViewModelNFS;
 
 namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
@@ -34,7 +35,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
         private static void ValidarInscricaoEstadual(TransmissaoNFSVM entity, EntitiesBLToValidateNFS entitiesBLToValidateNFS)
         {
             if (!string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Tomador.InscricaoEstadual) &&
-                !EmpresaBL.ValidaIE(entity.ItemTransmissaoNFSVM.Tomador.UF, entity.ItemTransmissaoNFSVM.Tomador.InscricaoEstadual, out msgError))
+                !InscricaoEstadualHelper.IsValid(entity.ItemTransmissaoNFSVM.Tomador.UF, entity.ItemTransmissaoNFSVM.Tomador.InscricaoEstadual, out msgError))
             {
                 switch (msgError)
                 {

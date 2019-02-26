@@ -67,7 +67,7 @@ namespace Fly01.Faturamento.BL
 
         public ParametroTributario GetParametrosTributarios()
         {
-            return ParametroTributarioBL.All.Where(x => x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).FirstOrDefault();
+            return ParametroTributarioBL.ParametroAtualValido();
         }
 
         public List<OrdemVendaProduto> GetOrdemVendaProdutos(Guid ordemVendaId)

@@ -1,6 +1,7 @@
 ﻿using Fly01.EmissaoNFE.Domain.ViewModel;
 using Fly01.Core.BL;
 using Fly01.Core.Notifications;
+using Fly01.Core.ValueObjects;
 
 namespace Fly01.EmissaoNFE.BL
 {
@@ -20,7 +21,7 @@ namespace Fly01.EmissaoNFE.BL
             entity.Fail(entity.Cpf != null && !EmpresaBL.ValidaCPF(entity.Cpf), CpfInvalido);
             entity.Fail(entity.Cnpj != null && !EmpresaBL.ValidaCNPJ(entity.Cnpj), CnpjInvalido);
             if(entity.InscricaoEstadual != null)
-                if(!EmpresaBL.ValidaIE(entity.UF, entity.InscricaoEstadual, out msgError))
+                if(!InscricaoEstadualHelper.IsValid(entity.UF, entity.InscricaoEstadual, out msgError))
                 {
                     switch (msgError)
                     {

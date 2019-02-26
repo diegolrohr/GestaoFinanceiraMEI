@@ -83,8 +83,8 @@ namespace Fly01.Compras.BL
                             { "PlataformaUrl", PlataformaUrl }
                         };
 
-                        var entidade = CertificadoDigitalBL.GetEntidade();
-                        
+                        var entidade = CertificadoDigitalBL.GetEntidadeFromCertificado(string.Empty, notaFiscal.TipoAmbiente, notaFiscal.CertificadoDigitalId);
+
                         var danfe = new DanfeVM()
                         {
                             Homologacao = entidade.Homologacao,
@@ -140,8 +140,8 @@ namespace Fly01.Compras.BL
                             { "PlataformaUrl", PlataformaUrl }
                         };
 
-                        var entidade = CertificadoDigitalBL.GetEntidade();
-                        
+                        var entidade = CertificadoDigitalBL.GetEntidadeFromCertificado(string.Empty, notaFiscal.TipoAmbiente, notaFiscal.CertificadoDigitalId);
+
                         var danfe = new DanfeVM()
                         {
                             Homologacao = entidade.Homologacao,
@@ -196,8 +196,8 @@ namespace Fly01.Compras.BL
                         { "PlataformaUrl", PlataformaUrl }
                     };
 
-                    var entidade = CertificadoDigitalBL.GetEntidade();
-                    
+                    var entidade = CertificadoDigitalBL.GetEntidadeFromCertificado(string.Empty, notaFiscal.TipoAmbiente, notaFiscal.CertificadoDigitalId);
+
                     var cancelar = new CancelarFaixaVM()
                     {
                         Homologacao = entidade.Homologacao,
@@ -229,7 +229,7 @@ namespace Fly01.Compras.BL
             if (!AllIncluding(x => x.SerieNotaFiscal).AsNoTracking().Any(x => x.SerieNotaFiscal.Serie.ToUpper() == entity.Serie.ToUpper() && x.NumNotaFiscal == entity.NumNotaFiscal &&
                 (x.Status == StatusNotaFiscal.Transmitida || x.Status == StatusNotaFiscal.Autorizada || x.Status == StatusNotaFiscal.Cancelada || x.Status == StatusNotaFiscal.CanceladaForaPrazo || x.Status == StatusNotaFiscal.EmCancelamento || x.Status == StatusNotaFiscal.FalhaNoCancelamento)))
             {
-                var notaFiscal = AllIncluding(x => x.SerieNotaFiscal).Where(x => x.SerieNotaFiscal.Serie.ToUpper() == entity.Serie.ToUpper() && x.NumNotaFiscal == entity.NumNotaFiscal &&
+                var notaFiscal = AllIncluding(x => x.SerieNotaFiscal, x => x.CertificadoDigital).Where(x => x.SerieNotaFiscal.Serie.ToUpper() == entity.Serie.ToUpper() && x.NumNotaFiscal == entity.NumNotaFiscal &&
                 (!(x.Status == StatusNotaFiscal.Transmitida || x.Status == StatusNotaFiscal.Autorizada || x.Status == StatusNotaFiscal.Cancelada || x.Status == StatusNotaFiscal.CanceladaForaPrazo || x.Status == StatusNotaFiscal.EmCancelamento || x.Status == StatusNotaFiscal.FalhaNoCancelamento))).FirstOrDefault();
 
                 if(notaFiscal != null)

@@ -3,6 +3,7 @@ using Fly01.Core.Helpers;
 using Fly01.Core.Notifications;
 using Fly01.EmissaoNFE.Domain.Enums;
 using Fly01.EmissaoNFE.Domain.ViewModel;
+using Fly01.Core.ValueObjects;
 using System.Linq;
 
 namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
@@ -80,7 +81,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
         {
             if (!string.IsNullOrEmpty(item.Transporte.Transportadora.IE))
             {
-                if (!EmpresaBL.ValidaIE(item.Transporte.Transportadora.UF, item.Transporte.Transportadora.IE, out msgError))
+                if (!InscricaoEstadualHelper.IsValid(item.Transporte.Transportadora.UF, item.Transporte.Transportadora.IE, out msgError))
                 {
                     switch (msgError)
                     {

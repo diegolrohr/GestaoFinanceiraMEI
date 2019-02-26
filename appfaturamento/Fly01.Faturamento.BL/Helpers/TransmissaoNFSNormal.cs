@@ -87,6 +87,8 @@ namespace Fly01.Faturamento.BL.Helpers
         private TransmissaoNFSVM ObterTransmissaoApartirDoItem(ItemTransmissaoNFSVM itemTransmissaoNFS)
         {
             var entidade = ObterEntidade();
+            NFSe.CertificadoDigitalId = TransmissaoNFSBLs.CertificadoDigitalBL.CertificadoAtualValido()?.Id;
+            NFSe.TipoAmbiente = entidade.EntidadeAmbienteNFS;
             return new TransmissaoNFSVM()
             {
                 Homologacao = entidade.Homologacao,

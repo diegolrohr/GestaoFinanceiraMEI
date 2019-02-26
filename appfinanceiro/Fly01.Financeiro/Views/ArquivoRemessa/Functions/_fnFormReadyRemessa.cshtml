@@ -6,6 +6,8 @@
 
     $().ready(function () {
         $('#btnViewBoletos').attr('disabled', 'disabled');
+        $('#btnDownload').attr('disabled', 'disabled');
+        
         setupGridSelectEvents();
     });
 
@@ -32,15 +34,19 @@
 
         $$$.fn.updateTextFields();
         $('#btnViewBoletos').attr('disabled', 'disabled');
+        $('#btnDownload').attr('disabled', 'disabled');
 
         if (countAtual > 0 && countAtual <= 50) {
             $('#btnViewBoletos').removeAttr('disabled');
+            $('#btnDownload').removeAttr('disabled');    
         }
         else if (countAtual <= 0) {
             $('#btnViewBoletos').attr('disabled', 'disabled');
+            $('#btnDownload').attr('disabled', 'disabled');
         }
         else {
             $('#btnViewBoletos').attr('disabled', 'disabled');
+            $('#btnDownload').attr('disabled', 'disabled');
         }
     }
 </script>

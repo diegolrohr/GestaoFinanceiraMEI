@@ -119,6 +119,31 @@ namespace Fly01.Financeiro.Controllers
             return null;
         }
 
+        [OperationRole(NotApply = true)]
+        [HttpGet]
+        public ActionResult DownloadArquivoRemessabyId(Guid id)
+        {
+            var cnabs = GetArquivo(id);
+
+            List<string> ids = new List<string>();
+            foreach (var item in cnabs)
+            {
+                ids.Add(item.Id.ToString());
+            }
+
+            return DownloadArquivoRemessa(ids);   
+        }
+
+        protected List<CnabVM> GetArquivo(Guid id)
+        {
+            var queryString = new Dictionary<string, string>();
+            queryString.AddParam("$filter", $"arquivoRemessaId eq {id}");
+            queryString.AddParam("$select", "id");
+
+            var cnabs = RestHelper.ExecuteGetRequest<ResultBase<CnabVM>>("cnab", queryString);
+
+            return cnabs.Data.ToList();
+        }
 
         private List<String> SalvarArquivoRemessa(string[] idsCnabToSave)
         {
@@ -277,11 +302,14 @@ namespace Fly01.Financeiro.Controllers
         {
             var target = new List<HtmlUIButton>()
             {
-                new HtmlUIButton { Id = "btnViewBoletos", Label = "Visualizar boletos", OnClickFn = "fnListContasArquivo" }
+                new HtmlUIButton { Id = "btnViewBoletos", Label = "Visualizar boletos", OnClickFn = "fnListContasArquivo", Position = HtmlUIButtonPosition.Out  },
+                new HtmlUIButton { Id = "btnDownload", Label = "Download Arquivo", OnClickFn = "fnDownloadArquivo", Position = HtmlUIButtonPosition.Out }
             };
 
             if (UserCanWrite)
-                target.Add(new HtmlUIButton { Id = "btnGerarArqRemessa", Label = "GERAR ARQ. REMESSA", OnClickFn = "fnGerarArquivo" });
+            {
+                target.Add(new HtmlUIButton { Id = "btnGerarArqRemessa", Label = "GERAR ARQ. REMESSA", OnClickFn = "fnGerarArquivo", Position = HtmlUIButtonPosition.Main });
+            }
 
             return target;                    
         }

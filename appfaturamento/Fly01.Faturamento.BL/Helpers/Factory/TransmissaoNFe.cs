@@ -341,6 +341,8 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
         public TransmissaoVM ObterTransmissaoVMApartirDoItem(ItemTransmissaoVM itemTransmissao)
         {
             var entidade = ObterEntidade();
+            NFe.CertificadoDigitalId = TransmissaoBLs.CertificadoDigitalBL.CertificadoAtualValido()?.Id;
+            NFe.TipoAmbiente = entidade.EntidadeAmbiente;
             return new TransmissaoVM()
             {
                 Homologacao = entidade.Homologacao,

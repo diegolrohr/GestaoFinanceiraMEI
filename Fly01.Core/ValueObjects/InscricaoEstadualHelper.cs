@@ -304,24 +304,6 @@
                 return false;
             }
 
-            //valida o terceiro dígito - deve ser 0,3,5,7,8
-            int[]
-            digits = { 0, 3, 5, 7, 8 };
-            bool check = false;
-            for (int i = 0; i < digits.Length; i++)
-            {
-                if (int.Parse(ie[2].ToString()) == digits[i])
-                {
-                    check = true;
-                    break;
-                }
-            }
-            if (!check)
-            {
-                msgError = ERRO_InscricaoInvalida;
-                return false;
-            }
-
             //calcula o dígito verificador
             int soma = 0;
             int peso = 9;

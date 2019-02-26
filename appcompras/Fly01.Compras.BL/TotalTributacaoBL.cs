@@ -53,7 +53,7 @@ namespace Fly01.Compras.BL
 
         public ParametroTributario GetParametrosTributarios()
         {
-            return ParametroTributarioBL.All.Where(x => x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).FirstOrDefault();
+            return ParametroTributarioBL.ParametroAtualValido();
         }
 
         public Produto GetProduto(Guid produtoId)
@@ -116,7 +116,7 @@ namespace Fly01.Compras.BL
 
                 if (retorno != null)
                 {
-                    string entidade = (int)retorno.EntidadeAmbiente == 1 ? retorno.Producao : retorno.Homologacao;
+                    string entidade = retorno.EntidadeAmbiente == TipoAmbiente.Producao ? retorno.Producao : retorno.Homologacao;
 
                     var header = new Dictionary<string, string>()
                     {

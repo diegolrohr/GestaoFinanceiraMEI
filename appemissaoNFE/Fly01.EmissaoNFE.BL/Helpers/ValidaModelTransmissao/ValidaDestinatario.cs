@@ -2,6 +2,7 @@
 using Fly01.EmissaoNFE.Domain.ViewModel;
 using Fly01.EmissaoNFE.Domain.Enums;
 using System.Linq;
+using Fly01.Core.ValueObjects;
 
 namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
 {
@@ -33,7 +34,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
         {
             if (!string.IsNullOrEmpty(item.Destinatario.InscricaoEstadual) && item.Destinatario.IndInscricaoEstadual == IndInscricaoEstadual.ContribuinteICMS)
             {
-                if (!EmpresaBL.ValidaIE(item.Destinatario.Endereco.UF, item.Destinatario.InscricaoEstadual, out msgError))
+                if (!InscricaoEstadualHelper.IsValid(item.Destinatario.Endereco.UF, item.Destinatario.InscricaoEstadual, out msgError))
                 {
                     switch (msgError)
                     {

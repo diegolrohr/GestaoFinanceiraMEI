@@ -25,6 +25,15 @@ namespace Fly01.Estoque.Controllers
             throw new NotImplementedException();
         }
 
+        public override List<HtmlUIButton> GetFormButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>();
+
+            target.Add(new HtmlUIButton { Id = "imprimirRelatorioId", Label = "Imprimir", OnClickFn = "fnImprimirRelatorioProduto" });
+
+            return target;
+        }
+
         protected override ContentUI FormJson()
         {
             var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
@@ -74,6 +83,40 @@ namespace Fly01.Estoque.Controllers
                 PreFilter = "tipoProduto",
             }, GrupoProdutoResourceHash));
 
+            config.Elements.Add(new AutoCompleteUI
+            {
+                Id = "unidadeMedidaId",
+                Class = "col s12 m6",
+                Label = "Unidade de medida",
+                Required = true,
+                DataUrl = @Url.Action("UnidadeMedida", "AutoComplete"),
+                LabelId = "unidadeMedidaDescricao"
+            });
+            config.Elements.Add(new AutoCompleteUI
+            {
+                Id = "ncmId",
+                Class = "col s12 m6",
+                Label = "NCM",
+                DataUrl = @Url.Action("Ncm", "AutoComplete"),
+                LabelId = "ncmDescricao",
+                //DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeNCM" } }
+            });
+            config.Elements.Add(new AutoCompleteUI()
+            {
+                Id = "enquadramentoLegalIPIId",
+                Class = "col s12 m6",
+                Label = "Enquadramento Legal do IPI",
+                DataUrl = @Url.Action("EnquadramentoLegalIPI", "AutoComplete"),
+                LabelId = "enquadramentoLegalIPIDescricao"
+            });
+            config.Elements.Add(new SelectUI
+            {
+                Id = "origemMercadoria",
+                Class = "col s12 m6",
+                Label = "Origem Mercadoria",
+                Required = true,
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(OrigemMercadoria)))
+            });
             cfg.Content.Add(config);
             return cfg;
         }

@@ -1,0 +1,34 @@
+﻿
+<script>
+    @Html.Partial("Functions/_fnImprimir");    
+    function fnImprimirRelatorioCPCR() {
+
+        //teste input vazio
+        var countValues = 0;
+        var valueItens = [$('input#descricaoid').val(), $('input#codigoId').val(), $('input#tipoProduto').val(), $("#grupoProdutoId").val(), $("#unidadeMedidaId").val(), $("#ncmId").val(), $("#enquadramentoLegalIPIId").val(), $('#origemMercadoria').val()];
+        valueItens.forEach(function (item) {
+            if (item !== "") {
+                countValues ++;
+                return false;
+            }
+        });
+
+
+        if (countValues === 0)
+            $$$.toast("Inform ao menos um parâmetro para continuar.", 'error');
+        else {
+            var tipoUrl = "@Url.Action("Imprimir")";
+            console.log(tipoUrl);
+            var url = tipoUrl + '?descricao=' + $('input#descricaoid').val() +
+                "&codigoId=" + $('input#codigoId').val() +
+                "&tipoProduto=" + $('input#tipoProduto').val() +
+                "&grupoProdutoId=" + $("#grupoProdutoId").val() +
+                "&unidadeMedidaId=" + $("#unidadeMedidaId").val() + 
+                "&ncmId=" + $("#ncmId").val() +
+                "&enquadramentoLegalIPIId=" + $("#enquadramentoLegalIPIId").val() +
+                "&origemMercadoria=" + $('#origemMercadoria').val() +
+
+            fnImprimir(url);
+        }
+    }
+</script>

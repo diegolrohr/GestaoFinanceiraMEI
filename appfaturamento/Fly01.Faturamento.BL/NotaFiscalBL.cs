@@ -103,7 +103,7 @@ namespace Fly01.Faturamento.BL
                             { "PlataformaUrl", PlataformaUrl }
                         };
 
-                var entidade = CertificadoDigitalBL.GetEntidade();
+                var entidade = CertificadoDigitalBL.GetEntidadeFromCertificado(string.Empty, notaFiscal.TipoAmbiente, notaFiscal.CertificadoDigitalId);
 
                 var danfe = new DanfeVM()
                 {
@@ -152,7 +152,7 @@ namespace Fly01.Faturamento.BL
                             { "PlataformaUrl", PlataformaUrl }
                         };
 
-                        var entidade = CertificadoDigitalBL.GetEntidade();
+                        var entidade = CertificadoDigitalBL.GetEntidadeFromCertificado(string.Empty, notaFiscal.TipoAmbiente, notaFiscal.CertificadoDigitalId);
 
                         var danfe = new DanfeVM()
                         {
@@ -233,10 +233,9 @@ namespace Fly01.Faturamento.BL
                         { "PlataformaUrl", PlataformaUrl }
                     };
 
-            var entidade = CertificadoDigitalBL.GetEntidade();
-
             var empresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
             var notaFiscal = NFSeBL.All.AsNoTracking().Where(x => x.Id == id).FirstOrDefault();
+            var entidade = CertificadoDigitalBL.GetEntidadeFromCertificado(string.Empty, notaFiscal.TipoAmbiente, notaFiscal.CertificadoDigitalId);
 
             var cancelar = new CancelarNFSVM()
             {
@@ -270,7 +269,7 @@ namespace Fly01.Faturamento.BL
                         { "PlataformaUrl", PlataformaUrl }
                     };
 
-            var entidade = CertificadoDigitalBL.GetEntidade();
+            var entidade = CertificadoDigitalBL.GetEntidadeFromCertificado(string.Empty, notaFiscal.TipoAmbiente, notaFiscal.CertificadoDigitalId);
 
             var cancelar = new CancelarFaixaVM()
             {
@@ -351,6 +350,8 @@ namespace Fly01.Faturamento.BL
 
                         var response = RestHelper.ExecutePostRequest<InutilizarNFRetornoVM>(AppDefaults.UrlEmissaoNfeApi, "InutilizarNF", JsonConvert.SerializeObject(inutilizarNF), null, header);
 
+                        entity.TipoAmbiente = entidade.EntidadeAmbiente;
+                        entity.CertificadoDigitalId = CertificadoDigitalBL.CertificadoAtualValido()?.Id;
                         entity.SefazChaveAcesso = response.SefazChaveAcesso;
                         entity.Status = StatusNotaFiscal.InutilizacaoSolicitada;
                     }

@@ -114,6 +114,12 @@ namespace Fly01.Faturamento.ViewModel
         [JsonProperty("centroCustoId")]
         public Guid? CentroCustoId { get; set; }
 
+        [JsonProperty("tipoAmbiente")]
+        public string TipoAmbiente { get; set; }
+
+        [JsonProperty("certificadoDigitalId")]
+        public Guid? CertificadoDigitalId { get; set; }
+
         [JsonProperty("ordemVendaOrigem")]
         public virtual OrdemVendaVM OrdemVendaOrigem { get; set; }
 
@@ -140,5 +146,8 @@ namespace Fly01.Faturamento.ViewModel
 
         [JsonProperty("centroCusto")]
         public virtual CentroCustoVM CentroCusto { get; set; }
+
+        [JsonProperty("certificadoDigital")]
+        public virtual CertificadoDigitalVM CertificadoDigital { get; set; }
     }
 }

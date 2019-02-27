@@ -8,6 +8,7 @@ using Fly01.Core;
 using Fly01.Core.Rest;
 using Fly01.Core.Entities.Domains.Enum;
 using System;
+using System.Data.Entity;
 
 namespace Fly01.Faturamento.BL
 {
@@ -34,8 +35,15 @@ namespace Fly01.Faturamento.BL
         {
             var notasFiscaisByPlataforma = (from nf in NFeBL.Everything.Where(x => (x.Status == StatusNotaFiscal.Transmitida || x.Status == StatusNotaFiscal.EmCancelamento))
                                             where string.IsNullOrEmpty(plataformaUrl) || nf.PlataformaId == plataformaUrl && nf.TipoNotaFiscal == TipoNotaFiscal.NFe
-                                            group nf by nf.PlataformaId into g
-                                            select new { plataformaId = g.Key, notaInicial = g.Min(x => x.SefazId), notaFinal = g.Max(x => x.SefazId) });
+                                            group nf by new { nf.PlataformaId, nf.TipoAmbiente, nf.CertificadoDigitalId } into g
+                                            select new
+                                            {
+                                                plataformaId = g.Key.PlataformaId,
+                                                tipoAmbiente = g.Key.TipoAmbiente,
+                                                certificadoDigitalId = g.Key.CertificadoDigitalId,
+                                                notaInicial = g.Min(x => x.SefazId),
+                                                notaFinal = g.Max(x => x.SefazId)
+                                            });
 
             var header = new Dictionary<string, string>()
             {
@@ -47,9 +55,9 @@ namespace Fly01.Faturamento.BL
             {
                 try
                 {
-                    var dadosCertificado = CertificadoDigitalBL.GetEntidade(dadosPlataforma.plataformaId);
+                    var entidade = CertificadoDigitalBL.GetEntidadeFromCertificado(dadosPlataforma.plataformaId, dadosPlataforma.tipoAmbiente, dadosPlataforma.certificadoDigitalId);
 
-                    if (dadosCertificado == null)
+                    if (entidade == null)
                         continue;
 
 
@@ -57,9 +65,9 @@ namespace Fly01.Faturamento.BL
                     {
                         var monitorVM = new MonitorVM()
                         {
-                            Homologacao = dadosCertificado.Homologacao,
-                            Producao = dadosCertificado.Producao,
-                            EntidadeAmbiente = dadosCertificado.EntidadeAmbiente,
+                            Homologacao = entidade.Homologacao,
+                            Producao = entidade.Producao,
+                            EntidadeAmbiente = entidade.EntidadeAmbiente,
                             NotaInicial = dadosPlataforma.notaInicial.ToString(),
                             NotaFinal = dadosPlataforma.notaFinal.ToString(),
                         };
@@ -96,8 +104,15 @@ namespace Fly01.Faturamento.BL
         {
             var notasFiscaisInutilizadasByPlataforma = (from nf in NotaFiscalInutilizadaBL.Everything.Where(x => (x.Status == StatusNotaFiscal.InutilizacaoSolicitada || x.Status == StatusNotaFiscal.Transmitida))
                                                         where string.IsNullOrEmpty(plataformaUrl) || nf.PlataformaId == plataformaUrl
-                                                        group nf by nf.PlataformaId into g
-                                                        select new { plataformaId = g.Key, notaInicial = g.Min(x => x.SefazChaveAcesso), notaFinal = g.Max(x => x.SefazChaveAcesso) });
+                                                        group nf by new { nf.PlataformaId, nf.TipoAmbiente, nf.CertificadoDigitalId } into g
+                                                        select new
+                                                        {
+                                                            plataformaId = g.Key.PlataformaId,
+                                                            tipoAmbiente = g.Key.TipoAmbiente,
+                                                            certificadoDigitalId = g.Key.CertificadoDigitalId,
+                                                            notaInicial = g.Min(x => x.SefazChaveAcesso),
+                                                            notaFinal = g.Max(x => x.SefazChaveAcesso)
+                                                        });
 
             var header = new Dictionary<string, string>()
             {
@@ -109,9 +124,9 @@ namespace Fly01.Faturamento.BL
             {
                 try
                 {
-                    var dadosCertificado = CertificadoDigitalBL.GetEntidade(dadosPlataforma.plataformaId);
+                    var entidade = CertificadoDigitalBL.GetEntidadeFromCertificado(dadosPlataforma.plataformaId, dadosPlataforma.tipoAmbiente, dadosPlataforma.certificadoDigitalId);
 
-                    if (dadosCertificado == null)
+                    if (entidade == null)
                         continue;
 
 
@@ -119,9 +134,9 @@ namespace Fly01.Faturamento.BL
                     {
                         var monitorVM = new MonitorVM()
                         {
-                            Homologacao = dadosCertificado.Homologacao,
-                            Producao = dadosCertificado.Producao,
-                            EntidadeAmbiente = dadosCertificado.EntidadeAmbiente,
+                            Homologacao = entidade.Homologacao,
+                            Producao = entidade.Producao,
+                            EntidadeAmbiente = entidade.EntidadeAmbiente,
                             NotaInicial = dadosPlataforma.notaInicial.ToString(),
                             NotaFinal = dadosPlataforma.notaFinal.ToString(),
                         };
@@ -174,11 +189,6 @@ namespace Fly01.Faturamento.BL
             {
                 try
                 {
-                    var dadosCertificado = CertificadoDigitalBL.GetEntidade(dadosPlataforma.plataformaId);
-
-                    if (dadosCertificado == null)
-                        continue;
-
                     if (TotalTributacaoBL.ConfiguracaoTSSOK(dadosPlataforma.plataformaId))
                     {
                         var cartasCorrecoesByPlataforma = new List<NotaFiscalCartaCorrecao>();
@@ -186,11 +196,25 @@ namespace Fly01.Faturamento.BL
 
                         foreach (var cartaCorrecao in cartasCorrecoesByPlataforma)
                         {
+                            var notaFiscal = NFeBL.Everything.Where(x => x.Id == cartaCorrecao.NotaFiscalId).AsNoTracking().FirstOrDefault();
+                            var entidade = new EntidadeVM();
+                            if (notaFiscal != null)
+                            {
+                                entidade = CertificadoDigitalBL.GetEntidadeFromCertificado(dadosPlataforma.plataformaId, notaFiscal.TipoAmbiente, notaFiscal.CertificadoDigitalId);
+                            }
+                            else
+                            {
+                                entidade = CertificadoDigitalBL.GetEntidade(dadosPlataforma.plataformaId);
+                            }
+
+                            if (entidade == null)
+                                continue;
+
                             var monitorEventoVM = new MonitorEventoVM()
                             {
-                                Homologacao = dadosCertificado.Homologacao,
-                                Producao = dadosCertificado.Producao,
-                                EntidadeAmbiente = dadosCertificado.EntidadeAmbiente,
+                                Homologacao = entidade.Homologacao,
+                                Producao = entidade.Producao,
+                                EntidadeAmbiente = entidade.EntidadeAmbiente,
                                 IdEvento = cartaCorrecao.IdRetorno,
                                 SefazChaveAcesso = cartaCorrecao.NotaFiscal.SefazId
                             };

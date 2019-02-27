@@ -31,5 +31,11 @@ namespace Fly01.Core.Entities.Domains.Commons
         [Column(TypeName = "varchar(MAX)")]
         [MaxLength(int.MaxValue)]
         public string Recomendacao { get; set; }
+
+        public Guid? CertificadoDigitalId { get; set; }
+
+        public TipoAmbiente TipoAmbiente { get; set; }
+
+        public virtual CertificadoDigital CertificadoDigital { get; set; }
     }
 }

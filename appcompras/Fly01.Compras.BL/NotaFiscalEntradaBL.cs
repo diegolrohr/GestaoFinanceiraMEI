@@ -284,7 +284,9 @@ namespace Fly01.Compras.BL
                         };
 
                         var response = RestHelper.ExecutePostRequest<InutilizarNFRetornoVM>(AppDefaults.UrlEmissaoNfeApi, "InutilizarNF", JsonConvert.SerializeObject(inutilizarNF), null, header);
-                        
+
+                        entity.TipoAmbiente = entidade.EntidadeAmbiente;
+                        entity.CertificadoDigitalId = CertificadoDigitalBL.CertificadoAtualValido()?.Id;
                         entity.SefazChaveAcesso = response.SefazChaveAcesso;
                         entity.Status = StatusNotaFiscal.InutilizacaoSolicitada;
                     }

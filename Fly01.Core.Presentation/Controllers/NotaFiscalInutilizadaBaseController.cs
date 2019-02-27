@@ -12,11 +12,17 @@ using Fly01.Core.Rest;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.ViewModels;
 using Fly01.Core.ViewModels.Presentation.Commons;
+using System.Linq;
 
 namespace Fly01.Core.Presentation.Controllers
 {
     public class NotaFiscalInutilizadaBaseController<T> : BaseController<T> where T: NotaFiscalInutilizadaVM
     {
+        public NotaFiscalInutilizadaBaseController()
+        {
+            ExpandProperties = "certificadoDigital($select=cnpj,inscricaoEstadual,uf,entidadeHomologacao,entidadeProducao)";
+        }
+
         public override Func<T, object> GetDisplayData()
         {
             return x => new
@@ -232,6 +238,21 @@ namespace Fly01.Core.Presentation.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "id" });
             config.Elements.Add(new TextAreaUI { Id = "mensagem", Class = "col s12", Label = "Mensagem", Disabled = true });
             config.Elements.Add(new TextAreaUI { Id = "recomendacao", Class = "col s12", Label = "Recomendação", Disabled = true });
+
+            config.Elements.Add(new LabelSetUI { Id = "labelSetDadosTransmissao", Class = "col s12", Label = "Dados da Transmissão" });
+            config.Elements.Add(new SelectUI
+            {
+                Id = "tipoAmbiente",
+                Class = "col s12 m6 l4",
+                Label = "Ambiente",
+                Disabled = true,
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoAmbiente)).ToList())
+            });
+            config.Elements.Add(new InputTextUI { Id = "certificadoDigitalEntidadeHomologacao", Class = "col s12 m6 l4", Label = "Entidade TSS homologação", Disabled = true });
+            config.Elements.Add(new InputTextUI { Id = "certificadoDigitalEntidadeProducao", Class = "col s12 m6 l4", Label = "Entidade TSS produção", Disabled = true });
+            config.Elements.Add(new InputCpfcnpjUI { Id = "certificadoDigitalCnpj", Class = "col s12 m6 l4", Label = "CNPJ empresa", Disabled = true });
+            config.Elements.Add(new InputTextUI { Id = "certificadoDigitalInscricaoEstadual", Class = "col s12 m6 l4", Label = "I.E. empresa", Disabled = true });
+            config.Elements.Add(new InputTextUI { Id = "certificadoDigitalUf", Class = "col s12 m6 l4", Label = "UF empresa", Disabled = true });
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }

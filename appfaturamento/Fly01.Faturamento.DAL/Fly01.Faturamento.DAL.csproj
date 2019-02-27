@@ -492,6 +492,10 @@
     <Compile Include="Migrations\201902261235410_AlterNotaFiscalAddCertificado.Designer.cs">
       <DependentUpon>201902261235410_AlterNotaFiscalAddCertificado.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201902271138553_AlterNfInutilizadaAddCertificado.cs" />
+    <Compile Include="Migrations\201902271138553_AlterNfInutilizadaAddCertificado.Designer.cs">
+      <DependentUpon>201902271138553_AlterNfInutilizadaAddCertificado.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CFOPDataInitializer.cs" />
@@ -854,6 +858,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201902261235410_AlterNotaFiscalAddCertificado.resx">
       <DependentUpon>201902261235410_AlterNotaFiscalAddCertificado.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902271138553_AlterNfInutilizadaAddCertificado.resx">
+      <DependentUpon>201902271138553_AlterNfInutilizadaAddCertificado.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

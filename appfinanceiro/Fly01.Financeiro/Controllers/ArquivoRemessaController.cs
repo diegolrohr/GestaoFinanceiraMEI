@@ -74,10 +74,10 @@ namespace Fly01.Financeiro.Controllers
 
         [OperationRole(NotApply = true)]
         [HttpGet]
-        public ActionResult DownloadArquivoRemessa(List<string> ids)
+        public ActionResult DownloadArquivoRemessa(List<string> ids, string idArquivo = "")
         {
             var idsCnabToSave = ids[0].Split(',');
-            var arquivosGerados = SalvarArquivoRemessa(idsCnabToSave);
+            var arquivosGerados = SalvarArquivoRemessa(idsCnabToSave, idArquivo);
 
             if (arquivosGerados.Count > 1)
             {
@@ -121,17 +121,19 @@ namespace Fly01.Financeiro.Controllers
 
         [OperationRole(NotApply = true)]
         [HttpGet]
-        public ActionResult DownloadArquivoRemessabyId(Guid id)
+        public ActionResult DownloadArquivoRemessabyId(Guid idArquivo)
         {
-            var cnabs = GetArquivo(id);
+            var cnabs = GetArquivo(idArquivo);
+            var value = "";
 
             List<string> ids = new List<string>();
             foreach (var item in cnabs)
-            {
-                ids.Add(item.Id.ToString());
-            }
+                value = value + item.Id.ToString() + ",";
 
-            return DownloadArquivoRemessa(ids);   
+            value = value.Substring(0, value.Length - 1);
+            ids.Add(value);
+
+            return DownloadArquivoRemessa(ids, idArquivo.ToString());   
         }
 
         protected List<CnabVM> GetArquivo(Guid id)
@@ -145,7 +147,7 @@ namespace Fly01.Financeiro.Controllers
             return cnabs.Data.ToList();
         }
 
-        private List<String> SalvarArquivoRemessa(string[] idsCnabToSave)
+        private List<String> SalvarArquivoRemessa(string[] idsCnabToSave, string idArquivo = "")
         {
             var arquivosGeradosPorBanco = new List<string>();
             var bancos = GetBancosEmiteBoletos();
@@ -165,7 +167,9 @@ namespace Fly01.Financeiro.Controllers
 
                 arquivosGeradosPorBanco.Add(nomeArquivo);
 
-                Save(cnabs, banco.Id, nomeArquivo, dadosArquivoRemessa.TotalBoletosGerados, dadosArquivoRemessa.ValorTotalArquivoRemessa);
+                if (idArquivo == "")                
+                    Save(cnabs, banco.Id, nomeArquivo, dadosArquivoRemessa.TotalBoletosGerados, dadosArquivoRemessa.ValorTotalArquivoRemessa);
+                
             });
 
             return arquivosGeradosPorBanco;

@@ -29,14 +29,16 @@ namespace Fly01.Faturamento.BL
         {
             var notasFiscaisByPlataforma = (from nf in NFSeBL.Everything.Where(x => (x.Status == StatusNotaFiscal.Transmitida || x.Status == StatusNotaFiscal.EmCancelamento))
                                             where string.IsNullOrEmpty(plataformaUrl) || nf.PlataformaId == plataformaUrl && nf.TipoNotaFiscal == TipoNotaFiscal.NFSe
-                                            group nf by nf.PlataformaId into g
+                                            group nf by new { nf.PlataformaId, nf.TipoAmbiente, nf.CertificadoDigitalId } into g
                                             select new
                                             {
-                                                plataformaId = g.Key,
+                                                plataformaId = g.Key.PlataformaId,
                                                 notaInicial = g.Min(x => x.SefazId),
                                                 notaFinal = g.Max(x => x.SefazId),
                                                 dataInicial = g.Min(x => x.Data),
-                                                dataFinal = g.Max(x => x.Data)
+                                                dataFinal = g.Max(x => x.Data),
+                                                tipoAmbiente = g.Key.TipoAmbiente,
+                                                certificadoDigitalId = g.Key.CertificadoDigitalId
                                             });
 
             var header = new Dictionary<string, string>()
@@ -49,9 +51,9 @@ namespace Fly01.Faturamento.BL
             {
                 try
                 {
-                    var dadosCertificado = CertificadoDigitalBL.GetEntidade(dadosPlataforma.plataformaId);
+                    var entidade = CertificadoDigitalBL.GetEntidadeFromCertificado(dadosPlataforma.plataformaId, dadosPlataforma.tipoAmbiente, dadosPlataforma.certificadoDigitalId);
 
-                    if (dadosCertificado == null)
+                    if (entidade == null)
                         continue;
 
 
@@ -59,9 +61,9 @@ namespace Fly01.Faturamento.BL
                     {
                         var monitorVM = new MonitorNFSVM()
                         {
-                            Homologacao = dadosCertificado.Homologacao,
-                            Producao = dadosCertificado.Producao,
-                            EntidadeAmbienteNFS = dadosCertificado.EntidadeAmbienteNFS,
+                            Homologacao = entidade.Homologacao,
+                            Producao = entidade.Producao,
+                            EntidadeAmbienteNFS = entidade.EntidadeAmbienteNFS,
                             NotaInicial = dadosPlataforma.notaInicial.ToString(),
                             NotaFinal = dadosPlataforma.notaFinal.ToString(),
                             DataInicial = dadosPlataforma.dataInicial,

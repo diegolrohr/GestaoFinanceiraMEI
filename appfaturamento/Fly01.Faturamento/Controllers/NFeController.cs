@@ -25,7 +25,7 @@ namespace Fly01.Faturamento.Controllers
         //NFeVM e NFSeVM na mesma controller notaFiscal, direcionado as controller via javaScript
         public NFeController()
         {
-            ExpandProperties = "ordemVendaOrigem($select=numero),cliente($select=id,nome),transportadora($select=id,nome),estadoPlacaVeiculo,condicaoParcelamento,formaPagamento,categoria,serieNotaFiscal,centroCusto";
+            ExpandProperties = "ordemVendaOrigem($select=numero),cliente($select=id,nome),transportadora($select=id,nome),estadoPlacaVeiculo,condicaoParcelamento,formaPagamento,categoria,serieNotaFiscal,centroCusto,certificadoDigital($select=cnpj,inscricaoEstadual,uf,entidadeHomologacao,entidadeProducao)";
         }
 
         public override Func<NFeVM, object> GetDisplayData()
@@ -209,6 +209,21 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutos", Class = "col s12 m6", Label = "Total de impostos incidentes", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutosNaoAgrega", Class = "col s12 m6", Label = "Total de impostos não incidentes", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalNotaFiscal", Class = "col s12", Label = "Total (produtos + impostos incidentes + frete)", Readonly = true });
+
+            config.Elements.Add(new LabelSetUI { Id = "labelSetDadosTransmissao", Class = "col s12", Label = "Dados da Transmissão" });
+            config.Elements.Add(new SelectUI
+            {
+                Id = "tipoAmbiente",
+                Class = "col s12 m6 l4",
+                Label = "Ambiente",
+                Disabled = true,
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoAmbiente)).ToList())
+            });
+            config.Elements.Add(new InputTextUI { Id = "certificadoDigitalEntidadeHomologacao", Class = "col s12 m6 l4", Label = "Entidade TSS homologação", Disabled = true });
+            config.Elements.Add(new InputTextUI { Id = "certificadoDigitalEntidadeProducao", Class = "col s12 m6 l4", Label = "Entidade TSS produção", Disabled = true });
+            config.Elements.Add(new InputCpfcnpjUI { Id = "certificadoDigitalCnpj", Class = "col s12 m6 l4", Label = "CNPJ empresa", Disabled = true });
+            config.Elements.Add(new InputTextUI { Id = "certificadoDigitalInscricaoEstadual", Class = "col s12 m6 l4", Label = "I.E. empresa", Disabled = true });
+            config.Elements.Add(new InputTextUI { Id = "certificadoDigitalUf", Class = "col s12 m6 l4", Label = "UF empresa", Disabled = true });
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }

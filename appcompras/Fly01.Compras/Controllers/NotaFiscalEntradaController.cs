@@ -29,7 +29,7 @@ namespace Fly01.Compras.Controllers
     {
         public NotaFiscalEntradaController()
         {
-            ExpandProperties = "fornecedor($select=id,nome, email),ordemCompraOrigem($select=id,numero),categoria($select=id,descricao),serieNotaFiscal($select=id,serie),centroCusto";
+            ExpandProperties = "fornecedor($select=id,nome,email),ordemCompraOrigem($select=id,numero),categoria($select=id,descricao),serieNotaFiscal($select=id,serie),centroCusto";
         }
 
         public override Dictionary<string, string> GetQueryStringDefaultGridLoad()

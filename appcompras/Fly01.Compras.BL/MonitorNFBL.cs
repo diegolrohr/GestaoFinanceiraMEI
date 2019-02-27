@@ -78,8 +78,15 @@ namespace Fly01.Compras.BL
         {
             var notasFiscaisInutilizadasByPlataforma = (from nf in NotaFiscalInutilizadaBL.Everything.Where(x => (x.Status == StatusNotaFiscal.InutilizacaoSolicitada || x.Status == StatusNotaFiscal.Transmitida))
                                                         where string.IsNullOrEmpty(plataformaUrl) || nf.PlataformaId == plataformaUrl
-                                                        group nf by nf.PlataformaId into g
-                                                        select new { plataformaId = g.Key, notaInicial = g.Min(x => x.SefazChaveAcesso), notaFinal = g.Max(x => x.SefazChaveAcesso) });
+                                                        group nf by new { nf.PlataformaId, nf.TipoAmbiente, nf.CertificadoDigitalId } into g
+                                                        select new
+                                                        {
+                                                            plataformaId = g.Key.PlataformaId,
+                                                            tipoAmbiente = g.Key.TipoAmbiente,
+                                                            certificadoDigitalId = g.Key.CertificadoDigitalId,
+                                                            notaInicial = g.Min(x => x.SefazChaveAcesso),
+                                                            notaFinal = g.Max(x => x.SefazChaveAcesso)
+                                                        });
 
             var header = GetHeader(PlataformaUrl); 
 
@@ -87,14 +94,14 @@ namespace Fly01.Compras.BL
             {
                 try
                 {
-                    var dadosCertificado = CertificadoDigitalBL.GetEntidade(dadosPlataforma.plataformaId);
+                    var entidade = CertificadoDigitalBL.GetEntidadeFromCertificado(dadosPlataforma.plataformaId, dadosPlataforma.tipoAmbiente, dadosPlataforma.certificadoDigitalId);
 
-                    if (dadosCertificado == null)
+                    if (entidade == null)
                         continue;
 
                     if (TotalTributacaoBL.ConfiguracaoTSSOK(dadosPlataforma.plataformaId))
                     {
-                        var monitorVM = GetMonitorVM(dadosCertificado, dadosPlataforma);
+                        var monitorVM = GetMonitorVM(entidade, dadosPlataforma);
 
                         var responseMonitor = RestHelper.ExecutePostRequest<ListMonitorRetornoVM>(AppDefaults.UrlEmissaoNfeApi, "monitor", JsonConvert.SerializeObject(monitorVM), null, header);
                         if (responseMonitor == null)
@@ -234,13 +241,13 @@ namespace Fly01.Compras.BL
             };
         }
 
-        private MonitorEventoVM GetMonitorEventoVM(EntidadeVM dadosCertificado, NotaFiscalCartaCorrecaoEntrada cartaCorrecao)
+        private MonitorEventoVM GetMonitorEventoVM(EntidadeVM entidade, NotaFiscalCartaCorrecaoEntrada cartaCorrecao)
         {
             return new MonitorEventoVM()
             {
-                Homologacao = dadosCertificado.Homologacao,
-                Producao = dadosCertificado.Producao,
-                EntidadeAmbiente = dadosCertificado.EntidadeAmbiente,
+                Homologacao = entidade.Homologacao,
+                Producao = entidade.Producao,
+                EntidadeAmbiente = entidade.EntidadeAmbiente,
                 IdEvento = cartaCorrecao.IdRetorno,
                 SefazChaveAcesso = cartaCorrecao.NotaFiscal.SefazId
             };

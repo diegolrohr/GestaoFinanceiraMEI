@@ -241,13 +241,13 @@ namespace Fly01.Compras.BL
             };
         }
 
-        private MonitorEventoVM GetMonitorEventoVM(EntidadeVM dadosCertificado, NotaFiscalCartaCorrecaoEntrada cartaCorrecao)
+        private MonitorEventoVM GetMonitorEventoVM(EntidadeVM entidade, NotaFiscalCartaCorrecaoEntrada cartaCorrecao)
         {
             return new MonitorEventoVM()
             {
-                Homologacao = dadosCertificado.Homologacao,
-                Producao = dadosCertificado.Producao,
-                EntidadeAmbiente = dadosCertificado.EntidadeAmbiente,
+                Homologacao = entidade.Homologacao,
+                Producao = entidade.Producao,
+                EntidadeAmbiente = entidade.EntidadeAmbiente,
                 IdEvento = cartaCorrecao.IdRetorno,
                 SefazChaveAcesso = cartaCorrecao.NotaFiscal.SefazId
             };

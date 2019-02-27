@@ -181,6 +181,7 @@ namespace Fly01.Compras.BL
 
         public EntidadeVM GetEntidadeFromCertificado(string plataformaId, TipoAmbiente tipoAmbiente, Guid? certificadoId)
         {
+            //Recupera pela informação salva no momento da transmissão
             var certificadoDigital = Everything.Where(x => x.Id == certificadoId).FirstOrDefault();
 
             var entidade = new EntidadeVM();

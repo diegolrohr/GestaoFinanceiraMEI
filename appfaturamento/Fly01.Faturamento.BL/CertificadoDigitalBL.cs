@@ -179,6 +179,25 @@ namespace Fly01.Faturamento.BL
             return retorno;
         }
 
+        public EntidadeVM GetEntidadeFromCertificado(string plataformaId, TipoAmbiente tipoAmbiente, Guid? certificadoId)
+        {
+            //Recupera pela informação salva no momento da transmissão
+            var certificadoDigital = Everything.Where(x => x.Id == certificadoId).FirstOrDefault();
+
+            var entidade = new EntidadeVM();
+            if (certificadoDigital != null)
+            {
+                entidade.Homologacao = certificadoDigital.EntidadeHomologacao;
+                entidade.Producao = certificadoDigital.EntidadeProducao;
+                entidade.EntidadeAmbiente = tipoAmbiente;
+            }
+            else
+            {
+                entidade = GetEntidade(plataformaId);
+            }
+            return entidade;
+        }
+
         public CertificadoDigital CertificadoAtualValido()
         {
             //retorna conforme os dados atuais da empresa

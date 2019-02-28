@@ -16,7 +16,7 @@ using Fly01.Core.Presentation;
 
 namespace Fly01.Financeiro.Controllers
 {
-    [OperationRole(ResourceKey = ResourceHashConst.FinanceiroFinanceiroRelatorioDRE)]
+    [OperationRole(ResourceKey = ResourceHashConst.FinanceiroFinanceiroRelatorios)]
     public class DemonstrativoResultadoExercicioController : BaseController<DemonstrativoResultadoExercicioVM>
     {
         [HttpGet]

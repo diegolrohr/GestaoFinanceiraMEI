@@ -68,6 +68,7 @@
     <Compile Include="Controllers\Api\AjusteManualController.cs" />
     <Compile Include="Controllers\Api\ProdutoController.cs" />
     <Compile Include="Controllers\Api\ProdutosMenosMovimentadosController.cs" />
+    <Compile Include="Controllers\Api\MovimentoEstoqueController.cs" />
     <Compile Include="Controllers\Api\TipoEntradaSaidaController.cs" />
     <Compile Include="Controllers\Api\TipoMovimentoController.cs" />
     <Compile Include="Controllers\Api\EstadoController.cs" />

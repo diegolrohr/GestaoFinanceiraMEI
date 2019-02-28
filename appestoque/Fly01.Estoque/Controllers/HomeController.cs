@@ -219,7 +219,7 @@ namespace Fly01.Estoque.Controllers
                         new LinkUI() { Class = ResourceHashConst.EstoqueEstoqueAjusteManual, Label = "Ajuste Manual", OnClick = @Url.Action("Form", "AjusteManual")},
                         new LinkUI() { Class = ResourceHashConst.EstoqueEstoquePosicaoAtual, Label = "Posição Atual", OnClick = @Url.Action("List", "PosicaoAtual")},
                         new LinkUI() { Class = ResourceHashConst.EstoqueEstoqueInventario, Label = "Inventário", OnClick = @Url.Action("List", "Inventario")},
-                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroRelatorioDRE, Label = "Relatórios", OnClick = @Url.Action("List", "Relatorio")},
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroRelatorios, Label = "Relatórios", OnClick = @Url.Action("List", "Relatorio")}
                     }
                 },
                 new SidebarUIMenu()

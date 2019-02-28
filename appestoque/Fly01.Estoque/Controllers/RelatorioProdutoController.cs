@@ -53,7 +53,8 @@ namespace Fly01.Estoque.Controllers
                     Title = "Relatório Produtos",
                     Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                //Functions = new List<string> {"fnImprimirRelatorioProduto"}
             };
 
             var config = new FormUI
@@ -139,7 +140,7 @@ namespace Fly01.Estoque.Controllers
             var queryString = new Dictionary<string, string>
             {
                 { "descricao", descricao},
-                { "codigoId", codigo},
+                { "codigo", codigo},
                 { "tipoProduto", tipoProduto},
                 { "grupoProdutoId", grupoProdutoId},
                 { "unidadeMedidaId", unidadeMedidaId},
@@ -148,7 +149,7 @@ namespace Fly01.Estoque.Controllers
                 { "origemMercadoria", origemMercadoria},
             };
 
-            var response = RestHelper.ExecuteGetRequest<ResultBase<RelatorioProdutoVM>>("relatorioContaFinanceira", queryString);
+            var response = RestHelper.ExecuteGetRequest<ResultBase<RelatorioProdutoVM>>("relatorioProduto", queryString);
 
 
             //tem que revisar..

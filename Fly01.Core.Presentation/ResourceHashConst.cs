@@ -13,7 +13,7 @@
         public const string FinanceiroFinanceiroExtrato = "877863B0-3949-4C6E-88CA-495140926B30";
         public const string FinanceiroFinanceiroContasPagar = "C306721A-BB99-4262-8C62-8F538037600E";
         public const string FinanceiroFinanceiroContasReceber = "4AF5ACA1-8D6F-4CAA-A7FC-4433BEBF33AD";
-        public const string FinanceiroFinanceiroRelatorioDRE = "5BAB7260-EFDF-449B-A2B6-874817071751";
+        public const string FinanceiroFinanceiroRelatorios = "5BAB7260-EFDF-449B-A2B6-874817071751";
         public const string FinanceiroFinanceiroConciliacaoBancaria = "5638CC31-48F4-44ED-A322-F3F05BA41125";
         public const string FinanceiroFinanceiroAntecipacaoRecebiveis = "C94F63C8-39D4-4056-B3CD-707C1FF06FBC";
 
@@ -82,6 +82,7 @@
         public const string EstoqueEstoqueAjusteManual = "30B2B375-1FEA-4CC6-8992-6C7BC08589C2";
         public const string EstoqueEstoquePosicaoAtual = "BAC0D8F9-152A-4F10-90C1-DCA177253272";
         public const string EstoqueEstoqueInventario = "557F9938-195C-4DD0-B7D8-9DED30FD4066";
+        public const string EstoqueEstoqueRelatorios = "B219A5AD-F521-4435-A0FA-B0826BFB46C6";
 
         public const string EstoqueCadastros = "695C2128-CA57-4BD5-B46E-AD96EA7C4D1F";
         public const string EstoqueCadastrosProdutos = "298E5044-DA77-4A95-A108-4EBDB6D9F9F0";

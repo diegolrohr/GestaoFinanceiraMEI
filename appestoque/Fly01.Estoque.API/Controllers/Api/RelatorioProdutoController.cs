@@ -14,7 +14,7 @@ namespace Fly01.Estoque.API.Controllers.Api
     [RoutePrefix("api/relatorioProduto")]
     public class RelatorioProdutoController : ApiBaseController
     {
-        public IHttpActionResult Getr(string descricao,
+        public IHttpActionResult Get(string descricao,
                                 string codigo,
                                 string tipoProduto,
                                 Guid? grupoProdutoId,
@@ -46,8 +46,9 @@ namespace Fly01.Estoque.API.Controllers.Api
                 ).Where(filterPredicate)
                 .Take(2000)
                 .Select(GetDisplayData()).ToList();
+
+                return Ok(new { count = result.Count, value = result });
             }
-            return Ok();
         }
 
         private Func<Produto, RelatorioProdutoVM> GetDisplayData()
@@ -57,10 +58,12 @@ namespace Fly01.Estoque.API.Controllers.Api
                 Id = x.Id,
                 Descricao = x.Descricao,
                 Codigo = x.CodigoProduto,
-                //TipoProduto = x.TipoProduto,
-                //GrupoProduto = x.GrupoProdutoId,
-                //UnidadeMedida = x.UnidadeMedidaId
-
+                TipoProduto = EnumHelper.GetEnumDescription(x.TipoProduto),
+                GrupoProduto = x.GrupoProduto.Descricao,
+                UnidadeMedida = x.UnidadeMedida.Descricao,
+                Ncm = x.Ncm.Descricao,
+                EnquadramentoLegalIPI = x.EnquadramentoLegalIPI.Descricao,
+                OrigemMercadoria = EnumHelper.GetEnumDescription(x.OrigemMercadoria)
             };
         }
     }

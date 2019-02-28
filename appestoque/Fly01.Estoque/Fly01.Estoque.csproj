@@ -74,6 +74,7 @@
     <Compile Include="Controllers\ProdutosMenosMovimentadosController.cs" />
     <Compile Include="Controllers\ProdutosMaisMovimentadosController.cs" />
     <Compile Include="Controllers\ProdutoController.cs" />
+    <Compile Include="Controllers\RelatorioController.cs" />
     <Compile Include="Controllers\TipoMovimentoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Models\Reports\ReportStock.cs" />
@@ -106,6 +107,7 @@
     <Compile Include="ViewModel\InventarioItemVM.cs" />
     <Compile Include="ViewModel\InventarioVM.cs" />
     <Compile Include="ViewModel\PosicaoAtualVM.cs" />
+    <Compile Include="ViewModel\ImprimirMovimentoEstoqueVM.cs" />
     <Compile Include="ViewModel\ProdutosMaisMovimentadosVM.cs" />
     <Compile Include="ViewModel\ProdutosMenosMovimentadosVM.cs" />
     <Compile Include="ViewModel\TipoMovimentoVM.cs" />

@@ -9,7 +9,7 @@ using Fly01.Core.ViewModels.Presentation.Commons;
 
 namespace Fly01.Financeiro.Controllers
 {
-    // [OperationRole(ResourceKey = ResourceHashConst.FinanceiroFinanceiroRelatorioDRE)]
+    [OperationRole(ResourceKey = ResourceHashConst.FinanceiroFinanceiroRelatorios)]
     public class RelatorioController : BaseController<DomainBaseVM>
     {
         public override Func<DomainBaseVM, object> GetDisplayData()

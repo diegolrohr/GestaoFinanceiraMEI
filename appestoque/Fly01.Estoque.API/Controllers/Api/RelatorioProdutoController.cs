@@ -57,12 +57,12 @@ namespace Fly01.Estoque.API.Controllers.Api
             {
                 Id = x.Id,
                 Descricao = x.Descricao,
-                Codigo = x.CodigoProduto,
+                Codigo = x.CodigoProduto?? "",
                 TipoProduto = EnumHelper.GetEnumDescription(x.TipoProduto),
-                GrupoProduto = x.GrupoProduto.Descricao,
-                UnidadeMedida = x.UnidadeMedida.Descricao,
-                Ncm = x.Ncm.Descricao,
-                EnquadramentoLegalIPI = x.EnquadramentoLegalIPI.Descricao,
+                GrupoProduto = x.GrupoProduto?.Descricao,
+                UnidadeMedida = x.UnidadeMedida?.Descricao,
+                Ncm = x.Ncm?.Descricao,
+                EnquadramentoLegalIPI = x.EnquadramentoLegalIPI?.Descricao,
                 OrigemMercadoria = EnumHelper.GetEnumDescription(x.OrigemMercadoria)
             };
         }

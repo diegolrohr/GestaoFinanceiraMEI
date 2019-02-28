@@ -82,7 +82,7 @@
         public const string EstoqueEstoqueAjusteManual = "30B2B375-1FEA-4CC6-8992-6C7BC08589C2";
         public const string EstoqueEstoquePosicaoAtual = "BAC0D8F9-152A-4F10-90C1-DCA177253272";
         public const string EstoqueEstoqueInventario = "557F9938-195C-4DD0-B7D8-9DED30FD4066";
-        public const string EstoqueEstoqueRelatorios = "B219A5AD - F521-4435-A0FA-B0826BFB46C6";
+        public const string EstoqueEstoqueRelatorios = "B219A5AD-F521-4435-A0FA-B0826BFB46C6";
 
         public const string EstoqueCadastros = "695C2128-CA57-4BD5-B46E-AD96EA7C4D1F";
         public const string EstoqueCadastrosProdutos = "298E5044-DA77-4A95-A108-4EBDB6D9F9F0";

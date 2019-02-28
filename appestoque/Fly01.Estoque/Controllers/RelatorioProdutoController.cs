@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using Fly01.Core;
+using Fly01.Core.Config;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Presentation;
 using Fly01.Core.Presentation.Commons;
+using Fly01.Core.Rest;
 using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.Estoque.Models.Reports;
+using Fly01.Estoque.Models.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Classes.Helpers;
@@ -13,8 +18,8 @@ namespace Fly01.Estoque.Controllers
 {
     public class RelatorioProdutoController : BaseController<ProdutoVM>
     {
-
         private string GrupoProdutoResourceHash { get; set; }
+
         public override Func<ProdutoVM, object> GetDisplayData()
         {
             throw new NotImplementedException();
@@ -63,7 +68,7 @@ namespace Fly01.Estoque.Controllers
             };
 
             config.Elements.Add(new InputTextUI { Id = "descricaoid", Class = "col s12 m4", Label = "Descrição", MaxLength = 200 });
-            config.Elements.Add(new InputTextUI { Id = "codigoId", Class = "col s12 m2", Label = "Código"});
+            config.Elements.Add(new InputTextUI { Id = "codigo", Class = "col s12 m2", Label = "Código"});
             config.Elements.Add(new SelectUI
             {
                 Id = "tipoProduto",
@@ -119,6 +124,36 @@ namespace Fly01.Estoque.Controllers
             });
             cfg.Content.Add(config);
             return cfg;
+        }
+
+        [HttpGet]
+        public ActionResult Imprimir(string descricao, 
+                                string codigo, 
+                                string tipoProduto, 
+                                string grupoProdutoId, 
+                                string unidadeMedidaId, 
+                                string ncmId, 
+                                string enquadramentoLegalIPIId, 
+                                string origemMercadoria)
+        {
+            var queryString = new Dictionary<string, string>
+            {
+                { "descricao", descricao},
+                { "codigoId", codigo},
+                { "tipoProduto", tipoProduto},
+                { "grupoProdutoId", grupoProdutoId},
+                { "unidadeMedidaId", unidadeMedidaId},
+                { "ncmId", ncmId},
+                { "enquadramentoLegalIPIId", enquadramentoLegalIPIId},
+                { "origemMercadoria", origemMercadoria},
+            };
+
+            var response = RestHelper.ExecuteGetRequest<ResultBase<RelatorioProdutoVM>>("relatorioContaFinanceira", queryString);
+
+
+            //tem que revisar..
+            var reportViewer = new WebReportViewer<RelatorioProdutoVM>(ReportListaContagem.Instance);
+            return File(reportViewer.Print(response.Data, SessionManager.Current.UserData.PlatformUrl), "application/pdf");        
         }
     }
 

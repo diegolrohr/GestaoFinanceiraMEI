@@ -5,7 +5,7 @@ using System;
 namespace Fly01.Estoque.ViewModel
 {
     [Serializable]
-    public class ImprimirMovimentoEstoqueVM : DomainBaseVM
+    public class RelatorioMovimentoEstoqueVM : DomainBaseVM
     {
         [JsonProperty("data")]
         public DateTime Data { get; set; }

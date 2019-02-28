@@ -1,0 +1,18 @@
+﻿<script>
+    function fnImprimirRelatorioMovimentoEstoque() {
+        var countValues = 0;
+        var valueItens = [$('input#dataInicial').val(), $('input#dataFinal').val(), $('input#produtoId').val(), $('input#tipoMovimentoId').val(), $("#inventarioId").val()];
+        valueItens.forEach(function (item) {
+            if (item !== "") {
+                countValues++;
+                return false;
+            }
+        });
+
+        if (countValues === 0)
+            $$$.toast("Inform ao menos um parâmetro para continuar.", 'error');
+        else {
+            $$$._.dtMovimentacoesEstoque.refresh();
+        }
+    }
+</script>

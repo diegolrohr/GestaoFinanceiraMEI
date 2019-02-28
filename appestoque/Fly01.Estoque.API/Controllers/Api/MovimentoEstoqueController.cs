@@ -12,9 +12,9 @@ namespace Fly01.Estoque.API.Controllers.Api
     [RoutePrefix("api/movimentoEstoque")]
     public class MovimentoEstoqueController : ApiBaseController
     {
-        private Func<MovimentoEstoque, ImprimirMovimentoEstoqueVM> GetDisplayData()
+        private Func<MovimentoEstoque, RelatorioMovimentoEstoqueVM> GetDisplayData()
         {
-            return x => new ImprimirMovimentoEstoqueVM()
+            return x => new RelatorioMovimentoEstoqueVM()
             {
                 Id = x.Id,
                 ProdutoDescricao = x.Produto?.Descricao ?? "",
@@ -45,7 +45,7 @@ namespace Fly01.Estoque.API.Controllers.Api
 
             using (var unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                List<ImprimirMovimentoEstoqueVM> result = unitOfWork.MovimentoEstoqueBL
+                List<RelatorioMovimentoEstoqueVM> result = unitOfWork.MovimentoEstoqueBL
                    .AllIncluding(
                        x => x.Produto,
                        x => x.TipoMovimento,

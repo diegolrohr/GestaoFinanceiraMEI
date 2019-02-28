@@ -27,5 +27,37 @@ namespace Fly01.Estoque.Controllers
 
             return GetJson(filterObjects);
         }
+
+        public JsonResult TiposMovimentos(string term)
+        {
+            var resourceName = AppDefaults.GetResourceName(typeof(TipoMovimentoVM));
+            var queryString = AppDefaults.GetQueryStringDefault();
+
+            queryString.AddParam("$filter", $"contains(descricao, '{term}')");
+
+            queryString.AddParam("$select", "id,descricao");
+            queryString.AddParam("$orderby", "descricao");
+
+            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<TipoMovimentoVM>>(resourceName, queryString).Data
+                                select new { id = item.Id, label = item.Descricao };
+
+            return GetJson(filterObjects);
+        }
+
+        public JsonResult Inventario(string term)
+        {
+            var resourceName = AppDefaults.GetResourceName(typeof(InventarioVM));
+            var queryString = AppDefaults.GetQueryStringDefault();
+
+            queryString.AddParam("$filter", $"contains(descricao, '{term}')");
+
+            queryString.AddParam("$select", "id,descricao,inventarioStatus");
+            queryString.AddParam("$orderby", "descricao");
+
+            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<InventarioVM>>(resourceName, queryString).Data
+                                select new { id = item.Id, label = item.Descricao, detail = item.InventarioStatus};
+
+            return GetJson(filterObjects);
+        }
     }
 }

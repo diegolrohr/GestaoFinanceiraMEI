@@ -48,7 +48,7 @@ namespace Fly01.Estoque.Controllers
             if (Request.QueryString["dataFinal"] != "")
                 filters.Add("dataInclusao le ", string.Format("{0}T23:59:59.99Z",Request.QueryString["dataFinal"]));
             if (Request.QueryString["dataInicial"] != "")
-                filters.Add(" and dataInclusao ge ", string.Format("{0}T00:00:00.00Z", Request.QueryString["dataFinal"]));
+                filters.Add(" and dataInclusao ge ", string.Format("{0}T00:00:00.00Z", Request.QueryString["dataInicial"]));
 
             return base.GridLoad(filters);
         }

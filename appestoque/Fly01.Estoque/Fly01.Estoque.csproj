@@ -106,6 +106,7 @@
     <Compile Include="ViewModel\InventarioItemVM.cs" />
     <Compile Include="ViewModel\InventarioVM.cs" />
     <Compile Include="ViewModel\PosicaoAtualVM.cs" />
+    <Compile Include="ViewModel\ImprimirMovimentoEstoqueVM.cs" />
     <Compile Include="ViewModel\ProdutosMaisMovimentadosVM.cs" />
     <Compile Include="ViewModel\ProdutosMenosMovimentadosVM.cs" />
     <Compile Include="ViewModel\TipoMovimentoVM.cs" />

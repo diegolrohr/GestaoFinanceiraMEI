@@ -55,15 +55,15 @@ namespace Fly01.Estoque.API.Controllers.Api
         {
             return x => new RelatorioProdutoVM()
             {
-                Id = x.Id,
-                Descricao = x.Descricao,
+                //Id = x.Id,
+                Descricao = x.Descricao??"",
                 Codigo = x.CodigoProduto?? "",
                 TipoProduto = EnumHelper.GetEnumDescription(x.TipoProduto),
-                GrupoProduto = x.GrupoProduto?.Descricao,
-                UnidadeMedida = x.UnidadeMedida?.Descricao,
-                Ncm = x.Ncm?.Descricao,
-                EnquadramentoLegalIPI = x.EnquadramentoLegalIPI?.Descricao,
-                OrigemMercadoria = EnumHelper.GetEnumDescription(x.OrigemMercadoria)
+                GrupoProduto = x.GrupoProduto?.Descricao?? "",
+                UnidadeMedida = x.UnidadeMedida?.Descricao?? "",
+                Ncm = x.Ncm?.Descricao?? "",
+                EnquadramentoLegalIPI = x.EnquadramentoLegalIPI?.Descricao?? "",
+                OrigemMercadoria = EnumHelper.GetEnumDescription(x.OrigemMercadoria),
             };
         }
     }

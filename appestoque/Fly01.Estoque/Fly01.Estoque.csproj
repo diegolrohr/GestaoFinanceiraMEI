@@ -78,6 +78,7 @@
     <Compile Include="Controllers\RelatorioController.cs" />
     <Compile Include="Controllers\TipoMovimentoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Models\Reports\ReportProduto.cs" />
     <Compile Include="Models\Reports\ReportStock.cs" />
     <Compile Include="Models\Reports\ReportMovimentoSimplificado.cs" />
     <Compile Include="Models\Reports\ReportMovimentoDetalhado.cs" />
@@ -433,7 +434,9 @@
       <Name>Fly01.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Reports\ReportProduto.rdlc" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

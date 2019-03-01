@@ -6,9 +6,7 @@ namespace Fly01.Estoque.Models.ViewModel
     [Serializable]
     public class RelatorioProdutoVM
     {
-        [JsonProperty("id")]
-        public Guid Id { get; set; }
-
+        
         [JsonProperty("descricao")]
         public string Descricao { get; set; }
 

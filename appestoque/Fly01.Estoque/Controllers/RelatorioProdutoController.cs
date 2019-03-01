@@ -153,10 +153,8 @@ namespace Fly01.Estoque.Controllers
 
 
             //tem que revisar..
-            var reportViewer = new WebReportViewer<RelatorioProdutoVM>(ReportListaContagem.Instance);
+            var reportViewer = new WebReportViewer<RelatorioProdutoVM>(ReportProduto.Instance);
             return File(reportViewer.Print(response.Data, SessionManager.Current.UserData.PlatformUrl), "application/pdf");        
         }
     }
-
-
 }

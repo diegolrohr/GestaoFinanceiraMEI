@@ -35,6 +35,7 @@ namespace Fly01.Estoque.API
             builder.EntitySet<EnquadramentoLegalIPI>("enquadramentolegalipi");
             builder.EntitySet<MovimentoOrdemVenda>("movimentoordemvenda");
             builder.EntitySet<Arquivo>("arquivo");
+            builder.EntitySet<MovimentoEstoque>("movimentoestoque");
 
             builder.EnableLowerCamelCase();
             return builder.GetEdmModel();

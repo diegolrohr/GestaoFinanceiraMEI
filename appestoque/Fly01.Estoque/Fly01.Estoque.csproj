@@ -74,6 +74,7 @@
     <Compile Include="Controllers\ProdutosMenosMovimentadosController.cs" />
     <Compile Include="Controllers\ProdutosMaisMovimentadosController.cs" />
     <Compile Include="Controllers\ProdutoController.cs" />
+    <Compile Include="Controllers\MovimentoEstoqueController.cs" />
     <Compile Include="Controllers\RelatorioProdutoController.cs" />
     <Compile Include="Controllers\RelatorioController.cs" />
     <Compile Include="Controllers\TipoMovimentoController.cs" />
@@ -110,7 +111,7 @@
     <Compile Include="ViewModel\InventarioItemVM.cs" />
     <Compile Include="ViewModel\InventarioVM.cs" />
     <Compile Include="ViewModel\PosicaoAtualVM.cs" />
-    <Compile Include="ViewModel\ImprimirMovimentoEstoqueVM.cs" />
+    <Compile Include="ViewModel\MovimentoEstoqueVM.cs" />
     <Compile Include="ViewModel\ProdutosMaisMovimentadosVM.cs" />
     <Compile Include="ViewModel\ProdutosMenosMovimentadosVM.cs" />
     <Compile Include="ViewModel\TipoMovimentoVM.cs" />
@@ -217,6 +218,7 @@
     <Content Include="Views\MinhaConta\Functions\_fnRenderBoletos.cshtml" />
     <Content Include="Views\MinhaConta\Functions\_fnRenderSituacao.cshtml" />
     <Content Include="Views\MinhaConta\Functions\_fnRenderVencimento.cshtml" />
+    <Content Include="Views\MovimentoEstoque\Functions\_fnChangeInput.cshtml" />
     <Content Include="Views\RelatorioProduto\Functions\_fnChangeNCM.cshtml" />
     <Content Include="Views\RelatorioProduto\Functions\_fnImprimirRelatorioProduto.cshtml" />
     <None Include="Web.Homologacao.config">

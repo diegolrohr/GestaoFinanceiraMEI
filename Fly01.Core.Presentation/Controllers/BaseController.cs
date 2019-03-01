@@ -1063,7 +1063,7 @@ namespace Fly01.Core.Presentation
                 param.Columns.ForEach(y =>
                 {
                     if (!string.IsNullOrWhiteSpace(y.Name))
-                        dtr[y.Name] = o.GetProperty(y.Data).GetValue(x, null);
+                        dtr[y.Name] = o.GetProperty(y.Data.Replace("/","_")).GetValue(x, null);
                 });
                 dt.Rows.Add(dtr);
             });

@@ -1,0 +1,10 @@
+﻿<script>
+    function fnChangeInput() {
+        $("input#dataInclusao").on("change", function () {
+            if ($("label[for='dataInclusao']").attr("class") === "truncate") {
+                $("#dataInicial").val("");
+                $("#dataFinal").val("");
+            }
+        });
+    }
+</script>

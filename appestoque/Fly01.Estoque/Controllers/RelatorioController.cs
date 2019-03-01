@@ -40,7 +40,7 @@ namespace Fly01.Estoque.Controllers
                 Action = new LinkUI
                 {
                     Label = "Relatório de Movimentações",
-                    OnClick = @Url.Action("List", "RelatorioMovimentoEstoque")
+                    OnClick = @Url.Action("List", "MovimentoEstoque")
                 }
             });
 

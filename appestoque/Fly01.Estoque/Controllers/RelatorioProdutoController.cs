@@ -151,8 +151,6 @@ namespace Fly01.Estoque.Controllers
 
             var response = RestHelper.ExecuteGetRequest<ResultBase<RelatorioProdutoVM>>("relatorioProduto", queryString);
 
-
-            //tem que revisar..
             var reportViewer = new WebReportViewer<RelatorioProdutoVM>(ReportProduto.Instance);
             return File(reportViewer.Print(response.Data, SessionManager.Current.UserData.PlatformUrl), "application/pdf");        
         }

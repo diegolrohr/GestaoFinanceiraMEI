@@ -6,28 +6,28 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>4.75077cm</Width>
+              <Width>6.4329cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.93392cm</Width>
+              <Width>1.73897cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.88943cm</Width>
+              <Width>2.06094cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.5cm</Width>
+              <Width>2.70193cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>3.73962cm</Width>
+              <Width>1.90426cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.5cm</Width>
+              <Width>5.74026cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.5cm</Width>
+              <Width>1.51422cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>3.65217cm</Width>
+              <Width>2.71491cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -356,7 +356,7 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox5">
+                    <Textbox Name="OrigemMercadoria">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
@@ -371,11 +371,11 @@
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Right</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox5</rd:DefaultName>
+                      <rd:DefaultName>OrigemMercadoria</rd:DefaultName>
                       <Style>
                         <Border>
                           <Style>Solid</Style>
@@ -641,7 +641,7 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="OrigemMercadoria">
+                    <Textbox Name="OrigemMercadoria1">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
@@ -651,16 +651,16 @@
                               <Value>=Fields!OrigemMercadoria.Value</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
-                                <Format>#,0.00</Format>
+                                <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Right</TextAlign>
+                            <TextAlign>Center</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>OrigemMercadoria</rd:DefaultName>
+                      <rd:DefaultName>OrigemMercadoria1</rd:DefaultName>
                       <Style>
                         <Border>
                           <Style>Solid</Style>
@@ -707,9 +707,9 @@
         </TablixRowHierarchy>
         <DataSetName>ds</DataSetName>
         <Top>0.3175cm</Top>
-        <Left>0.07062cm</Left>
+        <Left>0.1059cm</Left>
         <Height>1.73826cm</Height>
-        <Width>24.46591cm</Width>
+        <Width>24.80839cm</Width>
         <Style>
           <Border>
             <Color>Red</Color>
@@ -721,7 +721,7 @@
     <Height>0.80935in</Height>
     <Style />
   </Body>
-  <Width>9.72197in</Width>
+  <Width>9.82614in</Width>
   <Page>
     <PageHeader>
       <Height>2.68745cm</Height>
@@ -746,10 +746,9 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox1</rd:DefaultName>
-          <Top>0.00634cm</Top>
-          <Left>3.26005cm</Left>
+          <Left>3.33061cm</Left>
           <Height>2.50472cm</Height>
-          <Width>21.34701cm</Width>
+          <Width>17.83835cm</Width>
           <Style>
             <Border>
               <Style>None</Style>
@@ -766,6 +765,7 @@
           <Value>=System.Convert.FromBase64String(Parameters!ReportLogo.Value)</Value>
           <MIMEType>image/png</MIMEType>
           <Sizing>FitProportional</Sizing>
+          <Top>0cm</Top>
           <Height>2.50472cm</Height>
           <Width>3.15422cm</Width>
           <ZIndex>1</ZIndex>
@@ -807,10 +807,10 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox2</rd:DefaultName>
-          <Top>0.10581cm</Top>
-          <Left>0.15cm</Left>
+          <Top>0.07056cm</Top>
+          <Left>0.1059cm</Left>
           <Height>0.73201cm</Height>
-          <Width>24.38651cm</Width>
+          <Width>24.80839cm</Width>
           <Style>
             <Border>
               <Style>None</Style>

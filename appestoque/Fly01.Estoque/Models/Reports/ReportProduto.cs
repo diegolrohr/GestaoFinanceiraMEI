@@ -26,7 +26,7 @@ namespace Fly01.Estoque.Models.Reports
         {
             get
             {
-                return "TITULO DO RELATORIO";
+                return "Produtos";
             }
         }
 

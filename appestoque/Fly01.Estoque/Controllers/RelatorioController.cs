@@ -26,14 +26,15 @@ namespace Fly01.Estoque.Controllers
                     Title = "Relatórios",
                 },
                 UrlFunctions = Url.Action("Functions", "Relatorio", null, Request.Url.Scheme) + "?fns=",
-                SidebarUrl = Url.Action("Sidebar", "Home")
+                SidebarUrl = Url.Action("Sidebar", "Home"),
+              //  ReadyFn = "fnFormReady"
             };
 
            
             cfg.Content.Add(new CardUI
             {
                 Class = "col s12 m4",
-                Color = "totvs-blue",
+                Color = "WhitClass",
                 Id = "fly01cardMovimentoEstoque",
                 Title = "Movimentação Estoque",
                 Placeholder = "",
@@ -47,7 +48,7 @@ namespace Fly01.Estoque.Controllers
             cfg.Content.Add(new CardUI
             {
                 Class = "col s12 m4",
-                Color = "green",
+                Color = "White",
                 Id = "fly01cardRelatorioProdutos",
                 Title = "Produtos",
                 Placeholder = "",

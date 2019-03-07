@@ -4,7 +4,6 @@ using Fly01.Financeiro.BL;
 using Fly01.Financeiro.Models.ViewModel;
 using System;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Collections.Generic;
 using System.Web.Http;
 
@@ -22,7 +21,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 Categoria = x.Categoria.Descricao,
                 CentroCusto = x.CentroCusto != null ? x.CentroCusto.Descricao : "",
                 Status = x.StatusContaBancaria.ToString() == "EmAberto" ? "Em Aberto" : x.StatusContaBancaria.ToString() == "BaixadoParcialmente" ? "Baixado Parcialmente" : x.StatusContaBancaria.ToString(),
-                Valor = x.ValorPrevisto.ToString(),
+                Valor = x.ValorPrevisto.ToString().Replace(",","."),
                 FormaPagamento = x.FormaPagamento != null ? x.FormaPagamento.Descricao : string.Empty,
                 Fornecedor = x.Pessoa != null ? x.Pessoa.Nome : string.Empty,
                 Cliente = x.Pessoa != null ? x.Pessoa.Nome : string.Empty,

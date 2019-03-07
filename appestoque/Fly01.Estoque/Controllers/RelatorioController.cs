@@ -5,6 +5,7 @@ using System;
 using System.Web.Mvc;
 using Fly01.Core.Presentation;
 using Fly01.Core.ViewModels.Presentation.Commons;
+using System.Collections.Generic;
 
 namespace Fly01.Estoque.Controllers
 {
@@ -26,14 +27,15 @@ namespace Fly01.Estoque.Controllers
                     Title = "Relatórios",
                 },
                 UrlFunctions = Url.Action("Functions", "Relatorio", null, Request.Url.Scheme) + "?fns=",
-                SidebarUrl = Url.Action("Sidebar", "Home")
+                SidebarUrl = Url.Action("Sidebar", "Home"),
+                Functions = new List<string>() { "fnFormReady" }
             };
 
            
             cfg.Content.Add(new CardUI
             {
                 Class = "col s12 m4",
-                Color = "totvs-blue",
+                Color = "WhitClass",
                 Id = "fly01cardMovimentoEstoque",
                 Title = "Movimentação Estoque",
                 Placeholder = "",
@@ -41,6 +43,20 @@ namespace Fly01.Estoque.Controllers
                 {
                     Label = "Relatório de Movimentações",
                     OnClick = @Url.Action("List", "MovimentoEstoque")
+                }
+            });
+
+            cfg.Content.Add(new CardUI
+            {
+                Class = "col s12 m4",
+                Color = "WhitClass",
+                Id = "fly01cardRelatorioProdutos",
+                Title = "Produtos",
+                Placeholder = "",
+                Action = new LinkUI
+                {
+                    Label = "Relatório de Produtos",
+                    OnClick = @Url.Action("Form", "RelatorioProduto")
                 }
             });
 

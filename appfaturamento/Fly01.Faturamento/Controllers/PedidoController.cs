@@ -650,8 +650,35 @@ namespace Fly01.Faturamento.Controllers
             try
             {
                 OrdemVendaVM ordemvenda = Get(id);
+
+                var obj = new
+                {
+                    Id = Guid.NewGuid(),
+                    Status = Status.Aberto.ToString(),
+                    NFeRefComplementarIsDevolucao = false,
+                    TipoOrdemVenda = ordemvenda.TipoOrdemVenda,
+                    TipoVenda = ordemvenda.TipoVenda,
+                    Data = DateTime.Now,
+                    ClienteId = ordemvenda.ClienteId,
+                    MovimentaEstoque = false,
+                    AjusteEstoqueAutomatico = false,
+                    GeraFinanceiro = false,
+                    GeraNotaFiscal = false,
+                    PlataformaId = "",
+                    RegistroFixo = 1,
+                    DataInclusao = "",
+                    DataAlteracao = "",
+                    DataExclusao = "",
+                    UsuarioInclusao = "",
+                    UsuarioAlteracao = "",
+                    UsuarioExclusao = "",
+                    Ativo = 1,
+
+                };
+
                 ordemvenda.Id = Guid.NewGuid();
-                var postResponse = RestHelper.ExecutePostRequest("OrdemVenda", JsonConvert.SerializeObject(ordemvenda, JsonSerializerSetting.Default));
+                ordemvenda.Status = Status.Aberto.ToString();
+                var postResponse = RestHelper.ExecutePostRequest("OrdemVenda", JsonConvert.SerializeObject(obj, JsonSerializerSetting.Default));
 
                 List<OrdemVendaProduto> produtos = GetProdutosPedido(id);
                 List<OrdemVendaServico> servicos = GetServicosPedido(id);
@@ -673,7 +700,6 @@ namespace Fly01.Faturamento.Controllers
         {
             var queryString = new Dictionary<string, string>();
 
-            //queryString.AddParam("$expand", "produto");
             queryString.AddParam("$filter", $"ordemVendaId eq {id}");
 
             return RestHelper.ExecuteGetRequest<ResultBase<OrdemVendaProduto>>("OrdemVendaProduto", queryString).Data;
@@ -684,7 +710,6 @@ namespace Fly01.Faturamento.Controllers
         {
             var queryString = new Dictionary<string, string>();
 
-            //queryString.AddParam("$expand", "produto");
             queryString.AddParam("$filter", $"ordemVendaId eq {id}");
 
             return RestHelper.ExecuteGetRequest<ResultBase<OrdemVendaServico>>("OrdemVendaServico", queryString).Data;

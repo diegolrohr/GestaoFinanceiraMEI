@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace Fly01.Estoque.Controllers
 {
-    // [OperationRole(ResourceKey = ResourceHashConst.EstoqueEstoqueRelatorios)]
+    [OperationRole(ResourceKey = ResourceHashConst.EstoqueEstoqueRelatorios)]
     public class RelatorioController : BaseController<DomainBaseVM>
     {
         public override Func<DomainBaseVM, object> GetDisplayData()

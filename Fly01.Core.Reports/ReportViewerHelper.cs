@@ -222,8 +222,8 @@ namespace Fly01.Core.Reports
             //configurações da página ex: margin, top, left (retirando margens)...
             const string deviceInfo = "<DeviceInfo>" +
                                       "<OutputFormat>PDF</OutputFormat>" +
-                                      "<MarginTop>0</MarginTop>" +
                                       "<MarginLeft>0</MarginLeft>" +
+                                      "<MarginTop>0</MarginTop>" +
                                       "<MarginRight>0</MarginRight>" +
                                       "<MarginBottom>0</MarginBottom>" +
                                       "<Orientation>Landscape</Orientation>" +

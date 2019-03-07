@@ -5,6 +5,7 @@ using System;
 using System.Web.Mvc;
 using Fly01.Core.Presentation;
 using Fly01.Core.ViewModels.Presentation.Commons;
+using System.Collections.Generic;
 
 namespace Fly01.Estoque.Controllers
 {
@@ -27,7 +28,7 @@ namespace Fly01.Estoque.Controllers
                 },
                 UrlFunctions = Url.Action("Functions", "Relatorio", null, Request.Url.Scheme) + "?fns=",
                 SidebarUrl = Url.Action("Sidebar", "Home"),
-              //  ReadyFn = "fnFormReady"
+                Functions = new List<string>() { "fnFormReady" }
             };
 
            
@@ -48,7 +49,7 @@ namespace Fly01.Estoque.Controllers
             cfg.Content.Add(new CardUI
             {
                 Class = "col s12 m4",
-                Color = "White",
+                Color = "WhitClass",
                 Id = "fly01cardRelatorioProdutos",
                 Title = "Produtos",
                 Placeholder = "",

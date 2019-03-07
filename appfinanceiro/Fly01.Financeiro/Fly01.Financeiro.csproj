@@ -437,6 +437,7 @@
     <Content Include="Views\CondicaoParcelamento\Functions\_fnFormReadyOnDemandContaReceber.cshtml" />
     <Content Include="Views\Shared\Functions\_fnImprimirRelatorioCPCR.cshtml" />
     <Content Include="Views\ArquivoRemessa\Functions\_fnDownloadArquivo.cshtml" />
+    <Content Include="Views\Relatorio\Functions\_fnFormReady.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

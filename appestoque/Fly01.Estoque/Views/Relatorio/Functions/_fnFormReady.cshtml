@@ -1,36 +1,9 @@
 ﻿<script>
     @Html.Partial("Functions/_fnMain");
-    function fnFormReady() {
+    $().ready(function () {
         var style = document.createElement('style');
         style.type = 'text/css';
-        style.innerHTML = '.WhitClass { border-right-style: inset; border-color: #dedede; border-top: inset; border-top-color: #efeffb; }';
-
+        style.innerHTML = '.WhitClass{ border-right-style: inset; border-color: #dedede; border-top: inset; border-top-color: #efeffb; }  div#fly01cardMovimentoEstoque.card.white-text, .select-list .select-item.active { color: #f53800 !important; }  div#fly01cardRelatorioProdutos.card.white-text, .select-list .select-item.active { color: #f53800 !important; } '; 
         document.getElementsByTagName('head')[0].appendChild(style);
-
-        document.getElementById('fly01cardMovimentoEstoque').className = 'cssClass'
-    }
+    });
 </script>
-
-
-
-@*.card, .app {
-    position: relative;
-    margin: .5rem 0 1rem 0;
-    background-color: #FAFAF6;
-    border-radius: 2px;
-    -moz-transition: all .2s ease-in;
-    -o-transition: all .2s ease-in;
-    -webkit-transition: all .2s ease-in;
-    transition: all .2s ease-in;
-    border-right-style: inset;
-    border-color: #dedede;
-    border-top: inset;
-    border-top-color: #efeffb;
-}
-
-
-
-
-.white-text, .select-list .select-item.active {
-    color: #f53800 !important;
-}*@

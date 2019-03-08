@@ -13,7 +13,7 @@ namespace Fly01.Financeiro.Models.ViewModel
         [JsonProperty("descricao")]
         public string Descricao { get; set; }
         [JsonProperty("valor")]
-        public string Valor { get; set; }
+        public double Valor { get; set; }
         [JsonProperty("formaPagamento")]
         public string FormaPagamento { get; set; }
         [JsonProperty("numero")]

@@ -75,7 +75,6 @@ namespace Fly01.Estoque.Controllers
                 Id = "tipoProduto",
                 Class = "col s12 m3",
                 Label = "Tipo",
-                Required = true,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoProduto))),
                 DomEvents = new List<DomEventUI>() { new DomEventUI() { DomEvent = "change", Function = "fnChangeTipoProduto" } }
             });
@@ -93,8 +92,7 @@ namespace Fly01.Estoque.Controllers
             {
                 Id = "unidadeMedidaId",
                 Class = "col s12 m6",
-                Label = "Unidade de medida",
-                Required = true,
+                Label = "Unidade de Medida",
                 DataUrl = @Url.Action("UnidadeMedida", "AutoComplete"),
                 LabelId = "unidadeMedidaDescricao"
             });
@@ -120,7 +118,6 @@ namespace Fly01.Estoque.Controllers
                 Id = "origemMercadoria",
                 Class = "col s12 m6",
                 Label = "Origem Mercadoria",
-                Required = true,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(OrigemMercadoria)))
             });
             cfg.Content.Add(config);

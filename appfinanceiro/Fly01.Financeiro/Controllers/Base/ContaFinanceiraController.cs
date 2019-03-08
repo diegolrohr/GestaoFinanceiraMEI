@@ -154,7 +154,7 @@ namespace Fly01.Financeiro.Controllers.Base
                     Id = ListContas.Id,
                     Status = ListContas.StatusContaBancaria == "EmAberto" ? "Em Aberto" : ListContas.StatusContaBancaria,
                     Descricao = ListContas.Descricao,
-                    Valor = ListContas.ValorPrevisto.ToString(),
+                    Valor = ListContas.ValorPrevisto,
                     FormaPagamento = ListContas.FormaPagamento != null ? ListContas.FormaPagamento.Descricao : string.Empty,
                     Fornecedor = ListContas.Pessoa != null ? ListContas.Pessoa.Nome : string.Empty,
                     Cliente = ListContas.Pessoa != null ? ListContas.Pessoa.Nome : string.Empty,

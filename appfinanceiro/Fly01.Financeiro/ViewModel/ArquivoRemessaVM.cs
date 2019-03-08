@@ -7,6 +7,9 @@ namespace Fly01.Financeiro.ViewModel
 {
     public class ArquivoRemessaVM : DomainBaseVM
     {
+        [JsonProperty("numeroArquivoRemessa")]
+        public int NumeroArquivoRemessa { get; set; }
+
         [JsonProperty("descricao")]
         public string Descricao { get; set; }
 

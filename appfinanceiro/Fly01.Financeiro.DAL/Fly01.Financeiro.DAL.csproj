@@ -256,6 +256,10 @@
     <Compile Include="Migrations\201903071604183_AddHoraEmissao.Designer.cs">
       <DependentUpon>201903071604183_AddHoraEmissao.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201903081315134_AddColumnNumeroArquivoRemessa.cs" />
+    <Compile Include="Migrations\201903081315134_AddColumnNumeroArquivoRemessa.Designer.cs">
+      <DependentUpon>201903081315134_AddColumnNumeroArquivoRemessa.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer2.cs" />
@@ -434,6 +438,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201903071604183_AddHoraEmissao.resx">
       <DependentUpon>201903071604183_AddHoraEmissao.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903081315134_AddColumnNumeroArquivoRemessa.resx">
+      <DependentUpon>201903081315134_AddColumnNumeroArquivoRemessa.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

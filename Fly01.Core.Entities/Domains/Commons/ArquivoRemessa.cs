@@ -11,6 +11,8 @@ namespace Fly01.Core.Entities.Domains.Commons
         [Required]
         public string Descricao { get; set; }
 
+        public int NumeroArquivoRemessa { get; set; }
+
         [Required]
         public int TotalBoletos { get; set; }
 

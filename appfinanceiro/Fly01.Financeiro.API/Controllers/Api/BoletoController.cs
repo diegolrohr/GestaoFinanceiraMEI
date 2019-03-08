@@ -7,6 +7,7 @@ using System.Web.Http;
 using System.Linq;
 using Boleto2Net;
 using Fly01.Core.ViewModels.Presentation;
+using Fly01.Core.ServiceBus;
 
 namespace Fly01.Financeiro.API.Controllers.Api
 {
@@ -40,6 +41,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
             using (var unitOfWork = new UnitOfWork(ContextInitialize))
             {
                 var cnabBL = unitOfWork.CnabBL;
+                var plataformaId = "";
 
                 listIdCnab.Split(',').Select(x => Guid.Parse(x)).ToList().ForEach(id =>
                 {
@@ -48,6 +50,10 @@ namespace Fly01.Financeiro.API.Controllers.Api
                     var boletoBancario = cnabBL.GeraBoleto(boletoVM);
 
                     dictBoletos.Add(new KeyValuePair<Guid?, BoletoBancario>(dadosCnab.ContaBancariaCedenteId, boletoBancario));
+
+                    if (string.IsNullOrWhiteSpace(plataformaId))
+                        plataformaId = dadosCnab.PlataformaId;
+
                 });
 
                 dictBoletos.GroupBy(x => x.Key).OrderByDescending(x => x.Key).ToList().ForEach(item =>
@@ -58,7 +64,10 @@ namespace Fly01.Financeiro.API.Controllers.Api
 
                     boletos.AddRange(lstBoletoBancario.Select(x => x.Boleto));
 
-                    var arquivoRemessa = new ArquivoRemessa(banco, BoletoBL.GetTipoCnab(banco.Codigo), 1); // tem que avaliar os dados passados(tipoArquivo, NumeroArquivo)
+                    RpcClient rpc = new RpcClient();
+                    var numeroArquivoRemessa = int.Parse(rpc.Call($"plataformaid={plataformaId}"));
+
+                    var arquivoRemessa = new ArquivoRemessa(banco, BoletoBL.GetTipoCnab(banco.Codigo), numeroArquivoRemessa); 
                     dadosArquivoRemessa.Add(new DadosArquivoRemessaVM
                     {
                         ContaBancariaCedenteId = item.Key.Value,

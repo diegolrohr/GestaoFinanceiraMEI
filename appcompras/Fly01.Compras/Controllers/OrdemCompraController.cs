@@ -1,9 +1,10 @@
-﻿using Fly01.Compras.ViewModel;
+using Fly01.Compras.ViewModel;
 using Fly01.Core;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
 using Fly01.Core.Presentation;
 using Fly01.Core.Presentation.Commons;
+using Fly01.Core.Rest;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
@@ -51,19 +52,19 @@ namespace Fly01.Compras.Controllers
             };
         }
 
-        public override ContentResult List() 
+        public override ContentResult List()
             => Content(JsonConvert.SerializeObject(OrdemCompraJson(Url, Request.Url.Scheme), JsonSerializerSetting.Front), "application/json");
 
-        public ContentResult ListOrdemCompra() 
+        public ContentResult ListOrdemCompra()
             => Content(JsonConvert.SerializeObject(OrdemCompraJson(Url, Request.Url.Scheme, gridLoad: "GridLoadNoFilter"), JsonSerializerSetting.Front), "application/json");
 
         public List<HtmlUIButton> GetListButtonsOnHeaderCustom(string buttonLabel, string buttonOnClick)
         {
             var target = new List<HtmlUIButton>();
 
-            if(UserCanWrite)
+            if (UserCanWrite)
             {
-                target.Add(new HtmlUIButton { Id = "new", Label = "Novo orçamento", OnClickFn = "fnNovoOrcamento", Position = HtmlUIButtonPosition.Out});
+                target.Add(new HtmlUIButton { Id = "new", Label = "Novo orçamento", OnClickFn = "fnNovoOrcamento", Position = HtmlUIButtonPosition.Out });
                 target.Add(new HtmlUIButton { Id = "new", Label = "Novo pedido", OnClickFn = "fnNovoPedido", Position = HtmlUIButtonPosition.Main });
                 target.Add(new HtmlUIButton { Id = "filterGrid", Label = buttonLabel, OnClickFn = buttonOnClick, Position = HtmlUIButtonPosition.In });
             }
@@ -177,6 +178,7 @@ namespace Fly01.Compras.Controllers
                 new DataTableUIAction { OnClickFn = "fnImprimirPedido", Label = "Imprimir", ShowIf = "(row.tipoOrdemCompra == 'Pedido')" },
                 new DataTableUIAction { OnClickFn = "fnImprimirOrcamento", Label = "Imprimir", ShowIf = "(row.tipoOrdemCompra == 'Orcamento')" },
                 new DataTableUIAction { OnClickFn = "fnEnviarEmailPedido", Label = "Enviar por e-mail", ShowIf = "(row.tipoOrdemCompra == 'Pedido')" },
+                new DataTableUIAction { OnClickFn = "fnClonarPedido", Label = "Clonar Pedido", ShowIf = "(row.status == 'Finalizado' && row.tipoOrdemCompra == 'Pedido')" }
             }));
 
             config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Número", Priority = 1, Type = "numbers" });

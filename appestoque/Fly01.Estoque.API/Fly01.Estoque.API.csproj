@@ -57,6 +57,7 @@
     <Compile Include="Controllers\Api\EnquadramentoLegalIPIController.cs" />
     <Compile Include="Controllers\Api\HelloController.cs" />
     <Compile Include="Controllers\Api\InventarioController.cs" />
+    <Compile Include="Controllers\Api\RelatorioProdutoController.cs" />
     <Compile Include="Controllers\Api\MinhaContaController.cs" />
     <Compile Include="Controllers\Api\MovimentoOrdemVendaController.cs" />
     <Compile Include="Controllers\Api\InventarioItemController.cs" />
@@ -67,7 +68,6 @@
     <Compile Include="Controllers\Api\AjusteManualController.cs" />
     <Compile Include="Controllers\Api\ProdutoController.cs" />
     <Compile Include="Controllers\Api\ProdutosMenosMovimentadosController.cs" />
-    <Compile Include="Controllers\Api\MovimentoEstoqueController.cs" />
     <Compile Include="Controllers\Api\TipoEntradaSaidaController.cs" />
     <Compile Include="Controllers\Api\TipoMovimentoController.cs" />
     <Compile Include="Controllers\Api\EstadoController.cs" />
@@ -330,7 +330,7 @@
       <Name>Fly01.Estoque.BL</Name>
     </ProjectReference>
     <ProjectReference Include="..\Fly01.Estoque\Fly01.Estoque.csproj">
-      <Project>{9E705E63-D43B-42C8-BA80-990F1B909E62}</Project>
+      <Project>{9e705e63-d43b-42c8-ba80-990f1b909e62}</Project>
       <Name>Fly01.Estoque</Name>
     </ProjectReference>
   </ItemGroup>

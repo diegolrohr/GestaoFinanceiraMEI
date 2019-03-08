@@ -649,43 +649,32 @@ namespace Fly01.Faturamento.Controllers
         {
             try
             {
+                ExpandProperties = "";
                 OrdemVendaVM ordemvenda = Get(id);
-
-                var obj = new
-                {
-                    Id = Guid.NewGuid(),
-                    Status = Status.Aberto.ToString(),
-                    NFeRefComplementarIsDevolucao = false,
-                    TipoOrdemVenda = ordemvenda.TipoOrdemVenda,
-                    TipoVenda = ordemvenda.TipoVenda,
-                    Data = DateTime.Now,
-                    ClienteId = ordemvenda.ClienteId,
-                    MovimentaEstoque = false,
-                    AjusteEstoqueAutomatico = false,
-                    GeraFinanceiro = false,
-                    GeraNotaFiscal = false,
-                    PlataformaId = "",
-                    RegistroFixo = 1,
-                    DataInclusao = "",
-                    DataAlteracao = "",
-                    DataExclusao = "",
-                    UsuarioInclusao = "",
-                    UsuarioAlteracao = "",
-                    UsuarioExclusao = "",
-                    Ativo = 1,
-
-                };
-
                 ordemvenda.Id = Guid.NewGuid();
                 ordemvenda.Status = Status.Aberto.ToString();
-                var postResponse = RestHelper.ExecutePostRequest("OrdemVenda", JsonConvert.SerializeObject(obj, JsonSerializerSetting.Default));
+                ordemvenda.Data = DateTime.Now;
+                var postResponse = RestHelper.ExecutePostRequest("OrdemVenda", JsonConvert.SerializeObject(ordemvenda, JsonSerializerSetting.Default));
 
-                List<OrdemVendaProduto> produtos = GetProdutosPedido(id);
-                List<OrdemVendaServico> servicos = GetServicosPedido(id);
+                List<OrdemVendaProdutoVM> produtos = GetProdutosPedido(id);
+                foreach (var item in produtos)
+                {
+                    item.Id = Guid.NewGuid();
+                    item.OrdemVendaId = ordemvenda.Id;
+                    var postResponseProdutos = RestHelper.ExecutePostRequest<OrdemVendaProdutoVM>("OrdemVendaProduto", JsonConvert.SerializeObject(item, JsonSerializerSetting.Default));
+                }
+                List<OrdemVendaServicoVM> servicos = GetServicosPedido(id);
+                foreach (var item in servicos)
+                {
+                    item.Id = Guid.NewGuid();
+                    item.OrdemVendaId = ordemvenda.Id;
+                    var postResponseServicos = RestHelper.ExecutePostRequest<OrdemVendaServicoVM>("OrdemVendaServico", item, AppDefaults.GetQueryStringDefault());
+                }
 
                 return Json(new
                 {
-
+                    success = true,
+                    id = ordemvenda.Id
                 }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -696,23 +685,23 @@ namespace Fly01.Faturamento.Controllers
         }
 
         [OperationRole(PermissionValue = EPermissionValue.Read)]
-        public List<OrdemVendaProduto> GetProdutosPedido(Guid id)
+        public List<OrdemVendaProdutoVM> GetProdutosPedido(Guid id)
         {
             var queryString = new Dictionary<string, string>();
 
             queryString.AddParam("$filter", $"ordemVendaId eq {id}");
 
-            return RestHelper.ExecuteGetRequest<ResultBase<OrdemVendaProduto>>("OrdemVendaProduto", queryString).Data;
+            return RestHelper.ExecuteGetRequest<ResultBase<OrdemVendaProdutoVM>>("OrdemVendaProduto", queryString).Data;
         }
 
         [OperationRole(PermissionValue = EPermissionValue.Read)]
-        public List<OrdemVendaServico> GetServicosPedido(Guid id)
+        public List<OrdemVendaServicoVM> GetServicosPedido(Guid id)
         {
             var queryString = new Dictionary<string, string>();
 
             queryString.AddParam("$filter", $"ordemVendaId eq {id}");
 
-            return RestHelper.ExecuteGetRequest<ResultBase<OrdemVendaServico>>("OrdemVendaServico", queryString).Data;
+            return RestHelper.ExecuteGetRequest<ResultBase<OrdemVendaServicoVM>>("OrdemVendaServico", queryString).Data;
         }
         #region OnDemmand
 

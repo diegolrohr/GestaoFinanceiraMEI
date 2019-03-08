@@ -51,80 +51,80 @@ namespace Fly01.Faturamento.BL
 
         public override void ValidaModel(OrdemVenda entity)
         {
-            //if (!string.IsNullOrEmpty(entity.MensagemPadraoNota))
-            //    entity.Fail(entity.MensagemPadraoNota.Length > 4000, new Error("O SEFAZ permite até 4000 caracteres."));
+            if (!string.IsNullOrEmpty(entity.MensagemPadraoNota))
+                entity.Fail(entity.MensagemPadraoNota.Length > 4000, new Error("O SEFAZ permite até 4000 caracteres."));
 
-            //if (entity.TipoVenda == TipoCompraVenda.Complementar)
-            //{
-            //    entity.TipoFrete = TipoFrete.SemFrete;
-            //    entity.ValorFrete = 0.0;
-            //    if (entity.TipoNfeComplementar != TipoNfeComplementar.ComplPrecoQtd)
-            //    {
-            //        entity.MovimentaEstoque = false;
-            //    }
-            //    else if (entity.TipoNfeComplementar != TipoNfeComplementar.ComplIcms)
-            //    {
-            //        entity.GeraFinanceiro = false;
-            //    }
-            //}
+            if (entity.TipoVenda == TipoCompraVenda.Complementar)
+            {
+                entity.TipoFrete = TipoFrete.SemFrete;
+                entity.ValorFrete = 0.0;
+                if (entity.TipoNfeComplementar != TipoNfeComplementar.ComplPrecoQtd)
+                {
+                    entity.MovimentaEstoque = false;
+                }
+                else if (entity.TipoNfeComplementar != TipoNfeComplementar.ComplIcms)
+                {
+                    entity.GeraFinanceiro = false;
+                }
+            }
 
-            //entity.Fail(entity.ValorFrete.HasValue && entity.ValorFrete.Value < 0, new Error("Valor frete não pode ser negativo", "valorFrete"));
-            //entity.Fail(entity.PesoBruto.HasValue && entity.PesoBruto.Value < 0, new Error("Peso bruto não pode ser negativo", "pesoBruto"));
-            //entity.Fail(entity.PesoLiquido.HasValue && entity.PesoLiquido.Value < 0, new Error("Peso liquido não pode ser negativo", "pesoLiquido"));
-            //entity.Fail(entity.QuantidadeVolumes.HasValue && entity.QuantidadeVolumes.Value < 0, new Error("Quantidade de volumes não pode ser negativo", "quantidadeVolumes"));
-            //entity.Fail(entity.Observacao != null && entity.Observacao.Length > MaxLengthObservacao, new Error($"A observacao não poder ter mais de {MaxLengthObservacao} caracteres", "observacao"));
-            //entity.Fail(entity.Numero < 1, new Error("O número do orçamento/pedido é inválido"));
-            //entity.Fail(All.Any(x => x.Numero == entity.Numero && x.Id != entity.Id && x.Ativo), new Error("O número do orçamento/pedido já foi utilizado"));
-            //entity.Fail((entity.TipoVenda == TipoCompraVenda.Devolucao || entity.TipoVenda == TipoCompraVenda.Complementar) && !string.IsNullOrEmpty(entity.ChaveNFeReferenciada) && entity.ChaveNFeReferenciada.Length != 44, new Error("A chave da nota fiscal referenciada deve conter 44 caracteres"));
-            //entity.Fail((entity.TipoVenda == TipoCompraVenda.Complementar && entity.TipoNfeComplementar == TipoNfeComplementar.NaoComplementar), new Error("Tipo do complemento inválido para pedido complementar.", "tipoNfeComplementar"));
+            entity.Fail(entity.ValorFrete.HasValue && entity.ValorFrete.Value < 0, new Error("Valor frete não pode ser negativo", "valorFrete"));
+            entity.Fail(entity.PesoBruto.HasValue && entity.PesoBruto.Value < 0, new Error("Peso bruto não pode ser negativo", "pesoBruto"));
+            entity.Fail(entity.PesoLiquido.HasValue && entity.PesoLiquido.Value < 0, new Error("Peso liquido não pode ser negativo", "pesoLiquido"));
+            entity.Fail(entity.QuantidadeVolumes.HasValue && entity.QuantidadeVolumes.Value < 0, new Error("Quantidade de volumes não pode ser negativo", "quantidadeVolumes"));
+            entity.Fail(entity.Observacao != null && entity.Observacao.Length > MaxLengthObservacao, new Error($"A observacao não poder ter mais de {MaxLengthObservacao} caracteres", "observacao"));
+            entity.Fail(entity.Numero < 1, new Error("O número do orçamento/pedido é inválido"));
+            entity.Fail(All.Any(x => x.Numero == entity.Numero && x.Id != entity.Id && x.Ativo), new Error("O número do orçamento/pedido já foi utilizado"));
+            entity.Fail((entity.TipoVenda == TipoCompraVenda.Devolucao || entity.TipoVenda == TipoCompraVenda.Complementar) && !string.IsNullOrEmpty(entity.ChaveNFeReferenciada) && entity.ChaveNFeReferenciada.Length != 44, new Error("A chave da nota fiscal referenciada deve conter 44 caracteres"));
+            entity.Fail((entity.TipoVenda == TipoCompraVenda.Complementar && entity.TipoNfeComplementar == TipoNfeComplementar.NaoComplementar), new Error("Tipo do complemento inválido para pedido complementar.", "tipoNfeComplementar"));
 
-            //if (entity.Status == Status.Finalizado)
-            //{
-            //    var produtos = OrdemVendaProdutoBL.All.AsNoTracking().Where(x => x.OrdemVendaId == entity.Id).ToList();
-            //    var servicos = OrdemVendaServicoBL.All.AsNoTracking().Where(x => x.OrdemVendaId == entity.Id).ToList();
-            //    var hasEstoqueNegativo = VerificaEstoqueNegativo(entity.Id, entity.TipoVenda.ToString(), entity.TipoNfeComplementar.ToString(), entity.NFeRefComplementarIsDevolucao).Any();
+            if (entity.Status == Status.Finalizado)
+            {
+                var produtos = OrdemVendaProdutoBL.All.AsNoTracking().Where(x => x.OrdemVendaId == entity.Id).ToList();
+                var servicos = OrdemVendaServicoBL.All.AsNoTracking().Where(x => x.OrdemVendaId == entity.Id).ToList();
+                var hasEstoqueNegativo = VerificaEstoqueNegativo(entity.Id, entity.TipoVenda.ToString(), entity.TipoNfeComplementar.ToString(), entity.NFeRefComplementarIsDevolucao).Any();
 
-            //    bool pagaFrete = (
-            //        ((entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente) && entity.TipoVenda == TipoCompraVenda.Normal) ||
-            //        ((entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario) && entity.TipoVenda == TipoCompraVenda.Devolucao)
-            //    );
-            //    entity.Fail(pagaFrete && (entity.TransportadoraId == null || entity.TransportadoraId == default(Guid)), new Error("Se configurou o frete por conta da sua empresa, informe a transportadora"));
+                bool pagaFrete = (
+                    ((entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente) && entity.TipoVenda == TipoCompraVenda.Normal) ||
+                    ((entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario) && entity.TipoVenda == TipoCompraVenda.Devolucao)
+                );
+                entity.Fail(pagaFrete && (entity.TransportadoraId == null || entity.TransportadoraId == default(Guid)), new Error("Se configurou o frete por conta da sua empresa, informe a transportadora"));
 
-            //    if (entity.GeraNotaFiscal)
-            //    {
-            //        TotalTributacaoBL.DadosValidosCalculoTributario(entity, entity.ClienteId);
+                if (entity.GeraNotaFiscal)
+                {
+                    TotalTributacaoBL.DadosValidosCalculoTributario(entity, entity.ClienteId);
 
-            //        if (servicos != null)
-            //        {
-            //            var totalOutrasRetencoesServicos = servicos.Sum(x => x.ValorOutrasRetencoes);
-            //            var totalServicos = servicos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto));
-            //            var tributacoesServicos = TotalTributacaoBL.TributacoesOrdemVendaServicos(servicos, entity.ClienteId);
-            //            var totalRetencoesServicos = TotalTributacaoBL.TributacaoServicoRetencao(tributacoesServicos);
-            //            entity.Fail((totalOutrasRetencoesServicos + totalRetencoesServicos) > totalServicos, new Error("Total de retenções dos serviços, não pode ser superior ao total de serviços", "totalRetencoesServicos"));
-            //        }
+                    if (servicos != null)
+                    {
+                        var totalOutrasRetencoesServicos = servicos.Sum(x => x.ValorOutrasRetencoes);
+                        var totalServicos = servicos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto));
+                        var tributacoesServicos = TotalTributacaoBL.TributacoesOrdemVendaServicos(servicos, entity.ClienteId);
+                        var totalRetencoesServicos = TotalTributacaoBL.TributacaoServicoRetencao(tributacoesServicos);
+                        entity.Fail((totalOutrasRetencoesServicos + totalRetencoesServicos) > totalServicos, new Error("Total de retenções dos serviços, não pode ser superior ao total de serviços", "totalRetencoesServicos"));
+                    }
 
-            //        entity.Fail(entity.TipoNfeComplementar != TipoNfeComplementar.ComplIcms && entity.FormaPagamentoId == null && produtos.Any(), new Error("Para finalizar o pedido que gera nota fiscal, informe a forma de pagamento"));
-            //        entity.Fail(entity.TipoVenda == TipoCompraVenda.Devolucao && string.IsNullOrEmpty(entity.ChaveNFeReferenciada), new Error("Para finalizar o pedido de devolução que gera nota fiscal, informe a chave da nota fiscal referenciada"));
-            //        entity.Fail(entity.TipoVenda == TipoCompraVenda.Complementar && string.IsNullOrEmpty(entity.ChaveNFeReferenciada), new Error("Para finalizar o pedido de complemento que gera nota fiscal, informe a chave da nota fiscal referenciada a ser complementada"));
-            //    }
+                    entity.Fail(entity.TipoNfeComplementar != TipoNfeComplementar.ComplIcms && entity.FormaPagamentoId == null && produtos.Any(), new Error("Para finalizar o pedido que gera nota fiscal, informe a forma de pagamento"));
+                    entity.Fail(entity.TipoVenda == TipoCompraVenda.Devolucao && string.IsNullOrEmpty(entity.ChaveNFeReferenciada), new Error("Para finalizar o pedido de devolução que gera nota fiscal, informe a chave da nota fiscal referenciada"));
+                    entity.Fail(entity.TipoVenda == TipoCompraVenda.Complementar && string.IsNullOrEmpty(entity.ChaveNFeReferenciada), new Error("Para finalizar o pedido de complemento que gera nota fiscal, informe a chave da nota fiscal referenciada a ser complementada"));
+                }
 
-            //    entity.Fail(entity.MovimentaEstoque && hasEstoqueNegativo & !entity.AjusteEstoqueAutomatico, new Error("Para finalizar o pedido o estoque não poderá ficar negativo, realize os ajustes de entrada ou marque para gerar as movimentações de entrada automáticas"));
-            //    entity.Fail(entity.GeraNotaFiscal && string.IsNullOrEmpty(entity.NaturezaOperacao) && produtos.Any(), new Error("Para finalizar o pedido que gera nota fiscal, informe a natureza de operação"));
-            //    entity.Fail(entity.TipoOrdemVenda == TipoOrdemVenda.Orcamento, new Error("Orçamento não pode ser finalizado. Converta em pedido para finalizar"));
-            //    entity.Fail(!produtos.Any() && !servicos.Any(), new Error("Para finalizar a venda é necessário ao menos ter adicionado um produto ou um serviço"));
-            //    entity.Fail(entity.TipoVenda != TipoCompraVenda.Normal && servicos.Any(), new Error("Somente finalidade normal, pode conter serviços"));
-            //    entity.Fail(
-            //        (entity.GeraFinanceiro && (entity.FormaPagamentoId == null || entity.CondicaoParcelamentoId == null || entity.CategoriaId == null || entity.DataVencimento == null)),
-            //        new Error("Venda que gera financeiro é necessário informar forma de pagamento, condição de parcelamento, categoria e data vencimento")
-            //        );
+                entity.Fail(entity.MovimentaEstoque && hasEstoqueNegativo & !entity.AjusteEstoqueAutomatico, new Error("Para finalizar o pedido o estoque não poderá ficar negativo, realize os ajustes de entrada ou marque para gerar as movimentações de entrada automáticas"));
+                entity.Fail(entity.GeraNotaFiscal && string.IsNullOrEmpty(entity.NaturezaOperacao) && produtos.Any(), new Error("Para finalizar o pedido que gera nota fiscal, informe a natureza de operação"));
+                entity.Fail(entity.TipoOrdemVenda == TipoOrdemVenda.Orcamento, new Error("Orçamento não pode ser finalizado. Converta em pedido para finalizar"));
+                entity.Fail(!produtos.Any() && !servicos.Any(), new Error("Para finalizar a venda é necessário ao menos ter adicionado um produto ou um serviço"));
+                entity.Fail(entity.TipoVenda != TipoCompraVenda.Normal && servicos.Any(), new Error("Somente finalidade normal, pode conter serviços"));
+                entity.Fail(
+                    (entity.GeraFinanceiro && (entity.FormaPagamentoId == null || entity.CondicaoParcelamentoId == null || entity.CategoriaId == null || entity.DataVencimento == null)),
+                    new Error("Venda que gera financeiro é necessário informar forma de pagamento, condição de parcelamento, categoria e data vencimento")
+                    );
 
-            //    if (entity.TipoFrete != TipoFrete.SemFrete)
-            //    {
-            //        entity.Fail(!string.IsNullOrEmpty(entity.Marca) && (entity.Marca.Replace(" ", "").Length == 0 || (entity.Marca?.Length > 60)), new Error("Marca do volume inválido. No máximo 60 caracteres ou vazio e sem espaços.", "marca"));
-            //        entity.Fail(!string.IsNullOrEmpty(entity.NumeracaoVolumesTrans) && (entity.NumeracaoVolumesTrans.Replace(" ", "").Length == 0 || (entity.NumeracaoVolumesTrans?.Length > 60)), new Error("Numeração do volume inválido. No máximo 60 caracteres ou vazio e sem espaços.", "numeracaoVolumesTrans"));
-            //        entity.Fail(!string.IsNullOrEmpty(entity.TipoEspecie) && (entity.TipoEspecie.Replace(" ", "").Length == 0 || (entity.NumeracaoVolumesTrans?.Length > 60)), new Error("Espécie do volume inválido. No máximo 60 caracteres ou vazio e sem espaços.", "tipoEspecie"));
-            //    }
-            //}
+                if (entity.TipoFrete != TipoFrete.SemFrete)
+                {
+                    entity.Fail(!string.IsNullOrEmpty(entity.Marca) && (entity.Marca.Replace(" ", "").Length == 0 || (entity.Marca?.Length > 60)), new Error("Marca do volume inválido. No máximo 60 caracteres ou vazio e sem espaços.", "marca"));
+                    entity.Fail(!string.IsNullOrEmpty(entity.NumeracaoVolumesTrans) && (entity.NumeracaoVolumesTrans.Replace(" ", "").Length == 0 || (entity.NumeracaoVolumesTrans?.Length > 60)), new Error("Numeração do volume inválido. No máximo 60 caracteres ou vazio e sem espaços.", "numeracaoVolumesTrans"));
+                    entity.Fail(!string.IsNullOrEmpty(entity.TipoEspecie) && (entity.TipoEspecie.Replace(" ", "").Length == 0 || (entity.NumeracaoVolumesTrans?.Length > 60)), new Error("Espécie do volume inválido. No máximo 60 caracteres ou vazio e sem espaços.", "tipoEspecie"));
+                }
+            }
 
             base.ValidaModel(entity);
         }

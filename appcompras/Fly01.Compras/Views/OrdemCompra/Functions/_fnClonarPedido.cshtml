@@ -1,0 +1,18 @@
+﻿<script>
+    function fnClonarPedido(idRecord) {
+
+        $$$.loading.start();
+        $.ajax({
+            url: '@Url.Action("ClonarPedido", "Pedido")?id=' + idRecord,
+            type: "GET",
+            success: function (data) {
+                $$$.go("@Url.Action("FormPedido", "Pedido", new { isEdit = "true" })", idRecord);
+                $$$.loading.stop();
+            },
+            error: function (jXHR, textStatus, errorThrown) {
+                $$$.loading.stop();
+                $$$.toast(data.message, 'error');
+            }
+        });
+    }
+</script>

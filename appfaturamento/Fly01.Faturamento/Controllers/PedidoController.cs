@@ -18,6 +18,7 @@ using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Classes.Helpers;
 using Fly01.uiJS.Defaults;
 using Newtonsoft.Json;
+using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -95,7 +96,7 @@ namespace Fly01.Faturamento.Controllers
 
             var config = new FormWizardUI
             {
-                Id = "fly01frm", 
+                Id = "fly01frm",
                 Action = new FormUIAction
                 {
                     Create = @Url.Action("Create"),
@@ -170,7 +171,8 @@ namespace Fly01.Faturamento.Controllers
                 }
             });
             config.Elements.Add(new InputNumbersUI { Id = "chaveNFeReferenciada", Class = "col s12 m8 offset-m2", Label = "Chave SEFAZ Nota Fiscal Referenciada", MinLength = 44, MaxLength = 44 });
-            config.Elements.Add(new InputCheckboxUI {
+            config.Elements.Add(new InputCheckboxUI
+            {
                 Id = "nFeRefComplementarIsDevolucao",
                 Class = "col s12 m8 offset-m2",
                 Label = "Nota Fiscal Referenciada é de Devolução",
@@ -642,6 +644,65 @@ namespace Fly01.Faturamento.Controllers
             }
         }
 
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
+        public JsonResult ClonarPedido(Guid id)
+        {
+            try
+            {
+                ExpandProperties = "";
+                OrdemVendaVM ordemvenda = Get(id);
+                ordemvenda.Id = Guid.NewGuid();
+                ordemvenda.Status = Status.Aberto.ToString();
+                ordemvenda.Data = DateTime.Now;
+                var postResponse = RestHelper.ExecutePostRequest("OrdemVenda", JsonConvert.SerializeObject(ordemvenda, JsonSerializerSetting.Default));
+
+                List<OrdemVendaProdutoVM> produtos = GetProdutosPedido(id);
+                foreach (var item in produtos)
+                {
+                    item.Id = Guid.NewGuid();
+                    item.OrdemVendaId = ordemvenda.Id;
+                    var postResponseProdutos = RestHelper.ExecutePostRequest<OrdemVendaProdutoVM>("OrdemVendaProduto", JsonConvert.SerializeObject(item, JsonSerializerSetting.Default));
+                }
+                List<OrdemVendaServicoVM> servicos = GetServicosPedido(id);
+                foreach (var item in servicos)
+                {
+                    item.Id = Guid.NewGuid();
+                    item.OrdemVendaId = ordemvenda.Id;
+                    var postResponseServicos = RestHelper.ExecutePostRequest<OrdemVendaServicoVM>("OrdemVendaServico", item, AppDefaults.GetQueryStringDefault());
+                }
+
+                return Json(new
+                {
+                    success = true,
+                    id = ordemvenda.Id
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
+        public List<OrdemVendaProdutoVM> GetProdutosPedido(Guid id)
+        {
+            var queryString = new Dictionary<string, string>();
+
+            queryString.AddParam("$filter", $"ordemVendaId eq {id}");
+
+            return RestHelper.ExecuteGetRequest<ResultBase<OrdemVendaProdutoVM>>("OrdemVendaProduto", queryString).Data;
+        }
+
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
+        public List<OrdemVendaServicoVM> GetServicosPedido(Guid id)
+        {
+            var queryString = new Dictionary<string, string>();
+
+            queryString.AddParam("$filter", $"ordemVendaId eq {id}");
+
+            return RestHelper.ExecuteGetRequest<ResultBase<OrdemVendaServicoVM>>("OrdemVendaServico", queryString).Data;
+        }
         #region OnDemmand
 
         public JsonResult PostCliente(string term)

@@ -373,6 +373,7 @@
     <Content Include="Views\NotaFiscal\Functions\_fnEnviarEmailNFSe.cshtml" />
     <Content Include="Views\NotaFiscal\Functions\_fnEnviarEmailNFe.cshtml" />
     <Content Include="Views\Servico\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\OrdemVenda\Functions\_fnClonarPedido.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

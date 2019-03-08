@@ -151,7 +151,7 @@ namespace Fly01.Financeiro.Controllers
         {
             var arquivosGeradosPorBanco = new List<string>();
             var bancos = GetBancosEmiteBoletos();
-            var dictContasEBoletos = GetListaBoletos(idsCnabToSave.Select(Guid.Parse).ToList());
+            var dictContasEBoletos = GetListaBoletos(idsCnabToSave.Select(Guid.Parse).ToList(), true);
 
             dictContasEBoletos.GroupBy(x => x.CodigoBanco).OrderByDescending(x => x.Key).ToList().ForEach(item =>
             {
@@ -168,14 +168,14 @@ namespace Fly01.Financeiro.Controllers
                 arquivosGeradosPorBanco.Add(nomeArquivo);
 
                 if (idArquivo == "")                
-                    Save(cnabs, banco.Id, nomeArquivo, dadosArquivoRemessa.TotalBoletosGerados, dadosArquivoRemessa.ValorTotalArquivoRemessa);
+                    Save(cnabs, banco.Id, nomeArquivo, dadosArquivoRemessa.TotalBoletosGerados, dadosArquivoRemessa.ValorTotalArquivoRemessa, dadosArquivoRemessa.NumeroArquivoRemessa);
                 
             });
 
             return arquivosGeradosPorBanco;
         }
 
-        private void Save(List<Guid> ids, Guid bancoId, string nomeArquivo, int qtdBoletos, double valorBoletos)
+        private void Save(List<Guid> ids, Guid bancoId, string nomeArquivo, int qtdBoletos, double valorBoletos, int NumeroArquivoRemessa)
         {
             var arquivoRemessa = new ArquivoRemessaVM()
             {
@@ -183,7 +183,8 @@ namespace Fly01.Financeiro.Controllers
                 TotalBoletos = qtdBoletos,
                 StatusArquivoRemessa = StatusArquivoRemessa.AguardandoRetorno.ToString(),
                 ValorTotal = valorBoletos,
-                BancoId = bancoId
+                BancoId = bancoId, 
+                NumeroArquivoRemessa = NumeroArquivoRemessa
             };
 
             var result = RestHelper.ExecutePostRequest<ArquivoRemessaVM>("arquivoremessa", JsonConvert.SerializeObject(arquivoRemessa, JsonSerializerSetting.Default));

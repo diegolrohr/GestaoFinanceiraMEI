@@ -33,11 +33,11 @@ namespace Fly01.Financeiro.API.Controllers.Api
 
         [HttpGet]
         [Route("getListaBoletos")]
-        public IHttpActionResult GetListaBoletos(string listIdCnab)
+        public IHttpActionResult GetListaBoletos(string listIdCnab, bool geraArquivoRemessa = false)
         {
             var dictBoletos = new List<KeyValuePair<Guid?, BoletoBancario>>();
             var dadosArquivoRemessa = new List<DadosArquivoRemessaVM>();
-
+           
             using (var unitOfWork = new UnitOfWork(ContextInitialize))
             {
                 var cnabBL = unitOfWork.CnabBL;
@@ -56,27 +56,32 @@ namespace Fly01.Financeiro.API.Controllers.Api
 
                 });
 
-                dictBoletos.GroupBy(x => x.Key).OrderByDescending(x => x.Key).ToList().ForEach(item =>
+                if (geraArquivoRemessa)
                 {
-                    var lstBoletoBancario = dictBoletos.Where(x => x.Key == item.Key).Select(x => x.Value);
-                    var banco = lstBoletoBancario.FirstOrDefault().Boleto.Banco;
-                    var boletos = new Boletos() { Banco = banco };
-
-                    boletos.AddRange(lstBoletoBancario.Select(x => x.Boleto));
-
                     RpcClient rpc = new RpcClient();
                     var numeroArquivoRemessa = int.Parse(rpc.Call($"plataformaid={plataformaId}"));
 
-                    var arquivoRemessa = new ArquivoRemessa(banco, BoletoBL.GetTipoCnab(banco.Codigo), numeroArquivoRemessa); 
-                    dadosArquivoRemessa.Add(new DadosArquivoRemessaVM
+                    dictBoletos.GroupBy(x => x.Key).OrderByDescending(x => x.Key).ToList().ForEach(item =>
                     {
-                        ContaBancariaCedenteId = item.Key.Value,
-                        CodigoBanco = banco.Codigo,
-                        TotalBoletosGerados = boletos.Count(),
-                        ValorTotalArquivoRemessa = (double)lstBoletoBancario.Sum(x => x.Boleto.ValorTitulo),
-                        ConteudoArquivoRemessa = arquivoRemessa.GerarArquivoRemessa(boletos)
+                        var lstBoletoBancario = dictBoletos.Where(x => x.Key == item.Key).Select(x => x.Value);
+                        var banco = lstBoletoBancario.FirstOrDefault().Boleto.Banco;
+                        var boletos = new Boletos() { Banco = banco };
+
+                        boletos.AddRange(lstBoletoBancario.Select(x => x.Boleto));
+
+
+                        var arquivoRemessa = new ArquivoRemessa(banco, BoletoBL.GetTipoCnab(banco.Codigo), numeroArquivoRemessa); 
+                        dadosArquivoRemessa.Add(new DadosArquivoRemessaVM
+                        {
+                            ContaBancariaCedenteId = item.Key.Value,
+                            CodigoBanco = banco.Codigo,
+                            TotalBoletosGerados = boletos.Count(),
+                            ValorTotalArquivoRemessa = (double)lstBoletoBancario.Sum(x => x.Boleto.ValorTitulo),
+                            ConteudoArquivoRemessa = arquivoRemessa.GerarArquivoRemessa(boletos),
+                            NumeroArquivoRemessa = numeroArquivoRemessa
+                        });
                     });
-                });
+                }
             }
 
             return Ok(dadosArquivoRemessa);

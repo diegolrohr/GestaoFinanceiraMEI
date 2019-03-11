@@ -107,7 +107,7 @@
     </Compile>
     <Compile Include="Models\Reports\ReportFluxo.cs" />
     <Compile Include="Models\Reports\ReportExtrato.cs" />
-    <Compile Include="Models\Reports\ReportListContasCentroCusto.cs" />
+    <Compile Include="Models\Reports\RelatorioContasPagarReceber.cs" />
     <Compile Include="Models\Reports\ReportListContas.cs" />
     <Compile Include="Models\Reports\ReportRecibo.cs" />
     <Compile Include="Models\Reports\ReportDre.cs" />
@@ -703,7 +703,7 @@
     <Content Include="Reports\ReportExtrato.rdlc" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Reports\ReportListContasCentroCusto.rdlc" />
+    <Content Include="Reports\RelatorioContasPagarReceber.rdlc" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

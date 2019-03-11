@@ -1,6 +1,6 @@
 ﻿
 <script>
-    @Html.Partial("Functions/_fnImprimir");    
+    @Html.Partial("Functions/_fnImprimir");
     function fnImprimirRelatorioCPCR() {
 
         var countValues = 0;
@@ -35,19 +35,43 @@
             var centroCustoId = $("#centroCustoId").val();
 
             var tipoUrl = "@Url.Action("Imprimir")";
-            console.log(tipoUrl);
             var url = tipoUrl+'?dataInicial=' + dataInicial +
                 "&dataFinal=" + dataFinal +
                 "&dataEmissaoInicial=" + dataEmissaoInicial +
                 "&dataEmissaoFinal=" + dataEmissaoFinal +
-                "&pessoaId=" + pessoaId + 
+                "&pessoaId=" + pessoaId +
                 "&formaPagamentoId=" + formaPagamentoId +
                 "&condicaoParcelamentoId=" + condicaoParcelamentoId +
                 "&categoriaId=" + categoriaId +
                 "&centroCustoId=" + centroCustoId +
                 "&descricao=" + descricao;
 
-            fnImprimir(url);
+            $$$.loading.start();
+            $.ajax({
+                url: '@Url.Action("ValidaImpressao")?dataInicial=' + dataInicial +
+                "&dataFinal=" + dataFinal +
+                "&dataEmissaoInicial=" + dataEmissaoInicial +
+                "&dataEmissaoFinal=" + dataEmissaoFinal +
+                "&pessoaId=" + pessoaId +
+                "&formaPagamentoId=" + formaPagamentoId +
+                "&condicaoParcelamentoId=" + condicaoParcelamentoId +
+                "&categoriaId=" + categoriaId +
+                "&centroCustoId=" + centroCustoId +
+                "&descricao=" + descricao,
+                type: "GET",
+                success: function (data) {
+                    if (data.success && data.records > 0 ) {
+                        $$$.loading.stop();
+                        fnImprimir(url);
+                    }
+                    else {
+                        $$$.loading.stop();
+                        $$$.toast(data.message, 'error');
+                    }
+                },
+            });
+
+
         }
     }
 </script>

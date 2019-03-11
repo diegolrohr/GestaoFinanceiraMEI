@@ -111,8 +111,8 @@ namespace Fly01.Faturamento.BL
                         { "PlataformaUrl", PlataformaUrl }
                     };
 
-                    var entidade = CertificadoDigitalBL.GetEntidade();
-                    var notafiscal = NotaFiscalBL.All.AsNoTracking().Where(x => x.Id == entity.NotaFiscalId).FirstOrDefault();
+                    var notaFiscal = NotaFiscalBL.All.AsNoTracking().Where(x => x.Id == entity.NotaFiscalId).FirstOrDefault();
+                    var entidade = CertificadoDigitalBL.GetEntidadeFromCertificado(string.Empty, notaFiscal.TipoAmbiente, notaFiscal.CertificadoDigitalId);
 
                     var cartaCorrecao = new CartaCorrecaoVM()
                     {
@@ -120,7 +120,7 @@ namespace Fly01.Faturamento.BL
                         Producao = entidade.Producao,
                         EntidadeAmbiente = entidade.EntidadeAmbiente,
                         Correcao = entity.MensagemCorrecao,
-                        SefazChaveAcesso = notafiscal.SefazId
+                        SefazChaveAcesso = notaFiscal.SefazId
                     };
 
                     entity.Mensagem = null;

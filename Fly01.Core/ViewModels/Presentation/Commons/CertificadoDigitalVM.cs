@@ -38,5 +38,14 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
 
         [JsonProperty("md5")]
         public string Md5 { get; set; }
+
+        [JsonProperty("cnpj")]
+        public string Cnpj { get; set; }
+
+        [JsonProperty("inscricaoEstadual")]
+        public string InscricaoEstadual { get; set; }
+
+        [JsonProperty("uf")]
+        public string UF { get; set; }
     }
 }

@@ -559,6 +559,8 @@ namespace Fly01.Compras.BL
                     entity.Recomendacao = null;
                     entity.XML = null;
                     entity.PDF = null;
+                    entity.CertificadoDigitalId = CertificadoDigitalBL.CertificadoAtualValido()?.Id;
+                    entity.TipoAmbiente = entidade.EntidadeAmbiente;
 
                     var response = RestHelper.ExecutePostRequest<TransmissaoRetornoVM>(AppDefaults.UrlEmissaoNfeApi, "transmissao", JsonConvert.SerializeObject(notaFiscal, JsonSerializerSetting.Edit), null, header);
                     var retorno = response.Notas.FirstOrDefault();

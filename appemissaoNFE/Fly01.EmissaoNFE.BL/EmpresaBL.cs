@@ -1,5 +1,6 @@
 ﻿using Fly01.EmissaoNFE.Domain.ViewModel;
 using Fly01.Core.BL;
+using Fly01.Core.ValueObjects;
 using Fly01.Core.Notifications;
 using System;
 using System.Text.RegularExpressions;

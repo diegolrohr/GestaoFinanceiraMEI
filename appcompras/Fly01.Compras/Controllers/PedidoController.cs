@@ -1108,6 +1108,49 @@ namespace Fly01.Compras.Controllers
             }
         }
 
+        public JsonResult ClonarPedido(Guid id)
+        {
+            try
+            {
+                ExpandProperties = "";
+                PedidoVM pedido = Get(id);
+                pedido.Id = Guid.NewGuid();
+                pedido.Status = Status.Aberto.ToString();
+                pedido.Data = DateTime.Now;
+                var postResponse = RestHelper.ExecutePostRequest("Pedido", JsonConvert.SerializeObject(pedido, JsonSerializerSetting.Default));
+
+                List<PedidoItemVM> produtos = GetProdutosPedido(id);
+                foreach (var item in produtos)
+                {
+                    item.Id = Guid.NewGuid();
+                    item.PedidoId = pedido.Id;
+                    var postResponseProdutos = RestHelper.ExecutePostRequest<PedidoItemVM>("PedidoItem", JsonConvert.SerializeObject(item, JsonSerializerSetting.Default));
+                }
+
+                return Json(new
+                {
+                    success = true,
+                    id = pedido.Id
+                }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
+        public List<PedidoItemVM> GetProdutosPedido(Guid id)
+        {
+            var queryString = new Dictionary<string, string>();
+
+            queryString.AddParam("$filter", $"pedidoId eq {id}");
+
+            return RestHelper.ExecuteGetRequest<ResultBase<PedidoItemVM>>("PedidoItem", queryString).Data;
+        }
+
         #region OnDemmand
         [HttpPost]
         public JsonResult NovaCategoriaDespesa(string term)

@@ -6,8 +6,10 @@ namespace Fly01.Core.ViewModels.Presentation
     {
         public Guid ContaBancariaCedenteId { get; set; }
         public int CodigoBanco { get; set; }
+        public int NumeroArquivoRemessa { get; set; }
         public int TotalBoletosGerados { get; set; }
         public double ValorTotalArquivoRemessa { get; set; }
         public byte[] ConteudoArquivoRemessa { get; set; }
+        
     }
 }

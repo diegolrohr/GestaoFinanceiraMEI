@@ -25,9 +25,9 @@ namespace Fly01.Faturamento.API.Controllers.Api
 
             ModelState.Clear();
 
-            Insert(entity);
-
             Validate(entity);
+
+            Insert(entity);
 
             await UnitSave();
 

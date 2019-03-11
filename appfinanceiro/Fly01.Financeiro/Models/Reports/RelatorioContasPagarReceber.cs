@@ -4,13 +4,13 @@ using Fly01.Core.Reports;
 
 namespace Fly01.Financeiro.Models.Reports
 {
-    public class ReportListContasCentroCusto : IReportInfo
+    public class RelatorioContasPagarReceber : IReportInfo
     {
-        public static ReportListContasCentroCusto Instance
+        public static RelatorioContasPagarReceber Instance
         {
             get
             {
-                return new ReportListContasCentroCusto();
+                return new RelatorioContasPagarReceber();
             }
         }
 
@@ -42,7 +42,7 @@ namespace Fly01.Financeiro.Models.Reports
         {
             get
             {
-                return HttpContext.Current.Server.MapPath("~/Reports/ReportListContasCentroCusto.rdlc");
+                return HttpContext.Current.Server.MapPath("~/Reports/RelatorioContasPagarReceber.rdlc");
             }
         }
     }

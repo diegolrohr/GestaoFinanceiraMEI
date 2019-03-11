@@ -413,6 +413,7 @@
     <Content Include="Views\NotaFiscalEntrada\Functions\_fnFormReadyNotasFiscais.cshtml" />
     <Content Include="Views\NotaFiscalEntrada\Functions\_fnBaixarXMLNFeZip.cshtml" />
     <Content Include="Views\NotaFiscalEntrada\Functions\_fnEnviarEmailNFe.cshtml" />
+    <Content Include="Views\OrdemCompra\Functions\_fnClonarPedido.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

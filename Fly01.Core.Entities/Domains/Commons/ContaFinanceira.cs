@@ -34,6 +34,8 @@ namespace Fly01.Core.Entities.Domains.Commons
         [Column(TypeName = "date")]
         public DateTime DataEmissao { get; set; }
 
+        public TimeSpan HoraEmissao { get; set; }
+
         [Required]
         [Column(TypeName = "date")]
         public DateTime DataVencimento { get; set; }

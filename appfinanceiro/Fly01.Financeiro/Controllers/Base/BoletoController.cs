@@ -186,14 +186,13 @@ namespace Fly01.Financeiro.Controllers.Base
 
         }
 
-        protected List<DadosArquivoRemessaVM> GetListaBoletos(List<Guid> idsCnabToSave)
+        protected List<DadosArquivoRemessaVM> GetListaBoletos(List<Guid> idsCnabToSave, bool geraArquivoRemessa = false)
         {
+            
             var queryString = new Dictionary<string, string>()
             {
-                { "listIdCnab", idsCnabToSave
-                    .Select(g => g.ToString())
-                    .Aggregate((working, next) => working + "," + next)
-                }
+                { "listIdCnab", idsCnabToSave .Select(g => g.ToString()) .Aggregate((working, next) => working + "," + next) },
+                { "geraArquivoRemessa", geraArquivoRemessa.ToString() }
             };
 
             return RestHelper.ExecuteGetRequest<List<DadosArquivoRemessaVM>>("boleto/getListaBoletos", queryString);

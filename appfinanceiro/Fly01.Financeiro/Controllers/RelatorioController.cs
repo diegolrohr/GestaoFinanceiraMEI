@@ -9,7 +9,7 @@ using Fly01.Core.ViewModels.Presentation.Commons;
 
 namespace Fly01.Financeiro.Controllers
 {
-    // [OperationRole(ResourceKey = ResourceHashConst.FinanceiroFinanceiroRelatorioDRE)]
+    [OperationRole(ResourceKey = ResourceHashConst.FinanceiroFinanceiroRelatorios)]
     public class RelatorioController : BaseController<DomainBaseVM>
     {
         public override Func<DomainBaseVM, object> GetDisplayData()
@@ -26,16 +26,16 @@ namespace Fly01.Financeiro.Controllers
                 {
                     Title = "Relatórios ",
                 },
-                UrlFunctions = Url.Action("Functions", "Home", null, Request.Url.Scheme) + "?fns=",
-                Functions = new List<string> { "__format", "fnGetSaldos" },
-                SidebarUrl = Url.Action("Sidebar", "Home")
+                UrlFunctions = Url.Action("Functions", "Relatorio", null, Request.Url.Scheme) + "?fns=",
+                Functions = new List<string> { "fnFormReady", "__format", "fnGetSaldos"},
+                SidebarUrl = Url.Action("Sidebar", "Home"), 
             };
 
            
             cfg.Content.Add(new CardUI
             {
                 Class = "col s12 m4",
-                Color = "totvs-blue",
+                Color = "WhitClass",
                 Id = "fly01cardDre",
                 Title = "DRE",
                 Placeholder = "",
@@ -49,7 +49,7 @@ namespace Fly01.Financeiro.Controllers
             cfg.Content.Add(new CardUI
             {
                 Class = "col s12 m4",
-                Color = "red",
+                Color = "WhitClass",
                 Id = "fly01cardCPCentroCusto",
                 Title = "Contas a pagar",
                 Placeholder = "",
@@ -63,7 +63,7 @@ namespace Fly01.Financeiro.Controllers
             cfg.Content.Add(new CardUI
             {
                 Class = "col s12 m4",
-                Color = "green",
+                Color = "WhitClass",
                 Id = "fly01cardCRCentroCusto",
                 Title = "Contas a receber",
                 Placeholder = "",

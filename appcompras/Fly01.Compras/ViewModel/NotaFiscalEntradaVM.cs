@@ -108,6 +108,12 @@ namespace Fly01.Compras.ViewModel
         [JsonProperty("centroCustoId")]
         public Guid? CentroCustoId { get; set; }
 
+        [JsonProperty("tipoAmbiente")]
+        public string TipoAmbiente { get; set; }
+
+        [JsonProperty("certificadoDigitalId")]
+        public Guid? CertificadoDigitalId { get; set; }
+
         [JsonProperty("ordemCompraOrigem")]
         public virtual OrdemCompraVM OrdemCompraOrigem { get; set; }
 
@@ -134,5 +140,8 @@ namespace Fly01.Compras.ViewModel
 
         [JsonProperty("centroCusto")]
         public virtual CentroCustoVM CentroCusto { get; set; }
+
+        [JsonProperty("certificadoDigital")]
+        public virtual CertificadoDigitalVM CertificadoDigital { get; set; }
     }
 }

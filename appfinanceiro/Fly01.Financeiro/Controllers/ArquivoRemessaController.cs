@@ -74,10 +74,10 @@ namespace Fly01.Financeiro.Controllers
 
         [OperationRole(NotApply = true)]
         [HttpGet]
-        public ActionResult DownloadArquivoRemessa(List<string> ids)
+        public ActionResult DownloadArquivoRemessa(List<string> ids, string idArquivo = "")
         {
             var idsCnabToSave = ids[0].Split(',');
-            var arquivosGerados = SalvarArquivoRemessa(idsCnabToSave);
+            var arquivosGerados = SalvarArquivoRemessa(idsCnabToSave, idArquivo);
 
             if (arquivosGerados.Count > 1)
             {
@@ -119,12 +119,39 @@ namespace Fly01.Financeiro.Controllers
             return null;
         }
 
+        [OperationRole(NotApply = true)]
+        [HttpGet]
+        public ActionResult DownloadArquivoRemessabyId(Guid idArquivo)
+        {
+            var cnabs = GetArquivo(idArquivo);
+            var value = "";
 
-        private List<String> SalvarArquivoRemessa(string[] idsCnabToSave)
+            List<string> ids = new List<string>();
+            foreach (var item in cnabs)
+                value = value + item.Id.ToString() + ",";
+
+            value = value.Substring(0, value.Length - 1);
+            ids.Add(value);
+
+            return DownloadArquivoRemessa(ids, idArquivo.ToString());   
+        }
+
+        protected List<CnabVM> GetArquivo(Guid id)
+        {
+            var queryString = new Dictionary<string, string>();
+            queryString.AddParam("$filter", $"arquivoRemessaId eq {id}");
+            queryString.AddParam("$select", "id");
+
+            var cnabs = RestHelper.ExecuteGetRequest<ResultBase<CnabVM>>("cnab", queryString);
+
+            return cnabs.Data.ToList();
+        }
+
+        private List<String> SalvarArquivoRemessa(string[] idsCnabToSave, string idArquivo = "")
         {
             var arquivosGeradosPorBanco = new List<string>();
             var bancos = GetBancosEmiteBoletos();
-            var dictContasEBoletos = GetListaBoletos(idsCnabToSave.Select(Guid.Parse).ToList());
+            var dictContasEBoletos = GetListaBoletos(idsCnabToSave.Select(Guid.Parse).ToList(), true);
 
             dictContasEBoletos.GroupBy(x => x.CodigoBanco).OrderByDescending(x => x.Key).ToList().ForEach(item =>
             {
@@ -140,13 +167,15 @@ namespace Fly01.Financeiro.Controllers
 
                 arquivosGeradosPorBanco.Add(nomeArquivo);
 
-                Save(cnabs, banco.Id, nomeArquivo, dadosArquivoRemessa.TotalBoletosGerados, dadosArquivoRemessa.ValorTotalArquivoRemessa);
+                if (idArquivo == "")                
+                    Save(cnabs, banco.Id, nomeArquivo, dadosArquivoRemessa.TotalBoletosGerados, dadosArquivoRemessa.ValorTotalArquivoRemessa, dadosArquivoRemessa.NumeroArquivoRemessa);
+                
             });
 
             return arquivosGeradosPorBanco;
         }
 
-        private void Save(List<Guid> ids, Guid bancoId, string nomeArquivo, int qtdBoletos, double valorBoletos)
+        private void Save(List<Guid> ids, Guid bancoId, string nomeArquivo, int qtdBoletos, double valorBoletos, int NumeroArquivoRemessa)
         {
             var arquivoRemessa = new ArquivoRemessaVM()
             {
@@ -154,7 +183,8 @@ namespace Fly01.Financeiro.Controllers
                 TotalBoletos = qtdBoletos,
                 StatusArquivoRemessa = StatusArquivoRemessa.AguardandoRetorno.ToString(),
                 ValorTotal = valorBoletos,
-                BancoId = bancoId
+                BancoId = bancoId, 
+                NumeroArquivoRemessa = NumeroArquivoRemessa
             };
 
             var result = RestHelper.ExecutePostRequest<ArquivoRemessaVM>("arquivoremessa", JsonConvert.SerializeObject(arquivoRemessa, JsonSerializerSetting.Default));
@@ -277,11 +307,14 @@ namespace Fly01.Financeiro.Controllers
         {
             var target = new List<HtmlUIButton>()
             {
-                new HtmlUIButton { Id = "btnViewBoletos", Label = "Visualizar boletos", OnClickFn = "fnListContasArquivo" }
+                new HtmlUIButton { Id = "btnViewBoletos", Label = "Visualizar boletos", OnClickFn = "fnListContasArquivo", Position = HtmlUIButtonPosition.Out  },
+                new HtmlUIButton { Id = "btnDownload", Label = "Download Arquivo", OnClickFn = "fnDownloadArquivo", Position = HtmlUIButtonPosition.Out }
             };
 
             if (UserCanWrite)
-                target.Add(new HtmlUIButton { Id = "btnGerarArqRemessa", Label = "GERAR ARQ. REMESSA", OnClickFn = "fnGerarArquivo" });
+            {
+                target.Add(new HtmlUIButton { Id = "btnGerarArqRemessa", Label = "GERAR ARQ. REMESSA", OnClickFn = "fnGerarArquivo", Position = HtmlUIButtonPosition.Main });
+            }
 
             return target;                    
         }

@@ -9,7 +9,7 @@
               <Width>1.23cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.89921cm</Width>
+              <Width>0.68367cm</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>0.07938cm</Width>
@@ -27,13 +27,13 @@
               <Width>2.8456cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.04031cm</Width>
+              <Width>2.50666cm</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>1.86875cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>3.08209cm</Width>
+              <Width>2.55292cm</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>2.86264cm</Width>
@@ -45,7 +45,7 @@
               <Width>1.46424cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.5cm</Width>
+              <Width>2.71555cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -63,6 +63,7 @@
                             <TextRun>
                               <Value>Status</Value>
                               <Style>
+                                <FontSize>9pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
@@ -100,6 +101,7 @@
                             <TextRun>
                               <Value>Emissão</Value>
                               <Style>
+                                <FontSize>9pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
@@ -134,6 +136,7 @@
                             <TextRun>
                               <Value>Vencimento</Value>
                               <Style>
+                                <FontSize>9pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
@@ -166,7 +169,14 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Num.</Value>
+                              <Value>Num</Value>
+                              <Style>
+                                <FontSize>9pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                            <TextRun>
+                              <Value>.</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -202,6 +212,7 @@
                             <TextRun>
                               <Value>Descrição</Value>
                               <Style>
+                                <FontSize>9pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
@@ -236,6 +247,7 @@
                             <TextRun>
                               <Value>Valor</Value>
                               <Style>
+                                <FontSize>9pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
@@ -270,6 +282,7 @@
                             <TextRun>
                               <Value>Categoria</Value>
                               <Style>
+                                <FontSize>9pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
@@ -304,6 +317,7 @@
                             <TextRun>
                               <Value>Forma Pagto.</Value>
                               <Style>
+                                <FontSize>9pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
@@ -338,6 +352,7 @@
                             <TextRun>
                               <Value>Condicao Parc.</Value>
                               <Style>
+                                <FontSize>9pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
@@ -372,6 +387,7 @@
                             <TextRun>
                               <Value>=IIf(Fields!TipoConta.Value = "ContaPagar", "Fornecedor", "Cliente")</Value>
                               <Style>
+                                <FontSize>9pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
@@ -406,6 +422,7 @@
                             <TextRun>
                               <Value>Parcela</Value>
                               <Style>
+                                <FontSize>9pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
@@ -440,6 +457,7 @@
                             <TextRun>
                               <Value>Centro Custo</Value>
                               <Style>
+                                <FontSize>9pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
@@ -478,7 +496,9 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!Status.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontSize>9pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
@@ -516,7 +536,9 @@
                               <Value>=IIf(Year(Fields!Emissao.Value) &gt; 1
 		,FormatDateTime(Fields!Emissao.Value, DateFormat.ShortDate)
 		, "")</Value>
-                              <Style />
+                              <Style>
+                                <FontSize>9pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
@@ -551,7 +573,9 @@
                               <Value>=IIf(Year(Fields!Vencimento.Value) &gt; 1
 		,FormatDateTime(Fields!Vencimento.Value, DateFormat.ShortDate)
 		, "")</Value>
-                              <Style />
+                              <Style>
+                                <FontSize>9pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
@@ -584,7 +608,9 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!Numero.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontSize>9pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
@@ -617,7 +643,9 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!Descricao.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontSize>9pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
@@ -651,6 +679,7 @@
                             <TextRun>
                               <Value>=Fields!Valor.Value</Value>
                               <Style>
+                                <FontSize>9pt</FontSize>
                                 <Format>'R$'#,0.00</Format>
                                 <rd:FormatSymbolCulture>pt-BR</rd:FormatSymbolCulture>
                               </Style>
@@ -686,7 +715,9 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!Categoria.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontSize>9pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
@@ -719,7 +750,9 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!FormaPagamento.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontSize>9pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
@@ -752,7 +785,9 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!CondicaoParcelamento.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontSize>9pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
@@ -785,7 +820,9 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=IIf(Fields!TipoConta.Value = "ContaPagar", Fields!Fornecedor.Value, Fields!Cliente.Value)</Value>
-                              <Style />
+                              <Style>
+                                <FontSize>9pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
@@ -818,7 +855,9 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!Parcelas.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontSize>9pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
@@ -851,7 +890,9 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!CentroCusto.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontSize>9pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
@@ -1335,6 +1376,7 @@
                             <TextRun>
                               <Value>TOTAL: </Value>
                               <Style>
+                                <FontSize>9pt</FontSize>
                                 <Format>'R$'#,0.00;'R$'-#,0.00</Format>
                                 <rd:FormatSymbolCulture>pt-BR</rd:FormatSymbolCulture>
                               </Style>
@@ -1342,7 +1384,8 @@
                             <TextRun>
                               <Value>=Sum(Fields!Valor.Value)</Value>
                               <Style>
-                                <Format>'R$'#,0.00;'R$'-#,0.00</Format>
+                                <FontSize>9pt</FontSize>
+                                <Format>'R$'#,0.00</Format>
                                 <rd:FormatSymbolCulture>pt-BR</rd:FormatSymbolCulture>
                               </Style>
                             </TextRun>
@@ -1476,7 +1519,7 @@
         <Top>0.03814cm</Top>
         <Left>0.03916cm</Left>
         <Height>2.0825cm</Height>
-        <Width>27.32454cm</Width>
+        <Width>27.26172cm</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -1503,7 +1546,9 @@
                 <TextRun>
                   <Value>=Parameters!ReportHeader.Value</Value>
                   <MarkupType>HTML</MarkupType>
-                  <Style />
+                  <Style>
+                    <FontSize>9pt</FontSize>
+                  </Style>
                 </TextRun>
               </TextRuns>
               <Style>
@@ -1536,7 +1581,6 @@
                 <TextRun>
                   <Value>=Fields!Titulo.Value</Value>
                   <Style>
-                    <FontSize>12pt</FontSize>
                     <FontWeight>Bold</FontWeight>
                     <Color>Orange</Color>
                   </Style>

@@ -1,6 +1,8 @@
 ﻿using Fly01.Core;
 using Fly01.Core.Config;
 using Fly01.Core.Entities.Domains.Commons;
+using Fly01.Core.Helpers;
+using Fly01.Core.Notifications;
 using Fly01.Core.Presentation;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
@@ -171,10 +173,10 @@ namespace Fly01.Financeiro.Controllers
         {
             var target = new List<HtmlUIButton>();
 
-            //if (UserCanWrite)
-            //{
+            if (UserCanWrite)
+            {
             target.Add(new HtmlUIButton { Id = "imprimirRelatorioId", Label = "Imprimir", OnClickFn = "fnImprimirRelatorioCPCR" });
-            //}
+            }
 
             return target;
         }
@@ -191,7 +193,9 @@ namespace Fly01.Financeiro.Controllers
                                      Guid? centroCustoId,
                                      string descricao)
         {
-            var queryString = new Dictionary<string, string>
+            try
+            {
+                var queryString = new Dictionary<string, string>
             {
                 { "dataInicial", dataInicial != null ? dataInicial.Value.ToString("yyyy-MM-dd") : ""},
                 { "dataFinal", dataFinal != null ? dataFinal.Value.ToString("yyyy-MM-dd") : ""},
@@ -205,13 +209,18 @@ namespace Fly01.Financeiro.Controllers
                 { "tipoConta", tipoConta.ToString()},
                 { "descricao", descricao},
             };
+                List<ImprimirListContasVM> reportItens = GetContaFinanceira(queryString, tipoConta);
 
-            List<ImprimirListContasVM> reportItens = GetContaFinanceira(queryString, tipoConta);
-                    
-            var reportViewer = new WebReportViewer<ImprimirListContasVM>(ReportListContasCentroCusto.Instance);
-            return File(reportViewer.Print(reportItens, SessionManager.Current.UserData.PlatformUrl), "application/pdf");
+                var reportViewer = new WebReportViewer<ImprimirListContasVM>(RelatorioContasPagarReceber.Instance);
+                return File(reportViewer.Print(reportItens, SessionManager.Current.UserData.PlatformUrl), "application/pdf");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
         }
-        
+
         private static List<ImprimirListContasVM> GetContaFinanceira(Dictionary<string, string> queryString, string tipo)
         {
             try
@@ -226,5 +235,47 @@ namespace Fly01.Financeiro.Controllers
                 throw new Exception(ex.Message);
             }
         }
+        public JsonResult ValidaImpressao(DateTime? dataInicial,
+                                     DateTime? dataFinal,
+                                     DateTime? dataEmissaoInicial,
+                                     DateTime? dataEmissaoFinal,
+                                     Guid? pessoaId,
+                                     Guid? formaPagamentoId,
+                                     Guid? condicaoParcelamentoId,
+                                     Guid? categoriaId,
+                                     Guid? centroCustoId,
+                                     string descricao)
+        {
+            try
+            {
+                var queryString = new Dictionary<string, string>
+            {
+                { "dataInicial", dataInicial != null ? dataInicial.Value.ToString("yyyy-MM-dd") : ""},
+                { "dataFinal", dataFinal != null ? dataFinal.Value.ToString("yyyy-MM-dd") : ""},
+                { "dataEmissaoInicial", dataEmissaoInicial != null ? dataEmissaoInicial.Value.ToString("yyyy-MM-dd") : ""},
+                { "dataEmissaoFinal", dataEmissaoFinal != null ? dataEmissaoFinal.Value.ToString("yyyy-MM-dd") : ""},
+                { "pessoaId", pessoaId.ToString()},
+                { "formaPagamentoId", formaPagamentoId.ToString()},
+                { "condicaoParcelamentoId", condicaoParcelamentoId.ToString()},
+                { "categoriaId", categoriaId.ToString()},
+                { "centroCustoId", centroCustoId.ToString()},
+                { "tipoConta", tipoConta.ToString()},
+                { "descricao", descricao},
+            };
+                List<ImprimirListContasVM> records = GetContaFinanceira(queryString, tipoConta);
+
+                return Json(new
+                {
+                    success = true,
+                    records = records.Count
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
     }
 }

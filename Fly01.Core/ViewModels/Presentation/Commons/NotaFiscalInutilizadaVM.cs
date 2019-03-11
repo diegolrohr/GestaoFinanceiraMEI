@@ -27,5 +27,14 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
 
         [JsonProperty("recomendacao")]
         public string Recomendacao { get; set; }
+
+        [JsonProperty("tipoAmbiente")]
+        public string TipoAmbiente { get; set; }
+
+        [JsonProperty("certificadoDigitalId")]
+        public Guid? CertificadoDigitalId { get; set; }
+
+        [JsonProperty("certificadoDigital")]
+        public virtual CertificadoDigitalVM Certificadodigital { get; set; }
     }
 }

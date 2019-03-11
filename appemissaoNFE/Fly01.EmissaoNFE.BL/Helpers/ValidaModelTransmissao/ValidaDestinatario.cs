@@ -1,6 +1,7 @@
 ﻿using Fly01.Core.Notifications;
 using Fly01.EmissaoNFE.Domain.ViewModel;
 using Fly01.EmissaoNFE.Domain.Enums;
+using Fly01.Core.ValueObjects;
 using System.Linq;
 using Fly01.Core.ValueObjects;
 

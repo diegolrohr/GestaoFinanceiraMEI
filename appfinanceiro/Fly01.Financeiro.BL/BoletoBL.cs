@@ -33,7 +33,7 @@ namespace Fly01.Financeiro.BL
                     carteira.VariacaoCarteira = "";
                     break;
                 case TipoCodigoBanco.Itau:
-                    carteira.CarteiraPadrao = "112";
+                    carteira.CarteiraPadrao = "109";
                     carteira.VariacaoCarteira = "";
                     break;
                 case TipoCodigoBanco.Banrisul:

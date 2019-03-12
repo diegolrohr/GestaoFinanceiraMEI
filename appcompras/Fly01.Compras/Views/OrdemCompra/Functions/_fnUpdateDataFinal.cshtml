@@ -1,10 +1,14 @@
 ﻿<script>
-    function fnUpdateDataFinal() {               
+    function fnUpdateDataFinal() {
         let date = $$$._.mesPicker.pickamonth("picker").get("select");
         var firstDay = new Date(date.year, date.month, 1);
         let lastDay = new Date(date.year, date.month + 1, 0);     
         $("#dataInicial").val(moment(firstDay).format('YYYY-MM-DD'));
         $("#dataFinal").val(moment(lastDay).format('YYYY-MM-DD'));
         $$$._.fly01dt.refresh();
+
+
+        //$$$._.mesPicker.pickadate("picker").set('max', 2000);
+        //$$$._.mesPicker.pickadate("picker").set('min', 2000);
     }
 </script>

@@ -654,6 +654,7 @@ namespace Fly01.Faturamento.Controllers
                 ordemvenda.Id = Guid.NewGuid();
                 ordemvenda.Status = Status.Aberto.ToString();
                 ordemvenda.Data = DateTime.Now;
+                ordemvenda.DataVencimento = DateTime.Now;
                 var postResponse = RestHelper.ExecutePostRequest("OrdemVenda", JsonConvert.SerializeObject(ordemvenda, JsonSerializerSetting.Default));
 
                 List<OrdemVendaProdutoVM> produtos = GetProdutosPedido(id);

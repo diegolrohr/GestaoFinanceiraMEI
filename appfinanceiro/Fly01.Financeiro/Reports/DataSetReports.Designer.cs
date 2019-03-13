@@ -2437,6 +2437,24 @@ namespace Fly01.Financeiro.Reports {
             
             private global::System.Data.DataColumn columnEmissao;
             
+            private global::System.Data.DataColumn columnDataInicial;
+            
+            private global::System.Data.DataColumn columnDataFinal;
+            
+            private global::System.Data.DataColumn columnDataEmissaoInicial;
+            
+            private global::System.Data.DataColumn columnDataEmissaoFinal;
+            
+            private global::System.Data.DataColumn columnFornecedorFiltro;
+            
+            private global::System.Data.DataColumn columnFormaPagamentoFiltro;
+            
+            private global::System.Data.DataColumn columnCategoriaFiltro;
+            
+            private global::System.Data.DataColumn columnCentroCustoFiltro;
+            
+            private global::System.Data.DataColumn columnDescricaoFiltro;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public ContasCentroCustoDataTable() {
@@ -2600,6 +2618,78 @@ namespace Fly01.Financeiro.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn DataInicialColumn {
+                get {
+                    return this.columnDataInicial;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn DataFinalColumn {
+                get {
+                    return this.columnDataFinal;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn DataEmissaoInicialColumn {
+                get {
+                    return this.columnDataEmissaoInicial;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn DataEmissaoFinalColumn {
+                get {
+                    return this.columnDataEmissaoFinal;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn FornecedorFiltroColumn {
+                get {
+                    return this.columnFornecedorFiltro;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn FormaPagamentoFiltroColumn {
+                get {
+                    return this.columnFormaPagamentoFiltro;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CategoriaFiltroColumn {
+                get {
+                    return this.columnCategoriaFiltro;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CentroCustoFiltroColumn {
+                get {
+                    return this.columnCentroCustoFiltro;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn DescricaoFiltroColumn {
+                get {
+                    return this.columnDescricaoFiltro;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -2651,7 +2741,16 @@ namespace Fly01.Financeiro.Reports {
                         string Categoria, 
                         string CondicaoParcelamento, 
                         string Parcela, 
-                        string Emissao) {
+                        string Emissao, 
+                        string DataInicial, 
+                        string DataFinal, 
+                        string DataEmissaoInicial, 
+                        string DataEmissaoFinal, 
+                        string FornecedorFiltro, 
+                        string FormaPagamentoFiltro, 
+                        string CategoriaFiltro, 
+                        string CentroCustoFiltro, 
+                        string DescricaoFiltro) {
                 ContasCentroCustoRow rowContasCentroCustoRow = ((ContasCentroCustoRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Status,
@@ -2669,7 +2768,16 @@ namespace Fly01.Financeiro.Reports {
                         Categoria,
                         CondicaoParcelamento,
                         Parcela,
-                        Emissao};
+                        Emissao,
+                        DataInicial,
+                        DataFinal,
+                        DataEmissaoInicial,
+                        DataEmissaoFinal,
+                        FornecedorFiltro,
+                        FormaPagamentoFiltro,
+                        CategoriaFiltro,
+                        CentroCustoFiltro,
+                        DescricaoFiltro};
                 rowContasCentroCustoRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowContasCentroCustoRow);
                 return rowContasCentroCustoRow;
@@ -2708,6 +2816,15 @@ namespace Fly01.Financeiro.Reports {
                 this.columnCondicaoParcelamento = base.Columns["CondicaoParcelamento"];
                 this.columnParcela = base.Columns["Parcela"];
                 this.columnEmissao = base.Columns["Emissao"];
+                this.columnDataInicial = base.Columns["DataInicial"];
+                this.columnDataFinal = base.Columns["DataFinal"];
+                this.columnDataEmissaoInicial = base.Columns["DataEmissaoInicial"];
+                this.columnDataEmissaoFinal = base.Columns["DataEmissaoFinal"];
+                this.columnFornecedorFiltro = base.Columns["FornecedorFiltro"];
+                this.columnFormaPagamentoFiltro = base.Columns["FormaPagamentoFiltro"];
+                this.columnCategoriaFiltro = base.Columns["CategoriaFiltro"];
+                this.columnCentroCustoFiltro = base.Columns["CentroCustoFiltro"];
+                this.columnDescricaoFiltro = base.Columns["DescricaoFiltro"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2745,6 +2862,24 @@ namespace Fly01.Financeiro.Reports {
                 base.Columns.Add(this.columnParcela);
                 this.columnEmissao = new global::System.Data.DataColumn("Emissao", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnEmissao);
+                this.columnDataInicial = new global::System.Data.DataColumn("DataInicial", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDataInicial);
+                this.columnDataFinal = new global::System.Data.DataColumn("DataFinal", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDataFinal);
+                this.columnDataEmissaoInicial = new global::System.Data.DataColumn("DataEmissaoInicial", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDataEmissaoInicial);
+                this.columnDataEmissaoFinal = new global::System.Data.DataColumn("DataEmissaoFinal", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDataEmissaoFinal);
+                this.columnFornecedorFiltro = new global::System.Data.DataColumn("FornecedorFiltro", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnFornecedorFiltro);
+                this.columnFormaPagamentoFiltro = new global::System.Data.DataColumn("FormaPagamentoFiltro", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnFormaPagamentoFiltro);
+                this.columnCategoriaFiltro = new global::System.Data.DataColumn("CategoriaFiltro", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCategoriaFiltro);
+                this.columnCentroCustoFiltro = new global::System.Data.DataColumn("CentroCustoFiltro", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCentroCustoFiltro);
+                this.columnDescricaoFiltro = new global::System.Data.DataColumn("DescricaoFiltro", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDescricaoFiltro);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -4768,6 +4903,152 @@ namespace Fly01.Financeiro.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string DataInicial {
+                get {
+                    try {
+                        return ((string)(this[this.tableContasCentroCusto.DataInicialColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DataInicial\' in table \'ContasCentroCusto\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableContasCentroCusto.DataInicialColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string DataFinal {
+                get {
+                    try {
+                        return ((string)(this[this.tableContasCentroCusto.DataFinalColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DataFinal\' in table \'ContasCentroCusto\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableContasCentroCusto.DataFinalColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string DataEmissaoInicial {
+                get {
+                    try {
+                        return ((string)(this[this.tableContasCentroCusto.DataEmissaoInicialColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DataEmissaoInicial\' in table \'ContasCentroCusto\' is DBNull." +
+                                "", e);
+                    }
+                }
+                set {
+                    this[this.tableContasCentroCusto.DataEmissaoInicialColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string DataEmissaoFinal {
+                get {
+                    try {
+                        return ((string)(this[this.tableContasCentroCusto.DataEmissaoFinalColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DataEmissaoFinal\' in table \'ContasCentroCusto\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableContasCentroCusto.DataEmissaoFinalColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string FornecedorFiltro {
+                get {
+                    try {
+                        return ((string)(this[this.tableContasCentroCusto.FornecedorFiltroColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'FornecedorFiltro\' in table \'ContasCentroCusto\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableContasCentroCusto.FornecedorFiltroColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string FormaPagamentoFiltro {
+                get {
+                    try {
+                        return ((string)(this[this.tableContasCentroCusto.FormaPagamentoFiltroColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'FormaPagamentoFiltro\' in table \'ContasCentroCusto\' is DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tableContasCentroCusto.FormaPagamentoFiltroColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string CategoriaFiltro {
+                get {
+                    try {
+                        return ((string)(this[this.tableContasCentroCusto.CategoriaFiltroColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CategoriaFiltro\' in table \'ContasCentroCusto\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableContasCentroCusto.CategoriaFiltroColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string CentroCustoFiltro {
+                get {
+                    try {
+                        return ((string)(this[this.tableContasCentroCusto.CentroCustoFiltroColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CentroCustoFiltro\' in table \'ContasCentroCusto\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableContasCentroCusto.CentroCustoFiltroColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string DescricaoFiltro {
+                get {
+                    try {
+                        return ((string)(this[this.tableContasCentroCusto.DescricaoFiltroColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DescricaoFiltro\' in table \'ContasCentroCusto\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableContasCentroCusto.DescricaoFiltroColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsStatusNull() {
                 return this.IsNull(this.tableContasCentroCusto.StatusColumn);
             }
@@ -4956,6 +5237,114 @@ namespace Fly01.Financeiro.Reports {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetEmissaoNull() {
                 this[this.tableContasCentroCusto.EmissaoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsDataInicialNull() {
+                return this.IsNull(this.tableContasCentroCusto.DataInicialColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetDataInicialNull() {
+                this[this.tableContasCentroCusto.DataInicialColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsDataFinalNull() {
+                return this.IsNull(this.tableContasCentroCusto.DataFinalColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetDataFinalNull() {
+                this[this.tableContasCentroCusto.DataFinalColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsDataEmissaoInicialNull() {
+                return this.IsNull(this.tableContasCentroCusto.DataEmissaoInicialColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetDataEmissaoInicialNull() {
+                this[this.tableContasCentroCusto.DataEmissaoInicialColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsDataEmissaoFinalNull() {
+                return this.IsNull(this.tableContasCentroCusto.DataEmissaoFinalColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetDataEmissaoFinalNull() {
+                this[this.tableContasCentroCusto.DataEmissaoFinalColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsFornecedorFiltroNull() {
+                return this.IsNull(this.tableContasCentroCusto.FornecedorFiltroColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetFornecedorFiltroNull() {
+                this[this.tableContasCentroCusto.FornecedorFiltroColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsFormaPagamentoFiltroNull() {
+                return this.IsNull(this.tableContasCentroCusto.FormaPagamentoFiltroColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetFormaPagamentoFiltroNull() {
+                this[this.tableContasCentroCusto.FormaPagamentoFiltroColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCategoriaFiltroNull() {
+                return this.IsNull(this.tableContasCentroCusto.CategoriaFiltroColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCategoriaFiltroNull() {
+                this[this.tableContasCentroCusto.CategoriaFiltroColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCentroCustoFiltroNull() {
+                return this.IsNull(this.tableContasCentroCusto.CentroCustoFiltroColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCentroCustoFiltroNull() {
+                this[this.tableContasCentroCusto.CentroCustoFiltroColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsDescricaoFiltroNull() {
+                return this.IsNull(this.tableContasCentroCusto.DescricaoFiltroColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetDescricaoFiltroNull() {
+                this[this.tableContasCentroCusto.DescricaoFiltroColumn] = global::System.Convert.DBNull;
             }
         }
         

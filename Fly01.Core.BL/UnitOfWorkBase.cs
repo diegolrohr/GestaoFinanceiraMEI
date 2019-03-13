@@ -65,7 +65,7 @@ namespace Fly01.Core.Entities.Domains
             {
                 return (TBL)GetType().GetProperty(typeof(TBL).Name).GetValue(this);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new Exception(string.Format("A classe {0} não está definida no {1}", typeof(TBL).Name, this.GetType().Name));
             }

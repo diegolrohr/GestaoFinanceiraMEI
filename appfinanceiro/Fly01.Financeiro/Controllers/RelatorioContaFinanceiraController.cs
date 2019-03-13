@@ -210,7 +210,7 @@ namespace Fly01.Financeiro.Controllers
                 { "descricao", descricao},
             };
                 List<ImprimirListContasVM> reportItens = GetContaFinanceira(queryString, tipoConta);
-
+                
                 var reportViewer = new WebReportViewer<ImprimirListContasVM>(RelatorioContasPagarReceber.Instance);
                 return File(reportViewer.Print(reportItens, SessionManager.Current.UserData.PlatformUrl), "application/pdf");
             }

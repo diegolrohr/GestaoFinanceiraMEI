@@ -1117,6 +1117,7 @@ namespace Fly01.Compras.Controllers
                 pedido.Id = Guid.NewGuid();
                 pedido.Status = Status.Aberto.ToString();
                 pedido.Data = DateTime.Now;
+                pedido.DataVencimento = DateTime.Now;
                 var postResponse = RestHelper.ExecutePostRequest("Pedido", JsonConvert.SerializeObject(pedido, JsonSerializerSetting.Default));
 
                 List<PedidoItemVM> produtos = GetProdutosPedido(id);

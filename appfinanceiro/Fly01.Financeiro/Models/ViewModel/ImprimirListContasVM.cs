@@ -4,7 +4,7 @@ using System;
 namespace Fly01.Financeiro.Models.ViewModel
 {
     [Serializable]
-    public class ImprimirListContasVM
+    public class ImprimirListContasVM :ImprimirListContasFiltroVM
     {
         [JsonProperty("id")]
         public Guid Id { get; set; }

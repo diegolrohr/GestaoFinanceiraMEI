@@ -426,7 +426,7 @@ namespace Fly01.Compras.Controllers
                 Id = "placaVeiculo",
                 Class = "col s12 m4",
                 Label = "Placa Veículo",
-                Data = new { inputmask = "'mask':'AAA-9999', 'showMaskOnHover': false, 'autoUnmask':true" }
+                Data = new { inputmask = "'mask':'AAA[-9999]|[9A99]', 'showMaskOnHover': false, 'autoUnmask':true, 'greedy':true" }
             });
             config.Elements.Add(new AutoCompleteUI
             {
@@ -682,7 +682,7 @@ namespace Fly01.Compras.Controllers
                 Class = "col s12 m4",
                 Label = "Placa Veículo",
                 Disabled = true,
-                Data = new { inputmask = "'mask':'AAA-9999', 'showMaskOnHover': false, 'autoUnmask':true" }
+                Data = new { inputmask = "'mask':'AAA[-9999]|[9A99]', 'showMaskOnHover': false, 'autoUnmask':true, 'greedy':true" }
             });
             config.Elements.Add(new AutoCompleteUI
             {

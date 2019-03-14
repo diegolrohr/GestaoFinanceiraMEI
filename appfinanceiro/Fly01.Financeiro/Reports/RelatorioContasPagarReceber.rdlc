@@ -680,7 +680,7 @@
                               <Value>=Fields!Valor.Value</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
-                                <Format>'R$'#,0.00</Format>
+                                <Format>'R$' #,0.00</Format>
                                 <rd:FormatSymbolCulture>pt-BR</rd:FormatSymbolCulture>
                               </Style>
                             </TextRun>
@@ -1385,7 +1385,7 @@
                               <Value>=Sum(Fields!Valor.Value)</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
-                                <Format>'R$'#,0.00</Format>
+                                <Format>'R$' #,0.00</Format>
                                 <rd:FormatSymbolCulture>pt-BR</rd:FormatSymbolCulture>
                               </Style>
                             </TextRun>

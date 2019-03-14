@@ -370,7 +370,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "placaVeiculo",
                 Class = "col s12 m4",
                 Label = "Placa Veículo",
-                Data = new { inputmask = "'mask':'AAA-9999', 'showMaskOnHover': false, 'autoUnmask':true" }
+                Data = new { inputmask = "'mask':'AAA[-9999]|[9A99]', 'showMaskOnHover': false, 'autoUnmask':true, 'greedy':true" }
             });
             config.Elements.Add(new AutoCompleteUI
             {
@@ -654,6 +654,7 @@ namespace Fly01.Faturamento.Controllers
                 ordemvenda.Id = Guid.NewGuid();
                 ordemvenda.Status = Status.Aberto.ToString();
                 ordemvenda.Data = DateTime.Now;
+                ordemvenda.DataVencimento = DateTime.Now;
                 var postResponse = RestHelper.ExecutePostRequest("OrdemVenda", JsonConvert.SerializeObject(ordemvenda, JsonSerializerSetting.Default));
 
                 List<OrdemVendaProdutoVM> produtos = GetProdutosPedido(id);

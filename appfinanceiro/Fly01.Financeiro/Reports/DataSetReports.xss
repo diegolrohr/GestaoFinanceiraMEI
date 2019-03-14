@@ -11,7 +11,7 @@
     <Shape ID="DesignTable:CashFlow" ZOrder="5" X="599" Y="65" Height="258" Width="150" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="254" />
     <Shape ID="DesignTable:ListContas" ZOrder="1" X="899" Y="55" Height="632" Width="218" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="24" SplitterPosition="628" />
     <Shape ID="DesignTable:Extrato" ZOrder="3" X="92" Y="197" Height="219" Width="173" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="215" />
-    <Shape ID="DesignTable:ContasCentroCusto" ZOrder="2" X="276" Y="433" Height="442" Width="177" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="438" />
+    <Shape ID="DesignTable:ContasCentroCusto" ZOrder="2" X="276" Y="433" Height="333" Width="177" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="329" />
   </Shapes>
   <Connectors />
 </DiagramLayout>

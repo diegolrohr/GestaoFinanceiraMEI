@@ -81,7 +81,7 @@ namespace Fly01.Financeiro.Controllers
                         {
                             new DomEventUI {DomEvent = "click", Function = "fnAtualizar"}
                         },
-                        Max = 90,
+                        //Max = 90,
                         Min = true
                     },
                     new InputDateUI

@@ -33,7 +33,7 @@ namespace Fly01.Compras.Controllers
         //OrcamentoVM e PedidoVM na mesma controller ordemCompra(gridLoad, form), direcionado para a controller via javaScript
         public PedidoController()
         {
-            ExpandProperties = "condicaoParcelamento($select=id,descricao),formaPagamento($select=id,descricao),fornecedor($select=id,nome),transportadora($select=id,nome),categoria,centroCusto";
+            ExpandProperties = "condicaoParcelamento($select=id,descricao),formaPagamento($select=id,descricao),fornecedor($select=id,nome),transportadora($select=id,nome),estadoPlacaVeiculo,categoria,centroCusto";
         }
 
         [HttpPost]
@@ -426,7 +426,7 @@ namespace Fly01.Compras.Controllers
                 Id = "placaVeiculo",
                 Class = "col s12 m4",
                 Label = "Placa Veículo",
-                Data = new { inputmask = "'mask':'AAA-9999', 'showMaskOnHover': false, 'autoUnmask':true" }
+                Data = new { inputmask = "'mask':'AAA[-9999]|[9A99]', 'showMaskOnHover': false, 'autoUnmask':true, 'greedy':true" }
             });
             config.Elements.Add(new AutoCompleteUI
             {
@@ -682,7 +682,7 @@ namespace Fly01.Compras.Controllers
                 Class = "col s12 m4",
                 Label = "Placa Veículo",
                 Disabled = true,
-                Data = new { inputmask = "'mask':'AAA-9999', 'showMaskOnHover': false, 'autoUnmask':true" }
+                Data = new { inputmask = "'mask':'AAA[-9999]|[9A99]', 'showMaskOnHover': false, 'autoUnmask':true, 'greedy':true" }
             });
             config.Elements.Add(new AutoCompleteUI
             {
@@ -1117,6 +1117,7 @@ namespace Fly01.Compras.Controllers
                 pedido.Id = Guid.NewGuid();
                 pedido.Status = Status.Aberto.ToString();
                 pedido.Data = DateTime.Now;
+                pedido.DataVencimento = DateTime.Now;
                 var postResponse = RestHelper.ExecutePostRequest("Pedido", JsonConvert.SerializeObject(pedido, JsonSerializerSetting.Default));
 
                 List<PedidoItemVM> produtos = GetProdutosPedido(id);

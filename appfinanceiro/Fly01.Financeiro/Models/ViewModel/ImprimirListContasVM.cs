@@ -38,5 +38,6 @@ namespace Fly01.Financeiro.Models.ViewModel
         public string Parcela { get; set; }
         [JsonProperty("tipoConta")]
         public string TipoConta { get; set; }
+        public string Filtro { get; set; }
     }
 }

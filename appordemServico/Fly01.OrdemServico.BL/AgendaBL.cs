@@ -29,7 +29,7 @@ namespace Fly01.OrdemServico.BL
                 foreach (var item in response)
                 {
                     TimeSpan horaFinal = item.HoraEntrega + item.Duracao;
-                    TimeSpan horaEntrega = (item.HoraEntrega - new TimeSpan(2, 0, 0));
+                    TimeSpan horaEntrega = item.HoraEntrega;
                     TimeSpan duracao = item.Duracao;
 
                     var formatHoraInicial = string.Format("{0:00}:{1:00}", item.HoraEntrega.Hours, item.HoraEntrega.Minutes);
@@ -40,7 +40,7 @@ namespace Fly01.OrdemServico.BL
                         ClassName = EnumHelper.GetCSS(typeof(StatusOrdemServico), item.Status.ToString()),
                         Title = item.Cliente?.Nome + " - " + formatHoraInicial + "h às "+ formatHoraFinal + "h",
                         Start = item.DataEntrega + horaEntrega,
-                        End = item.DataEntrega + (horaFinal - new TimeSpan(2, 0, 0)),
+                        End = item.DataEntrega + horaFinal,
                         Url = item.Status.Equals(StatusOrdemServico.Concluido) || item.Status.Equals(StatusOrdemServico.Cancelado) ? "" : $"OrdemServico/Edit/{item.Id.ToString()}"
                     });
                 }

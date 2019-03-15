@@ -680,7 +680,7 @@
                               <Value>=Fields!Valor.Value</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
-                                <Format>'R$'#,0.00</Format>
+                                <Format>'R$' #,0.00</Format>
                                 <rd:FormatSymbolCulture>pt-BR</rd:FormatSymbolCulture>
                               </Style>
                             </TextRun>
@@ -1376,7 +1376,7 @@
                             <TextRun>
                               <Value>TOTAL: </Value>
                               <Style>
-                                <FontSize>9pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
                                 <Format>'R$'#,0.00;'R$'-#,0.00</Format>
                                 <rd:FormatSymbolCulture>pt-BR</rd:FormatSymbolCulture>
                               </Style>
@@ -1384,8 +1384,8 @@
                             <TextRun>
                               <Value>=Sum(Fields!Valor.Value)</Value>
                               <Style>
-                                <FontSize>9pt</FontSize>
-                                <Format>'R$'#,0.00</Format>
+                                <FontWeight>Bold</FontWeight>
+                                <Format>'R$' #,0.00</Format>
                                 <rd:FormatSymbolCulture>pt-BR</rd:FormatSymbolCulture>
                               </Style>
                             </TextRun>
@@ -1516,24 +1516,99 @@
         </TablixRowHierarchy>
         <RepeatRowHeaders>true</RepeatRowHeaders>
         <DataSetName>ds</DataSetName>
-        <Top>0.03814cm</Top>
-        <Left>0.03916cm</Left>
+        <Top>1.07001cm</Top>
+        <Left>0.14114cm</Left>
         <Height>2.0825cm</Height>
-        <Width>27.26172cm</Width>
+        <Width>27.26173cm</Width>
         <Style>
           <Border>
             <Style>None</Style>
           </Border>
         </Style>
       </Tablix>
+      <Textbox Name="Textbox6">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>=Fields!Titulo.Value</Value>
+                <Style>
+                  <FontWeight>Bold</FontWeight>
+                  <Color>Orange</Color>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style>
+              <TextAlign>Center</TextAlign>
+            </Style>
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox4</rd:DefaultName>
+        <Top>0.17639cm</Top>
+        <Left>0.14116cm</Left>
+        <Height>0.6cm</Height>
+        <Width>27.26172cm</Width>
+        <ZIndex>1</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <BackgroundColor>#242424</BackgroundColor>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox12">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>Filtros Aplicados: </Value>
+                <Style>
+                  <FontSize>9pt</FontSize>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value>=Fields!Filtro.Value</Value>
+                <Style>
+                  <FontSize>9pt</FontSize>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox12</rd:DefaultName>
+        <Top>4.26618cm</Top>
+        <Left>0.14116cm</Left>
+        <Height>2.73161cm</Height>
+        <Width>27.26171cm</Width>
+        <ZIndex>2</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
     </ReportItems>
-    <Height>0.88698in</Height>
+    <Height>2.82448in</Height>
     <Style />
   </Body>
-  <Width>10.80945in</Width>
+  <Width>10.85612in</Width>
   <Page>
     <PageHeader>
-      <Height>4.19731cm</Height>
+      <Height>3.24481cm</Height>
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
       <ReportItems>
@@ -1572,76 +1647,6 @@
             <PaddingBottom>2pt</PaddingBottom>
           </Style>
         </Textbox>
-        <Textbox Name="Textbox6">
-          <CanGrow>true</CanGrow>
-          <KeepTogether>true</KeepTogether>
-          <Paragraphs>
-            <Paragraph>
-              <TextRuns>
-                <TextRun>
-                  <Value>=Fields!Titulo.Value</Value>
-                  <Style>
-                    <FontWeight>Bold</FontWeight>
-                    <Color>Orange</Color>
-                  </Style>
-                </TextRun>
-              </TextRuns>
-              <Style>
-                <TextAlign>Center</TextAlign>
-              </Style>
-            </Paragraph>
-          </Paragraphs>
-          <rd:DefaultName>Textbox4</rd:DefaultName>
-          <Top>2.69684cm</Top>
-          <Left>0.03916cm</Left>
-          <Height>0.6cm</Height>
-          <Width>27.26172cm</Width>
-          <ZIndex>1</ZIndex>
-          <Style>
-            <Border>
-              <Style>None</Style>
-            </Border>
-            <BackgroundColor>#242424</BackgroundColor>
-            <PaddingLeft>2pt</PaddingLeft>
-            <PaddingRight>2pt</PaddingRight>
-            <PaddingTop>2pt</PaddingTop>
-            <PaddingBottom>2pt</PaddingBottom>
-          </Style>
-        </Textbox>
-        <Textbox Name="Textbox23">
-          <CanGrow>true</CanGrow>
-          <KeepTogether>true</KeepTogether>
-          <Paragraphs>
-            <Paragraph>
-              <TextRuns>
-                <TextRun>
-                  <Value />
-                  <Style>
-                    <FontWeight>Bold</FontWeight>
-                  </Style>
-                </TextRun>
-              </TextRuns>
-              <Style>
-                <TextAlign>Center</TextAlign>
-              </Style>
-            </Paragraph>
-          </Paragraphs>
-          <rd:DefaultName>Textbox22</rd:DefaultName>
-          <Top>3.49434cm</Top>
-          <Left>0.14114cm</Left>
-          <Height>0.6cm</Height>
-          <Width>27.22256cm</Width>
-          <ZIndex>2</ZIndex>
-          <Style>
-            <Border>
-              <Style>None</Style>
-            </Border>
-            <PaddingLeft>2pt</PaddingLeft>
-            <PaddingRight>2pt</PaddingRight>
-            <PaddingTop>2pt</PaddingTop>
-            <PaddingBottom>2pt</PaddingBottom>
-          </Style>
-        </Textbox>
         <Image Name="ImgLogo">
           <Source>Database</Source>
           <Value>=System.Convert.FromBase64String(Parameters!ReportLogo.Value)</Value>
@@ -1651,7 +1656,7 @@
           <Left>0.14114cm</Left>
           <Height>2.50472cm</Height>
           <Width>3.15422cm</Width>
-          <ZIndex>3</ZIndex>
+          <ZIndex>1</ZIndex>
           <Style>
             <Border>
               <Style>None</Style>
@@ -1666,7 +1671,7 @@
       </Style>
     </PageHeader>
     <PageFooter>
-      <Height>0.9525cm</Height>
+      <Height>1.56985cm</Height>
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
       <ReportItems>
@@ -1721,8 +1726,8 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox2</rd:DefaultName>
-          <Top>0.17639cm</Top>
-          <Left>0.3302cm</Left>
+          <Top>0.14111cm</Top>
+          <Left>0.14114cm</Left>
           <Height>0.62617cm</Height>
           <Width>24.25513cm</Width>
           <ZIndex>1</ZIndex>
@@ -1834,10 +1839,14 @@
           <DataField>Emissao</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="Filtro">
+          <DataField>Filtro</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>DataSetReports</rd:DataSetName>
-        <rd:SchemaPath>D:\GIT\Fly01.Apps\appfinanceiro\Fly01.Financeiro\Reports\DataSetReports.xsd</rd:SchemaPath>
+        <rd:SchemaPath>C:\git\Fly01.Apps\appfinanceiro\Fly01.Financeiro\Reports\DataSetReports.xsd</rd:SchemaPath>
         <rd:TableName>ContasCentroCusto</rd:TableName>
         <rd:TableAdapterFillMethod />
         <rd:TableAdapterGetDataMethod />

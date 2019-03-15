@@ -2437,6 +2437,8 @@ namespace Fly01.Financeiro.Reports {
             
             private global::System.Data.DataColumn columnEmissao;
             
+            private global::System.Data.DataColumn columnFiltro;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public ContasCentroCustoDataTable() {
@@ -2600,6 +2602,14 @@ namespace Fly01.Financeiro.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn FiltroColumn {
+                get {
+                    return this.columnFiltro;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -2651,7 +2661,8 @@ namespace Fly01.Financeiro.Reports {
                         string Categoria, 
                         string CondicaoParcelamento, 
                         string Parcela, 
-                        string Emissao) {
+                        string Emissao, 
+                        string Filtro) {
                 ContasCentroCustoRow rowContasCentroCustoRow = ((ContasCentroCustoRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Status,
@@ -2669,7 +2680,8 @@ namespace Fly01.Financeiro.Reports {
                         Categoria,
                         CondicaoParcelamento,
                         Parcela,
-                        Emissao};
+                        Emissao,
+                        Filtro};
                 rowContasCentroCustoRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowContasCentroCustoRow);
                 return rowContasCentroCustoRow;
@@ -2708,6 +2720,7 @@ namespace Fly01.Financeiro.Reports {
                 this.columnCondicaoParcelamento = base.Columns["CondicaoParcelamento"];
                 this.columnParcela = base.Columns["Parcela"];
                 this.columnEmissao = base.Columns["Emissao"];
+                this.columnFiltro = base.Columns["Filtro"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2745,6 +2758,8 @@ namespace Fly01.Financeiro.Reports {
                 base.Columns.Add(this.columnParcela);
                 this.columnEmissao = new global::System.Data.DataColumn("Emissao", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnEmissao);
+                this.columnFiltro = new global::System.Data.DataColumn("Filtro", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnFiltro);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -4768,6 +4783,22 @@ namespace Fly01.Financeiro.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string Filtro {
+                get {
+                    try {
+                        return ((string)(this[this.tableContasCentroCusto.FiltroColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Filtro\' in table \'ContasCentroCusto\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableContasCentroCusto.FiltroColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsStatusNull() {
                 return this.IsNull(this.tableContasCentroCusto.StatusColumn);
             }
@@ -4956,6 +4987,18 @@ namespace Fly01.Financeiro.Reports {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetEmissaoNull() {
                 this[this.tableContasCentroCusto.EmissaoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsFiltroNull() {
+                return this.IsNull(this.tableContasCentroCusto.FiltroColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetFiltroNull() {
+                this[this.tableContasCentroCusto.FiltroColumn] = global::System.Convert.DBNull;
             }
         }
         

@@ -22,6 +22,7 @@
             }
             else {
                 $($$$._.fly01dt.rows().$("tr")[indice]).removeClass('selected');
+                $($$$._.fly01dt.selected.splice(indice, 1));
             }
 
         }).on('deselect', function (e, dt, type, indexes) {

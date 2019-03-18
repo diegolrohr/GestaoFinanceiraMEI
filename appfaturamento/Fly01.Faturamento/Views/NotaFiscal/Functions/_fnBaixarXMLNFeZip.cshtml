@@ -4,14 +4,17 @@
         $.ajax({
             url: '@Url.Action("BaixarXMLs", "NotaFiscal")?idsXML=' + $$$._.fly01dt.selected.toString(),
             type: "GET"
-        })
-        .done(function (data) {
+        }).done(function (data) {
             $$$.loading.stop();
             if (data.message) {
                 $$$.fn.submitErrorHandler(null, data.message);
             } else {
                 location.href = data.downloadAddress;
             }
+
+            if (data.hasError) 
+                $$$.toast("Ocorreu um erro ao realizar o download de um ou mais arquivos", "error");
+            
         })
         .fail(function (jqxhr, textStatus, error) {
             var err = 'Ocorreu um erro na requisição: ' + textStatus + ", " + error;

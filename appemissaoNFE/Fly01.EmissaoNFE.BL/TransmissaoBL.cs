@@ -8,6 +8,7 @@ using Fly01.EmissaoNFE.Domain.ViewModel;
 using Fly01.EmissaoNFE.BL.Helpers;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core;
+using Fly01.Core.Helpers;
 
 namespace Fly01.EmissaoNFE.BL
 {
@@ -46,18 +47,6 @@ namespace Fly01.EmissaoNFE.BL
             var nota = new NFeVM();
             nota.InfoNFe = new InfoNFe();
 
-            item.NotaId = ChaveBL.GeraChave(
-                                    item.Identificador.CodigoUF.ToString(),
-                                    item.Identificador.Emissao.Year.ToString(),
-                                    item.Identificador.Emissao.Month.ToString(),
-                                    item.Emitente.Cnpj,
-                                    item.Identificador.ModeloDocumentoFiscal.ToString(),
-                                    item.Identificador.Serie.ToString(),
-                                    item.Identificador.NumeroDocumentoFiscal.ToString(),
-                                    ((int)item.Identificador.FormaEmissao).ToString(),
-                                    item.Identificador.CodigoNF.ToString()
-                                );
-
             nota.InfoNFe.NotaId = item.NotaId;
             nota.InfoNFe.Versao = item.Versao;
             nota.InfoNFe.Identificador = item.Identificador;
@@ -81,6 +70,8 @@ namespace Fly01.EmissaoNFE.BL
                 nota.InfoNFe.Autorizados = new List<Autorizados>();
                 nota.InfoNFe.Autorizados.Add(new Autorizados() { CNPJ = "13937073000156" });
             }
+
+            nota.InfoNFe.ResponsavelTecnico = item.ResposavelTecnico;
 
             return nota;
         }
@@ -178,6 +169,31 @@ namespace Fly01.EmissaoNFE.BL
                 _estadoBL = EstadoBL,
                 _nfeBL = NFeBL
             };
+        }
+
+        /// <summary>
+        /// Geração do hashCSRT
+        /// Os passos para a geração do “hashCSRT” estão descritos a seguir:
+        /// Passo 1: Concatenar o CSRT com a chave de acesso da NF-e/NFC-e que está sendo emitida.
+        /// Passo 2: Aplicar o algoritmo SHA-1 sobre o resultado da concatenação do passo 1, resultando em um string de 20 bytes hexadecimais.
+        /// Passo 3: Converter o resultado do passo anterior para Base64, resultando em uma string de 28 caracteres
+        /// Passo 4: Montar o grupo de identificação da empresa desenvolvedora do software (tag: infRespTec), com a tag “idCSRT” o identificador do CSRT 
+        /// utilizado para a geração do hash e a tag “hashCSRT” o resultado do passo 3
+        /// </summary>
+        /// <param name="entity">Nota Fiscal</param>
+        public void CalculaSHA1ResponsavelTecnico(TransmissaoVM entity)
+        {
+            foreach (var nota in entity.Item.Where(x => 
+                x.ResposavelTecnico != null &&
+                !string.IsNullOrEmpty(x.ResposavelTecnico.IdentificadorCodigoResponsavelTecnico) &&
+                !string.IsNullOrEmpty(x.ResposavelTecnico.CodigoResponsavelTecnico) &&
+                !string.IsNullOrEmpty(x.NotaId)
+            ))
+            {
+                var CSRTChave = string.Concat(nota.ResposavelTecnico?.CodigoResponsavelTecnico.ToUpper(), nota.NotaId.Replace("NFe", ""));
+                var SHA1 = SHA1Helper.CalculateSHA1(CSRTChave);
+                nota.ResposavelTecnico.HashCSRT = Base64Helper.CodificaBase64(SHA1);
+            }
         }
     }
 }

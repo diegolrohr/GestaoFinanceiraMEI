@@ -368,7 +368,8 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 Transporte = new Transporte()
                 {
                     ModalidadeFrete = NFe.TipoFrete,
-                }
+                },
+                ResposavelTecnico = ObterResponsavelTecnico()
             };
         }
 

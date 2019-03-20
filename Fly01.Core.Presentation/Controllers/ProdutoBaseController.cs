@@ -31,6 +31,7 @@ namespace Fly01.Core.Presentation.Controllers
             {
                 id = x.Id,
                 codigoProduto = x.CodigoProduto,
+                codigoBarras = x.CodigoBarras,
                 descricao = x.Descricao.Substring(0, x.Descricao.Length <= 60 ? x.Descricao.Length : 60),
                 grupoProdutoId = x.GrupoProdutoId,
                 grupoProduto_descricao = x.GrupoProduto != null ? x.GrupoProduto.Descricao : "",
@@ -113,6 +114,8 @@ namespace Fly01.Core.Presentation.Controllers
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoProduto))),
                 RenderFn = "fnRenderEnum(full.tipoProdutoCSS, full.tipoProdutoDescricao)"
             });
+
+            config.Columns.Add(new DataTableUIColumn { DataField = "codigoBarras", DisplayName = "Código Barras", Priority = 4 });
 
             cfg.Content.Add(config);
 

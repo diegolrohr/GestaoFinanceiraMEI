@@ -25,7 +25,7 @@ namespace Fly01.Faturamento.ViewModel
         public string TipoNotaFiscal { get; set; }
 
         [JsonProperty("tipoVenda")]
-        [APIEnum("TipoVenda")]
+        [APIEnum("TipoCompraVenda")]
         public string TipoVenda { get; set; }
 
         [JsonProperty("status")]

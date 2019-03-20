@@ -1,4 +1,5 @@
-﻿using Fly01.Core.ViewModels.Presentation.Commons;
+﻿using Fly01.Core.Helpers.Attribute;
+using Fly01.Core.ViewModels.Presentation.Commons;
 using Newtonsoft.Json;
 using System;
 
@@ -16,9 +17,11 @@ namespace Fly01.Compras.ViewModel
         public int Numero { get; set; }
 
         [JsonProperty("tipo")]
+        [APIEnum("TipoCompraVenda")]
         public string Tipo { get; set; }
 
         [JsonProperty("status")]
+        [APIEnum("Status")]
         public string Status { get; set; }
 
         [JsonProperty("atualizaDadosFornecedor")]
@@ -31,6 +34,7 @@ namespace Fly01.Compras.ViewModel
         public Guid? FornecedorId { get; set; }
 
         [JsonProperty("tipoFrete")]
+        [APIEnum("TipoFrete")]
         public string TipoFrete { get; set; }
 
         [JsonProperty("atualizaDadosTransportadora")]

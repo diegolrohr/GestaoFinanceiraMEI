@@ -91,7 +91,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         public InformacoesAdicionais InformacoesAdicionais { get; set; }
 
         [XmlElement(ElementName = "infRespTec")]
-        public ResposavelTecnico ResponsavelTecnico { get; set; }
+        public ResponsavelTecnico ResponsavelTecnico { get; set; }
 
         public bool ShouldSerializeResponsavelTecnico()
         {

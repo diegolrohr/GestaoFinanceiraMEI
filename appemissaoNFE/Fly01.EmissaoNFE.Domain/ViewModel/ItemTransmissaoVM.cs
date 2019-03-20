@@ -68,6 +68,6 @@ namespace Fly01.EmissaoNFE.Domain.ViewModel
         /// <summary>
         /// Responsável Técnico
         /// </summary>
-        public ResposavelTecnico ResposavelTecnico { get; set; }
+        public ResponsavelTecnico ResponsavelTecnico { get; set; }
     }
 }

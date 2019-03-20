@@ -39,7 +39,10 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                                     ((int)item.Identificador.FormaEmissao).ToString(),
                                     item.Identificador.CodigoNF.ToString()
                                 );
+                    item.ResponsavelTecnico = unitOfWork.ResponsavelTecnicoBL.RetornaResponsavel();                  
                 }
+
+                unitOfWork.ResponsavelTecnicoBL.CalculaSHA1ResponsavelTecnico(entity);
 
                 try
                 {

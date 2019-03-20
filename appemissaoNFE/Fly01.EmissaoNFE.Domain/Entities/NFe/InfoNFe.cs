@@ -89,5 +89,13 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         [JsonProperty("infAdic")]
         [XmlElement(ElementName = "infAdic")]
         public InformacoesAdicionais InformacoesAdicionais { get; set; }
+
+        [XmlElement(ElementName = "infRespTec")]
+        public ResponsavelTecnico ResponsavelTecnico { get; set; }
+
+        public bool ShouldSerializeResponsavelTecnico()
+        {
+            return (ResponsavelTecnico != null);
+        }
     }
 }

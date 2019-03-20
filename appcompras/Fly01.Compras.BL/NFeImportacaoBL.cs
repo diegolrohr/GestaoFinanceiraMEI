@@ -139,15 +139,30 @@ namespace Fly01.Compras.BL
 
         protected void TryGetFornecedorIdFromXml(NFeImportacao entity, string cnpj)
         {
-            var fornecedor = PessoaBL.All.FirstOrDefault(x => x.CPFCNPJ.ToUpper() == cnpj.ToUpper() && x.Fornecedor);
-            entity.FornecedorId = fornecedor?.Id;
+            var fornecedor = PessoaBL.All.FirstOrDefault(x => x.CPFCNPJ.ToUpper() == cnpj.ToUpper());
+            if(fornecedor != null)
+            {
+                //mesmo cnpj mas não estava com a flag do tipo marcado
+                //caso encontre.. já atualizamos para ser do tipo.. senão iria dar o erro de cadastro duplicado
+                fornecedor.Fornecedor = true;
+                PessoaBL.Update(fornecedor);
+                entity.FornecedorId = fornecedor?.Id;
+            }
+
             entity.NovoFornecedor = (fornecedor == null);
         }
 
         protected void TryGetTransportadoraIdFromXml(NFeImportacao entity, string cnpj)
         {
-            var transportadora = PessoaBL.All.FirstOrDefault(x => x.CPFCNPJ.ToUpper() == cnpj.ToUpper() && x.Transportadora);
-            entity.TransportadoraId = transportadora?.Id;
+            var transportadora = PessoaBL.All.FirstOrDefault(x => x.CPFCNPJ.ToUpper() == cnpj.ToUpper());
+            if(transportadora != null)
+            {
+                transportadora.Transportadora = true;
+                entity.TransportadoraId = transportadora?.Id;
+                PessoaBL.Update(transportadora);
+                Producer<Pessoa>.Send(transportadora.GetType().Name, AppUser, PlataformaUrl, transportadora, RabbitConfig.EnHttpVerb.PUT);
+            }
+
             entity.NovaTransportadora = (transportadora == null);
         }
 

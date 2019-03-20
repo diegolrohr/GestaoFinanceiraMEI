@@ -9,11 +9,6 @@ namespace Fly01.EmissaoNFE.BL
 {
     public class EmpresaBL : PlataformaBaseBL<EmpresaVM>
     {
-        private static string ERRO_MsgDigitoVerificadorInvalido = "1";
-        private static string ERRO_QtdDigitosInvalida = "2";
-        private static string ERRO_InscricaoInvalida = "3";
-        private static string ERRO_SiglaUFInvalida = "4";
-        private static string ERRO_SiglaRequerida = "5";
         private static string msgError;
 
         public EmpresaBL(AppDataContextBase context) : base(context)
@@ -238,7 +233,8 @@ namespace Fly01.EmissaoNFE.BL
 
         public bool ValidaEmail(string email)
         {
-            Regex mail = new Regex(@"^(?("")("".+?""@)|(([0-9a-zA-Z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-zA-Z])@))(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,6}))$");
+            //Regex mail = new Regex(@"^(?("")("".+?""@)|(([0-9a-zA-Z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-zA-Z])@))(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,6}))$");
+            Regex mail = new Regex(@"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$");
 
             if (mail.IsMatch(email))
                 return true;

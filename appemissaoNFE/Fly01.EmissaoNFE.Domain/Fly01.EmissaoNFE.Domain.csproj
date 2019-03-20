@@ -47,7 +47,7 @@
     <Compile Include="Entities\Eventos\DetalheEvento.cs" />
     <Compile Include="Entities\Eventos\Eventos.cs" />
     <Compile Include="Entities\Cofins.cs" />
-    <Compile Include="Entities\NFe\ResposavelTecnico.cs" />
+    <Compile Include="Entities\NFe\ResponsavelTecnico.cs" />
     <Compile Include="Entities\NFS\Assinatura.cs" />
     <Compile Include="Entities\NFS\Construcao.cs" />
     <Compile Include="Entities\NFS\Pagamentos.cs" />
@@ -57,6 +57,7 @@
     <Compile Include="Entities\Pis.cs" />
     <Compile Include="Entities\FcpSt.cs" />
     <Compile Include="Entities\Fcp.cs" />
+    <Compile Include="Entities\ResponsavelTecnico.cs" />
     <Compile Include="Entities\Siafi.cs" />
     <Compile Include="Entities\Ipi.cs" />
     <Compile Include="Entities\NFe\Autorizados.cs" />

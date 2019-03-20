@@ -1,37 +1,38 @@
-﻿using System.Xml.Serialization;
+﻿using Fly01.Core.Entities.Domains;
+using System.Xml.Serialization;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFe
 {
-    public class ResposavelTecnico
+    public class ResponsavelTecnico
     {
         /// <summary>
         /// informar o CNPJ da pessoa jurídica resposável técnica pelo sistema utilizado na emissão do documento fiscal eletrônico.
         /// </summary>
-        [XmlAttribute("CNPJ")]
+        [XmlElement("CNPJ")]
         public string CNPJ { get; set; }
 
         /// <summary>
         /// informar o nome da pessoa a ser contatada.
         /// </summary>
-        [XmlAttribute("xContato")]
+        [XmlElement("xContato")]
         public string Contato { get; set; }
 
         /// <summary>
         /// informar o e-mail da pessoa jurídica a ser contatada.
         /// </summary>
-        [XmlAttribute("email")]
+        [XmlElement("email")]
         public string Email { get; set; }
 
         /// <summary>
         /// informar o telefone da pessoa jurídica a ser contatada.
         /// </summary>
-        [XmlAttribute("fone")]
+        [XmlElement("fone")]
         public string Fone { get; set; }
 
         /// <summary>
         /// informar o identificador do código de segurança do responsável técnico
         /// </summary>
-        [XmlAttribute("idCSRT")]
+        [XmlElement("idCSRT")]
         public string IdentificadorCodigoResponsavelTecnico { get; set; }
 
         public bool ShouldSerializeIdentificadorCodigoResponsavelTecnico()
@@ -48,7 +49,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// <summary>
         /// Geração do hashCSRT
         /// </summary>
-        [XmlAttribute("hashCSRT")]
+        [XmlElement("hashCSRT")]
         public string HashCSRT { get; set; }
 
         public bool ShouldSerializeHashCSRT()

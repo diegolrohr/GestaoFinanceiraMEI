@@ -15,7 +15,6 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using EmissaoNFe = Fly01.EmissaoNFE.Domain.Entities.NFe;
-using ResponsavelTecnicoNFe = Fly01.EmissaoNFE.Domain.Entities.NFe.ResposavelTecnico;
 
 namespace Fly01.Faturamento.BL.Helpers.Factory
 {
@@ -368,8 +367,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 Transporte = new Transporte()
                 {
                     ModalidadeFrete = NFe.TipoFrete,
-                },
-                ResposavelTecnico = ObterResponsavelTecnico()
+                }
             };
         }
 
@@ -454,17 +452,6 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
             {
                 throw new BusinessException("Erro ao tentar obter as contas financeiras parcelas. " + ex.Message );
             }
-        }
-
-        public ResponsavelTecnicoNFe ObterResponsavelTecnico()
-        {
-            return new ResponsavelTecnicoNFe()
-            {
-                CNPJ = "53113791000122",
-                Contato = "Totvs S/A",
-                Email = "fly01@totvs.com.br",
-                Fone = "05121395399"
-            };
         }
     }
 }

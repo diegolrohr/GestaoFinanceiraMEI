@@ -89,6 +89,7 @@
     <Compile Include="IbptNcmBL.cs" />
     <Compile Include="MonitorNFSBL.cs" />
     <Compile Include="MonitorEventoBL.cs" />
+    <Compile Include="ResponsavelTecnicoBL.cs" />
     <Compile Include="SiafiBL.cs" />
     <Compile Include="TransmissaoBL.cs" />
     <Compile Include="MonitorBL.cs" />

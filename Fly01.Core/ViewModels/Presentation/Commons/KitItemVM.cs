@@ -19,6 +19,15 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [JsonProperty("servicoId")]
         public Guid? ServicoId { get; set; }
 
+        [JsonProperty("valorVenda")]
+        public double ValorVenda { get; set; }
+
+        [JsonProperty("valorCusto")]
+        public double ValorCusto { get; set; }
+
+        [JsonProperty("valorServico")]
+        public double ValorServico { get; set; }
+
         [JsonProperty("quantidade")]
         public double Quantidade { get; set; }
 

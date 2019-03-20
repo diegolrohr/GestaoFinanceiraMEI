@@ -68,7 +68,8 @@ namespace Fly01.Core.Presentation.Controllers
                     List = Url.Action("List")
                 },
                 ReadyFn = "fnFormReady",
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                Functions = new List<string>() { "fnDrawCallbackCalcProdutos" }
             };
 
             formConfigKit.Elements.Add(new InputHiddenUI { Id = "id" });
@@ -148,7 +149,11 @@ namespace Fly01.Core.Presentation.Controllers
                 {
                     OrderColumn = 0,
                     OrderDir = "asc"
-                }
+                },
+                Callbacks = new DataTableUICallbacks()
+                {
+                    DrawCallback = "fnDrawCallbackCalcProdutos"
+                },
             };
 
             dtConfig.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
@@ -170,7 +175,6 @@ namespace Fly01.Core.Presentation.Controllers
                 Searchable = false,
                 Orderable = false
             });
-
             #endregion
 
             #region Helpers
@@ -186,6 +190,17 @@ namespace Fly01.Core.Presentation.Controllers
 
             cfg.Content.Add(formConfigKit);
             cfg.Content.Add(formConfigKitItens);
+
+            cfg.Content.Add(new DivUI
+            {
+                Elements = new List<BaseUI>
+                {
+                    new LabelSetUI { Id = "valorVenda", Class = "col s4", Label = "" },
+                    new LabelSetUI { Id = "valorServico", Class = "col s4", Label = "" },
+                    new LabelSetUI { Id = "valorCusto", Class = "col s4", Label = "" }
+                }
+            });
+
             cfg.Content.Add(dtConfig);
 
             return cfg;

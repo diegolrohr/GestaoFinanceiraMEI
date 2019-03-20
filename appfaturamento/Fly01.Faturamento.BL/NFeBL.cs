@@ -5,6 +5,7 @@ using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Notifications;
 using Fly01.Core.Rest;
+using Fly01.Core.ServiceBus;
 using Fly01.EmissaoNFE.Domain.ViewModel;
 using Fly01.Faturamento.BL.Helpers.EntitiesBL;
 using Fly01.Faturamento.BL.Helpers.Factory;
@@ -136,6 +137,7 @@ namespace Fly01.Faturamento.BL
                     var serie = SerieNotaFiscalBL.All.Where(x => x.Id == entity.SerieNotaFiscalId).FirstOrDefault();
                     serie.NumNotaFiscal = proximoNumNota;
                     SerieNotaFiscalBL.Update(serie);
+                    Producer<SerieNotaFiscal>.Send(serie.GetType().Name, AppUser, PlataformaUrl, serie, RabbitConfig.EnHttpVerb.PUT);
                 };
             }
 

@@ -6,6 +6,7 @@ using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
 using Fly01.Core.Notifications;
 using Fly01.Core.Rest;
+using Fly01.Core.ServiceBus;
 using Fly01.EmissaoNFE.Domain.ViewModelNFS;
 using Fly01.Faturamento.BL.Helpers;
 using Fly01.Faturamento.BL.Helpers.EntitiesBL;
@@ -77,6 +78,7 @@ namespace Fly01.Faturamento.BL
             var serie = SerieNotaFiscalBL.All.Where(x => x.Id == entity.SerieNotaFiscalId).FirstOrDefault();
             serie.NumNotaFiscal = entity.NumNotaFiscal.Value + 1;
             SerieNotaFiscalBL.Update(serie);
+            Producer<SerieNotaFiscal>.Send(serie.GetType().Name, AppUser, PlataformaUrl, serie, RabbitConfig.EnHttpVerb.PUT);
         }
 
         private void ObterProximoNumeroValido(NFSe entity, SerieNotaFiscal serieNotaFiscal)

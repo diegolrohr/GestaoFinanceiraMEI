@@ -2,6 +2,7 @@
 using Fly01.Core.BL;
 using Fly01.Core.Entities.Domains.Commons;
 using Fly01.EmissaoNFE.Domain;
+using Fly01.EmissaoNFE.Domain.Entities;
 using Fly01.EmissaoNFE.Domain.Entities.NFe.IBPT;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
@@ -48,6 +49,6 @@ namespace Fly01.EmissaoNFE.DAL
         public DbSet<Cfop> Cfops { get; set; }
         public DbSet<IbptNcm> IbptNcms { get; set; }
         public DbSet<Siafi> Siafis { get; set; }
-
+        public DbSet<ResponsavelTecnico> ResponsavelTecnico { get; set; }
     }
 }

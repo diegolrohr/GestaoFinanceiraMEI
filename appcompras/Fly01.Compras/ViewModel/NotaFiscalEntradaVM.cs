@@ -22,7 +22,7 @@ namespace Fly01.Compras.ViewModel
         public string TipoNotaFiscal { get; set; }
 
         [JsonProperty("tipoCompra")]
-        [APIEnum("TipoVenda")]
+        [APIEnum("TipoCompraVenda")]
         public string TipoCompra { get; set; }
 
         [JsonProperty("status")]

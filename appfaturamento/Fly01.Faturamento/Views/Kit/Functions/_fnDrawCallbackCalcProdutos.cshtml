@@ -1,0 +1,19 @@
+﻿<script>
+    function fnDrawCallbackCalcProdutos() {
+        $(`#dtKitItens`).loading("stop");
+
+        let valorCusto = 0;
+        let valorServico = 0;
+        let valorVenda = 0;
+
+        $$$._.dtKitItens.data().each(function (value, index) {
+            valorVenda = valorVenda + value.valorVenda;
+            valorServico = valorServico + value.valorServico;
+            valorCusto = valorCusto + value.valorCusto;
+        });
+
+        $('#valorVenda')[0].innerHTML = `Total venda ${valorVenda}R$`;
+        $('#valorServico')[0].innerHTML = `Total serviço ${valorServico}R$`;
+        $('#valorCusto')[0].innerHTML = `Total custo ${valorCusto}R$`;
+    }
+</script>

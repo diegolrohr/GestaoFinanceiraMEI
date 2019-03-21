@@ -26,6 +26,24 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
 
                 unitOfWork.TransmissaoBL.MensagemCreditoICMS(entity);
 
+                foreach (var item in entity.Item)
+                {
+                    item.NotaId = unitOfWork.ChaveBL.GeraChave(
+                                    item.Identificador.CodigoUF.ToString(),
+                                    item.Identificador.Emissao.Year.ToString(),
+                                    item.Identificador.Emissao.Month.ToString(),
+                                    item.Emitente.Cnpj,
+                                    item.Identificador.ModeloDocumentoFiscal.ToString(),
+                                    item.Identificador.Serie.ToString(),
+                                    item.Identificador.NumeroDocumentoFiscal.ToString(),
+                                    ((int)item.Identificador.FormaEmissao).ToString(),
+                                    item.Identificador.CodigoNF.ToString()
+                                );
+                    item.ResponsavelTecnico = unitOfWork.ResponsavelTecnicoBL.RetornaResponsavel();                  
+                }
+
+                unitOfWork.ResponsavelTecnicoBL.CalculaSHA1ResponsavelTecnico(entity);
+
                 try
                 {
                     var retorno = (int)entity.EntidadeAmbiente == 2 ? Homologacao(entity, unitOfWork) : Producao(entity, unitOfWork);

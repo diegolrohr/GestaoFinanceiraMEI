@@ -208,8 +208,13 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
 
         private static void ValidarSomatorioBaseCalculoST(ItemTransmissaoVM item, TransmissaoVM entity)
         {
-            double? somatorioBCSTTrue = item.Detalhes.Where(x => (x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaSemPermissaoDeCreditoST || x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.Outros))
-                .Sum(e => e.Imposto.ICMS.ValorBCST ?? 0);
+            double? somatorioBCSTTrue = item.Detalhes.Where(x => x.Imposto.ICMS.CodigoSituacaoOperacao.HasFlag
+                (
+                    TipoTributacaoICMS.TributadaSemPermissaoDeCreditoST |
+                    TipoTributacaoICMS.Outros |
+                    TipoTributacaoICMS.TributadaComPermissaoDeCreditoST |
+                    TipoTributacaoICMS.IsencaoParaFaixaDeReceitaBrutaST
+                )).Sum(e => e.Imposto.ICMS.ValorBCST ?? 0);
             item.Total.ICMSTotal.SomatorioBCST = Arredondar(item.Total.ICMSTotal.SomatorioBCST, 2);
             somatorioBCSTTrue = Arredondar(somatorioBCSTTrue, 2);
 

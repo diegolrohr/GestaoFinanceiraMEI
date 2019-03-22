@@ -70,7 +70,9 @@ namespace Fly01.Estoque.BL
         {
             entity.Fail(entity.UnidadeMedidaId == null, UnidadeMedidaInvalida);
             entity.Fail(string.IsNullOrEmpty(entity.Descricao), DescricaoEmBranco);
-            entity.Fail(All.Where(x => x.Descricao == entity.Descricao).Any(x => x.Id != entity.Id), DescricaoDuplicada);
+            entity.Fail(
+                All.Any(x => x.Descricao.Trim().ToUpper() == entity.Descricao.Trim().ToUpper() && x.Id != entity.Id) ||
+                ContextAddedEntriesSelfType().Any(x => x.Descricao.Trim().ToUpper() == entity.Descricao.Trim().ToUpper() && x.Id != entity.Id), DescricaoDuplicada);
 
             if (!string.IsNullOrWhiteSpace(entity.CodigoProduto))
             {

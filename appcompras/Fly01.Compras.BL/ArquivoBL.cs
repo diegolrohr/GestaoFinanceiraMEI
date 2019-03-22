@@ -9,6 +9,7 @@ using Fly01.Core.Helpers;
 using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Compras.DAL;
+using System.Data.Entity;
 
 namespace Fly01.Compras.BL
 {
@@ -205,6 +206,7 @@ namespace Fly01.Compras.BL
 
             return retorno;
         }
+
         public void ImportaProduto(Arquivo arquivo)
         {
             try
@@ -272,59 +274,30 @@ namespace Fly01.Compras.BL
                             type), null);
                 }
             }
+
+            produto.ObjetoDeManutencao = ObjetoDeManutencao.Nao;
+            produto.TipoProduto = TipoProduto.ProdutoFinal;
+            produto.SaldoProduto = 0;
+
             return produto;
         }
 
         private void InsertProduto(Arquivo arquivo, int i, Produto produto)
         {
-            ValidaModel(produto);
-
-            if (IsValid(produto))
+            try
             {
                 ProdutoBL.Insert(produto);
                 insertedProdutos.Add(produto);
-                arquivo.Retorno += "Linha " + (i + 1).ToString().PadLeft(5, '0') + ";" + produto.Descricao + " cadastrado com sucesso\n";
+                arquivo.Retorno += "Linha " + (i + 1).ToString().PadLeft(5, '0') + ";" + produto.Descricao + " cadastrado com sucesso.\n";
             }
-            else
+            catch(Exception)
             {
                 var errors = produto.Notification.Errors.Select(e =>
                 {
                     return string.Format("Campo: {0}; Mensagem: {1}", e.DataField, e.Message);
                 }).FirstOrDefault();
                 arquivo.Retorno += "Linha " + (i + 1).ToString().PadLeft(5, '0') + ";" + errors + "\n";
-            }
+            }            
         }
-        public void ValidaModel(Produto produto)
-        {
-            produto.ObjetoDeManutencao = ObjetoDeManutencao.Nao;
-            produto.TipoProduto = TipoProduto.ProdutoFinal;
-            produto.SaldoProduto = 0;
-
-            if (produto.AbreviacaoUnidadeMedida != null)
-            {
-                var UnidadeMedida = UnidadeMedidaBL.All.Where(x => x.Abreviacao == produto.AbreviacaoUnidadeMedida).FirstOrDefault()?.Id;
-                produto.UnidadeMedidaId = UnidadeMedida;
-                produto.AbreviacaoUnidadeMedida = null;
-            }
-
-            produto.Fail(produto.UnidadeMedidaId == null, UnidadeMedidaInvalida);
-            produto.Fail(string.IsNullOrEmpty(produto.Descricao), DescricaoEmBranco);
-            produto.Fail(All.Where(x => x.Descricao == produto.Descricao).Any(x => x.Id != produto.Id), DescricaoDuplicada);
-            if (!string.IsNullOrWhiteSpace(produto.CodigoProduto))
-                produto.Fail(ProdutoBL.All.Where(x => x.CodigoProduto == produto.CodigoProduto).Any(x => x.Id != produto.Id), CodigoProdutoDuplicado);
-        }
-
-        public bool IsValid(Produto produto)
-        {
-            return !produto.Notification.HasErrors;
-        }
-
-        public static Error DescricaoEmBranco = new Error("Descrição não foi informada.", "descricao");
-        public static Error DescricaoDuplicada = new Error("Descrição já utilizada anteriormente.", "descricao");
-        public static Error UnidadeMedidaInvalida = new Error("Unidade de medida não foi encontrada ou informada.", "UnidadeDeMedida");
-        public static Error CodigoProdutoDuplicado = new Error("Código do produto já utilizado anteriormente.", "CodigoProduto");
-
-
-
     }
 }

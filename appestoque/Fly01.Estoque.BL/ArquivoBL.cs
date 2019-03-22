@@ -9,6 +9,7 @@ using Fly01.Core.BL;
 using Fly01.Core.Helpers;
 using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Entities.Domains.Enum;
+using System.Data.Entity;
 
 namespace Fly01.Estoque.BL
 {
@@ -180,7 +181,7 @@ namespace Fly01.Estoque.BL
 
             if (produto.AbreviacaoUnidadeMedida != null)
             {
-                var UnidadeMedida = UnidadeMedidaBL.All.Where(x => x.Abreviacao == produto.AbreviacaoUnidadeMedida).FirstOrDefault()?.Id;
+                var UnidadeMedida = UnidadeMedidaBL.All.AsNoTracking().Where(x => x.Abreviacao == produto.AbreviacaoUnidadeMedida).FirstOrDefault()?.Id;
                 produto.UnidadeMedidaId = UnidadeMedida;
                 produto.AbreviacaoUnidadeMedida = null;
             }

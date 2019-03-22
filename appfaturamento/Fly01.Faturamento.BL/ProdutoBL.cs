@@ -69,11 +69,16 @@ namespace Fly01.Faturamento.BL
         {
             entity.Fail(entity.UnidadeMedidaId == null, UnidadeMedidaInvalida);
             entity.Fail(string.IsNullOrEmpty(entity.Descricao), DescricaoEmBranco);
-            entity.Fail(All.Where(x => x.Descricao == entity.Descricao).Any(x => x.Id != entity.Id), DescricaoDuplicada);
-
+            entity.Fail(
+                All.Any(x => x.Descricao.Trim().ToUpper() == entity.Descricao.Trim().ToUpper() && x.Id != entity.Id) ||
+                ContextAddedEntriesSelfType().Any(x => x.Descricao.Trim().ToUpper() == entity.Descricao.Trim().ToUpper() && x.Id != entity.Id)
+            , DescricaoDuplicada);
             if (!string.IsNullOrWhiteSpace(entity.CodigoProduto))
             {
-                entity.Fail(All.Where(x => x.CodigoProduto == entity.CodigoProduto).Any(x => x.Id != entity.Id), CodigoProdutoDuplicado);
+                entity.Fail(
+                    All.Any(x => x.CodigoProduto.Trim().ToUpper() == entity.CodigoProduto.Trim().ToUpper() && x.Id != entity.Id) ||
+                    ContextAddedEntriesSelfType().Any(x => x.CodigoProduto.Trim().ToUpper() == entity.CodigoProduto.Trim().ToUpper() && x.Id != entity.Id)
+                , CodigoProdutoDuplicado);
             }
 
             base.ValidaModel(entity);

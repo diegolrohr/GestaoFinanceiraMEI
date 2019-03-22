@@ -9,7 +9,6 @@ using Fly01.Core.Helpers;
 using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Compras.DAL;
-using System.Data.Entity;
 
 namespace Fly01.Compras.BL
 {

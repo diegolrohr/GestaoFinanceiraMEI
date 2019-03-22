@@ -16,6 +16,7 @@ using Fly01.uiJS.Classes.Helpers;
 
 namespace Fly01.Estoque.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.EstoqueEstoqueRelatorios)]
     public class RelatorioProdutoController : BaseController<ProdutoVM>
     {
         private string GrupoProdutoResourceHash { get; set; }
@@ -103,7 +104,6 @@ namespace Fly01.Estoque.Controllers
                 Label = "NCM",
                 DataUrl = @Url.Action("Ncm", "AutoComplete"),
                 LabelId = "ncmDescricao",
-                //DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeNCM" } }
             });
             config.Elements.Add(new AutoCompleteUI()
             {

@@ -4,24 +4,48 @@ using Fly01.EmissaoNFE.Domain.Entities;
 using ResponsavelTecnicoXML = Fly01.EmissaoNFE.Domain.Entities.NFe.ResponsavelTecnico;
 using Fly01.EmissaoNFE.Domain.ViewModel;
 using Fly01.Core.Helpers;
+using Fly01.Core.Entities.Domains.Enum;
+using System;
 
 namespace Fly01.EmissaoNFE.BL
 {
     public class ResponsavelTecnicoBL : DomainBaseBL<ResponsavelTecnico>
     {
-        public ResponsavelTecnicoBL(AppDataContextBase context) : base(context){}
+        public ResponsavelTecnicoBL(AppDataContextBase context) : base(context) { }
 
-        public ResponsavelTecnicoXML RetornaResponsavel()
+        /// <summary>
+        /// As regras de validação ZD01-10 e ZD02-10 (identificação do responsável técnico), ficarão para implementação futura, 
+        /// exceto para as UF: AL(27), AM(13), MS(50), PE(26), PR(41), SC(42) e TO(17), que manterão a data de 07/05/2019(Produção) 25/02/2019(Homologação)
+        /// </summary>
+        public void TagResponsavelTecnico(ItemTransmissaoVM nota, TipoAmbiente tipoAmbiente)
         {
-            return All.Select(x => new ResponsavelTecnicoXML()
+            var isUF = ("27,13,50,26,41,42,17").Contains(nota.Identificador.CodigoUF.ToString());
+            var dataHomologacao = new DateTime(2019, 02, 25);
+            var dataProducao = new DateTime(2019, 05, 07);
+
+            if (
+                isUF &&
+                (tipoAmbiente == TipoAmbiente.Homologacao && nota.Identificador.Emissao.Date >= dataHomologacao.Date) ||
+                (tipoAmbiente == TipoAmbiente.Producao && nota.Identificador.Emissao.Date >= dataProducao.Date)
+            )
             {
-                CNPJ = x.CNPJ,
-                Contato = x.Contato,
-                Email = x.Email,
-                Fone = x.Fone,
-                CodigoResponsavelTecnico = x.CodigoResponsavelTecnico,
-                IdentificadorCodigoResponsavelTecnico = x.IdentificadorCodigoResponsavelTecnico
-            }).FirstOrDefault();              
+                var responsavelTecnico = All.Select(x => new ResponsavelTecnicoXML()
+                {
+                    CNPJ = x.CNPJ,
+                    Contato = x.Contato,
+                    Email = x.Email,
+                    Fone = x.Fone,
+                    CodigoResponsavelTecnico = x.CodigoResponsavelTecnico,
+                    IdentificadorCodigoResponsavelTecnico = x.IdentificadorCodigoResponsavelTecnico
+                }).FirstOrDefault();
+
+                CalculaSHA1ResponsavelTecnico(responsavelTecnico, nota.NotaId);
+                nota.ResponsavelTecnico = responsavelTecnico;
+            }
+            else
+            {
+                nota.ResponsavelTecnico = null;
+            }
         }
 
         /// <summary>
@@ -34,18 +58,13 @@ namespace Fly01.EmissaoNFE.BL
         /// utilizado para a geração do hash e a tag “hashCSRT” o resultado do passo 3
         /// </summary>
         /// <param name="entity">Nota Fiscal</param>
-        public void CalculaSHA1ResponsavelTecnico(TransmissaoVM entity)
+        private void CalculaSHA1ResponsavelTecnico(ResponsavelTecnicoXML responsavelTecnico, string notaId)
         {
-            foreach (var nota in entity.Item.Where(x =>
-                x.ResponsavelTecnico != null &&
-                !string.IsNullOrEmpty(x.ResponsavelTecnico.IdentificadorCodigoResponsavelTecnico) &&
-                !string.IsNullOrEmpty(x.ResponsavelTecnico.CodigoResponsavelTecnico) &&
-                !string.IsNullOrEmpty(x.NotaId)
-            ))
+            if (!string.IsNullOrEmpty(responsavelTecnico.CodigoResponsavelTecnico) && !string.IsNullOrEmpty(responsavelTecnico.IdentificadorCodigoResponsavelTecnico) && !string.IsNullOrEmpty(notaId))
             {
-                var CSRTChave = string.Concat(nota.ResponsavelTecnico?.CodigoResponsavelTecnico.ToUpper(), nota.NotaId.Replace("NFe", ""));
+                var CSRTChave = string.Concat(responsavelTecnico.CodigoResponsavelTecnico.ToUpper(), notaId.Replace("NFe", ""));
                 var SHA1 = SHA1Helper.CalculateSHA1(CSRTChave);
-                nota.ResponsavelTecnico.HashCSRT = Base64Helper.CodificaBase64(SHA1);
+                responsavelTecnico.HashCSRT = Base64Helper.CodificaBase64(SHA1);
             }
         }
     }

@@ -29,6 +29,7 @@ namespace Fly01.OrdemServico.DAL.Migrations
             //new CestDataInitializer().Initialize(context);
             //new EnquadramentoLegalIPIDataInitializer().Initialize(context);
             //new ISSDataInitializer().Initialize(context);
+            new NewCestDataInitializer().Initialize(context);
         }
     }
 }

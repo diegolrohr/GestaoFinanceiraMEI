@@ -36,9 +36,9 @@ namespace Fly01.Core.Presentation.Controllers
                 tipoItemDescription = EnumHelper.GetDescription(typeof(TipoItem), x.TipoItem),
                 tipoItemCssClass = EnumHelper.GetCSS(typeof(TipoItem), x.TipoItem),
                 tipoItemValue = EnumHelper.GetValue(typeof(TipoItem), x.TipoItem),
-                valorVenda = x.Produto?.ValorVenda,
-                valorCusto = x.Produto?.ValorCusto,
-                valorServico = x.Servico?.ValorServico
+                valorVenda = x.Produto?.ValorVenda.ToString("N", AppDefaults.CultureInfoDefault),
+                valorCusto = x.Produto?.ValorCusto.ToString("N", AppDefaults.CultureInfoDefault),
+                valorServico = x.Servico?.ValorServico.ToString("N", AppDefaults.CultureInfoDefault)
             };
         }
 

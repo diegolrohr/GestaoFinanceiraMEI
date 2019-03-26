@@ -12,8 +12,21 @@
             valorCusto = valorCusto + value.valorCusto;
         });
 
-        $('#valorVenda')[0].innerHTML = `Total venda ${valorVenda}R$`;
-        $('#valorServico')[0].innerHTML = `Total serviço ${valorServico}R$`;
-        $('#valorCusto')[0].innerHTML = `Total custo ${valorCusto}R$`;
+        $('#valorVendaTotal').val(valorVenda);
+        $('#valorServicoTotal').val(valorServico);
+        $('#valorCustoTotal').val(valorCusto);
+
+
+        $('#valorCustoTotal').on('click', function () {
+            $("label[for='valorCustoTotal']").removeClass("truncate active");
+        });
+
+        $('#valorServicoTotal').on('click', function () {
+            $("label[for='valorServicoTotal']").removeClass("truncate active");
+        });
+
+        $('#valorVendaTotal').on('click', function () {
+            $("label[for='valorVendaTotal']").removeClass("truncate active");
+        });
     }
 </script>

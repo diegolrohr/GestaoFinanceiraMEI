@@ -175,6 +175,11 @@ namespace Fly01.Core.Presentation.Controllers
                 Searchable = false,
                 Orderable = false
             });
+
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "valorVenda", DisplayName = "Valor Venda", Priority = 5, Searchable = false, Orderable = false});
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "valorCusto", DisplayName = "Valor custo", Priority = 6, Searchable = false, Orderable = false});
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "valorServico", DisplayName = "Valor Serviço", Priority = 7, Searchable = false, Orderable = false});
+
             #endregion
 
             #region Helpers
@@ -195,9 +200,9 @@ namespace Fly01.Core.Presentation.Controllers
             {
                 Elements = new List<BaseUI>
                 {
-                    new LabelSetUI { Id = "valorVenda", Class = "col s4", Label = "" },
-                    new LabelSetUI { Id = "valorServico", Class = "col s4", Label = "" },
-                    new LabelSetUI { Id = "valorCusto", Class = "col s4", Label = "" }
+                    new InputCurrencyUI { Id = "valorCustoTotal", Class = "col s12 m4", Label = "Total Custo Produto", Readonly = true },
+                    new InputCurrencyUI { Id = "valorVendaTotal", Class = "col s12 m4", Label = "Total Venda Produto", Readonly = true },
+                    new InputCurrencyUI { Id = "valorServicoTotal", Class = "col s12 m4", Label = "Total Serviço", Readonly = true },
                 }
             });
 

@@ -1,6 +1,7 @@
 ﻿using Fly01.Core.Entities.Domains;
 using Fly01.Core.Notifications;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
@@ -14,6 +15,18 @@ namespace Fly01.Core.BL
         public DomainBaseBL(DbContext context)
         {
             repository = new GenericRepository<TEntity>(context);
+        }
+
+        protected IEnumerable<TEntity> ContextAddedEntriesSelfType()
+        {
+            return repository.GetAffectEntries().Where(x => x.State == EntityState.Added && x.Entity.GetType().Name == typeof(TEntity).Name)
+                                            .Select(x => x.Entity as TEntity);            
+        }
+
+        protected IEnumerable<TEntity> ContextModifiedEntriesSelfType()
+        {
+            return repository.GetAffectEntries().Where(x => x.State == EntityState.Modified && x.Entity.GetType().Name == typeof(TEntity).Name)
+                                            .Select(x => x.Entity as TEntity);
         }
 
         public virtual IQueryable<TEntity> All => repository.All;

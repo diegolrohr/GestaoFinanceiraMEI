@@ -2,6 +2,8 @@
     function fnImportarProdutoFormReady() {
         $$$._.cardDuvidas.info("Se preferir você pode baixar um arquivo modelo de importação.<br /><br />" +
                                  "Dicas:<br />" +
+                                 "Não é permitido descrição de produto repetida.<br />" +
+                                 "Importe até 100 registros por arquivo, para facilitar o controle de possíveis erros.<br />" +
                                  "Você deve editar o modelo com o Notepad++ ou com o bloco de notas.<br />" +
                                  "Os dados contidos no arquivo são apenas exemplos, é preciso alterar o preenchimento com informações válidas.<br />" +
                                  "");
@@ -15,9 +17,9 @@
     }
 
     function fnBaixarModelo() {
-        var documentoHelper = '"Descricao","CodigoProduto","CodigoBarras","AbreviacaoUnidadeMedida","SaldoMinimo","ValorCusto","ValorVenda","Observacao"\n';
-        documentoHelper += '"Produto A","123","SEM GTIM","UN","10","50","10","Observação Produto A"\n';
-        documentoHelper += '"Produto B","321","SEM GTIM","UN","10","50","10","Observação Produto B"\n';
+        var documentoHelper = '\"Descricao","CodigoProduto","CodigoBarras","AbreviacaoUnidadeMedida","SaldoMinimo","ValorCusto","ValorVenda","Observacao"\n';
+        documentoHelper += '\"Produto A","123","SEM GTIM","UN","10","50","10","Observação Produto A"\n';
+        documentoHelper += '\"Produto B","321","SEM GTIM","UN","10","50","10","Observação Produto B"\n';
 
 
         var blob = new Blob([documentoHelper], { type: 'text/csv;charset=utf-8;' });

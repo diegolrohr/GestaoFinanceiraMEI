@@ -177,9 +177,6 @@ namespace Fly01.Compras.API.Controllers.Api
                 var hasTagTransportadora = (NFe != null && NFe.InfoNFe != null && NFe.InfoNFe.Transporte != null && NFe.InfoNFe.Transporte.Transportadora != null && NFe.InfoNFe.Transporte.Transportadora?.RazaoSocial != null);
                 if (hasTagTransportadora)
                 {
-                    var ufTransp = NFe.InfoNFe.Transporte?.Transportadora?.UF;
-                    var estadoTransp = UnitOfWork.EstadoBL.All.FirstOrDefault(x => x.Sigla == ufTransp);
-
                     if (entity.NovaTransportadora && entity.TipoFrete != TipoFrete.SemFrete)
                     {
                         entity.TransportadoraId = Guid.NewGuid();
@@ -191,7 +188,6 @@ namespace Fly01.Compras.API.Controllers.Api
                             Nome = NFe.InfoNFe.Transporte?.Transportadora?.RazaoSocial,
                             InscricaoEstadual = NFe.InfoNFe.Transporte?.Transportadora?.IE,
                             Endereco = NFe.InfoNFe.Transporte?.Transportadora?.Endereco,
-                            EstadoId = estadoTransp?.Id,
                             Transportadora = true
                         };
                         UnitOfWork.PessoaBL.Insert(transportadora);
@@ -207,8 +203,7 @@ namespace Fly01.Compras.API.Controllers.Api
                             transportadora.CPFCNPJ = NFe.InfoNFe.Transporte?.Transportadora?.CNPJ != null ? NFe.InfoNFe.Transporte?.Transportadora?.CNPJ : NFe.InfoNFe.Transporte?.Transportadora?.CNPJ != null ? NFe.InfoNFe.Transporte?.Transportadora?.CNPJ : null;
                             transportadora.Nome = NFe.InfoNFe.Transporte?.Transportadora?.RazaoSocial;
                             transportadora.InscricaoEstadual = NFe.InfoNFe.Transporte?.Transportadora?.IE;
-                            transportadora.Endereco = NFe.InfoNFe.Transporte?.Transportadora?.Endereco;
-                            transportadora.EstadoId = estadoTransp?.Id;
+                            transportadora.Endereco = NFe.InfoNFe.Transporte?.Transportadora?.Endereco;                            
                             transportadora.Transportadora = true;
 
                             UnitOfWork.PessoaBL.Update(transportadora);

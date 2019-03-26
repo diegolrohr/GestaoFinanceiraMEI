@@ -51,8 +51,12 @@ namespace Fly01.OrdemServico.BL
         {
             if (!string.IsNullOrWhiteSpace(entity.CPFCNPJ.ToString()))
             {
-                entity.Fail(All.Any(x => x.CPFCNPJ.ToUpper() == entity.CPFCNPJ.ToUpper() && x.Id != entity.Id),
-                    new Error("O CPF/CNPJ informado já foi utilizado em outro cadastro.", "cpfcnpj", All.FirstOrDefault(x => x.CPFCNPJ.ToUpper() == entity.CPFCNPJ.ToUpper() && x.Id != entity.Id)?.Id.ToString()));
+                var pessoa = All.AsNoTracking().FirstOrDefault(x => x.CPFCNPJ.Trim().ToUpper() == entity.CPFCNPJ.Trim().ToUpper() && x.Id != entity.Id);
+                if (pessoa == null)
+                {
+                    pessoa = ContextAddedEntriesSelfType().FirstOrDefault(x => x.CPFCNPJ.Trim().ToUpper() == entity.CPFCNPJ.Trim().ToUpper() && x.Id != entity.Id);
+                }
+                entity.Fail(pessoa != null, new Error("O CPF/CNPJ informado já foi utilizado em outro cadastro.", "cpfcnpj", pessoa?.Id.ToString()));
             }
         }
 

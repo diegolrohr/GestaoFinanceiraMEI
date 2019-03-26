@@ -30,6 +30,8 @@ namespace Fly01.Faturamento.DAL.Migrations
             //new NBSDataInitializer().Initialize(context);
             //new CestDataInitializer().Initialize(context);
             //new EnquadramentoLegalIPIDataInitializer().Initialize(context);
+            new NewCestDataInitializer().Initialize(context);
+
         }
     }
 }

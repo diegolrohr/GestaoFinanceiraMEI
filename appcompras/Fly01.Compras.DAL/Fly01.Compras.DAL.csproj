@@ -376,6 +376,7 @@
     <Compile Include="Migrations\DataInitializer\NBSDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\NCMDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
+    <Compile Include="Migrations\DataInitializer\NewCestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\UnidadeMedidaDataInitializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

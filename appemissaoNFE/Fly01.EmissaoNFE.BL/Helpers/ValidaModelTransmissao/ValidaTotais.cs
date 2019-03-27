@@ -20,22 +20,22 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
                     entity.Fail(true, new Error("Os dados de ICMSTotal são obrigatórios", "Item.Total.ICMSTotal"));
                 else
                 {
-                    ValidarSomatorioBaseCalculo(item, entity);
-                    ValidarSomatorioICMS(item, entity);
-                    ValidarSomatorioBaseCalculoST(item, entity);
-                    ValidarSomatorioICMSST(item, entity);
-                    ValidarSomatorioProdutos(item, entity);
-                    ValidarValorFrete(item, entity);
-                    ValidarValorSeguro(item, entity);
-                    ValidarSomatorioDesconto(item, entity);
-                    ValidarSOmatorioImpostoImportacao(item, entity);
-                    ValidarSomatorioIPI(item, entity);
-                    ValidarSomatorioIPIDevolucao(item, entity);
-                    ValidarSomatorioPIS(item, entity);
-                    ValidarSomatorioConfins(item, entity);
-                    ValidarSomatorioOutros(item, entity);
-                    ValidarSomatorioFCPST(item, entity);
-                    ValidarSOmatorioFCPRetido(item, entity);
+                    //ValidarSomatorioBaseCalculo(item, entity);
+                    //ValidarSomatorioICMS(item, entity);
+                    //ValidarSomatorioBaseCalculoST(item, entity);
+                    //ValidarSomatorioICMSST(item, entity);
+                    //ValidarSomatorioProdutos(item, entity);
+                    //ValidarValorFrete(item, entity);
+                    //ValidarValorSeguro(item, entity);
+                    //ValidarSomatorioDesconto(item, entity);
+                    //ValidarSOmatorioImpostoImportacao(item, entity);
+                    //ValidarSomatorioIPI(item, entity);
+                    //ValidarSomatorioIPIDevolucao(item, entity);
+                    //ValidarSomatorioPIS(item, entity);
+                    //ValidarSomatorioConfins(item, entity);
+                    //ValidarSomatorioOutros(item, entity);
+                    //ValidarSomatorioFCPST(item, entity);
+                    //ValidarSOmatorioFCPRetido(item, entity);
                     ValidarValorTotalNF(item, entity);
                 }
             }

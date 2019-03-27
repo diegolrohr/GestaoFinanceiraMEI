@@ -200,8 +200,8 @@ namespace Fly01.Core.Presentation.Controllers
             {
                 Elements = new List<BaseUI>
                 {
-                    new InputCurrencyUI { Id = "valorCustoTotal", Class = "col s12 m4", Label = "Total Custo Produto", Readonly = true },
                     new InputCurrencyUI { Id = "valorVendaTotal", Class = "col s12 m4", Label = "Total Venda Produto", Readonly = true },
+                    new InputCurrencyUI { Id = "valorCustoTotal", Class = "col s12 m4", Label = "Total Custo Produto", Readonly = true },
                     new InputCurrencyUI { Id = "valorServicoTotal", Class = "col s12 m4", Label = "Total Serviço", Readonly = true },
                 }
             });

@@ -85,8 +85,8 @@ namespace Fly01.Faturamento.BL
                 var hasEstoqueNegativo = VerificaEstoqueNegativo(entity.Id, entity.TipoVenda.ToString(), entity.TipoNfeComplementar.ToString(), entity.NFeRefComplementarIsDevolucao).Any();
 
                 bool pagaFrete = (
-                    ((entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente) && entity.TipoVenda == TipoCompraVenda.Normal) ||
-                    ((entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario) && entity.TipoVenda == TipoCompraVenda.Devolucao)
+                    ((entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente) && entity.TipoVenda == TipoCompraVenda.Normal) //||
+                    //((entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario) && entity.TipoVenda == TipoCompraVenda.Devolucao)
                 );
                 entity.Fail(pagaFrete && (entity.TransportadoraId == null || entity.TransportadoraId == default(Guid)), new Error("Se configurou o frete por conta da sua empresa, informe a transportadora"));
 

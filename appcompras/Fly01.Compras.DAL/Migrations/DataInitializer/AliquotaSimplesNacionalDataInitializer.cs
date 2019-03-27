@@ -11,7 +11,7 @@ namespace Fly01.Compras.DAL.Migrations.DataInitializer
 {
     public class AliquotaSimplesNacionalDataInitializer : IDataInitializer
     {
-        public async Task Initialize(AppDataContext context)
+        public void Initialize(AppDataContext context)
         {
             var needUpdateAliquotas = false;
 
@@ -21,12 +21,11 @@ namespace Fly01.Compras.DAL.Migrations.DataInitializer
                     #region Anexo I
                     new AliquotaSimplesNacional() { TipoEnquadramentoEmpresa = TipoEnquadramentoEmpresa.Anexo1,  Id = Guid.Parse(""), DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true },
                     #endregion
-
                 };
 
                 context.AliquotasSimplesNacional.AddOrUpdate(x => x.Id, lista.ToArray());
 
-                await context.SaveChanges();
+                context.SaveChanges();
             };
         }
     }

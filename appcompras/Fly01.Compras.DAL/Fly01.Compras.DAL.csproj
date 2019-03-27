@@ -359,7 +359,6 @@
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer3.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer2.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
-    <Compile Include="Migrations\DataInitializer\Contract\IDataInitializer.cs" />
     <Compile Include="Migrations\201801111229546_InitialCreate.cs" />
     <Compile Include="Migrations\201801111229546_InitialCreate.Designer.cs">
       <DependentUpon>201801111229546_InitialCreate.cs</DependentUpon>
@@ -370,6 +369,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CFOPDataInitializer.cs" />
+    <Compile Include="Migrations\DataInitializer\Contract\IDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\EnquadramentoLegalIPIDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\EstadoDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\ISSDataInitializer.cs" />

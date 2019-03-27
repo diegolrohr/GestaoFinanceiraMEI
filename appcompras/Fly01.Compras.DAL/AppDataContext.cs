@@ -118,5 +118,6 @@ namespace Fly01.Compras.DAL
         public DbSet<NFeImportacaoProduto> NFeImportacaoProdutos { get; set; }
         public DbSet<NFeImportacaoCobranca> NFeImportacaoCobrancas { get; set; }
         public DbSet<CentroCusto> CentroCustos { get; set; }
+        public DbSet<AliquotaSimplesNacional> AliquotasSimplesNacional { get; set; }
     }
 }

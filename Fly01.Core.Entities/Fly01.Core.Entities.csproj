@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Domains\Commons\AjusteManual.cs" />
+    <Compile Include="Domains\Commons\AliquotaSimplesNacional.cs" />
     <Compile Include="Domains\Commons\KitItem.cs" />
     <Compile Include="Domains\Commons\Kit.cs" />
     <Compile Include="Domains\Commons\Ncm.cs" />

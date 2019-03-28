@@ -187,7 +187,7 @@ namespace Fly01.Compras.API.Controllers.Api
                         var transportadora = new Pessoa()
                         {
                             Id = entity.TransportadoraId.Value,
-                            TipoDocumento = NFe.InfoNFe.Transporte?.Transportadora?.CNPJ.Length == 14 ? "J" : "F",
+                            TipoDocumento = NFe.InfoNFe.Transporte?.Transportadora?.CNPJ?.Length == 14 ? "J" : "F",
                             CPFCNPJ = NFe.InfoNFe.Transporte?.Transportadora?.CNPJ != null ? NFe.InfoNFe.Transporte?.Transportadora?.CNPJ : NFe.InfoNFe.Transporte?.Transportadora?.CNPJ != null ? NFe.InfoNFe.Transporte?.Transportadora?.CNPJ : null,
                             Nome = NFe.InfoNFe.Transporte?.Transportadora?.RazaoSocial,
                             InscricaoEstadual = NFe.InfoNFe.Transporte?.Transportadora?.IE,

@@ -37,7 +37,7 @@ namespace Fly01.EmissaoNFE.BL
             var valorBase = entity.SubstituicaoTributaria.IpiNaBase ? entity.ValorBase + entity.Ipi.Valor : entity.ValorBase;
             valorBase += entity.SubstituicaoTributaria.DespesaNaBase ? entity.ValorDespesa : 0;
             valorBase += entity.SubstituicaoTributaria.FreteNaBase ? entity.ValorFrete : 0;
-
+            //TODO: Wilson
             return valorBase;
         }
 

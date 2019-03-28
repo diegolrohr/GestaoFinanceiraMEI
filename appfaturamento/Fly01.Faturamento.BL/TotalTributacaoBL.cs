@@ -449,6 +449,7 @@ namespace Fly01.Faturamento.BL
                     { "PlataformaUrl", PlataformaUrl }
                 };
 
+            //TODO: Wilson
             //bool empresaPagaFrete = (
             //    ((tipoFrete == TipoFrete.CIF || tipoFrete == TipoFrete.Remetente) && tipoVenda == TipoCompraVenda.Normal) ||
             //    ((tipoFrete == TipoFrete.FOB || tipoFrete == TipoFrete.Destinatario) && tipoVenda == TipoCompraVenda.Devolucao)

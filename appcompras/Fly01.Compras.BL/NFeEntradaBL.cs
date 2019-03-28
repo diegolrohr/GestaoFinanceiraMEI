@@ -728,7 +728,7 @@ namespace Fly01.Compras.BL
             var totalImpostosProdutos = nfe.TotalImpostosProdutos;
             var totalImpostosProdutosNaoAgrega = nfe.TotalImpostosProdutosNaoAgrega;
             bool somaFrete = (
-                (nfe.TipoFrete == TipoFrete.FOB || nfe.TipoFrete == TipoFrete.Destinatario)
+                (nfe.TipoFrete == TipoFrete.CIF || nfe.TipoFrete == TipoFrete.Remetente)
             );
 
             var result = new TotalPedidoNotaFiscal()

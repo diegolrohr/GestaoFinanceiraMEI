@@ -18,7 +18,7 @@
         var tipoFrete = $('select#tipoFrete').val();
         var tipoCompra = $('#tipoCompra').val();
         var somaFrete = (
-                (tipoFrete == "FOB" || tipoFrete == "Destinatario")
+                (tipoFrete == "CIF" || tipoFrete == "Remetente")
             );
 
         if (somaFrete) {

@@ -76,8 +76,9 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
 
                 var detalhe = ObterDetalhe(item, num);
                 //TODO: Wilson
-                //detalhe.Produto.ValorFrete = SomaFrete() ? Math.Round(itemTributacao.FreteValorFracionado, 2) : 0;
-                detalhe.Produto.ValorFrete = Math.Round(itemTributacao.FreteValorFracionado, 2);
+                //Rejeição: Total do Frete difere do somatório dos itens
+                //colocando no total, mas não somando ai dava o erro que o total também era diferente dos valores informados
+                detalhe.Produto.ValorFrete = SomaFrete() ? Math.Round(itemTributacao.FreteValorFracionado, 2) : 0;
 
                 detalhe.Imposto.ICMS = ObterICMS(item, itemTributacao);
                 detalhe.Imposto.IPI = ObterIPI(item, itemTributacao);

@@ -76,7 +76,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 itemTributacao = TransmissaoBLs.NotaFiscalItemTributacaoBL.All.Where(x => x.NotaFiscalItemId == item.Id).FirstOrDefault();
 
                 var detalhe = ObterDetalhe(item, num);
-                detalhe.Produto.ValorFrete = Math.Round(itemTributacao.FreteValorFracionado, 2);
+                detalhe.Produto.ValorFrete = SomaFrete() ? Math.Round(itemTributacao.FreteValorFracionado, 2) : 0.0;
 
                 detalhe.Imposto.ICMS = ObterICMS(item, itemTributacao);
                 detalhe.Imposto.IPI = ObterIPI(item, itemTributacao);

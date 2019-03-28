@@ -319,8 +319,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                     SomatorioICMSST = detalhes.Select(x => x.Imposto.ICMS).Any(x => x != null && x.ValorICMSST.HasValue && CSTsICMSST.Contains(((int)x.CodigoSituacaoOperacao).ToString()))
                         ? Math.Round(detalhes.Where(x => x.Imposto.ICMS != null && x.Imposto.ICMS.ValorICMSST.HasValue && CSTsICMSST.Contains(((int)x.Imposto.ICMS.CodigoSituacaoOperacao).ToString())).Sum(x => x.Imposto.ICMS.ValorICMSST.Value), 2) : 0,
                     //TODO: Wilson
-                    //ValorFrete = SomaFrete() ? detalhes.Sum(x => x.Produto.ValorFrete.Value) : 0,
-                    ValorFrete = detalhes.Sum(x => x.Produto.ValorFrete.Value),
+                    ValorFrete = SomaFrete() ? detalhes.Sum(x => x.Produto.ValorFrete.Value) : 0,
                     ValorSeguro = 0,
                     SomatorioIPI = detalhes.Select(x => x.Imposto.IPI).Any(x => x != null) ? Math.Round(detalhes.Where(x => x.Imposto.IPI != null).Sum(x => x.Imposto.IPI.ValorIPI), 2) : 0,
                     SomatorioIPIDevolucao = detalhes.Select(x => x.Imposto.IPI).Any(x => x != null) ? Math.Round(detalhes.Where(x => x.Imposto.IPI != null).Sum(x => x.Imposto.IPI.ValorIPIDevolucao), 2) : 0,

@@ -30,7 +30,7 @@ namespace Fly01.Faturamento.ViewModel
         public string TipoVenda { get; set; }
 
         [JsonProperty("status")]
-        [APIEnum("StatusOrdemVenda")]
+        [APIEnum("Status")]
         public string Status { get; set; }
 
         [JsonProperty("data")]

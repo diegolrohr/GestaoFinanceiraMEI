@@ -187,10 +187,9 @@ namespace Fly01.Compras.API.Controllers.Api
                         var transportadora = new Pessoa()
                         {
                             Id = entity.TransportadoraId.Value,
-                            TipoDocumento = NFe.InfoNFe.Transporte?.Transportadora?.CNPJ.Length == 14 ? "J" : "F",
+                            TipoDocumento = NFe.InfoNFe.Transporte?.Transportadora?.CNPJ?.Length == 14 ? "J" : "F",
                             CPFCNPJ = NFe.InfoNFe.Transporte?.Transportadora?.CNPJ != null ? NFe.InfoNFe.Transporte?.Transportadora?.CNPJ : NFe.InfoNFe.Transporte?.Transportadora?.CNPJ != null ? NFe.InfoNFe.Transporte?.Transportadora?.CNPJ : null,
                             Nome = NFe.InfoNFe.Transporte?.Transportadora?.RazaoSocial,
-                            InscricaoEstadual = NFe.InfoNFe.Transporte?.Transportadora?.IE,
                             Endereco = NFe.InfoNFe.Transporte?.Transportadora?.Endereco,
                             Transportadora = true
                         };
@@ -206,7 +205,6 @@ namespace Fly01.Compras.API.Controllers.Api
                             transportadora.Id = entity.TransportadoraId.Value;
                             transportadora.CPFCNPJ = NFe.InfoNFe.Transporte?.Transportadora?.CNPJ != null ? NFe.InfoNFe.Transporte?.Transportadora?.CNPJ : NFe.InfoNFe.Transporte?.Transportadora?.CNPJ != null ? NFe.InfoNFe.Transporte?.Transportadora?.CNPJ : null;
                             transportadora.Nome = NFe.InfoNFe.Transporte?.Transportadora?.RazaoSocial;
-                            transportadora.InscricaoEstadual = NFe.InfoNFe.Transporte?.Transportadora?.IE;
                             transportadora.Endereco = NFe.InfoNFe.Transporte?.Transportadora?.Endereco;
                             transportadora.Transportadora = true;
 

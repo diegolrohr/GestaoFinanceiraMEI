@@ -18,12 +18,12 @@
         var tipoFrete = $('select#tipoFrete').val();
         var tipoVenda = $('input#tipoVenda').val();
         var tipoNfeComplementar = $('input#tipoNfeComplementar').val();
-        var calculaFrete = (
-                ((tipoFrete == "CIF" || tipoFrete == "Remetente") && tipoVenda == "Normal") ||
-                ((tipoFrete == "FOB" || tipoFrete == "Destinatario") && tipoVenda == "Devolucao")
-            );
+        //TODO: Wilson
+        var somaFrete = (
+            (tipoFrete == "FOB" || tipoFrete == "Destinatario")
+        );
 
-        if (calculaFrete) {
+        if (somaFrete) {
             valorFrete = TryParseFloat(noComma($('input#valorFrete').val()));
         }
 

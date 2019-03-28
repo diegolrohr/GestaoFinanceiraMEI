@@ -196,13 +196,13 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
             {
                 return new Transportadora()
                 {
-                    CNPJ = Cabecalho.Transportadora != null && Cabecalho.Transportadora.TipoDocumento == "J" ? Cabecalho.Transportadora.CPFCNPJ : null,
-                    CPF = Cabecalho.Transportadora != null && Cabecalho.Transportadora.TipoDocumento == "F" ? Cabecalho.Transportadora.CPFCNPJ : null,
+                    CNPJ = Cabecalho.Transportadora != null && Cabecalho.Transportadora?.TipoDocumento == "J" ? Cabecalho.Transportadora.CPFCNPJ : null,
+                    CPF = Cabecalho.Transportadora != null && Cabecalho.Transportadora?.TipoDocumento == "F" ? Cabecalho.Transportadora.CPFCNPJ : null,
                     Endereco = Cabecalho.Transportadora?.Endereco,
-                    IE = Cabecalho.Transportadora != null ? (Cabecalho.Transportadora.TipoIndicacaoInscricaoEstadual == TipoIndicacaoInscricaoEstadual.ContribuinteICMS ? Cabecalho.Transportadora.InscricaoEstadual : null) : null,
-                    Municipio = Cabecalho.Transportadora != null && Cabecalho.Transportadora.Cidade != null ? Cabecalho.Transportadora.Cidade.Nome : null,
+                    IE = Cabecalho.Transportadora != null ? (Cabecalho.Transportadora?.TipoIndicacaoInscricaoEstadual == TipoIndicacaoInscricaoEstadual.ContribuinteICMS ? Cabecalho.Transportadora.InscricaoEstadual : null) : null,
+                    Municipio = Cabecalho.Transportadora != null && Cabecalho.Transportadora?.Cidade != null ? Cabecalho.Transportadora?.Cidade?.Nome : null,
                     RazaoSocial = Cabecalho.Transportadora?.Nome,
-                    UF = Cabecalho.Transportadora != null && Cabecalho.Transportadora.Estado != null ? Cabecalho.Transportadora.Estado.Sigla : null
+                    UF = Cabecalho.Transportadora != null && Cabecalho.Transportadora?.Estado != null ? Cabecalho.Transportadora?.Estado?.Sigla : null
                 };
             }
             else

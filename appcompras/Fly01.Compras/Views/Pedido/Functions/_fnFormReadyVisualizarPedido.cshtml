@@ -42,12 +42,11 @@
         var valorFrete = 0;
         var tipoFrete = $('#fly01mdlfrmVisualizarPedido select#tipoFrete').val();
         var tipoCompra = $('#fly01mdlfrmVisualizarPedido select#tipoCompra').val();
-        var calculaFrete = (
-                ((tipoFrete == "CIF" || tipoFrete == "Remetente") && tipoCompra == "Devolucao") ||
-                ((tipoFrete == "FOB" || tipoFrete == "Destinatario") && tipoCompra == "Normal")
+        var somaFrete = (
+                (tipoFrete == "FOB" || tipoFrete == "Destinatario")
             );
 
-        if (calculaFrete) {
+        if (somaFrete) {
             valorFrete = TryParseFloat(noComma($('input#valorFrete').val()));
         }
 

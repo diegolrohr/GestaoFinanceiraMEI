@@ -449,12 +449,13 @@ namespace Fly01.Faturamento.BL
                     { "PlataformaUrl", PlataformaUrl }
                 };
 
-            bool calculaFrete = (
-                ((tipoFrete == TipoFrete.CIF || tipoFrete == TipoFrete.Remetente) && tipoVenda == TipoCompraVenda.Normal) ||
-                ((tipoFrete == TipoFrete.FOB || tipoFrete == TipoFrete.Destinatario) && tipoVenda == TipoCompraVenda.Devolucao)
-            );
+            //TODO: Wilson
+            //bool empresaPagaFrete = (
+            //    ((tipoFrete == TipoFrete.CIF || tipoFrete == TipoFrete.Remetente) && tipoVenda == TipoCompraVenda.Normal) ||
+            //    ((tipoFrete == TipoFrete.FOB || tipoFrete == TipoFrete.Destinatario) && tipoVenda == TipoCompraVenda.Devolucao)
+            //);
 
-            double freteFracionado = calculaFrete && valorFrete.HasValue ? valorFrete.Value / tributacaoItens.Sum(x => x.Quantidade) : 0;
+            double freteFracionado = valorFrete.HasValue ? valorFrete.Value / tributacaoItens.Sum(x => x.Quantidade) : 0.0;
 
             var num = 1;
             foreach (var itemProduto in tributacaoItens)

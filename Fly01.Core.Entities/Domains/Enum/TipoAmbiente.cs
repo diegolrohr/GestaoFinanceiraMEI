@@ -5,10 +5,6 @@ namespace Fly01.Core.Entities.Domains.Enum
 {
     public enum TipoAmbiente
     {
-        [XmlEnum(Name = "0")]
-        [Subtitle("Configuracao", "Configuração", "Configuração")]
-        Configuracao = 0,
-
         [XmlEnum(Name = "1")]
         [Subtitle("Producao", "Produção", "Produção")]
         Producao = 1,

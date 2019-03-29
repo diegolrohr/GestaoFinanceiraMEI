@@ -78,6 +78,14 @@
         setNFERequiredFields("fly01mdlfrmOrdemVendaProduto", ["produtoDescricao", "grupoTributarioDescricaoProduto", "quantidade", "valorCreditoICMS", "valorBCSTRetido", "valorICMSSTRetido", "valorBCFCPSTRetidoAnterior", "valorFCPSTRetidoAnterior", "icms", "fcp"]);
     }
 
+    function fnSetNaturezaOperacao(idItem) {
+        //adicionando o primeiro ou editando o único adicionado
+        if (($$$._.dtOrdemVendaProdutos.ajax.json().recordsTotal == 0 && idItem.length == 0) || ($$$._.dtOrdemVendaProdutos.ajax.json().recordsTotal == 1 && idItem.length != 0)) {
+            $('input#naturezaOperacao').val($('input#cfopDescricao').val());
+            $$$.fn.updateTextFields();
+        }
+    }
+
     function fnOverrideSubmitOrdemVendaProduto() {
         var myForm = 'form#fly01mdlfrmOrdemVendaProduto'
 
@@ -91,6 +99,7 @@
             e.preventDefault();
             $$$.loading.start();
             var formData = that.serializeObject();
+
             $.ajax({
                 type: that.attr("method"),
                 contentType: 'application/json',
@@ -99,6 +108,7 @@
                 data: JSON.stringify(formData),
                 success: function (data) {
                     if (data.success) {
+                        fnSetNaturezaOperacao(formData.id);
                         $$$.toast(data.message, "success");
                         $$$._.dtOrdemVendaProdutos.refresh();
                         $$$._.fly01mdlfrmOrdemVendaProduto.close();

@@ -230,7 +230,7 @@ namespace Fly01.Compras.Controllers
                     {
                         Title = "Cadastro",
                         Id = "stepCadastro",
-                        Quantity = 11,
+                        Quantity = 12,
                     },
                     new FormWizardUIStep()
                     {
@@ -284,6 +284,8 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "status", Value = "Aberto" });
             config.Elements.Add(new InputHiddenUI { Id = "tipoOrdemCompra", Value = "Pedido" });
             config.Elements.Add(new InputHiddenUI { Id = "grupoTributarioPadraoTipoTributacaoICMS" });
+            config.Elements.Add(new InputHiddenUI { Id = "cfopDescricao" });
+
             config.Elements.Add(new InputNumbersUI { Id = "numero", Class = "col s12 m2", Label = "Número", Disabled = true });
 
 
@@ -529,6 +531,14 @@ namespace Fly01.Compras.Controllers
                 Tooltip = new HelperUITooltip()
                 {
                     Text = "Ao transmitir a NF-e, além das informações aqui digitadas, será gerado automaticamente para o xml, as informações de IBPT e do aproveitamento de crédito de ICMS de acordo ao ARTIGO 23 DA LC 123 (Para CSOSN 101, 201 ou 900, conforme cadastro do Grupo Tributário em cada produto do pedido)."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "naturezaOperacao",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Se marcar Faturar, informe a natureza de operação para a nota fiscal a ser emitida. Quando for um novo pedido, o sistema aplica a descrição do cfop configurado no grupo tributário do primeiro produto adicionado. Confirme e altere se necessário."
                 }
             });
             #endregion

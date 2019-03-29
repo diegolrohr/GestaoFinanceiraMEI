@@ -273,6 +273,10 @@ namespace Fly01.Compras.BL
                             type), null);
                 }
             }
+            else
+            {
+                produto.Notification.Errors.Add(new Error("Quantidade de registros diferente da quantidade de colunas. Revise seu arquivo e tente novamente."));
+            }
 
             produto.ObjetoDeManutencao = ObjetoDeManutencao.Nao;
             produto.TipoProduto = TipoProduto.ProdutoFinal;

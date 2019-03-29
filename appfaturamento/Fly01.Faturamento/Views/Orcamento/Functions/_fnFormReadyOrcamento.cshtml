@@ -18,9 +18,8 @@
         var tipoFrete = $('select#tipoFrete').val();
         var tipoVenda = $('input#tipoVenda').val();
         var tipoNfeComplementar = $('input#tipoNfeComplementar').val();
-        //TODO: Wilson
         var somaFrete = (
-            (tipoFrete == "FOB" || tipoFrete == "Destinatario")
+            (tipoFrete == "FOB")
         );
 
         if (somaFrete) {

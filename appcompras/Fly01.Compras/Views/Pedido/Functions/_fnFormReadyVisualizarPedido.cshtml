@@ -43,7 +43,7 @@
         var tipoFrete = $('#fly01mdlfrmVisualizarPedido select#tipoFrete').val();
         var tipoCompra = $('#fly01mdlfrmVisualizarPedido select#tipoCompra').val();
         var somaFrete = (
-                (tipoFrete == "CIF" || tipoFrete == "Remetente")
+                tipoFrete == "FOB"
             );
 
         if (somaFrete) {

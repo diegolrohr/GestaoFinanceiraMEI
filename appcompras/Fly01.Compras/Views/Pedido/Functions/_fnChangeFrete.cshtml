@@ -5,9 +5,8 @@
         fnEnableInput();
         var tipoFrete = $('select#tipoFrete').val();
         var tipoCompra = $('#tipoCompra').val();
-        //TODO: Wilson
         var freteEmpresa = (
-                (tipoFrete == "CIF" || tipoFrete == "Remetente")
+                (tipoFrete == "FOB" || tipoFrete == "Destinatario")
             );
         if (freteEmpresa) {
             $('input#transportadoraNome').rules("add", { required: true });

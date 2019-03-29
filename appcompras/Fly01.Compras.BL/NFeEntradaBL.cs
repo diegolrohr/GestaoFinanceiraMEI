@@ -268,13 +268,13 @@ namespace Fly01.Compras.BL
                     {
                         itemTransmissao.Transporte.Transportadora = new Transportadora()
                         {
-                            CNPJ = transportadora != null && transportadora.TipoDocumento == "J" ? transportadora.CPFCNPJ : null,
-                            CPF = transportadora != null && transportadora.TipoDocumento == "F" ? transportadora.CPFCNPJ : null,
-                            Endereco = transportadora != null ? transportadora.Endereco : null,
-                            IE = transportadora != null ? (transportadora.TipoIndicacaoInscricaoEstadual == TipoIndicacaoInscricaoEstadual.ContribuinteICMS ? transportadora.InscricaoEstadual : null) : null,
-                            Municipio = transportadora != null && transportadora.Cidade != null ? transportadora.Cidade.Nome : null,
-                            RazaoSocial = transportadora != null ? transportadora.Nome : null,
-                            UF = transportadora != null && transportadora.Estado != null ? transportadora.Estado.Sigla : null
+                            CNPJ = transportadora != null && transportadora?.TipoDocumento == "J" ? transportadora?.CPFCNPJ : null,
+                            CPF = transportadora != null && transportadora?.TipoDocumento == "F" ? transportadora?.CPFCNPJ : null,
+                            Endereco = transportadora != null ? transportadora?.Endereco : null,
+                            IE = transportadora != null ? (transportadora?.TipoIndicacaoInscricaoEstadual == TipoIndicacaoInscricaoEstadual.ContribuinteICMS ? transportadora?.InscricaoEstadual : null) : null,
+                            Municipio = transportadora != null && transportadora?.Cidade != null ? transportadora?.Cidade?.Nome : null,
+                            RazaoSocial = transportadora != null ? transportadora?.Nome : null,
+                            UF = transportadora != null && transportadora?.Estado != null ? transportadora?.Estado?.Sigla : null
                         };
                     }
                     #endregion
@@ -316,7 +316,7 @@ namespace Fly01.Compras.BL
                             ValorDesconto = item.Desconto,
                             AgregaTotalNota = CompoemValorTotal.Compoe,
                             CEST = item.Produto.Cest != null ? item.Produto.Cest.Codigo : null,
-                            ValorFrete = (entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente) ? Math.Round(itemTributacao.FreteValorFracionado, 2) : 0
+                            ValorFrete = entity.TipoFrete == TipoFrete.FOB ? Math.Round(itemTributacao.FreteValorFracionado, 2) : 0
                         };
 
                         var detalhe = new Detalhe()
@@ -467,7 +467,7 @@ namespace Fly01.Compras.BL
                             SomatorioDesconto = NFeProdutos.Sum(x => x.Desconto),
                             SomatorioICMSST = itemTransmissao.Detalhes.Select(x => x.Imposto.ICMS).Any(x => x != null && x.ValorICMSST.HasValue && CSTsICMSST.Contains(((int)x.CodigoSituacaoOperacao).ToString()))
                                 ? Math.Round(itemTransmissao.Detalhes.Where(x => x.Imposto.ICMS != null && x.Imposto.ICMS.ValorICMSST.HasValue && CSTsICMSST.Contains(((int)x.Imposto.ICMS.CodigoSituacaoOperacao).ToString())).Sum(x => x.Imposto.ICMS.ValorICMSST.Value), 2) : 0,
-                            ValorFrete = (entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente) ? itemTransmissao.Detalhes.Sum(x => x.Produto.ValorFrete.Value) : 0,
+                            ValorFrete = entity.TipoFrete == TipoFrete.FOB ? itemTransmissao.Detalhes.Sum(x => x.Produto.ValorFrete.Value) : 0,
                             ValorSeguro = 0,
                             SomatorioIPI = itemTransmissao.Detalhes.Select(x => x.Imposto.IPI).Any(x => x != null) ? Math.Round(itemTransmissao.Detalhes.Where(x => x.Imposto.IPI != null).Sum(x => x.Imposto.IPI.ValorIPI), 2) : 0,
                             SomatorioIPIDevolucao = itemTransmissao.Detalhes.Select(x => x.Imposto.IPI).Any(x => x != null) ? Math.Round(itemTransmissao.Detalhes.Where(x => x.Imposto.IPI != null).Sum(x => x.Imposto.IPI.ValorIPIDevolucao), 2) : 0,
@@ -728,7 +728,7 @@ namespace Fly01.Compras.BL
             var totalImpostosProdutos = nfe.TotalImpostosProdutos;
             var totalImpostosProdutosNaoAgrega = nfe.TotalImpostosProdutosNaoAgrega;
             bool somaFrete = (
-                (nfe.TipoFrete == TipoFrete.CIF || nfe.TipoFrete == TipoFrete.Remetente)
+                nfe.TipoFrete == TipoFrete.FOB
             );
 
             var result = new TotalPedidoNotaFiscal()

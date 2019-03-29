@@ -28,7 +28,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
 
         public override bool SomaFrete()
         {
-            return (NFe.TipoFrete == TipoFrete.FOB || NFe.TipoFrete == TipoFrete.Destinatario);
+            return NFe.TipoFrete == TipoFrete.FOB;
         }
 
         public override TransmissaoVM ObterTransmissaoVM()
@@ -75,9 +75,6 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 itemTributacao = TransmissaoBLs.NotaFiscalItemTributacaoBL.All.Where(x => x.NotaFiscalItemId == item.Id).FirstOrDefault();
 
                 var detalhe = ObterDetalhe(item, num);
-                //TODO: Wilson
-                //Rejeição: Total do Frete difere do somatório dos itens
-                //colocando no total, mas não somando ai dava o erro que o total também era diferente dos valores informados
                 detalhe.Produto.ValorFrete = SomaFrete() ? Math.Round(itemTributacao.FreteValorFracionado, 2) : 0;
 
                 detalhe.Imposto.ICMS = ObterICMS(item, itemTributacao);
@@ -100,7 +97,6 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
 
         private double CalcularValorTotalNFE(ItemTransmissaoVM itemTransmissao)
         {
-            //TODO: Wilson
             var total = (
                 (itemTransmissao.Total.ICMSTotal.SomatorioProdutos +
                 itemTransmissao.Total.ICMSTotal.SomatorioICMSST +

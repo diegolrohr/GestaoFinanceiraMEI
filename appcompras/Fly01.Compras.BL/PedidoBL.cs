@@ -64,7 +64,7 @@ namespace Fly01.Compras.BL
 
                 bool isNfeImportacao = (entity.NFeImportacaoId != null && entity.NFeImportacaoId != default(Guid));
                 bool freteEmpresa = (
-                    (entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente)
+                    (entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario)
                 );
                 entity.Fail(freteEmpresa && !isNfeImportacao && (entity.TransportadoraId == null || entity.TransportadoraId == default(Guid)), new Error("Se configurou o frete por conta da sua empresa, informe a transportadora"));
 
@@ -385,7 +385,7 @@ namespace Fly01.Compras.BL
             if (entity.GeraFinanceiro)
             {
                 bool freteEmpresa = (
-                    (entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente)
+                    (entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario)
                 );
 
                 double totalProdutos = produtos != null ? produtos.Select(e => (e.Quantidade * e.Valor) - e.Desconto).Sum() : 0;

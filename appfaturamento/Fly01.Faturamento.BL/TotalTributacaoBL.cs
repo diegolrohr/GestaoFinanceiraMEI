@@ -449,12 +449,6 @@ namespace Fly01.Faturamento.BL
                     { "PlataformaUrl", PlataformaUrl }
                 };
 
-            //TODO: Wilson
-            //bool empresaPagaFrete = (
-            //    ((tipoFrete == TipoFrete.CIF || tipoFrete == TipoFrete.Remetente) && tipoVenda == TipoCompraVenda.Normal) ||
-            //    ((tipoFrete == TipoFrete.FOB || tipoFrete == TipoFrete.Destinatario) && tipoVenda == TipoCompraVenda.Devolucao)
-            //);
-
             double freteFracionado = valorFrete.HasValue ? valorFrete.Value / tributacaoItens.Sum(x => x.Quantidade) : 0.0;
 
             var num = 1;

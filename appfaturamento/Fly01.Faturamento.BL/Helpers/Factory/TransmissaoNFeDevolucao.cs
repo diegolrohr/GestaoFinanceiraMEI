@@ -28,7 +28,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
 
         public override bool SomaFrete()
         {
-            return (NFe.TipoFrete == TipoFrete.FOB || NFe.TipoFrete == TipoFrete.Destinatario);
+            return NFe.TipoFrete == TipoFrete.FOB;
         }
 
         public override TransmissaoVM ObterTransmissaoVM()

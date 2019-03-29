@@ -1,4 +1,5 @@
 ﻿using Fly01.Core.API;
+using Fly01.Core.Rest;
 using Fly01.Financeiro.API.Models.DAL;
 using System;
 using System.Data.SqlClient;
@@ -50,7 +51,8 @@ namespace Fly01.Financeiro.API.Controllers.Api
                         TotalTransportadora = i.Transportadora != null ? i.Transportadora.Total : 0,
                         TotalFormaPagamento = i.FormaPagamento != null ? i.FormaPagamento.Total : 0,
                         TotalCondicaoParcelamento = i.CondicaoParcelamento != null ? i.CondicaoParcelamento.Total : 0,
-                        TotalCategoria = i.Categoria != null ? i.Categoria.Total : 0
+                        TotalCategoria = i.Categoria != null ? i.Categoria.Total : 0,
+                        RazaoSocial = ApiEmpresaManager.GetEmpresa(i.PlataformaUrl).RazaoSocial
                     }).ToList()
                 });
             }

@@ -5,7 +5,6 @@ using System;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web.Http;
-using System.Web.Http.Cors;
 
 namespace Fly01.Financeiro.API.Controllers.Api
 {
@@ -13,15 +12,15 @@ namespace Fly01.Financeiro.API.Controllers.Api
     public class RelatorioLicenciamentoController : ApiBaseController
     {
         [HttpGet]
-        public IHttpActionResult Get(DateTime dataInicial, DateTime dataFinal, string plataformaUrl = "")
+        public IHttpActionResult Get(DateTime? dataInicial, DateTime? dataFinal, string plataformaUrl)
         {
             using (AppDataContext context = new AppDataContext())
             {
                 var result = context.Database.SqlQuery<ReportVM>(
                     "SELECT * FROM GetLicenceReport(@DATAINI, @DATAFIN, @PLATAFORMAURL)",
-                    new SqlParameter("DATAINI", dataInicial),
-                    new SqlParameter("DATAFIN", dataFinal),
-                    new SqlParameter("PLATAFORMAURL", plataformaUrl)
+                    new SqlParameter("DATAINI", dataInicial.HasValue ? dataInicial.Value.ToString("yyyy-MM-dd") : ""),
+                    new SqlParameter("DATAFIN", dataFinal.HasValue ? dataFinal.Value.ToString("yyyy-MM-dd") : ""),
+                    new SqlParameter("PLATAFORMAURL", plataformaUrl ?? "")
                 ).ToList();
 
                 var response = result.GroupBy(x => x.PlataformaUrl).Select(item => new

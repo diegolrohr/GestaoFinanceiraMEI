@@ -541,7 +541,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "totalFrete",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Valor frete a ser pago pelo cliente quando for FOB/Destinatário."
+                    Text = "Valor frete a ser pago pelo cliente quando for FOB."
                 }
             });
             config.Helpers.Add(new TooltipUI

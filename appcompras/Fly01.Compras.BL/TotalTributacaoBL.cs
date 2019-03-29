@@ -181,12 +181,6 @@ namespace Fly01.Compras.BL
                     { "PlataformaUrl", PlataformaUrl }
                 };
 
-            // TODO: Wilson
-            //bool calculaFrete = (
-            //    ((tipoFrete == TipoFrete.CIF || tipoFrete == TipoFrete.Remetente) && tipoCompra == TipoCompraVenda.Devolucao) ||
-            //    ((tipoFrete == TipoFrete.FOB || tipoFrete == TipoFrete.Destinatario) && tipoCompra == TipoCompraVenda.Normal)
-            //);
-
             double freteFracionado = valorFrete.HasValue ? valorFrete.Value / tributacaoItens.Sum(x => x.Quantidade) : 0;
 
             var num = 1;

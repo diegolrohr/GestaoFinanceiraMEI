@@ -514,7 +514,7 @@ namespace Fly01.Compras.Controllers
                 Id = "transportadoraId",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Informe a transportadora, quando configurar frete a ser pago por sua empresa (CIF/Remetente)."
+                    Text = "Informe a transportadora, quando configurar frete a ser pago por sua empresa (FOB/Destinatário)."
                 }
             });
             config.Helpers.Add(new TooltipUI

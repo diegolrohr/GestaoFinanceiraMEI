@@ -2,6 +2,7 @@
 using Microsoft.OData.UriParser;
 using System.Linq;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using System.Web.OData;
 using System.Web.OData.Batch;
 using System.Web.OData.Extensions;
@@ -35,7 +36,7 @@ namespace Fly01.Core.API.Application
                   .MaxTop(50)
                   .AddODataQueryFilter(queryAttribute);
             config.MapHttpAttributeRoutes(new CustomDirectRouteProvider());
-            config.EnableCors();
+            config.EnableCors(new EnableCorsAttribute("*", "*", "*"));
             config.MapODataServiceRoute(
                 routeName: "ODataRoute",
                 routePrefix: "api",

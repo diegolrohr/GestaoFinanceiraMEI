@@ -290,7 +290,6 @@ namespace Fly01.Core.Presentation.Controllers
                 Label = "Ambiente NF-e",
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoAmbiente))
                 .ToList().FindAll(x => "Producao,Homologacao".Contains(x.Value)))
-                
             });
 
             form2.Elements.Add(new TextAreaUI { Id = "mensagemPadraoNota", Class = "col s12", Label = "Informações Adicionais", MaxLength = 1000 });

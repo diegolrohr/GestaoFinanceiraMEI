@@ -74,6 +74,7 @@ namespace Fly01.OrdemServico.BL
                 All.Any(x => x.Descricao.Trim().ToUpper() == entity.Descricao.Trim().ToUpper() && x.Id != entity.Id) ||
                 ContextAddedEntriesSelfType().Any(x => x.Descricao.Trim().ToUpper() == entity.Descricao.Trim().ToUpper() && x.Id != entity.Id)
             , DescricaoDuplicada);
+
             if (!string.IsNullOrWhiteSpace(entity.CodigoProduto))
             {
                 entity.Fail(

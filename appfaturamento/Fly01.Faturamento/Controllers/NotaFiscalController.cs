@@ -28,6 +28,7 @@ namespace Fly01.Faturamento.Controllers
     [OperationRole(ResourceKey = ResourceHashConst.FaturamentoFaturamentoNotasFiscais)]
     public class NotaFiscalController : BaseController<NotaFiscalVM>
     {
+        public bool HasErrorDownload { get; set; }
         public NotaFiscalController()
         {
             ExpandProperties = "cliente($select=nome, email),ordemVendaOrigem($select=id,numero),categoria,serieNotaFiscal";
@@ -441,6 +442,7 @@ namespace Fly01.Faturamento.Controllers
                     }
                     catch (Exception)
                     {
+                        HasErrorDownload = true;
                         continue;
                     }
                 }
@@ -450,7 +452,7 @@ namespace Fly01.Faturamento.Controllers
 
                 Session["responseValue"] = JsonConvert.SerializeObject(response);
 
-                return JsonResponseStatus.GetJson(new { downloadAddress = Url.Action("DownloadXMLs", new { idsXML = idsXML }) });
+                return JsonResponseStatus.GetJson(new { downloadAddress = Url.Action("DownloadXMLs", new { idsXML = idsXML }), hasError = HasErrorDownload });
             }
             catch (Exception ex)
             {

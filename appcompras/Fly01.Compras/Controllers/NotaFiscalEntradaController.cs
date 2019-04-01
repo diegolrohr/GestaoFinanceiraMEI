@@ -27,6 +27,7 @@ namespace Fly01.Compras.Controllers
     [OperationRole(ResourceKey = ResourceHashConst.ComprasComprasNotasFiscais)]
     public class NotaFiscalEntradaController : BaseController<NotaFiscalEntradaVM>
     {
+        public bool HasErrorDownload { get; set; }
         public NotaFiscalEntradaController()
         {
             ExpandProperties = "fornecedor($select=id,nome,email),ordemCompraOrigem($select=id,numero),categoria($select=id,descricao),serieNotaFiscal($select=id,serie),centroCusto";
@@ -388,6 +389,7 @@ namespace Fly01.Compras.Controllers
                     }
                     catch (Exception)
                     {
+                        HasErrorDownload = true;
                         continue;
                     }
                 }
@@ -397,7 +399,7 @@ namespace Fly01.Compras.Controllers
 
                 Session["responseValue"] = JsonConvert.SerializeObject(response);
 
-                return JsonResponseStatus.GetJson(new { downloadAddress = Url.Action("DownloadXMLs", new { idsXML = idsXML }) });
+                return JsonResponseStatus.GetJson(new { downloadAddress = Url.Action("DownloadXMLs", new { idsXML = idsXML }), hasError = HasErrorDownload });
             }
             catch (Exception ex)
             {

@@ -53,7 +53,7 @@ namespace Fly01.Compras.BL
             if (!string.IsNullOrWhiteSpace(entity.CPFCNPJ.ToString()))
             {
                 var pessoa = All.AsNoTracking().FirstOrDefault(x => x.CPFCNPJ.Trim().ToUpper() == entity.CPFCNPJ.Trim().ToUpper() && x.Id != entity.Id);
-                if(pessoa == null)
+                if (pessoa == null)
                 {
                     pessoa = ContextAddedEntriesSelfType().FirstOrDefault(x => x.CPFCNPJ.Trim().ToUpper() == entity.CPFCNPJ.Trim().ToUpper() && x.Id != entity.Id);
                 }

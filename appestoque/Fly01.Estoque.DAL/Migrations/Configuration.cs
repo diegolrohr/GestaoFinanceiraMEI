@@ -22,6 +22,7 @@ namespace Fly01.Estoque.DAL.Migrations
                 //new CestDataInitializer().Initialize(context);
                 //new EnquadramentoLegalIPIDataInitializer().Initialize(context);
                 new NewCestDataInitializer().Initialize(context);
+
             }
             catch (DbEntityValidationException ex)
             {

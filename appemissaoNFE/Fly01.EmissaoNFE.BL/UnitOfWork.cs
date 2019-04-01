@@ -85,6 +85,9 @@ namespace Fly01.EmissaoNFE.BL
         private TributacaoBL tributacaoBL;
         public TributacaoBL TributacaoBL => tributacaoBL ?? (tributacaoBL = new TributacaoBL(Context,TabelaIcmsBL, NcmBL, IcmsBL, DifalBL, SubstituicaoTributariaBL, IpiBL, FcpBL, FcpStBL, PisBL, CofinsBL, InssBL, ImpostoRendaBL, CsllBL, IssBL));
 
+        private ResponsavelTecnicoBL responsavelTecnicoBL;
+        public ResponsavelTecnicoBL ResponsavelTecnicoBL => responsavelTecnicoBL ?? (responsavelTecnicoBL = new ResponsavelTecnicoBL(Context));
+
         #endregion
 
         #region BLS da integração com o TSS

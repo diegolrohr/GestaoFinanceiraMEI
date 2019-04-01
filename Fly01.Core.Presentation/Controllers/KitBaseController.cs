@@ -68,7 +68,8 @@ namespace Fly01.Core.Presentation.Controllers
                     List = Url.Action("List")
                 },
                 ReadyFn = "fnFormReady",
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                Functions = new List<string>() { "fnDrawCallbackCalcProdutos" }
             };
 
             formConfigKit.Elements.Add(new InputHiddenUI { Id = "id" });
@@ -148,7 +149,11 @@ namespace Fly01.Core.Presentation.Controllers
                 {
                     OrderColumn = 0,
                     OrderDir = "asc"
-                }
+                },
+                Callbacks = new DataTableUICallbacks()
+                {
+                    DrawCallback = "fnDrawCallbackCalcProdutos"
+                },
             };
 
             dtConfig.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
@@ -171,6 +176,10 @@ namespace Fly01.Core.Presentation.Controllers
                 Orderable = false
             });
 
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "valorVenda", DisplayName = "Valor Venda", Priority = 5, Searchable = false, Orderable = false});
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "valorCusto", DisplayName = "Valor custo", Priority = 6, Searchable = false, Orderable = false});
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "valorServico", DisplayName = "Valor Serviço", Priority = 7, Searchable = false, Orderable = false});
+
             #endregion
 
             #region Helpers
@@ -186,6 +195,17 @@ namespace Fly01.Core.Presentation.Controllers
 
             cfg.Content.Add(formConfigKit);
             cfg.Content.Add(formConfigKitItens);
+
+            cfg.Content.Add(new DivUI
+            {
+                Elements = new List<BaseUI>
+                {
+                    new InputCurrencyUI { Id = "valorVendaTotal", Class = "col s12 m4", Label = "Total Venda Produto", Readonly = true },
+                    new InputCurrencyUI { Id = "valorCustoTotal", Class = "col s12 m4", Label = "Total Custo Produto", Readonly = true },
+                    new InputCurrencyUI { Id = "valorServicoTotal", Class = "col s12 m4", Label = "Total Serviço", Readonly = true },
+                }
+            });
+
             cfg.Content.Add(dtConfig);
 
             return cfg;

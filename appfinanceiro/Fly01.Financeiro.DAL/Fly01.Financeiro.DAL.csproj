@@ -260,6 +260,10 @@
     <Compile Include="Migrations\201903081315134_AddColumnNumeroArquivoRemessa.Designer.cs">
       <DependentUpon>201903081315134_AddColumnNumeroArquivoRemessa.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201903271945563_CreateFunctionGetReportLicenciamento.cs" />
+    <Compile Include="Migrations\201903271945563_CreateFunctionGetReportLicenciamento.Designer.cs">
+      <DependentUpon>201903271945563_CreateFunctionGetReportLicenciamento.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer2.cs" />
@@ -441,6 +445,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201903081315134_AddColumnNumeroArquivoRemessa.resx">
       <DependentUpon>201903081315134_AddColumnNumeroArquivoRemessa.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903271945563_CreateFunctionGetReportLicenciamento.resx">
+      <DependentUpon>201903271945563_CreateFunctionGetReportLicenciamento.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

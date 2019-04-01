@@ -55,6 +55,7 @@ namespace Fly01.Faturamento.API
             builder.EntitySet<Kit>("kit");
             builder.EntitySet<KitItem>("kititem");
             builder.EntitySet<CentroCusto>("centrocusto");
+            builder.EntitySet<AliquotaSimplesNacional>("aliquotasimplesnacional");
 
             builder.EnableLowerCamelCase();
 

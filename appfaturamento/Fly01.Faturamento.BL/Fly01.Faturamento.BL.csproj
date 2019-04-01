@@ -40,6 +40,7 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AliquotaSimplesNacionalBL.cs" />
     <Compile Include="CentroCustoBL.cs" />
     <Compile Include="ArquivoBL.cs" />
     <Compile Include="CategoriaBL.cs" />

@@ -23,12 +23,6 @@ namespace Fly01.Core.BL
                                             .Select(x => x.Entity as TEntity);
         }
 
-        protected IEnumerable<TEntity> ContextAddedEntriesSelfType()
-        {
-            return repository.GetAffectEntries().Where(x => x.State == EntityState.Added && x.Entity.GetType().Name == typeof(TEntity).Name)
-                                            .Select(x => x.Entity as TEntity);            
-        }
-
         protected IEnumerable<TEntity> ContextModifiedEntriesSelfType()
         {
             return repository.GetAffectEntries().Where(x => x.State == EntityState.Modified && x.Entity.GetType().Name == typeof(TEntity).Name)

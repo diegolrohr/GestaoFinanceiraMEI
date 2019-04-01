@@ -283,7 +283,7 @@ namespace Fly01.Financeiro.Controllers
                 new SidebarUIMenu()
                 {
                     Class = ResourceHashConst.FinanceiroDashBoard,
-                    Label = "Dashboard",
+                    Label = "Indicadores",
                     Items = new List<LinkUI>
                     {
                         new LinkUI() { Class = ResourceHashConst.FinanceiroDashboardContasPagar, Label = "Contas a Pagar", OnClick = @Url.Action("List", "DashboardContaPagar")},

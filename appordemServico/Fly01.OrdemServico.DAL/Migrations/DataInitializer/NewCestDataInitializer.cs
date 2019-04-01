@@ -1,6 +1,5 @@
 ﻿using Fly01.OrdemServico.DAL.Migrations.DataInitializer.Contract;
 using System;
-using System.Data.Entity.Migrations;
 using System.Linq;
 using Fly01.Core.Entities.Domains.Commons;
 

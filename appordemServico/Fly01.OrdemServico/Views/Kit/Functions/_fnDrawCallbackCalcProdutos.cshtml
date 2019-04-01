@@ -1,0 +1,32 @@
+﻿<script>
+    function fnDrawCallbackCalcProdutos() {
+        $(`#dtKitItens`).loading("stop");
+
+        let valorCusto = 0;
+        let valorServico = 0;
+        let valorVenda = 0;
+
+        $$$._.dtKitItens.data().each(function (value, index) {
+            valorVenda = parseFloat(valorVenda.toString().replace(",", ".")) + (value.valorVenda == null ? 0 : parseFloat(value.valorVenda.replace(",", ".")));
+            valorServico = parseFloat(valorServico.toString().replace(",", ".")) + (value.valorServico == null ? 0 : parseFloat(value.valorServico.replace(",", ".")));
+            valorCusto = parseFloat(valorCusto.toString().replace(",", ".")) + (value.valorCusto == null ? 0 : parseFloat(value.valorCusto.replace(",", ".")));
+        });
+
+        $('#valorVendaTotal').val(valorVenda);
+        $('#valorServicoTotal').val(valorServico);
+        $('#valorCustoTotal').val(valorCusto);
+
+
+        $('#valorCustoTotal').on('click', function () {
+            $("label[for='valorCustoTotal']").removeClass("truncate active");
+        });
+
+        $('#valorServicoTotal').on('click', function () {
+            $("label[for='valorServicoTotal']").removeClass("truncate active");
+        });
+
+        $('#valorVendaTotal').on('click', function () {
+            $("label[for='valorVendaTotal']").removeClass("truncate active");
+        });
+    }
+</script>

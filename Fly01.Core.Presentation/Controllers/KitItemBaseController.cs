@@ -21,7 +21,7 @@ namespace Fly01.Core.Presentation.Controllers
     {
         public KitItemBaseController()
         {
-            ExpandProperties = "produto($select=descricao,codigoProduto),servico($select=descricao,codigoServico)";
+            ExpandProperties = "produto($select=descricao,codigoProduto,valorVenda,valorCusto),servico($select=descricao,codigoServico,valorServico)";
         }
 
         public override Func<T, object> GetDisplayData()
@@ -36,6 +36,9 @@ namespace Fly01.Core.Presentation.Controllers
                 tipoItemDescription = EnumHelper.GetDescription(typeof(TipoItem), x.TipoItem),
                 tipoItemCssClass = EnumHelper.GetCSS(typeof(TipoItem), x.TipoItem),
                 tipoItemValue = EnumHelper.GetValue(typeof(TipoItem), x.TipoItem),
+                valorVenda = x.Produto?.ValorVenda.ToString("N", AppDefaults.CultureInfoDefault),
+                valorCusto = x.Produto?.ValorCusto.ToString("N", AppDefaults.CultureInfoDefault),
+                valorServico = x.Servico?.ValorServico.ToString("N", AppDefaults.CultureInfoDefault)
             };
         }
 
@@ -87,7 +90,6 @@ namespace Fly01.Core.Presentation.Controllers
                 return JsonResponseStatus.GetFailure(error.Message);
             }
         }
-
 
         public ContentResult Modal()
         {

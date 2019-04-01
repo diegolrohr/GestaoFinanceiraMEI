@@ -177,6 +177,9 @@ namespace Fly01.Compras.API.Controllers.Api
                 var hasTagTransportadora = (NFe != null && NFe.InfoNFe != null && NFe.InfoNFe.Transporte != null && NFe.InfoNFe.Transporte.Transportadora != null && NFe.InfoNFe.Transporte.Transportadora?.RazaoSocial != null);
                 if (hasTagTransportadora)
                 {
+                    var ufTransp = NFe.InfoNFe.Transporte?.Transportadora?.UF;
+                    var estadoTransp = UnitOfWork.EstadoBL.All.FirstOrDefault(x => x.Sigla == ufTransp);
+
                     if (entity.NovaTransportadora && entity.TipoFrete != TipoFrete.SemFrete)
                     {
                         entity.TransportadoraId = Guid.NewGuid();

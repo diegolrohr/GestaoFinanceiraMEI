@@ -293,14 +293,14 @@ namespace Fly01.Compras.BL
                 insertedProdutos.Add(produto);
                 arquivo.Retorno += "Linha " + (i + 1).ToString().PadLeft(5, '0') + ";" + produto.Descricao + " cadastrado com sucesso.\n";
             }
-            catch (Exception)
+            catch(Exception)
             {
                 var errors = produto.Notification.Errors.Select(e =>
                 {
                     return string.Format("Campo: {0}; Mensagem: {1}", e.DataField, e.Message);
                 }).FirstOrDefault();
                 arquivo.Retorno += "Linha " + (i + 1).ToString().PadLeft(5, '0') + ";" + errors + "\n";
-            }
+            }            
         }
     }
 }

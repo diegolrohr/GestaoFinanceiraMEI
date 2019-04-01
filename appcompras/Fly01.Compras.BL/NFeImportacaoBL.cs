@@ -142,7 +142,7 @@ namespace Fly01.Compras.BL
         protected void TryGetFornecedorIdFromXml(NFeImportacao entity, string cnpj)
         {
             var fornecedor = PessoaBL.All.FirstOrDefault(x => x.CPFCNPJ.ToUpper() == cnpj.ToUpper());
-            if (fornecedor != null)
+            if(fornecedor != null)
             {
                 //mesmo cnpj mas não estava com a flag do tipo marcado
                 //caso encontre.. já atualizamos para ser do tipo.. senão iria dar o erro de cadastro duplicado
@@ -157,7 +157,7 @@ namespace Fly01.Compras.BL
         protected void TryGetTransportadoraIdFromXml(NFeImportacao entity, string cnpj)
         {
             var transportadora = PessoaBL.All.FirstOrDefault(x => x.CPFCNPJ.ToUpper() == cnpj.ToUpper());
-            if (transportadora != null)
+            if(transportadora != null)
             {
                 transportadora.Transportadora = true;
                 entity.TransportadoraId = transportadora?.Id;

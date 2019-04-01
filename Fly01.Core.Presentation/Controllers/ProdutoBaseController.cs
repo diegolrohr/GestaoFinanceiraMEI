@@ -115,7 +115,7 @@ namespace Fly01.Core.Presentation.Controllers
                 RenderFn = "fnRenderEnum(full.tipoProdutoCSS, full.tipoProdutoDescricao)"
             });
 
-            config.Columns.Add(new DataTableUIColumn { DataField = "codigoBarras", DisplayName = "Código Barras", Priority = 4 });
+            config.Columns.Add(new DataTableUIColumn { DataField = "codigoBarras", DisplayName = "Código barras", Priority = 4 });
 
             cfg.Content.Add(config);
 

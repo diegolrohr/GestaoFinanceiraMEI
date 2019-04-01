@@ -8,6 +8,7 @@ using Fly01.EmissaoNFE.Domain.ViewModel;
 using Fly01.EmissaoNFE.BL.Helpers;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core;
+using Fly01.Core.Helpers;
 
 namespace Fly01.EmissaoNFE.BL
 {
@@ -46,18 +47,6 @@ namespace Fly01.EmissaoNFE.BL
             var nota = new NFeVM();
             nota.InfoNFe = new InfoNFe();
 
-            item.NotaId = ChaveBL.GeraChave(
-                                    item.Identificador.CodigoUF.ToString(),
-                                    item.Identificador.Emissao.Year.ToString(),
-                                    item.Identificador.Emissao.Month.ToString(),
-                                    item.Emitente.Cnpj,
-                                    item.Identificador.ModeloDocumentoFiscal.ToString(),
-                                    item.Identificador.Serie.ToString(),
-                                    item.Identificador.NumeroDocumentoFiscal.ToString(),
-                                    ((int)item.Identificador.FormaEmissao).ToString(),
-                                    item.Identificador.CodigoNF.ToString()
-                                );
-
             nota.InfoNFe.NotaId = item.NotaId;
             nota.InfoNFe.Versao = item.Versao;
             nota.InfoNFe.Identificador = item.Identificador;
@@ -81,6 +70,8 @@ namespace Fly01.EmissaoNFE.BL
                 nota.InfoNFe.Autorizados = new List<Autorizados>();
                 nota.InfoNFe.Autorizados.Add(new Autorizados() { CNPJ = "13937073000156" });
             }
+
+            nota.InfoNFe.ResponsavelTecnico = item.ResponsavelTecnico;
 
             return nota;
         }

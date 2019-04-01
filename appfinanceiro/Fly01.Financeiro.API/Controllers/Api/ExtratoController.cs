@@ -32,7 +32,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 return BadRequest("Data inicial não pode ser superior a data final.");
             
             if ((dataFinal - dataInicial).TotalDays > 365)
-                return BadRequest("O período informado não deve ultrapassar 1 ano");
+                return BadRequest("O período informado não deve ultrapassar 1 ano.");
 
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
@@ -49,7 +49,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 return BadRequest("Data inicial não pode ser superior a data final.");
 
             if ((dataFinal - dataInicial).TotalDays > 365)
-                return BadRequest("O período informado não deve ultrapassar 1 ano");
+                return BadRequest("O período informado não deve ultrapassar 1 ano.");
 
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
@@ -73,7 +73,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                     return BadRequest("Data inicial não pode ser superior a data final.");
 
                 if ((dataFinal - dataInicial).TotalDays > 365)
-                    return BadRequest("O período informado não deve ultrapassar 1 ano");
+                    return BadRequest("O período informado não deve ultrapassar 1 ano.");
 
                 using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
                 {

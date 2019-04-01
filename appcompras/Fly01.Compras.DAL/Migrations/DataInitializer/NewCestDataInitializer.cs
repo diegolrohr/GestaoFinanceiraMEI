@@ -1,8 +1,8 @@
 ﻿using Fly01.Compras.DAL.Migrations.DataInitializer.Contract;
 using System;
-using System.Data.Entity.Migrations;
 using System.Linq;
 using Fly01.Core.Entities.Domains.Commons;
+using Fly01.Compras.DAL;
 
 namespace Fly01.Compras.DAL.Migrations.DataInitializer
 {

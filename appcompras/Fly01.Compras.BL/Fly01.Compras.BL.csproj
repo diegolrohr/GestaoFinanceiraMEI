@@ -43,6 +43,7 @@
     <Compile Include="CategoriaBL.cs" />
     <Compile Include="CentroCustoBL.cs" />
     <Compile Include="CertificadoDigitalBL.cs" />
+    <Compile Include="AliquotaSimplesNacionalBL.cs" />
     <Compile Include="CidadeBL.cs" />
     <Compile Include="DashboardBL.cs" />
     <Compile Include="EnquadramentoLegalIPIBL.cs" />

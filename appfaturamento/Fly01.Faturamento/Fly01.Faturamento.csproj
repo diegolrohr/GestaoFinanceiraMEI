@@ -59,6 +59,7 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include="Helpers\" />
     <Folder Include="Views\NFeProduto\Functions\" />
     <Folder Include="Views\NFSeServico\Functions\" />
   </ItemGroup>
@@ -103,7 +104,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\EmailFilesHelper.cs" />
     <Compile Include="Models\Reports\ReportOrcamentoPedido.cs" />
     <Compile Include="Models\Reports\WebReportViewer.cs" />
     <Compile Include="Models\ViewModel\ImprimirOrcamentoPedidoVM.cs" />
@@ -134,7 +134,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
-    <EmbeddedResource Include="MailTemplates\Templates\OrdemVenda.html" />
     <Content Include="ReportViewerWebForm.aspx" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

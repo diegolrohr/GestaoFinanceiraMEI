@@ -496,7 +496,16 @@
     <Compile Include="Migrations\201902271138553_AlterNfInutilizadaAddCertificado.Designer.cs">
       <DependentUpon>201902271138553_AlterNfInutilizadaAddCertificado.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201904011647111_AddAliquotaSimplesNacional.cs" />
+    <Compile Include="Migrations\201904011647111_AddAliquotaSimplesNacional.Designer.cs">
+      <DependentUpon>201904011647111_AddAliquotaSimplesNacional.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904031748492_CreateFunctionGetReportFaturamento.cs" />
+    <Compile Include="Migrations\201904031748492_CreateFunctionGetReportFaturamento.Designer.cs">
+      <DependentUpon>201904031748492_CreateFunctionGetReportFaturamento.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Migrations\DataInitializer\AliquotaSimplesNacionalDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CFOPDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
@@ -862,6 +871,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201902271138553_AlterNfInutilizadaAddCertificado.resx">
       <DependentUpon>201902271138553_AlterNfInutilizadaAddCertificado.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904011647111_AddAliquotaSimplesNacional.resx">
+      <DependentUpon>201904011647111_AddAliquotaSimplesNacional.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904031748492_CreateFunctionGetReportFaturamento.resx">
+      <DependentUpon>201904031748492_CreateFunctionGetReportFaturamento.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

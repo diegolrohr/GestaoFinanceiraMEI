@@ -58,6 +58,7 @@
     <Compile Include="Controllers\Api\ApiPlataformaController.cs" />
     <Compile Include="Controllers\Api\ArquivoController.cs" />
     <Compile Include="Controllers\Api\AvaliacaoAppController.cs" />
+    <Compile Include="Controllers\Api\AliquotaSimplesNacionalController.cs" />
     <Compile Include="Controllers\Api\ISSController.cs" />
     <Compile Include="Controllers\Api\CentroCustoController.cs" />
     <Compile Include="Controllers\Api\MinhaContaController.cs" />

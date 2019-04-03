@@ -7,13 +7,13 @@ namespace Fly01.Faturamento.DAL.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class CreateFunctionGetFaturamentoReport : IMigrationMetadata
+    public sealed partial class CreateFunctionGetReportFaturamento : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(CreateFunctionGetFaturamentoReport));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(CreateFunctionGetReportFaturamento));
         
         string IMigrationMetadata.Id
         {
-            get { return "201904031411137_CreateFunctionGetFaturamentoReport"; }
+            get { return "201904031748492_CreateFunctionGetReportFaturamento"; }
         }
         
         string IMigrationMetadata.Source

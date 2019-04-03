@@ -2,8 +2,8 @@ namespace Fly01.Faturamento.DAL.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
-    
-    public partial class CreateFunctionGetFaturamentoReport : DbMigration
+
+    public partial class CreateFunctionGetReportFaturamento : DbMigration
     {
         public override void Up()
         {
@@ -188,7 +188,7 @@ SELECT * FROM
     )AS T
 );");
         }
-        
+
         public override void Down()
         {
             Sql("DROP FUNCTION [dbo].[GetFaturamentoReport]");

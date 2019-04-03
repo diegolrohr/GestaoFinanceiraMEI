@@ -25,7 +25,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
             return NFe.NFeRefComplementarIsDevolucao ? TipoNota.Entrada : TipoNota.Saida;
         }
 
-        public override bool PagaFrete()
+        public override bool SomaFrete()
         {
             return false;
         }

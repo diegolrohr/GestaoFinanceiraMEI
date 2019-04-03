@@ -314,11 +314,19 @@ namespace Fly01.Core.Presentation.Controllers
             var queryString = AppDefaults.GetQueryStringDefault();
 
             queryString.AddParam("$filter", $"contains(descricao, '{term}')");
+            queryString.AddParam("$expand", "cfop($select=descricao)");
             queryString.AddParam("$select", "id,descricao,tipoTributacaoICMS");
             queryString.AddParam("$orderby", "descricao");
 
             var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<GrupoTributarioVM>>(resourceName, queryString).Data
-                                select new { id = item.Id, label = item.Descricao, detail = "", tipoTributacaoICMS = item.TipoTributacaoICMS };
+                                select new
+                                {
+                                    id = item.Id,
+                                    label = item.Descricao,
+                                    detail = "",
+                                    tipoTributacaoICMS = item.TipoTributacaoICMS,
+                                    cfopDescricao = item?.Cfop?.Descricao?.Substring(8) ?? ""
+                                };
 
             return GetJson(filterObjects);
         }

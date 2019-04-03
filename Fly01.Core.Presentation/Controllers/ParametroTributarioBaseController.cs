@@ -13,6 +13,8 @@ using Fly01.Core.Entities.Domains.Enum;
 using Fly01.uiJS.Classes.Helpers;
 using Fly01.Core.ViewModels;
 using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.Core.Mensageria;
+using System.IO;
 
 namespace Fly01.Core.Presentation.Controllers
 {
@@ -99,16 +101,46 @@ namespace Fly01.Core.Presentation.Controllers
 
         public override Func<T, object> GetDisplayData() { throw new NotImplementedException(); }
 
-        public override ContentResult List() 
+        public override ContentResult List()
             => Form();
+
+        public ContentResult ModalEnvioEmail()
+        {
+            ModalUIForm config = new ModalUIForm()
+            {
+                Title = "Enviar por e-mail para seu Contador",
+                UrlFunctions = @Url.Action("Functions") + "?fns=",
+                ConfirmAction = new ModalUIAction() { Label = "Enviar" , OnClickFn = "fnFormClickEnvioEmailContador" },
+                CancelAction = new ModalUIAction() { Label = "Cancelar" },
+                Action = new FormUIAction
+                {
+                    Create = @Url.Action("Create"),
+                    Edit = @Url.Action("Edit"),
+                    Get = @Url.Action("Json") + "/",
+                    List = @Url.Action("List")
+                },
+                Id = "fly01mdlfrmEnvioEmailContador"
+            };
+            config.Elements.Add(new InputHiddenUI { Id = "parametroTributarioId" });
+            config.Elements.Add(new InputEmailUI
+            {
+                Id = "emailId",
+                Class = "col s12 m6",
+                Label = "E-mail do seu Contador"
+            });
+
+            return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
+        }
 
         public override List<HtmlUIButton> GetFormButtonsOnHeader()
         {
             var target = new List<HtmlUIButton>();
 
             if (UserCanWrite)
+            {
+                target.Add(new HtmlUIButton { Id = "envioEmail", Label = "Envie para seu contador", OnClickFn = "fnEnviarParametrosEmail", Type = "click" });
                 target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnAtualizaParametro", Type = "submit" });
-
+            }
             return target;
         }
 
@@ -152,7 +184,7 @@ namespace Fly01.Core.Presentation.Controllers
                         Title = "Parâmetros de Transmissão NFS-e"
                     }
                 }
-            };      
+            };
 
             var form1 = new FormUI
             {
@@ -168,7 +200,7 @@ namespace Fly01.Core.Presentation.Controllers
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
 
-            form1.Elements.Add(new InputHiddenUI { Id = "id" });            
+            form1.Elements.Add(new InputHiddenUI { Id = "id" });
 
             form1.Elements.Add(new InputCustommaskUI
             {
@@ -385,11 +417,49 @@ namespace Fly01.Core.Presentation.Controllers
             return cfg;
         }
 
+        public JsonResult EnviaEmailContador(string simplesNacional, string impostoRenda, string csll, string cofins, string pisPasep, string ipi, string iss, string email)
+        {
+            try
+            {
+                var empresa = GetDadosEmpresa();
+
+                var ResponseError = ValidarDadosEmail(empresa, email);
+                if (ResponseError != null) return ResponseError;
+
+                MailSend(empresa, simplesNacional, impostoRenda, csll, cofins, pisPasep, ipi, iss, email);
+
+                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
+        private JsonResult ValidarDadosEmail(ManagerEmpresaVM empresa, string email)
+        {
+
+            if (string.IsNullOrEmpty(email)) return JsonResponseStatus.GetFailure("Não foi encontrado um email válido para este Fornecedor.");
+            if (string.IsNullOrEmpty(empresa.Email)) return JsonResponseStatus.GetFailure("Você ainda não configurou um email válido para sua empresa.");
+
+            return null;
+        }
+
+        private void MailSend(ManagerEmpresaVM empresa, string simplesNacional, string impostoRenda, string csll, string cofins, string pisPasep, string ipi, string iss, string email)
+        {
+            var mensagemPrincipal = $"Você está recebendo uma cópia dos impostos do seu cliente: {empresa.RazaoSocial}.".ToUpper();
+            var tituloEmail = $"Impostos {empresa.NomeFantasia}".ToUpper();
+            var conteudoEmail = Mail.FormataMensagem(EmailFilesHelper.GetTemplate("Templates.ParametroTributario.html").Value, tituloEmail, mensagemPrincipal, empresa.Email);
+
+            Mail.SendNoAttachment(empresa.NomeFantasia, email, tituloEmail, conteudoEmail);
+        }
+
         [OperationRole(PermissionValue = EPermissionValue.Write)]
         public JsonResult ImportaParametro(string id, string mensagem, double simplesNacional, double fcp, double iss, double pispasep, double cofins,
             string numeroRetorno, string modalidade, string versao, string ambiente, string tipoPresencaComprador, string horarioVerao,
             string tipoHorario, string versaoNFSe, string usuarioWebServer, string senhaWebServer, string chaveAutenticacao, string autorizacao,
-              string  tipoTributacaoNFS, string tipoAmbienteNFS, double csll, double inss, double impostoRenda, bool incentivoCultura, bool formatarCodigoISS, string tipoRegimeEspecialTributacao)
+              string tipoTributacaoNFS, string tipoAmbienteNFS, double csll, double inss, double impostoRenda, bool incentivoCultura, bool formatarCodigoISS, string tipoRegimeEspecialTributacao)
         {
             try
             {

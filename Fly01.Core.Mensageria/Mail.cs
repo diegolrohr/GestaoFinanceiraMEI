@@ -19,11 +19,50 @@ namespace Fly01.Core.Mensageria
                     SendEmail(item, nomeRemetente, tituloEmail, corpoEmail, anexo, tipoAnexo);
                 }
             }
-            else 
-                SendEmail(emailDestinatario, nomeRemetente, tituloEmail, corpoEmail, anexo, tipoAnexo);            
+            else
+                SendEmail(emailDestinatario, nomeRemetente, tituloEmail, corpoEmail, anexo, tipoAnexo);
         }
 
-        private static void SendEmail(string emailDestinatario, string nomeRemetente, string tituloEmail, string corpoEmail, Stream anexo, string tipoAnexo) {
+        public static void SendNoAttachment(string nomeRemetente, string emailDestinatario, string tituloEmail, string corpoEmail)
+        {
+            var emailsDestintario = emailDestinatario.Split(';');
+            if (emailsDestintario.Length > 1)
+            {
+                foreach (var item in emailsDestintario)
+                {
+                    SendEmailNoAttachment(emailDestinatario, nomeRemetente, tituloEmail, corpoEmail);
+                }
+            }
+            else
+                SendEmailNoAttachment(emailDestinatario, nomeRemetente, tituloEmail, corpoEmail);
+        }
+
+        private static void SendEmailNoAttachment(string emailDestinatario, string nomeRemetente, string tituloEmail, string corpoEmail)
+        {
+
+            var from = new MailAddress(ConfigurationManager.AppSettings["EmailRemetente"], nomeRemetente);
+            var to = new MailAddress(emailDestinatario);
+            var message = new MailMessage(from, to)
+            {
+                Subject = tituloEmail,
+                Body = corpoEmail,
+                IsBodyHtml = true
+            };
+
+            try
+            {
+                SmtpClient client = ConfigSmtpClient();
+
+                client.Send(message);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        private static void SendEmail(string emailDestinatario, string nomeRemetente, string tituloEmail, string corpoEmail, Stream anexo, string tipoAnexo)
+        {
 
             var from = new MailAddress(ConfigurationManager.AppSettings["EmailRemetente"], nomeRemetente);
             var to = new MailAddress(emailDestinatario);
@@ -41,7 +80,7 @@ namespace Fly01.Core.Mensageria
                 else
                     message.Attachments.Add(new Attachment(anexo, $"{tituloEmail}" + tipoAnexo, System.Net.Mime.MediaTypeNames.Application.Pdf));
             }
-                
+
 
             try
             {
@@ -77,7 +116,7 @@ namespace Fly01.Core.Mensageria
                     else
                         message.Attachments.Add(new Attachment(anexo, $"{tituloEmail}" + tiposAnexos[i]));
                     i++;
-                }              
+                }
             }
 
 

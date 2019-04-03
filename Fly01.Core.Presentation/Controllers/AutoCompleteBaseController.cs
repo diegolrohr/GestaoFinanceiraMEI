@@ -373,5 +373,29 @@ namespace Fly01.Core.Presentation.Controllers
 
             return GetJson(filterObjects);
         }
+
+        public JsonResult AliquotaSimplesNacional(string term, string prefilter)
+        {
+            var resourceName = AppDefaults.GetResourceName(typeof(AliquotaSimplesNacionalVM));
+            var queryString = AppDefaults.GetQueryStringDefault();
+
+            queryString.AddParam("$filter", $"tipoFaixaReceitaBruta eq {AppDefaults.APIEnumResourceName}TipoFaixaReceitaBruta'{prefilter}'");
+            queryString.AddParam("$orderby", "tipoEnquadramentoEmpresa");
+
+            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<AliquotaSimplesNacionalVM>>(resourceName, queryString).Data
+                                select new
+                                {
+                                    id = item.TipoEnquadramentoEmpresa,//utilizado no form
+                                    label = EnumHelper.GetValue(typeof(TipoEnquadramentoEmpresa), item.TipoEnquadramentoEmpresa),
+                                    simplesNacional = item.SimplesNacional,
+                                    impostoRenda = item.ImpostoRenda,
+                                    csll = item.Csll,
+                                    cofins = item.Cofins,
+                                    ipi = item.Ipi,
+                                    iss = item.Iss
+                                };
+
+            return GetJson(filterObjects);
+        }
     }
 }

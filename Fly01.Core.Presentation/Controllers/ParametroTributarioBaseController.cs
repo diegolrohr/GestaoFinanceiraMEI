@@ -38,9 +38,9 @@ namespace Fly01.Core.Presentation.Controllers
                 return Json(new
                 {
                     aliquotaSimplesNacional = "0",
-                    aliquotaISS = "5",
-                    aliquotaPISPASEP = "0,65",
-                    aliquotaCOFINS = "2",
+                    aliquotaISS = "0",
+                    aliquotaPISPASEP = "0",
+                    aliquotaCOFINS = "0",
                     numeroRetornoNF = "1",
                     mensagemPadraoNota = "Nota Fiscal.",
                     tipoVersaoNFe = "v4",

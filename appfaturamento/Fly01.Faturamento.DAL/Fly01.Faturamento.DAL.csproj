@@ -500,9 +500,9 @@
     <Compile Include="Migrations\201904011647111_AddAliquotaSimplesNacional.Designer.cs">
       <DependentUpon>201904011647111_AddAliquotaSimplesNacional.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201904031411137_CreateFunctionGetFaturamentoReport.cs" />
-    <Compile Include="Migrations\201904031411137_CreateFunctionGetFaturamentoReport.Designer.cs">
-      <DependentUpon>201904031411137_CreateFunctionGetFaturamentoReport.cs</DependentUpon>
+    <Compile Include="Migrations\201904031748492_CreateFunctionGetReportFaturamento.cs" />
+    <Compile Include="Migrations\201904031748492_CreateFunctionGetReportFaturamento.Designer.cs">
+      <DependentUpon>201904031748492_CreateFunctionGetReportFaturamento.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\AliquotaSimplesNacionalDataInitializer.cs" />
@@ -875,8 +875,8 @@
     <EmbeddedResource Include="Migrations\201904011647111_AddAliquotaSimplesNacional.resx">
       <DependentUpon>201904011647111_AddAliquotaSimplesNacional.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201904031411137_CreateFunctionGetFaturamentoReport.resx">
-      <DependentUpon>201904031411137_CreateFunctionGetFaturamentoReport.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201904031748492_CreateFunctionGetReportFaturamento.resx">
+      <DependentUpon>201904031748492_CreateFunctionGetReportFaturamento.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

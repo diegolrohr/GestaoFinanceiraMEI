@@ -416,6 +416,8 @@
     <Content Include="Views\NotaFiscalEntrada\Functions\_fnEnviarEmailNFe.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnClonarPedido.cshtml" />
     <Content Include="Views\Kit\Functions\_fnDrawCallbackCalcProdutos.cshtml" />
+    <Content Include="Views\AliquotaSimplesNacional\Functions\_fnChangeTipoEnquadramentoEmpresa.cshtml" />
+    <Content Include="Views\AliquotaSimplesNacional\Functions\_fnChangeTipoFaixaReceitaBruta.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

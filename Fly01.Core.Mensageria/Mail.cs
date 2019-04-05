@@ -153,6 +153,10 @@ namespace Fly01.Core.Mensageria
         {
             return FormatTextMail(htmlContent, tituloEmail, mensagemPrincipal, "", emailEmpresa);
         }
+        public static string FormataMensagem(string htmlContent, string tituloEmail, string mensagemPrincipal, string mensagemComplemento, string emailEmpresa, string simplesNacional, string impostoRenda, string csll, string cofins, string pisPasep, string ipi, string iss, string fcp, string inss)
+        {
+            return FormatTextMailParametroTributario(htmlContent, tituloEmail, mensagemPrincipal, mensagemComplemento, emailEmpresa, simplesNacional, impostoRenda, csll, cofins, pisPasep, ipi, iss, fcp, inss);
+        }
 
         public static string FormatTextMail(string htmlContent, string tituloEmail, string mensagemPrincipal, string mensagemComplemento, string emailEmpresa)
         {
@@ -161,6 +165,25 @@ namespace Fly01.Core.Mensageria
                 .Replace("{MENSAGEM_1}", HttpUtility.HtmlEncode(mensagemPrincipal))
                 .Replace("{MENSAGEM_2}", HttpUtility.HtmlEncode(mensagemComplemento))
                 .Replace("{EMAIL_EMPRESA}", HttpUtility.HtmlEncode(emailEmpresa))
+            ).ToString();
+        }
+
+        public static string FormatTextMailParametroTributario(string htmlContent, string tituloEmail, string mensagemPrincipal, string mensagemComplemento, string emailEmpresa, string simplesNacional,
+             string impostoRenda, string csll, string cofins, string pisPasep, string ipi, string iss, string fcp, string inss)
+        {
+            return new StringBuilder(htmlContent
+                .Replace("{TITULO_EMAIL}", HttpUtility.HtmlEncode(tituloEmail))
+                .Replace("{MENSAGEM_1}", HttpUtility.HtmlEncode(mensagemPrincipal))
+                .Replace("{MENSAGEM_2}", HttpUtility.HtmlEncode(mensagemComplemento))
+                .Replace("{EMAIL_EMPRESA}", HttpUtility.HtmlEncode(emailEmpresa))
+                .Replace("{ICMS}", HttpUtility.HtmlEncode(simplesNacional))
+                .Replace("{FCP}", HttpUtility.HtmlEncode(fcp))
+                .Replace("{PIS/PASEP}", HttpUtility.HtmlEncode(pisPasep))
+                .Replace("{COFINS}", HttpUtility.HtmlEncode(cofins))
+                .Replace("{ISS}", HttpUtility.HtmlEncode(iss))
+                .Replace("{CSLL}", HttpUtility.HtmlEncode(csll))
+                .Replace("{INSS}", HttpUtility.HtmlEncode(inss))
+                .Replace("{IR}", HttpUtility.HtmlEncode(impostoRenda))
             ).ToString();
         }
     }

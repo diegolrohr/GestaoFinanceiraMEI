@@ -31,5 +31,14 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
 
         [JsonProperty("iss")]
         public double Iss { get; set; }
+
+        [JsonProperty("isOnCadastroParametros")]
+        public bool IsOnCadastroParametros { get; set; }
+
+        [JsonProperty("enviarEmailContador")]
+        public bool EnviarEmailContador { get; set; }
+
+        [JsonProperty("emailContador")]
+        public string EmailContador { get; set; }
     }
 }

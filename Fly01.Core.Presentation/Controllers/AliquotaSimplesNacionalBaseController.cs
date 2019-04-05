@@ -4,6 +4,7 @@ using Fly01.Core.Presentation.Commons;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
+using Fly01.uiJS.Classes.Helpers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,12 @@ namespace Fly01.Core.Presentation.Controllers
             throw new NotImplementedException();
         }
 
+        public override JsonResult Create(T entityVM)
+        {
+            //salvar novo parametro tributario
+            throw new NotImplementedException();
+        }
+
         public ContentResult FormModal(bool isOnCadastroParametros = false)
         {
             ModalUIForm config = new ModalUIForm()
@@ -41,8 +48,9 @@ namespace Fly01.Core.Presentation.Controllers
                 ConfirmAction = new ModalUIAction() { Label = isOnCadastroParametros ? "Aplicar" : "Salvar" },
                 Action = new FormUIAction
                 {
+                    Create = Url.Action("Create")
                 },
-                //ReadyFn = "fnFormReadyAliquotaSimplesNacional",
+                ReadyFn = "fnFormReadyAliquotaSimplesNacional",
                 Id = "fly01mdlfrmAliquotaSimplesNacional"
             };
 
@@ -123,6 +131,30 @@ namespace Fly01.Core.Presentation.Controllers
                 Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
             });
 
+            if (!isOnCadastroParametros)
+            {
+                config.Elements.Add(new InputCheckboxUI
+                {
+                    Id = "enviarEmailContador",
+                    Class = "col s12 m4",
+                    Label = "Enviar e-mail para contador",
+                    DomEvents = new List<DomEventUI>
+                {
+                    new DomEventUI { DomEvent = "change", Function = "fnChkEnviarEmailContador" }
+                }
+                });
+                config.Elements.Add(new InputEmailUI { Id = "emailContador", Class = "col s12 m4", Label = "E-mail do Contador", MaxLength = 100, });
+
+                config.Helpers.Add(new TooltipUI
+                {
+                    Id = "enviarEmailContador",
+                    Tooltip = new HelperUITooltip()
+                    {
+                        Text = "Se marcar esta opção, ao salvar as alíquotas no seu cadastro de parâmetros tributários, também será enviado ao e-mail informado uma cópia das alíquotas configuradas, para você solicitar a conferência e confirmação junto ao seu contador, para evitar problemas fiscais."
+                    }
+                });
+            }
+            
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
     }

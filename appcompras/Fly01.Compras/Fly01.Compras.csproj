@@ -418,6 +418,8 @@
     <Content Include="Views\AliquotaSimplesNacional\Functions\_fnChangeTipoFaixaReceitaBruta.cshtml" />
     <Content Include="Views\ParametroTributario\Functions\_fnEnviarParametrosEmail.cshtml" />
     <Content Include="Views\ParametroTributario\Functions\_fnFormClickEnvioEmailContador.cshtml" />
+    <Content Include="Views\AliquotaSimplesNacional\Functions\_fnFormReadyAliquotaSimplesNacional.cshtml" />
+    <Content Include="Views\AliquotaSimplesNacional\Functions\_fnChkEnviarEmailContador.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

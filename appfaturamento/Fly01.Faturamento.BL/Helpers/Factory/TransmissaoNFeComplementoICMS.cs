@@ -55,7 +55,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
             return transmissao;
         }
 
-        public override bool PagaFrete()
+        public override bool SomaFrete()
         {
             return false;
         }

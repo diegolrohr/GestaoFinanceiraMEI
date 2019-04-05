@@ -15,6 +15,7 @@ using Fly01.Core.ViewModels;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.Core.Mensageria;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace Fly01.Core.Presentation.Controllers
 {
@@ -125,7 +126,7 @@ namespace Fly01.Core.Presentation.Controllers
             config.Elements.Add(new InputEmailUI
             {
                 Id = "emailId",
-                Class = "col s12 m6",
+                Class = "col s12",
                 Label = "E-mail do seu Contador"
             });
 
@@ -417,7 +418,7 @@ namespace Fly01.Core.Presentation.Controllers
             return cfg;
         }
 
-        public JsonResult EnviaEmailContador(string simplesNacional, string impostoRenda, string csll, string cofins, string pisPasep, string ipi, string iss, string email)
+        public JsonResult EnviaEmailContador(string simplesNacional, string impostoRenda, string csll, string cofins, string pisPasep, string ipi, string iss, string email, string fcp, string inss)
         {
             try
             {
@@ -426,7 +427,7 @@ namespace Fly01.Core.Presentation.Controllers
                 var ResponseError = ValidarDadosEmail(empresa, email);
                 if (ResponseError != null) return ResponseError;
 
-                MailSend(empresa, simplesNacional, impostoRenda, csll, cofins, pisPasep, ipi, iss, email);
+                MailSend(empresa, simplesNacional, impostoRenda, csll, cofins, pisPasep, ipi, iss, email, fcp, inss);
 
                 return Json(new { success = true }, JsonRequestBehavior.AllowGet);
             }
@@ -439,18 +440,20 @@ namespace Fly01.Core.Presentation.Controllers
 
         private JsonResult ValidarDadosEmail(ManagerEmpresaVM empresa, string email)
         {
-
-            if (string.IsNullOrEmpty(email)) return JsonResponseStatus.GetFailure("Não foi encontrado um email válido para este Fornecedor.");
+            const string pattern = @"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$";
+            if (string.IsNullOrEmpty(email)) return JsonResponseStatus.GetFailure("E-mail do seu contador inválido.");       
+            if (!Regex.IsMatch(email ?? "", pattern)) return JsonResponseStatus.GetFailure("E-mail do seu contador inválido.");
             if (string.IsNullOrEmpty(empresa.Email)) return JsonResponseStatus.GetFailure("Você ainda não configurou um email válido para sua empresa.");
 
             return null;
         }
 
-        private void MailSend(ManagerEmpresaVM empresa, string simplesNacional, string impostoRenda, string csll, string cofins, string pisPasep, string ipi, string iss, string email)
+        private void MailSend(ManagerEmpresaVM empresa, string simplesNacional, string impostoRenda, string csll, string cofins, string pisPasep, string ipi, string iss, string email, string fcp, string inss)
         {
-            var mensagemPrincipal = $"Você está recebendo uma cópia dos impostos do seu cliente: {empresa.RazaoSocial}.".ToUpper();
-            var tituloEmail = $"Impostos {empresa.NomeFantasia}".ToUpper();
-            var conteudoEmail = Mail.FormataMensagem(EmailFilesHelper.GetTemplate("Templates.ParametroTributario.html").Value, tituloEmail, mensagemPrincipal, empresa.Email);
+            var mensagemPrincipal = $"Razão Social: {empresa.RazaoSocial}".ToUpper();
+            var tituloEmail = $"Este e-mail é referente aos impostos da empresa: {empresa.NomeFantasia}".ToUpper();
+            var mensagemComplemento = $"CNPJ: {empresa.CNPJ}".ToUpper();
+            var conteudoEmail = Mail.FormataMensagem(EmailFilesHelper.GetTemplate("Templates.ParametroTributario.html").Value, tituloEmail, mensagemPrincipal, mensagemComplemento,empresa.Email, simplesNacional, impostoRenda, csll, cofins, pisPasep, ipi, iss, fcp, inss);
 
             Mail.SendNoAttachment(empresa.NomeFantasia, email, tituloEmail, conteudoEmail);
         }

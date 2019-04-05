@@ -119,7 +119,7 @@ namespace Fly01.Faturamento.Controllers
                     {
                         Title = "Cadastro",
                         Id = "stepCadastro",
-                        Quantity = 12,
+                        Quantity = 13,
                     },
                     new FormWizardUIStep()
                     {
@@ -192,6 +192,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "tipoOrdemVenda", Value = "Pedido" });
             config.Elements.Add(new InputHiddenUI { Id = "grupoTributarioPadraoTipoTributacaoICMS" });
             config.Elements.Add(new InputNumbersUI { Id = "numero", Class = "col s12 m2", Label = "Número", Disabled = true });
+            config.Elements.Add(new InputHiddenUI { Id = "cfopDescricao" });
 
             config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m3", Label = "Data", Required = true });
 
@@ -532,7 +533,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "naturezaOperacao",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Se marcar Faturar, informe a natureza de operação para a nota fiscal a ser emitida."
+                    Text = "Se marcar Faturar, informe a natureza de operação para a nota fiscal a ser emitida. Quando for um novo pedido, o sistema aplica a descrição do cfop configurado no grupo tributário do primeiro produto adicionado. Confirme e altere se necessário."
                 }
             });
             config.Helpers.Add(new TooltipUI
@@ -540,7 +541,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "totalFrete",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Valor frete a ser pago, se for Normal(CIF/Remetente) ou Devolução(FOB/Destinatário)."
+                    Text = "Valor frete a ser pago pelo cliente quando for FOB."
                 }
             });
             config.Helpers.Add(new TooltipUI

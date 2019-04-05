@@ -81,12 +81,10 @@
         var tipoFrete = $('#fly01mdlfrmVisualizarOrdemVenda select#tipoFrete').val();
         var tipoVenda = $('#fly01mdlfrmVisualizarOrdemVenda select#tipoVenda').val();
         var tipoNfeComplementar = $('#fly01mdlfrmVisualizarOrdemVenda select#tipoNfeComplementar').val();
-        var calculaFrete = (
-                ((tipoFrete == "CIF" || tipoFrete == "Remetente") && tipoVenda == "Normal") ||
-                ((tipoFrete == "FOB" || tipoFrete == "Destinatario") && tipoVenda == "Devolucao")
-            );
-
-        if (calculaFrete) {
+        var somaFrete = (
+            (tipoFrete == "FOB" || tipoFrete == "Destinatario")
+        );
+        if (somaFrete) {
             valorFrete = TryParseFloat(noComma($('input#valorFrete').val()));
         }
 

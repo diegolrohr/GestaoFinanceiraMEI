@@ -12,12 +12,15 @@
                 pisPasep: $('#aliquotaPISPASEP').val(),
                 ipi: "",
                 iss: $('#aliquotaISS').val(),
-                email: $('#emailId').val()
+                email: $('#emailId').val(),
+                fcp: $('#aliquotaFCP').val(),
+                inss: $('#aliquotaINSS').val(),
             },
             type: "POST",
             success: function (data) {
                 $$$.loading.stop();
                 if (data.success) {
+                    $$$._.fly01mdlfrmEnvioEmailContador.close();
                     $$$.toast("Email enviado com sucesso.", "success");
                 } else {
                     $$$.fn.submitErrorHandler(null, data.message);

@@ -51,6 +51,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
         /// Posterior a execução do passo 1 no banco, realizar a chamada deste controller via postamn, para
         /// Importante***, especificar no header o AppUser no formato: 5394881@totvs.com.br, neste exemplo 5394881 é o número do ticket em que o
         /// cliente autorizou a manipulação dos dados em prod
+        /// 389 registros de baixas demorou 
         /// Cria as novas movimentações e exclui as antigas, baseadas nas baixas das contas financeiras, atualiza o valor pago e status das contas
         /// gerando novos registros no saldohistorico com o saldo do dia certo, porém o consolidado ainda errado.
         /// Por isso necessário rodar o script do fim da página, um cursor que atualiza o consolidado, baseado no saldo do dia
@@ -72,61 +73,64 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 int countContaPagar = 0, countBaixaPagar = 0, countContaReceber = 0, countBaixaReceber = 0;
                 using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
                 {
-                    using (UnitOfWork unitOfWork2 = new UnitOfWork(ContextInitialize))
-                    {
-                        #region Recuperar todas as contas a Pagar com alguma baixa
-                        foreach (var contaPagar in unitOfWork.ContaPagarBL.All.AsNoTracking().Where(x => x.StatusContaBancaria == StatusContaBancaria.Pago || x.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente))
-                        {
-                            countContaPagar++;
-                            var contaPagarUpdate = unitOfWork2.ContaPagarBL.Find(contaPagar.Id);
-                            contaPagarUpdate.ValorPrevisto = Math.Abs(contaPagarUpdate.ValorPrevisto);
-                            contaPagarUpdate.ValorPago = 0.0;
-                            unitOfWork2.ContaPagarBL.Update(contaPagarUpdate);
+                    //using (UnitOfWork unitOfWork2 = new UnitOfWork(ContextInitialize))
+                    //{
+                    //    #region Recuperar todas as contas a Pagar com alguma baixa
+                    //    foreach (var contaPagar in unitOfWork.ContaPagarBL.All.AsNoTracking().Where(x => x.StatusContaBancaria == StatusContaBancaria.Pago || x.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente))
+                    //    {
+                    //        countContaPagar++;
+                    //        var contaPagarUpdate = unitOfWork2.ContaPagarBL.Find(contaPagar.Id);
+                    //        contaPagarUpdate.ValorPrevisto = Math.Abs(contaPagarUpdate.ValorPrevisto);
+                    //        contaPagarUpdate.ValorPago = 0.0;
+                    //        unitOfWork2.ContaPagarBL.Update(contaPagarUpdate);
 
-                            foreach (var baixaPagar in unitOfWork.ContaFinanceiraBaixaBL.All.AsNoTracking().Where(x => x.ContaFinanceiraId == contaPagar.Id))
-                            {
-                                countBaixaPagar++;
-                                var baixaPagarDelete = unitOfWork2.ContaFinanceiraBaixaBL.Find(baixaPagar.Id);
-                                unitOfWork2.ContaFinanceiraBaixaBL.DeleteWithoutRecalc(baixaPagarDelete);
-                                unitOfWork2.ContaFinanceiraBaixaBL.Insert(new ContaFinanceiraBaixa()
-                                {
-                                    ContaBancariaId = baixaPagar.ContaBancariaId,
-                                    ContaFinanceiraId = baixaPagar.ContaFinanceiraId,
-                                    Data = baixaPagar.Data,
-                                    Observacao = baixaPagar.Observacao,
-                                    Valor = Math.Abs(baixaPagar.Valor)
-                                });
-                                await unitOfWork2.Save();
-                            }
-                        }
-                        #endregion
-                        #region Recuperar todas as contas a Receber com alguma baixa
-                        foreach (var contaReceber in unitOfWork.ContaReceberBL.All.AsNoTracking().Where(x => x.StatusContaBancaria == StatusContaBancaria.Pago || x.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente))
-                        {
-                            countContaReceber++;
-                            var contaReceberUpdate = unitOfWork2.ContaReceberBL.Find(contaReceber.Id);
-                            contaReceberUpdate.ValorPrevisto = Math.Abs(contaReceberUpdate.ValorPrevisto);
-                            contaReceberUpdate.ValorPago = 0.0;
-                            unitOfWork2.ContaReceberBL.Update(contaReceberUpdate);
+                    //        foreach (var baixaPagar in unitOfWork.ContaFinanceiraBaixaBL.All.AsNoTracking().Where(x => x.ContaFinanceiraId == contaPagar.Id))
+                    //        {
+                    //            countBaixaPagar++;
+                    //            var baixaPagarDelete = unitOfWork2.ContaFinanceiraBaixaBL.Find(baixaPagar.Id);
+                    //            unitOfWork2.ContaFinanceiraBaixaBL.DeleteWithoutRecalc(baixaPagarDelete);
+                    //            unitOfWork2.ContaFinanceiraBaixaBL.Insert(new ContaFinanceiraBaixa()
+                    //            {
+                    //                ContaBancariaId = baixaPagar.ContaBancariaId,
+                    //                ContaFinanceiraId = baixaPagar.ContaFinanceiraId,
+                    //                Data = baixaPagar.Data,
+                    //                Observacao = baixaPagar.Observacao,
+                    //                Valor = Math.Abs(baixaPagar.Valor)
+                    //            });
+                    //            await unitOfWork2.Save();
+                    //        }
+                    //    }
+                    //    #endregion
+                    //    #region Recuperar todas as contas a Receber com alguma baixa
+                    //    foreach (var contaReceber in unitOfWork.ContaReceberBL.All.AsNoTracking().Where(x => x.StatusContaBancaria == StatusContaBancaria.Pago || x.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente))
+                    //    {
+                    //        countContaReceber++;
+                    //        var contaReceberUpdate = unitOfWork2.ContaReceberBL.Find(contaReceber.Id);
+                    //        contaReceberUpdate.ValorPrevisto = Math.Abs(contaReceberUpdate.ValorPrevisto);
+                    //        contaReceberUpdate.ValorPago = 0.0;
+                    //        unitOfWork2.ContaReceberBL.Update(contaReceberUpdate);
 
-                            foreach (var baixaReceber in unitOfWork.ContaFinanceiraBaixaBL.All.AsNoTracking().Where(x => x.ContaFinanceiraId == contaReceber.Id))
-                            {
-                                countBaixaReceber++;
-                                var baixaReceberDelete = unitOfWork2.ContaFinanceiraBaixaBL.Find(baixaReceber.Id);
-                                unitOfWork2.ContaFinanceiraBaixaBL.DeleteWithoutRecalc(baixaReceberDelete);
-                                unitOfWork2.ContaFinanceiraBaixaBL.Insert(new ContaFinanceiraBaixa()
-                                {
-                                    ContaBancariaId = baixaReceber.ContaBancariaId,
-                                    ContaFinanceiraId = baixaReceber.ContaFinanceiraId,
-                                    Data = baixaReceber.Data,
-                                    Observacao = baixaReceber.Observacao,
-                                    Valor = Math.Abs(baixaReceber.Valor)
-                                });
-                                await unitOfWork2.Save();
-                            }
-                        }
-                        #endregion
-                    }
+                    //        foreach (var baixaReceber in unitOfWork.ContaFinanceiraBaixaBL.All.AsNoTracking().Where(x => x.ContaFinanceiraId == contaReceber.Id))
+                    //        {
+                    //            countBaixaReceber++;
+                    //            var baixaReceberDelete = unitOfWork2.ContaFinanceiraBaixaBL.Find(baixaReceber.Id);
+                    //            unitOfWork2.ContaFinanceiraBaixaBL.DeleteWithoutRecalc(baixaReceberDelete);
+                    //            unitOfWork2.ContaFinanceiraBaixaBL.Insert(new ContaFinanceiraBaixa()
+                    //            {
+                    //                ContaBancariaId = baixaReceber.ContaBancariaId,
+                    //                ContaFinanceiraId = baixaReceber.ContaFinanceiraId,
+                    //                Data = baixaReceber.Data,
+                    //                Observacao = baixaReceber.Observacao,
+                    //                Valor = Math.Abs(baixaReceber.Valor)
+                    //            });
+                    //            await unitOfWork2.Save();
+                    //        }
+                    //    }
+                    //    #endregion
+                    //}
+
+                    //comentar ao descomentar em cima, só por causa da assinatura do método
+                    await unitOfWork.Save();
                 }
 
                 sp.Stop();

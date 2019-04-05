@@ -60,7 +60,6 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <EmbeddedResource Include="MailTemplates\Templates\OrdemCompra.html" />
     <Content Include="Reports\ReportImprimirOrcamento.rdlc" />
     <Content Include="Reports\ReportImprimirPedido.rdlc" />
   </ItemGroup>
@@ -108,7 +107,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\FormatTextHelper.cs" />
-    <Compile Include="Helpers\EmailFilesHelper.cs" />
     <Compile Include="Models\Reports\ReportImprimirOrcamento.cs" />
     <Compile Include="Models\Reports\ReportImprimirPedido.cs" />
     <Compile Include="Models\Reports\WebReportViewer.cs" />
@@ -418,6 +416,8 @@
     <Content Include="Views\Kit\Functions\_fnDrawCallbackCalcProdutos.cshtml" />
     <Content Include="Views\AliquotaSimplesNacional\Functions\_fnChangeTipoEnquadramentoEmpresa.cshtml" />
     <Content Include="Views\AliquotaSimplesNacional\Functions\_fnChangeTipoFaixaReceitaBruta.cshtml" />
+    <Content Include="Views\ParametroTributario\Functions\_fnEnviarParametrosEmail.cshtml" />
+    <Content Include="Views\ParametroTributario\Functions\_fnFormClickEnvioEmailContador.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

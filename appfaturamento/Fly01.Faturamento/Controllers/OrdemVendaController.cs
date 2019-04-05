@@ -8,7 +8,6 @@ using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
 using Fly01.Core.ViewModels;
 using Fly01.Core.ViewModels.Presentation.Commons;
-using Fly01.Faturamento.Helpers;
 using Fly01.Faturamento.Models.Reports;
 using Fly01.Faturamento.Models.ViewModel;
 using Fly01.Faturamento.ViewModel;

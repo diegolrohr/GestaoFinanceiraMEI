@@ -17,11 +17,9 @@ using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.uiJS.Enums;
 using Fly01.Core.Mensageria;
 using System.IO;
-using Fly01.Faturamento.Helpers;
 using System.Text;
 using System.IO.Compression;
 using System.Linq;
-using iTextSharp.text.pdf;
 
 namespace Fly01.Faturamento.Controllers
 {

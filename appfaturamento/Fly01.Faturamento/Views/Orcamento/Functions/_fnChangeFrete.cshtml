@@ -5,11 +5,10 @@
         fnEnableInput();
         var tipoFrete = $('select#tipoFrete').val();
         var tipoVenda = $('#tipoVenda').val();
-        var calculaFrete = (
-                ((tipoFrete == "CIF" || tipoFrete == "Remetente") && tipoVenda == "Normal") ||
-                ((tipoFrete == "FOB" || tipoFrete == "Destinatario") && tipoVenda == "Devolucao")
-            );
-        if (calculaFrete) {
+        var freteEmpresa = (
+            (tipoFrete == "CIF" || tipoFrete == "Remetente")
+        );
+        if (freteEmpresa) {
             $('#transportadoraNome').rules("add", { required: true });
         }
         else {

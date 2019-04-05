@@ -55,6 +55,7 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include="Helpers\" />
     <Folder Include="Models\Utils\" />
   </ItemGroup>
   <ItemGroup>
@@ -79,7 +80,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\EmailFilesHelper.cs" />
     <Compile Include="Models\Reports\ReportOrdemServico.cs" />
     <Compile Include="Models\Reports\WebReportViewer.cs" />
     <Compile Include="Models\ViewModel\ValidateVM.cs" />
@@ -115,7 +115,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
-    <EmbeddedResource Include="MailTemplates\Templates\OrdemServico.html" />
     <Content Include="ReportViewerWebForm.aspx" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

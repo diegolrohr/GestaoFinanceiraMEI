@@ -49,6 +49,14 @@
         });
     }
 
+    function fnSetNaturezaOperacao(idItem) {
+        //adicionando o primeiro ou editando o único adicionado
+        if (($$$._.dtPedidoItens.ajax.json().recordsTotal == 0 && idItem.length == 0) || ($$$._.dtPedidoItens.ajax.json().recordsTotal == 1 && idItem.length != 0)) {
+            $('input#naturezaOperacao').val($('input#cfopDescricao').val());
+            $$$.fn.updateTextFields();
+        }
+    }
+
     function fnOverrideSubmitPedidoItem() {
         var myForm = 'form#fly01mdlfrmPedidoItem'
 
@@ -70,6 +78,7 @@
                 data: JSON.stringify(formData),
                 success: function (data) {
                     if (data.success) {
+                        fnSetNaturezaOperacao(formData.id);
                         $$$.toast(data.message, "success");
                         $$$._.dtPedidoItens.refresh();
                         $$$._.fly01mdlfrmPedidoItem.close();

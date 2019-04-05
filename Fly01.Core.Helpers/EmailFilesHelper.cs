@@ -2,7 +2,7 @@
 using System.IO;
 using System.Reflection;
 
-namespace Fly01.OrdemServico.Helpers
+namespace Fly01.Core.Helpers
 {
     public static class EmailFilesHelper
     {

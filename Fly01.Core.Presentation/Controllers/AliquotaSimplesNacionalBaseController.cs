@@ -33,6 +33,7 @@ namespace Fly01.Core.Presentation.Controllers
             throw new NotImplementedException();
         }
 
+        [HttpPost]
         public override JsonResult Create(T entityVM)
         {
             try
@@ -68,14 +69,7 @@ namespace Fly01.Core.Presentation.Controllers
                 };
 
                 var postResponse = RestHelper.ExecutePostRequest("ParametroTributario", JsonConvert.SerializeObject(parametro, JsonSerializerSetting.Default));
-                T postResult = JsonConvert.DeserializeObject<T>(postResponse);
-
-                if (entityVM.EnviarEmailContador)
-                {
-
-                }
-
-                return JsonResponseStatus.Get(new ErrorInfo() { HasError = false }, Operation.Create, postResult.Id);
+                return JsonResponseStatus.Get(new ErrorInfo() { HasError = false }, Operation.Create);
             }
             catch (Exception ex)
             {

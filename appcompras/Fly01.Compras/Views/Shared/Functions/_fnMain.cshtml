@@ -240,4 +240,21 @@
         $(`form#${formId} .nfe-info-tip`).append(legends);
         $(".nfe-tip").css({ "display": "contents", "font-size": "14px" });
     }
+
+    function checkMail(mail) {
+        var er = new RegExp(/^\w+([-+.']\w+)\w+([-.]\w+)\.\w+([-.]\w+)*$/);
+        debugger;
+        if (typeof (mail) == "string") {
+            if (er.test(mail)) {
+                return true;
+            }
+        } else if (typeof (mail) == "object") {
+            if (er.test(mail.value)) {
+                return true;
+            }
+        } else {
+            debugger;
+            return false;
+        }
+    }
 </script>

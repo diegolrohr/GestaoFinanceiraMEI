@@ -148,6 +148,10 @@
     <Compile Include="Migrations\201901221554269_AlterOS.Designer.cs">
       <DependentUpon>201901221554269_AlterOS.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201904081324379_CreateFunctionGetOSReport.cs" />
+    <Compile Include="Migrations\201904081324379_CreateFunctionGetOSReport.Designer.cs">
+      <DependentUpon>201904081324379_CreateFunctionGetOSReport.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
@@ -273,6 +277,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201901221554269_AlterOS.resx">
       <DependentUpon>201901221554269_AlterOS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904081324379_CreateFunctionGetOSReport.resx">
+      <DependentUpon>201904081324379_CreateFunctionGetOSReport.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

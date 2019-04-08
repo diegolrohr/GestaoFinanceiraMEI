@@ -15,7 +15,6 @@ using System.Web.Mvc;
 
 namespace Fly01.Core.Presentation.Controllers
 {
-    //$$$.modal("/AliquotaSimplesNacional/FormModal?idParametro=00000000-0000-0000-0000-000000000000")
     //$$$.modal("/AliquotaSimplesNacional/FormModal?isOnCadastroParametros=false")
     public class AliquotaSimplesNacionalBaseController<T> : BaseController<T> where T : AliquotaSimplesNacionalVM
     {

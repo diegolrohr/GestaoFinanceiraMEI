@@ -399,7 +399,7 @@ namespace Fly01.Core.Presentation.Controllers
                                     impostoRenda = item.ImpostoRenda,
                                     csll = item.Csll,
                                     cofins = item.Cofins,
-                                    ipi = item.Ipi,
+                                    pisPasep = item.PisPasep,
                                     iss = item.Iss
                                 };
 

@@ -10,21 +10,38 @@
             e.preventDefault();
             if (!$(this).valid()) return false;
 
-            $$$.loading.start();
+            if (!$(this).valid()) return false;
 
-            if ($('input#isOnCadastroParametros').val()) {
-                $("form#fly01frm input#aliquotaSimplesNacional").val($("form#fly01mdlfrmAliquotaSimplesNacional input#simplesNacional").val());
-                $("form#fly01frm input#aliquotaImpostoRenda").val($("form#fly01mdlfrmAliquotaSimplesNacional input#impostoRenda").val());
-                $("form#fly01frm input#aliquotaCSLL").val($("form#fly01mdlfrmAliquotaSimplesNacional input#csll").val());
-                $("form#fly01frm input#aliquotaCOFINS").val($("form#fly01mdlfrmAliquotaSimplesNacional input#cofins").val());
-                $("form#fly01frm input#pisPasep").val($("form#fly01mdlfrmAliquotaSimplesNacional input#aliquotaPISPASEP").val());
-                $("form#fly01frm input#iss").val($("form#fly01mdlfrmAliquotaSimplesNacional input#aliquotaISS").val());
+            $$$.loading.start();
+            fly01mdlfrmAliquotaSimplesNacional
+            var dataEmail =
+            {
+                simplesNacional: $("form#fly01mdlfrmAliquotaSimplesNacional input#simplesNacional").val(),
+                impostoRenda: $("form#fly01mdlfrmAliquotaSimplesNacional input#impostoRenda").val(),
+                csll: $("form#fly01mdlfrmAliquotaSimplesNacional input#csll").val(),
+                cofins: $("form#fly01mdlfrmAliquotaSimplesNacional input#cofins").val(),
+                pisPasep: $("form#fly01mdlfrmAliquotaSimplesNacional input#pisPasep").val(),
+                iss: $("form#fly01mdlfrmAliquotaSimplesNacional input#iss").val(),
+                email: $("form#fly01mdlfrmAliquotaSimplesNacional input#emailContador").val(),
+                fcp: "0",
+                inss: "0",
+            };
+
+            if ($('input#isOnCadastroParametros').val() == "True") {
+                $("form#fly01frm input#aliquotaSimplesNacional").val(dataEmail.simplesNacional);
+                $("form#fly01frm input#aliquotaImpostoRenda").val(dataEmail.impostoRenda);
+                $("form#fly01frm input#aliquotaCSLL").val(dataEmail.csll);
+                $("form#fly01frm input#aliquotaCOFINS").val(dataEmail.cofins);
+                $("form#fly01frm input#aliquotaPISPASEP").val(dataEmail.pisPasep);
+                $("form#fly01frm input#aliquotaISS").val(dataEmail.iss);
                 $$$._.fly01mdlfrmAliquotaSimplesNacional.close();
+                $$$.fn.updateTextFields();
+                $$$.loading.stop();
             }
             else {
                 var jsonData = $(this).serializeObject();
                 url = '@Url.Action("Create", "AliquotaSimplesNacional")';
-
+                debugger;
                 $.ajax({
                     contentType: 'application/json; charset=utf-8',
                     dataType: 'json',
@@ -33,11 +50,16 @@
                     data: JSON.stringify({ 'entityVM': jsonData }),
                     success: function success(data) {
                         if (data.success) {
-                            $$$.loading.stop();
-                            var strMsg = "Cadastrado com sucesso.";
-                            if (data.message !== "") strMsg = data.message;
-                            $$$.toast(strMsg, "success");
-                            $$$._.fly01mdlfrmAliquotaSimplesNacional.close();
+                            if (jsonData.enviaEmailContador = "true") {
+                                enviaEmailContador(dataEmail);
+                            }
+                            else {
+                                $$$.loading.stop();
+                                var strMsg = "Cadastrado com sucesso.";
+                                if (data.message !== "") strMsg = data.message;
+                                $$$.toast(strMsg, "success");
+                                $$$._.fly01mdlfrmAliquotaSimplesNacional.close();
+                            }
                         } else {
                             $$$.loading.stop();
                             $$$.fn.submitErrorHandler(null, data.message);
@@ -48,6 +70,29 @@
                         $$$.loading.stop();
                     }
                 });
+            }
+        });
+    }
+
+    function enviaEmailContador(dataEmail) {
+        debugger;
+        $.ajax({
+            url: '@Url.Action("EnviaEmailContador", "ParametroTributario")',
+            data: dataEmail,
+            type: "POST",
+            success: function (data) {
+                $$$.loading.stop();
+                if (data.success) {
+                    $$$._.fly01mdlfrmEnvioEmailContador.close();
+                    $$$.toast("Parâmetros salvos e email enviado com sucesso.", "success");
+                } else {
+                    $$$.fn.submitErrorHandler(null, data.message);
+                }
+            },
+            error: function (jqxhr, textStatus, error) {
+                var err = 'Ocorreu um erro na requisição: ' + textStatus + ", " + error;
+                $$$.toast(err, "error");
+                $$$.loading.stop();
             }
         });
     }

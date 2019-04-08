@@ -196,13 +196,13 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
             {
                 return new Transportadora()
                 {
-                    CNPJ = Cabecalho.Transportadora != null && Cabecalho.Transportadora.TipoDocumento == "J" ? Cabecalho.Transportadora.CPFCNPJ : null,
-                    CPF = Cabecalho.Transportadora != null && Cabecalho.Transportadora.TipoDocumento == "F" ? Cabecalho.Transportadora.CPFCNPJ : null,
+                    CNPJ = Cabecalho.Transportadora != null && Cabecalho.Transportadora?.TipoDocumento == "J" ? Cabecalho.Transportadora?.CPFCNPJ : null,
+                    CPF = Cabecalho.Transportadora != null && Cabecalho.Transportadora?.TipoDocumento == "F" ? Cabecalho.Transportadora?.CPFCNPJ : null,
                     Endereco = Cabecalho.Transportadora?.Endereco,
-                    IE = Cabecalho.Transportadora != null ? (Cabecalho.Transportadora.TipoIndicacaoInscricaoEstadual == TipoIndicacaoInscricaoEstadual.ContribuinteICMS ? Cabecalho.Transportadora.InscricaoEstadual : null) : null,
-                    Municipio = Cabecalho.Transportadora != null && Cabecalho.Transportadora.Cidade != null ? Cabecalho.Transportadora.Cidade.Nome : null,
+                    IE = Cabecalho.Transportadora != null ? (Cabecalho.Transportadora?.TipoIndicacaoInscricaoEstadual == TipoIndicacaoInscricaoEstadual.ContribuinteICMS ? Cabecalho.Transportadora?.InscricaoEstadual : null) : null,
+                    Municipio = Cabecalho.Transportadora != null && Cabecalho?.Transportadora?.Cidade != null ? Cabecalho.Transportadora?.Cidade?.Nome : null,
                     RazaoSocial = Cabecalho.Transportadora?.Nome,
-                    UF = Cabecalho.Transportadora != null && Cabecalho.Transportadora.Estado != null ? Cabecalho.Transportadora.Estado.Sigla : null
+                    UF = Cabecalho.Transportadora != null && Cabecalho?.Transportadora?.Estado != null ? Cabecalho?.Transportadora?.Estado?.Sigla : null
                 };
             }
             else
@@ -318,7 +318,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                     SomatorioDesconto = detalhes.Select(x => x.Produto).Any(x => x != null) ? Math.Round(detalhes.Sum(x => x.Produto.ValorDesconto ?? 0), 2) : 0,
                     SomatorioICMSST = detalhes.Select(x => x.Imposto.ICMS).Any(x => x != null && x.ValorICMSST.HasValue && CSTsICMSST.Contains(((int)x.CodigoSituacaoOperacao).ToString()))
                         ? Math.Round(detalhes.Where(x => x.Imposto.ICMS != null && x.Imposto.ICMS.ValorICMSST.HasValue && CSTsICMSST.Contains(((int)x.Imposto.ICMS.CodigoSituacaoOperacao).ToString())).Sum(x => x.Imposto.ICMS.ValorICMSST.Value), 2) : 0,
-                    ValorFrete = PagaFrete() ? detalhes.Sum(x => x.Produto.ValorFrete.Value) : 0,
+                    ValorFrete = SomaFrete() ? detalhes.Sum(x => x.Produto.ValorFrete.Value) : 0,
                     ValorSeguro = 0,
                     SomatorioIPI = detalhes.Select(x => x.Imposto.IPI).Any(x => x != null) ? Math.Round(detalhes.Where(x => x.Imposto.IPI != null).Sum(x => x.Imposto.IPI.ValorIPI), 2) : 0,
                     SomatorioIPIDevolucao = detalhes.Select(x => x.Imposto.IPI).Any(x => x != null) ? Math.Round(detalhes.Where(x => x.Imposto.IPI != null).Sum(x => x.Imposto.IPI.ValorIPIDevolucao), 2) : 0,
@@ -332,7 +332,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
             };
         }
 
-        public abstract bool PagaFrete();
+        public abstract bool SomaFrete();
 
         public abstract TipoFormaPagamento ObterTipoFormaPagamento();
 

@@ -16,6 +16,7 @@ using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.Core.Mensageria;
 using System.IO;
 using System.Text.RegularExpressions;
+using Fly01.uiJS.Enums;
 
 namespace Fly01.Core.Presentation.Controllers
 {
@@ -139,8 +140,9 @@ namespace Fly01.Core.Presentation.Controllers
 
             if (UserCanWrite)
             {
-                target.Add(new HtmlUIButton { Id = "envioEmail", Label = "Envie para seu contador", OnClickFn = "fnEnviarParametrosEmail", Type = "click" });
                 target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnAtualizaParametro", Type = "submit" });
+                target.Add(new HtmlUIButton { Id = "envioEmail", Label = "Envie para seu contador", OnClickFn = "fnEnviarParametrosEmail", Type = "click" });         
+                target.Add(new HtmlUIButton { Id = "atualizaAliquota", Label = "Atualizar Alíquotas", OnClickFn = "fnAtualizarAliquotas", Type = "click" });
             }
             return target;
         }

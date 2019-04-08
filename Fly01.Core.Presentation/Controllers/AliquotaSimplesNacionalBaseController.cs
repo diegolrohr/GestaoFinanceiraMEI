@@ -1,6 +1,8 @@
 ﻿using Fly01.Core.Defaults;
 using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Helpers;
 using Fly01.Core.Presentation.Commons;
+using Fly01.Core.Rest;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
@@ -34,8 +36,53 @@ namespace Fly01.Core.Presentation.Controllers
 
         public override JsonResult Create(T entityVM)
         {
-            //salvar novo parametro tributario
-            throw new NotImplementedException();
+            try
+            {
+                var parametro = new ParametroTributarioVM()
+                {
+                    AliquotaSimplesNacional = entityVM.SimplesNacional,
+                    AliquotaISS = entityVM.Iss,
+                    AliquotaPISPASEP = entityVM.PisPasep,
+                    AliquotaCOFINS = entityVM.Cofins,
+                    NumeroRetornoNF = "1",
+                    MensagemPadraoNota = "",
+                    TipoVersaoNFe = "v4",
+                    TipoAmbiente = "Producao",
+                    TipoModalidade = "Normal",
+                    AliquotaFCP = 0.0,
+                    TipoPresencaComprador = "Presencial",
+                    HorarioVerao = "Nao",
+                    TipoHorario = "Brasilia",
+                    VersaoNFSe = "0.00",
+                    UsuarioWebServer = "",
+                    SenhaWebServer = "",
+                    ChaveAutenticacao = "",
+                    Autorizacao = "",
+                    TipoTributacaoNFS = "DentroMunicipio",
+                    TipoAmbienteNFS = "Producao",
+                    AliquotaCSLL = entityVM.Csll,
+                    AliquotaINSS = 0.0,
+                    AliquotaImpostoRenda = entityVM.ImpostoRenda,
+                    IncentivoCultura = false,
+                    FormatarCodigoISS = false,
+                    TipoRegimeEspecialTributacao = "MicroEmpresaMunicipal"
+                };
+
+                var postResponse = RestHelper.ExecutePostRequest("ParametroTributario", JsonConvert.SerializeObject(parametro, JsonSerializerSetting.Default));
+                T postResult = JsonConvert.DeserializeObject<T>(postResponse);
+
+                if (entityVM.EnviarEmailContador)
+                {
+
+                }
+
+                return JsonResponseStatus.Get(new ErrorInfo() { HasError = false }, Operation.Create, postResult.Id);
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
         }
 
         public ContentResult FormModal(bool isOnCadastroParametros = false)
@@ -116,9 +163,9 @@ namespace Fly01.Core.Presentation.Controllers
             });
             config.Elements.Add(new InputCustommaskUI
             {
-                Id = "ipi",
+                Id = "pisPasep",
                 Class = "col s12 m4",
-                Label = "IPI",
+                Label = "PIS/PASEP",
                 Disabled = true,
                 Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
             });

@@ -1,8 +1,54 @@
 ﻿<script>
     function fnFormReadyAliquotaSimplesNacional() {
-        
         $$$.fn.updateTextFields();
+        fnBindOverrideSubmit();
+    }
 
-        //override submit form
+    function fnBindOverrideSubmit() {
+        $("form#fly01mdlfrmAliquotaSimplesNacional").off("submit");
+        $("form#fly01mdlfrmAliquotaSimplesNacional").on("submit", function (e) {
+            e.preventDefault();
+            if (!$(this).valid()) return false;
+
+            $$$.loading.start();
+
+            if ($('input#isOnCadastroParametros').val()) {
+                $("form#fly01frm input#aliquotaSimplesNacional").val($("form#fly01mdlfrmAliquotaSimplesNacional input#simplesNacional").val());
+                $("form#fly01frm input#aliquotaImpostoRenda").val($("form#fly01mdlfrmAliquotaSimplesNacional input#impostoRenda").val());
+                $("form#fly01frm input#aliquotaCSLL").val($("form#fly01mdlfrmAliquotaSimplesNacional input#csll").val());
+                $("form#fly01frm input#aliquotaCOFINS").val($("form#fly01mdlfrmAliquotaSimplesNacional input#cofins").val());
+                $("form#fly01frm input#pisPasep").val($("form#fly01mdlfrmAliquotaSimplesNacional input#aliquotaPISPASEP").val());
+                $("form#fly01frm input#iss").val($("form#fly01mdlfrmAliquotaSimplesNacional input#aliquotaISS").val());
+                $$$._.fly01mdlfrmAliquotaSimplesNacional.close();
+            }
+            else {
+                var jsonData = $(this).serializeObject();
+                url = '@Url.Action("Create", "AliquotaSimplesNacional")';
+
+                $.ajax({
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    type: 'POST',
+                    url: url,
+                    data: JSON.stringify({ 'entityVM': jsonData }),
+                    success: function success(data) {
+                        if (data.success) {
+                            $$$.loading.stop();
+                            var strMsg = "Cadastrado com sucesso.";
+                            if (data.message !== "") strMsg = data.message;
+                            $$$.toast(strMsg, "success");
+                            $$$._.fly01mdlfrmAliquotaSimplesNacional.close();
+                        } else {
+                            $$$.loading.stop();
+                            $$$.fn.submitErrorHandler(null, data.message);
+                        }
+                    },
+                    error: function error(jXHR, textStatus) {
+                        $$$.toast(textStatus, "error");
+                        $$$.loading.stop();
+                    }
+                });
+            }
+        });
     }
 </script>

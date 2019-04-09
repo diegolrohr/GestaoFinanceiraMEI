@@ -562,7 +562,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Id = "inscricaoEstadualId",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Verificamos que você não possui cadastrado sua Inscrição Estadual nos dados de sua Empresa. Por favor, insira sua inscrição estadual para realizarmos o upload do certificado digital."
+                    Text = "Verificamos que você não possui cadastrado sua Inscrição Estadual nos dados de sua Empresa. Por favor, insira sua inscrição estadual para realizarmos a atualização dos seus parâmetros tributários."
                 }
             });
 

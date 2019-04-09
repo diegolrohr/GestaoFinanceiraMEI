@@ -9,11 +9,11 @@
             },
             success: function (response) {
                 if (response.success) {
+                    $$$.loading.stop();
                     $$$._.fly01mdlfrmAtualizaIE.close();
-                    fnAtualizaParametro();
+                    $$$.toast("Inscrição estadual atualizada com sucesso.", "success");
                 }
                 else {
-                    $$$.loading.stop();
                     $$$.fn.submitErrorHandler(null, response.message);
                 }
             }

@@ -7,31 +7,36 @@
             $("input#enviarEmailContador").prop("checked", true);
         }
         fnSetInformacoes();
+        $('.collapsible').collapsible();
         fnBindOverrideSubmit();
     }
 
     function fnSetInformacoes() {
-        //$("#infoAliquotasField").text('O Simples Nacional é composto por 5 anexos (Lei Complementar 155). Cada anexo possui faixas de alíquotas diferentes (Lei Complementar 123). Com base nessas informações o sistema irá sugerir as alíquotas '
-        //    + 'de acordo com as opções escolhidas. Para ajudar, utilize a opção de enviar um e-mail com as alíquotas configuradas, para o seu contador. '
-        //    + 'Importante! Cosulte sempre o seu contador para auxiliar nas configurações de alíquotas e evitar problemas fiscais. Peça também para seu contador checar se o seu CNAE se enquadra para o Simples Nacional.');
-
-        ////http://www.planalto.gov.br/ccivil_03/leis/LCP/Lcp155.htm
-        //http://www.planalto.gov.br/ccivil_03/leis/LCP/Lcp123.htm
-        //$("#infoAliquotasField").css("white-space", "normal");
-        //$("#infoAliquotasField").css("color", "red");
-
-        $("#infoAliquotasField")[0].innerText = "";
-        var textAliquota = [
-            createElem("span", null, "O Simples Nacional é composto por 5 anexos (Lei Complementar 155). Cada anexo possui faixas de alíquotas diferentes (Lei Complementar 123)."),
+        var textAliquotas = [
+            createElem("span", null, "O Simples Nacional é composto por 5 anexos "),
+            createElem("a", { "target": "_blank", "href": "http://www.planalto.gov.br/ccivil_03/leis/LCP/Lcp155.htm" }, "(Lei Complementar 155)."),
+            createElem("br"),
+            createElem("span", null, "Cada anexo possui faixas de alíquotas diferentes "),
+            createElem("a", { "target": "_blank", "href": "http://www.planalto.gov.br/ccivil_03/leis/LCP/Lcp123.htm" }, "(Lei Complementar 123)."),
             createElem("br"),
             createElem("span", null, "O sistema irá sugerir as alíquotas de acordo com as opções escolhidas."),
             createElem("br"),
             createElem("span", null, "Utilize a opção de enviar um e-mail com as alíquotas configuradas, para o seu contador."),
             createElem("br"),
-            createElem("span", null, "Importante! Cosulte sempre o seu contador para auxiliar nas configurações de alíquotas e evitar problemas fiscais."),
-            createElem("span", null, "Peça também para seu contador checar se o seu CNAE se enquadra para o Simples Nacional."),
+            createElem("span", null, "Importante! Consulte sempre o seu contador para auxiliar nas configurações de alíquotas e evitar problemas fiscais."),
+            createElem("br"),
+            createElem("span", null, "Peça também para seu contador checar se o seu CNAE se enquadra ao regime tributário Simples Nacional."),
+            createElem("br"),
         ];
-        $("#infoAliquotasField").append(createElem("span", { "class": "text-justify", "style": "color:red" }, textAliquota));
+
+        $("#infoAliquotasField")[0].innerText = "";
+        $("#infoAliquotasField").append(createElem("ul",
+            { "class": "collapsible", "data-collapsible": "accordion" },
+            createElem("li", null, [
+                createElem("div", { "class": "collapsible-header" }, createElem("h6", { "class": "orange-text light" }, "Informações Importantes!")),
+                createElem("div", { "class": "collapsible-body" }, textAliquotas)
+            ])
+        ));
     }
 
     function fnBindOverrideSubmit() {
@@ -79,7 +84,6 @@
                 disableFields();
 
                 url = '@Url.Action("Create", "AliquotaSimplesNacional")';
-                debugger;
                 $.ajax({
                     contentType: 'application/json',
                     dataType: 'json',
@@ -88,13 +92,11 @@
                     data: JSON.stringify(jsonData),
                     success: function success(data) {
                         if (data.success) {
-                            debugger;
                             var strMsg = "Cadastrado com sucesso.";
                             if (data.message !== "") strMsg = data.message;
                             $$$.toast(strMsg, "success");
                             $$$.loading.stop();
                             $$$._.fly01mdlfrmAliquotaSimplesNacional.close();
-                            debugger;
                             if (jsonData.enviarEmailContador == true) {
                                 enviaEmailContador(dataEmail);
                             }
@@ -130,8 +132,7 @@
         $("form#fly01mdlfrmAliquotaSimplesNacional input#iss").attr('disabled', 'disabled');
     }
 
-    function enviaEmailContador(dataEmail) {
-        debugger;
+    function enviaEmailContador(dataEmail) {        
         $$$.loading.start();
         $.ajax({
             url: '@Url.Action("EnviaEmailContador", "ParametroTributario")',

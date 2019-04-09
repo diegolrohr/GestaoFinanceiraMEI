@@ -2,12 +2,12 @@
     function fnChkEnviarEmailContador() {
         if ($('input#enviarEmailContador:checked').val() == "true") {
             $("input#emailContador").rules("add", { required: true });
-            $('input#emailContador').attr("disabled", "disabled");
+            $('input#emailContador').removeAttr("disabled");
         }
         else {
             $("input#emailContador").rules("remove", "required");
             $('input#emailContador').removeClass("invalid");
-            $('input#emailContador').removeAttr("disabled");
+            $('input#emailContador').attr("disabled", "disabled");
         }
     }
 </script>

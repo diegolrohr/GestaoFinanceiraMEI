@@ -3,7 +3,9 @@
 
     function fnFormReadyAliquotaSimplesNacional() {
         $$$.fn.updateTextFields();
-
+        if($('input#isOnCadastroParametros').val() == "False"){
+            $("input#enviarEmailContador").prop("checked", true);
+        }
         fnBindOverrideSubmit();
     }
 
@@ -12,11 +14,10 @@
         $("form#fly01mdlfrmAliquotaSimplesNacional").on("submit", function (e) {
             e.preventDefault();
             if (!$(this).valid()) return false;
-
-            //if ($("input#enviarEmailContador").prop("checked") == true && !checkEmail($("form#fly01mdlfrmAliquotaSimplesNacional input#emailContador").val())) {
-            //    $$$.toast("E-mail do contador inválido", "error");
-            //    return false;
-            //}
+            if ($("form#fly01mdlfrmAliquotaSimplesNacional #tipoEnquadramentoEmpresaDescricao").val() == "") {
+                $$$.toast("Informe o enquadramento da Empresa", "error");
+                return false;
+            }
 
             $$$.loading.start();
             fly01mdlfrmAliquotaSimplesNacional
@@ -33,6 +34,7 @@
                 inss: "0",
             };
 
+            //Atualiza dados da tela
             if ($('input#isOnCadastroParametros').val() == "True") {
                 $("form#fly01frm input#aliquotaSimplesNacional").val(dataEmail.simplesNacional);
                 $("form#fly01frm input#aliquotaImpostoRenda").val(dataEmail.impostoRenda);
@@ -43,8 +45,9 @@
                 $$$._.fly01mdlfrmAliquotaSimplesNacional.close();
                 $$$.fn.updateTextFields();
                 $$$.loading.stop();
+                return true;
             }
-            else {
+            else {//ou salva novo parâmetro na home
                 enableFields();
                 var jsonData = $(this).serializeObject();
                 jsonData.enviarEmailContador = $("input#enviarEmailContador").prop("checked") == true;
@@ -66,7 +69,8 @@
                             $$$.toast(strMsg, "success");
                             $$$.loading.stop();
                             $$$._.fly01mdlfrmAliquotaSimplesNacional.close();
-                            if (jsonData.enviarEmailContador = "true") {
+                            debugger;
+                            if (jsonData.enviarEmailContador == true) {
                                 enviaEmailContador(dataEmail);
                             }
                         } else {
@@ -90,7 +94,6 @@
         $("form#fly01mdlfrmAliquotaSimplesNacional input#cofins").removeAttr('disabled');
         $("form#fly01mdlfrmAliquotaSimplesNacional input#pisPasep").removeAttr('disabled');
         $("form#fly01mdlfrmAliquotaSimplesNacional input#iss").removeAttr('disabled');
-        $("form#fly01mdlfrmAliquotaSimplesNacional input#emailContador").removeAttr('disabled');
     }
 
     function disableFields() {
@@ -100,7 +103,6 @@
         $("form#fly01mdlfrmAliquotaSimplesNacional input#cofins").attr('disabled', 'disabled');
         $("form#fly01mdlfrmAliquotaSimplesNacional input#pisPasep").attr('disabled', 'disabled');
         $("form#fly01mdlfrmAliquotaSimplesNacional input#iss").attr('disabled', 'disabled');
-        $("form#fly01mdlfrmAliquotaSimplesNacional input#emailContador").attr('disabled', 'disabled');
     }
 
     function enviaEmailContador(dataEmail) {

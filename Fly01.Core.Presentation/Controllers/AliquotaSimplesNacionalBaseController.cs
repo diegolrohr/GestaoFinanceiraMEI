@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
 
 namespace Fly01.Core.Presentation.Controllers
@@ -33,11 +34,26 @@ namespace Fly01.Core.Presentation.Controllers
             throw new NotImplementedException();
         }
 
+        private JsonResult ValidarDadosEmail(string email)
+        {
+            const string pattern = @"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$";
+            if (string.IsNullOrEmpty(email)) return JsonResponseStatus.GetFailure("E-mail do seu contador inválido.");
+            if (!Regex.IsMatch(email ?? "", pattern)) return JsonResponseStatus.GetFailure("E-mail do seu contador inválido.");
+
+            return null;
+        }
+
         [HttpPost]
         public override JsonResult Create(T entityVM)
         {
             try
             {
+                if (entityVM.EnviarEmailContador)
+                {
+                    var ResponseError = ValidarDadosEmail(entityVM?.EmailContador);
+                    if (ResponseError != null) return ResponseError;
+                }
+
                 var parametro = new ParametroTributarioVM()
                 {
                     AliquotaSimplesNacional = entityVM.SimplesNacional,

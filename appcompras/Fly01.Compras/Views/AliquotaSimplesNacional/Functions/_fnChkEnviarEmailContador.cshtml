@@ -1,0 +1,14 @@
+﻿<script>
+    function fnChkEnviarEmailContador() {
+        if ($('input#enviarEmailContador:checked').val() == "true") {
+            $("input#emailContador").rules("add", { required: true });
+            $('input#emailContador').removeAttr("disabled");
+        }
+        else {
+            $("input#emailContador").rules("remove", "required");
+            $('input#emailContador').removeClass("invalid");
+            $('input#emailContador').attr("disabled", "disabled");
+        }
+    }
+</script>
+

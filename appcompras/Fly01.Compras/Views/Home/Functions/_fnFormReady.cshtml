@@ -14,5 +14,26 @@
         var firstDay = new Date(date.year, date.month, 1);
         $("#btnOrcamento").click();
         $("#dataInicial").val(moment(firstDay).format('YYYY-MM-DD'));
+        verificaParametrosTributarios();
     }
+
+    function verificaParametrosTributarios() {
+        var url = '@Url.Action("ExisteParametroSalvo", "ParametroTributario")';
+        $.ajax({
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            type: 'GET',
+            url: url,
+            success: function success(data) {
+                if (!data.existeParametro) {
+                    $$$.modal("@Url.Action("FormModal", "AliquotaSimplesNacional", new { isOnCadastroParametros = "false" })");
+                }
+            },
+            error: function error(jXHR, textStatus) {
+                $$$.toast(textStatus, "error");
+                $$$.loading.stop();
+            }
+        });
+    }
+
 </script>

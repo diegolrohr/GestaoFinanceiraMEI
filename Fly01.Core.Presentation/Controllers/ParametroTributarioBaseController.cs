@@ -16,6 +16,7 @@ using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.Core.Mensageria;
 using System.IO;
 using System.Text.RegularExpressions;
+using Fly01.uiJS.Enums;
 
 namespace Fly01.Core.Presentation.Controllers
 {
@@ -41,9 +42,9 @@ namespace Fly01.Core.Presentation.Controllers
                 return Json(new
                 {
                     aliquotaSimplesNacional = "0",
-                    aliquotaISS = "5",
-                    aliquotaPISPASEP = "0,65",
-                    aliquotaCOFINS = "2",
+                    aliquotaISS = "0",
+                    aliquotaPISPASEP = "0",
+                    aliquotaCOFINS = "0",
                     numeroRetornoNF = "1",
                     mensagemPadraoNota = "Nota Fiscal.",
                     tipoVersaoNFe = "v4",
@@ -139,8 +140,9 @@ namespace Fly01.Core.Presentation.Controllers
 
             if (UserCanWrite)
             {
-                target.Add(new HtmlUIButton { Id = "envioEmail", Label = "Envie para seu contador", OnClickFn = "fnEnviarParametrosEmail", Type = "click" });
-                target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnAtualizaParametro", Type = "submit" });
+                target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnAtualizaParametro", Type = "submit", Position = HtmlUIButtonPosition.Main });
+                target.Add(new HtmlUIButton { Id = "envioEmail", Label = "Envie para seu contador", OnClickFn = "fnEnviarParametrosEmail", Type = "click", Position = HtmlUIButtonPosition.Out });         
+                target.Add(new HtmlUIButton { Id = "atualizaAliquota", Label = "Atualizar alíquotas", OnClickFn = "fnAtualizarAliquotas", Type = "click" });
             }
             return target;
         }
@@ -418,7 +420,7 @@ namespace Fly01.Core.Presentation.Controllers
             return cfg;
         }
 
-        public JsonResult EnviaEmailContador(string simplesNacional, string impostoRenda, string csll, string cofins, string pisPasep, string ipi, string iss, string email, string fcp, string inss)
+        public JsonResult EnviaEmailContador(string simplesNacional, string impostoRenda, string csll, string cofins, string pisPasep, string iss, string email, string fcp, string inss)
         {
             try
             {
@@ -427,7 +429,7 @@ namespace Fly01.Core.Presentation.Controllers
                 var ResponseError = ValidarDadosEmail(empresa, email);
                 if (ResponseError != null) return ResponseError;
 
-                MailSend(empresa, simplesNacional, impostoRenda, csll, cofins, pisPasep, ipi, iss, email, fcp, inss);
+                MailSend(empresa, simplesNacional, impostoRenda, csll, cofins, pisPasep, iss, email, fcp, inss);
 
                 return Json(new { success = true }, JsonRequestBehavior.AllowGet);
             }
@@ -448,12 +450,12 @@ namespace Fly01.Core.Presentation.Controllers
             return null;
         }
 
-        private void MailSend(ManagerEmpresaVM empresa, string simplesNacional, string impostoRenda, string csll, string cofins, string pisPasep, string ipi, string iss, string email, string fcp, string inss)
+        private void MailSend(ManagerEmpresaVM empresa, string simplesNacional, string impostoRenda, string csll, string cofins, string pisPasep, string iss, string email, string fcp, string inss)
         {
             var mensagemPrincipal = $"Razão Social: {empresa.RazaoSocial}".ToUpper();
             var tituloEmail = $"Este e-mail é referente aos impostos da empresa: {empresa.NomeFantasia}".ToUpper();
             var mensagemComplemento = $"CNPJ: {empresa.CNPJ}".ToUpper();
-            var conteudoEmail = Mail.FormataMensagem(EmailFilesHelper.GetTemplate("Templates.ParametroTributario.html").Value, tituloEmail, mensagemPrincipal, mensagemComplemento,empresa.Email, simplesNacional, impostoRenda, csll, cofins, pisPasep, ipi, iss, fcp, inss);
+            var conteudoEmail = Mail.FormataMensagem(EmailFilesHelper.GetTemplate("Templates.ParametroTributario.html").Value, tituloEmail, mensagemPrincipal, mensagemComplemento,empresa.Email, simplesNacional, impostoRenda, csll, cofins, pisPasep, iss, fcp, inss);
 
             Mail.SendNoAttachment(empresa.NomeFantasia, email, tituloEmail, conteudoEmail);
         }
@@ -527,6 +529,17 @@ namespace Fly01.Core.Presentation.Controllers
                 ErrorInfo error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
                 return JsonResponseStatus.GetFailure(error.Message);
             }
+        }
+
+        [HttpGet]
+        public JsonResult ExisteParametroSalvo()
+        {
+            var queryString = new Dictionary<string, string> {
+                    { "$select", "id" }
+            };
+
+            var response = RestHelper.ExecuteGetRequest<ParametroTributarioVM>(ResourceName, queryString);
+            return Json(new { existeParametro = (response?.Id != null && response?.Id != default(Guid)) }, JsonRequestBehavior.AllowGet);
         }
     }
 }

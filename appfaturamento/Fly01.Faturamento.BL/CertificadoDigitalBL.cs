@@ -222,5 +222,14 @@ namespace Fly01.Faturamento.BL
             //retorna conforme os dados atuais da empresa
             return All.FirstOrDefault(x => x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF);
         }
+
+        public override void ValidaModel(CertificadoDigital entity)
+        {
+            entity.Cnpj = empresa.CNPJ;
+            entity.UF = empresaUF;
+            entity.InscricaoEstadual = empresa.InscricaoEstadual;
+
+            base.ValidaModel(entity);
+        }
     }
 }

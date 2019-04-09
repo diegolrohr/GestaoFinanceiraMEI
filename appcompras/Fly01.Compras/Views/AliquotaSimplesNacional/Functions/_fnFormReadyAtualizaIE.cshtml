@@ -3,17 +3,17 @@
         $$$.loading.start();
         $.ajax({
             type: "POST",
-            url: "@Url.Action("PostAtualizacaoIE", "CertificadoDigital")",
+            url: "@Url.Action("PostAtualizacaoIE", "ParametroTributario")",
             data: {
                 inscricaoEstadual: $('#inscricaoEstadualId').val()
             },
             success: function (response) {
                 if (response.success) {
+                    $$$.loading.stop();
                     $$$._.fly01mdlfrmAtualizaIE.close();
-                    fnAtualizaCertificado();
+                    $$$.toast("Inscrição estadual atualizada com sucesso.", "success");
                 }
                 else {
-                    fnGetStatusCertificado();
                     $$$.fn.submitErrorHandler(null, response.message);
                 }
             }

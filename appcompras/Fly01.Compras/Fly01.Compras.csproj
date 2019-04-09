@@ -422,6 +422,8 @@
     <Content Include="Views\AliquotaSimplesNacional\Functions\_fnChkEnviarEmailContador.cshtml" />
     <Content Include="Views\ParametroTributario\Functions\_fnAtualizarAliquotas.cshtml" />
     <Content Include="Views\CertificadoDigital\Functions\_fnFormReadyAtualizaIE.cshtml" />
+    <Content Include="Views\ParametroTributario\Functions\_fnFormReadyAtualizaIE.cshtml" />
+    <Content Include="Views\AliquotaSimplesNacional\Functions\_fnFormReadyAtualizaIE.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

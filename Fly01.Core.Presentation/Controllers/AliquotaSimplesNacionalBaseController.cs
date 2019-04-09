@@ -111,6 +111,8 @@ namespace Fly01.Core.Presentation.Controllers
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "isOnCadastroParametros", Value = isOnCadastroParametros.ToString() });
+            config.Elements.Add(new DivElementUI { Id = "infoAliquotas", Class = "col s12 text-justify visible", Label = "Informação" });
+            config.Elements.Add(new LabelSetUI { Id = "infoAliquotas", Class = "col s12"});
             config.Elements.Add(new SelectUI
             {
                 Id = "tipoFaixaReceitaBruta",

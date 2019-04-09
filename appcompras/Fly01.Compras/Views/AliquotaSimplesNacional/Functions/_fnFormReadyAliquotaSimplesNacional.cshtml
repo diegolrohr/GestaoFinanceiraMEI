@@ -6,7 +6,32 @@
         if($('input#isOnCadastroParametros').val() == "False"){
             $("input#enviarEmailContador").prop("checked", true);
         }
+        fnSetInformacoes();
         fnBindOverrideSubmit();
+    }
+
+    function fnSetInformacoes() {
+        //$("#infoAliquotasField").text('O Simples Nacional é composto por 5 anexos (Lei Complementar 155). Cada anexo possui faixas de alíquotas diferentes (Lei Complementar 123). Com base nessas informações o sistema irá sugerir as alíquotas '
+        //    + 'de acordo com as opções escolhidas. Para ajudar, utilize a opção de enviar um e-mail com as alíquotas configuradas, para o seu contador. '
+        //    + 'Importante! Cosulte sempre o seu contador para auxiliar nas configurações de alíquotas e evitar problemas fiscais. Peça também para seu contador checar se o seu CNAE se enquadra para o Simples Nacional.');
+
+        ////http://www.planalto.gov.br/ccivil_03/leis/LCP/Lcp155.htm
+        //http://www.planalto.gov.br/ccivil_03/leis/LCP/Lcp123.htm
+        //$("#infoAliquotasField").css("white-space", "normal");
+        //$("#infoAliquotasField").css("color", "red");
+
+        $("#infoAliquotasField")[0].innerText = "";
+        var textAliquota = [
+            createElem("span", null, "O Simples Nacional é composto por 5 anexos (Lei Complementar 155). Cada anexo possui faixas de alíquotas diferentes (Lei Complementar 123)."),
+            createElem("br"),
+            createElem("span", null, "O sistema irá sugerir as alíquotas de acordo com as opções escolhidas."),
+            createElem("br"),
+            createElem("span", null, "Utilize a opção de enviar um e-mail com as alíquotas configuradas, para o seu contador."),
+            createElem("br"),
+            createElem("span", null, "Importante! Cosulte sempre o seu contador para auxiliar nas configurações de alíquotas e evitar problemas fiscais."),
+            createElem("span", null, "Peça também para seu contador checar se o seu CNAE se enquadra para o Simples Nacional."),
+        ];
+        $("#infoAliquotasField").append(createElem("span", { "class": "text-justify", "style": "color:red" }, textAliquota));
     }
 
     function fnBindOverrideSubmit() {

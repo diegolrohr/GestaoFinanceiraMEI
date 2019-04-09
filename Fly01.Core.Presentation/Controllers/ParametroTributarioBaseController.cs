@@ -142,7 +142,7 @@ namespace Fly01.Core.Presentation.Controllers
             {
                 target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnAtualizaParametro", Type = "submit" });
                 target.Add(new HtmlUIButton { Id = "envioEmail", Label = "Envie para seu contador", OnClickFn = "fnEnviarParametrosEmail", Type = "click" });         
-                target.Add(new HtmlUIButton { Id = "atualizaAliquota", Label = "Atualizar Alíquotas", OnClickFn = "fnAtualizarAliquotas", Type = "click" });
+                target.Add(new HtmlUIButton { Id = "atualizaAliquota", Label = "Atualizar alíquotas", OnClickFn = "fnAtualizarAliquotas", Type = "click" });
             }
             return target;
         }

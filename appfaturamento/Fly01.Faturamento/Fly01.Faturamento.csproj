@@ -377,6 +377,7 @@
     <Content Include="Views\Kit\Functions\_fnDrawCallbackCalcProdutos.cshtml" />
     <Content Include="Views\ParametroTributario\Functions\_fnEnviarParametrosEmail.cshtml" />
     <Content Include="Views\ParametroTributario\Functions\_fnFormClickEnvioEmailContador.cshtml" />
+    <Content Include="Views\CertificadoDigital\Functions\_fnFormReadyAtualizaIE.cshtml" />
     <Content Include="Views\ParametroTributario\Functions\_fnAtualizarAliquotas.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>

@@ -249,6 +249,7 @@ namespace Fly01.Core.Presentation.Controllers
                 return JsonResponseStatus.GetFailure(error.Message);
             }
         }
+
         public JsonResult ValidaDadosEmpresa()
         {
             try
@@ -275,6 +276,7 @@ namespace Fly01.Core.Presentation.Controllers
                 return JsonResponseStatus.GetFailure(error.Message);
             }
         }
+
         public ContentResult ModalAtualizaIE()
         {
             ModalUIForm config = new ModalUIForm()

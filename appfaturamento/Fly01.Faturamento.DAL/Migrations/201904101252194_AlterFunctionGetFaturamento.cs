@@ -7,14 +7,7 @@ namespace Fly01.Faturamento.DAL.Migrations
     {
         public override void Up()
         {
-            Sql(@"USE [Fly01Faturamento]
-GO
-/****** Object:  UserDefinedFunction [dbo].[GetFaturamentoReport]    Script Date: 10/04/2019 09:46:06 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-
+            Sql(@"
 ALTER FUNCTION[dbo].[GetFaturamentoReport](
 @DATAINI VARCHAR(30),
 @DATAFIM VARCHAR(30),

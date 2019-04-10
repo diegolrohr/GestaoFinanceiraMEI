@@ -7,14 +7,7 @@ namespace Fly01.Financeiro.DAL.Migrations
     {
         public override void Up()
         {
-            Sql(@"USE [Fly01Financeiro]
-GO
-/****** Object:  UserDefinedFunction [dbo].[GetLicenceReport]    Script Date: 10/04/2019 09:34:31 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-
+            Sql(@"
 ALTER FUNCTION[dbo].[GetLicenceReport] (
 	@DATAINI VARCHAR(30),
 	@DATAFIM VARCHAR(30),

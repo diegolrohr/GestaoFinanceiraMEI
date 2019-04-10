@@ -70,8 +70,8 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public OrigemMercadoria OrigemMercadoria { get; set; }
 
-        [StringLength(3)]
-        public string EXTIPI { get; set; }
+        //[StringLength(3)]
+        //public string EXTIPI { get; set; }
 
         public virtual GrupoProduto GrupoProduto { get; set; }
         public virtual UnidadeMedida UnidadeMedida { get; set; }

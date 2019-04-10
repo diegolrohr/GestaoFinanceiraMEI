@@ -504,6 +504,10 @@
     <Compile Include="Migrations\201904031748492_CreateFunctionGetReportFaturamento.Designer.cs">
       <DependentUpon>201904031748492_CreateFunctionGetReportFaturamento.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201904101252194_AlterFunctionGetFaturamento.cs" />
+    <Compile Include="Migrations\201904101252194_AlterFunctionGetFaturamento.Designer.cs">
+      <DependentUpon>201904101252194_AlterFunctionGetFaturamento.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\AliquotaSimplesNacionalDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
@@ -877,6 +881,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201904031748492_CreateFunctionGetReportFaturamento.resx">
       <DependentUpon>201904031748492_CreateFunctionGetReportFaturamento.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904101252194_AlterFunctionGetFaturamento.resx">
+      <DependentUpon>201904101252194_AlterFunctionGetFaturamento.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

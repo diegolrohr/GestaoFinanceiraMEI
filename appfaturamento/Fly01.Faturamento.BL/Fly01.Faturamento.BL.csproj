@@ -80,6 +80,7 @@
     <Compile Include="NFeBL.cs" />
     <Compile Include="NotaFiscalBL.cs" />
     <Compile Include="EntidadeBL.cs" />
+    <Compile Include="PaisBL.cs" />
     <Compile Include="TotalTributacaoBL.cs" />
     <Compile Include="NotaFiscalInutilizadaBL.cs" />
     <Compile Include="SerieNotaFiscalBL.cs" />

@@ -157,6 +157,10 @@ namespace Fly01.Faturamento.BL
 
         private AliquotaSimplesNacionalBL aliquotaSimplesNacionalBL;
         public AliquotaSimplesNacionalBL AliquotaSimplesNacionalBL => aliquotaSimplesNacionalBL ?? (aliquotaSimplesNacionalBL = new AliquotaSimplesNacionalBL(Context));
+
+        private PaisBL paisBL;
+        public PaisBL PaisBL => paisBL ?? (paisBL = new PaisBL(Context));
+
         #endregion
     }
 }

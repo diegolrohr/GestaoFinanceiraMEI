@@ -76,6 +76,7 @@
     <Compile Include="Controllers\Api\NotaFiscalItemTributacaoController.cs" />
     <Compile Include="Controllers\Api\NotaFiscalCancelarController.cs" />
     <Compile Include="Controllers\Api\KitOrdemVendaController.cs" />
+    <Compile Include="Controllers\Api\PaisController.cs" />
     <Compile Include="Controllers\Api\ProdutoServicoController.cs" />
     <Compile Include="Controllers\Api\TipoIndicacaoInscricaoEstadualController.cs" />
     <Compile Include="Controllers\Api\TipoModalidadeController.cs" />

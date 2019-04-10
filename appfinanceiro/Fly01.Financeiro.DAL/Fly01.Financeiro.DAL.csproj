@@ -264,6 +264,10 @@
     <Compile Include="Migrations\201903271945563_CreateFunctionGetReportLicenciamento.Designer.cs">
       <DependentUpon>201903271945563_CreateFunctionGetReportLicenciamento.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201904101241115_AlterGetLicenceFunction.cs" />
+    <Compile Include="Migrations\201904101241115_AlterGetLicenceFunction.Designer.cs">
+      <DependentUpon>201904101241115_AlterGetLicenceFunction.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer2.cs" />
@@ -448,6 +452,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201903271945563_CreateFunctionGetReportLicenciamento.resx">
       <DependentUpon>201903271945563_CreateFunctionGetReportLicenciamento.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904101241115_AlterGetLicenceFunction.resx">
+      <DependentUpon>201904101241115_AlterGetLicenceFunction.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

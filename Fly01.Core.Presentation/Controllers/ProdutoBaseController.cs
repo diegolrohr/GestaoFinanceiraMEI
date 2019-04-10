@@ -272,7 +272,7 @@ namespace Fly01.Core.Presentation.Controllers
 
             config.Helpers.Add(new TooltipUI
             {
-                Id = "EXTIPI",
+                Id = "extipi",
                 Tooltip = new HelperUITooltip()
                 {
                     Text = "Informe se for necessário para nota fiscal de exportação. Informar de acordo com o código EX da TIPI se houver para o NCM do produto."

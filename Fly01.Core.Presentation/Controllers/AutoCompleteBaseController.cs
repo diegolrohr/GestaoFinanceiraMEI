@@ -405,5 +405,20 @@ namespace Fly01.Core.Presentation.Controllers
 
             return GetJson(filterObjects);
         }
+
+        public JsonResult Pais(string term)
+        {
+            var resourceName = AppDefaults.GetResourceName(typeof(PaisVM));
+            var queryString = AppDefaults.GetQueryStringDefault();
+
+            queryString.AddParam("$filter", $"contains(nome, '{term}') or contains(sigla, '{term}')");
+            queryString.AddParam("$select", "id,nome,sigla,codigoIbge");
+            queryString.AddParam("$orderby", "nome");
+
+            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<PaisVM>>(resourceName, queryString).Data
+                                select new { id = item.Id, label = item.Nome, detail = item.Sigla };
+
+            return GetJson(filterObjects);
+        }
     }
 }

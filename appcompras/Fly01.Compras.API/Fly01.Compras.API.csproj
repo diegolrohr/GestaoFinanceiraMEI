@@ -96,6 +96,7 @@
     <Compile Include="Controllers\Api\NotaFiscalXMLController.cs" />
     <Compile Include="Controllers\Api\KitOrcamentoController.cs" />
     <Compile Include="Controllers\Api\OrdemCompraController.cs" />
+    <Compile Include="Controllers\Api\PaisController.cs" />
     <Compile Include="Controllers\Api\ParametroTributarioController.cs" />
     <Compile Include="Controllers\Api\PedidoEstoqueNegativoController.cs" />
     <Compile Include="Controllers\Api\ServicoController.cs" />

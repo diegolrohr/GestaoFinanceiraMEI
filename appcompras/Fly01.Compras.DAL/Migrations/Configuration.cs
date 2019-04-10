@@ -31,6 +31,7 @@ namespace Fly01.Compras.DAL.Migrations
             //new NBSDataInitializer().Initialize(context);
             new NewCestDataInitializer().Initialize(context);
             new AliquotaSimplesNacionalDataInitializer().Initialize(context);
+            new PaisDataInitializer().Initialize(context);
         }
     }
 }

@@ -112,6 +112,14 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public Guid? CentroCustoId { get; set; }
 
+        public Guid? UFSaidaPaisId { get; set; }
+
+        [StringLength(60)]
+        public string LocalEmbarque { get; set; }
+
+        [StringLength(60)]
+        public string LocalDespacho { get; set; }
+
         public virtual Pessoa Cliente { get; set; }
 
         public virtual GrupoTributario GrupoTributarioPadrao { get; set; }
@@ -127,6 +135,8 @@ namespace Fly01.Core.Entities.Domains.Commons
         public virtual Categoria Categoria { get; set; }
 
         public virtual CentroCusto CentroCusto { get; set; }
+
+        public virtual Estado UFSaidaPais { get; set; }
 
     }
 }

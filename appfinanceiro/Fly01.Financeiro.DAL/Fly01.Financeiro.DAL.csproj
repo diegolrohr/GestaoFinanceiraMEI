@@ -268,6 +268,10 @@
     <Compile Include="Migrations\201904101241115_AlterGetLicenceFunction.Designer.cs">
       <DependentUpon>201904101241115_AlterGetLicenceFunction.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201904101739345_AddPaises.cs" />
+    <Compile Include="Migrations\201904101739345_AddPaises.Designer.cs">
+      <DependentUpon>201904101739345_AddPaises.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer2.cs" />
@@ -278,6 +282,7 @@
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer7.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer6.cs" />
     <Compile Include="Migrations\DataInitializer\MockDataInitializer.cs" />
+    <Compile Include="Migrations\DataInitializer\PaisDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\PessoaDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\EstadoDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\BancoDataInitializer.cs" />
@@ -455,6 +460,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201904101241115_AlterGetLicenceFunction.resx">
       <DependentUpon>201904101241115_AlterGetLicenceFunction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904101739345_AddPaises.resx">
+      <DependentUpon>201904101739345_AddPaises.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

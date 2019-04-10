@@ -1,6 +1,4 @@
-﻿using Fly01.EmissaoNFE.Domain.Enums;
-using Newtonsoft.Json;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Xml.Serialization;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFe
@@ -11,14 +9,23 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// informar a sigla da UF de Embarque ou de transposição de fronteira. A UF de embarque é a UF do local onde será embarcada para o exterior (porto/aeroporto), 
         /// no caso de ser transporte terrestre deve ser o local de transposição de fronteira. Não aceita o valor "EX".
         /// </summary>
+        [StringLength(2)]
         [XmlElement(ElementName = "UFSaidaPais")]
         public string UFSaidaPais { get; set; }
 
         /// <summary>
-        /// informar o local de embarque, local onde será embarcada para o exterior (porto/aeroporto), no caso de ser transporte terrestre deve ser 
+        /// Informar o local de embarque, local onde será embarcada para o exterior (porto/aeroporto), no caso de ser transporte terrestre deve ser 
         /// o local de transposição de fronteira.
         /// </summary>
+        [StringLength(60)]
         [XmlElement(ElementName = "xLocEmbarq")]
-        public string xLocEmbarq { get; set; }
+        public string LocalEmbarque { get; set; }
+
+        /// <summary>
+        /// Informação do Recinto Alfandegado do local de despacho.
+        /// </summary>
+        [StringLength(60)]
+        [XmlElement(ElementName = "xLocDespacho_Opc")]
+        public string LocalDespacho { get; set; }
     }
 }

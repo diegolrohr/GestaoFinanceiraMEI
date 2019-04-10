@@ -59,6 +59,7 @@ namespace Fly01.Compras.API
             builder.EntitySet<NFeImportacaoCobranca>("nfeimportacaocobranca");
             builder.EntitySet<CentroCusto>("centrocusto");
             builder.EntitySet<AliquotaSimplesNacional>("aliquotasimplesnacional");
+            builder.EntitySet<Pais>("pais");
 
             builder.EnableLowerCamelCase();
             return builder.GetEdmModel();

@@ -111,7 +111,9 @@ namespace Fly01.Core.Presentation.Controllers
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "isOnCadastroParametros", Value = isOnCadastroParametros.ToString() });
+            config.Elements.Add(new LabelSetUI { Id = "passo1", Class = "col s12", Label = "Passo 1 Leia atentamente" });
             config.Elements.Add(new DivElementUI { Id = "infoAliquotas", Class = "col s12 text-justify visible", Label = "Informação" });
+            config.Elements.Add(new LabelSetUI { Id = "passo1", Class = "col s12", Label = "Passo 2 Informe sua receita" });
             config.Elements.Add(new SelectUI
             {
                 Id = "tipoFaixaReceitaBruta",
@@ -124,7 +126,7 @@ namespace Fly01.Core.Presentation.Controllers
                     new DomEventUI() { DomEvent = "change", Function = "fnChangeTipoFaixaReceitaBruta" }
                 }
             });
-
+            config.Elements.Add(new LabelSetUI { Id = "passo1", Class = "col s12", Label = "Passo 3 Informe seu enquadramento" });
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "tipoEnquadramentoEmpresa",

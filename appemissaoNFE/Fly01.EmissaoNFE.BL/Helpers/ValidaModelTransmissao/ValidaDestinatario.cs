@@ -27,6 +27,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
                 ValidarMunicipioDestinatario(item, entity);
                 ValidarInscricaoEstadualDestinatario(item, entity);
                 ValidarCEPDestinatario(item, entitiesBLToValidate, entity);
+                ValidarIdEstrangeiro(item, entity);
             }
         }
 
@@ -114,10 +115,16 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
                 new Error("CPF do destinatário inválido.", "Item.Destinatario.Cpf"));
         }
 
+        private static void ValidarIdEstrangeiro(ItemTransmissaoVM item, TransmissaoVM entity)
+        {
+            entity.Fail(item.Destinatario.IdentificacaoEstrangeiro != null && item.Destinatario.IdentificacaoEstrangeiro?.Length > 20,
+                new Error("Id estrangeiro do destinatário só pode ter até 20 caracteres.", "Item.Destinatario.IdentificacaoEstrangeiro"));
+        }
+
         private static void ValidarCPF_CNPJ(ItemTransmissaoVM item, TransmissaoVM entity)
         {
-            entity.Fail(item.Destinatario.Cnpj == null && item.Destinatario.Cpf == null,
-                new Error("Informe o CPF ou CNPJ do destinatário.", "Item.Destinatario.Cnpj"));
+            entity.Fail(item.Destinatario.Cnpj == null && item.Destinatario.Cpf == null && item.Destinatario.IdentificacaoEstrangeiro == null,
+                new Error("Informe o CPF/CNPJ ou id estrangeiro do destinatário.", "Item.Destinatario.Cnpj"));
         }
     }
 }

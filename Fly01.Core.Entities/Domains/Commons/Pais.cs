@@ -9,7 +9,7 @@ namespace Fly01.Core.Entities.Domains.Commons
     public class Pais : DomainBase
     {
         [Required]
-        [StringLength(35)]
+        [StringLength(50)]
         public string Nome { get; set; }
 
         [Required]
@@ -19,5 +19,13 @@ namespace Fly01.Core.Entities.Domains.Commons
         [Required]
         [StringLength(4)]
         public string CodigoBacen { get; set; }
+
+        [Required]
+        [StringLength(3)]
+        public string CodigoSiscomex { get; set; }
+
+        [Required]
+        [StringLength(3)]
+        public string Sigla { get; set; }
     }
 }

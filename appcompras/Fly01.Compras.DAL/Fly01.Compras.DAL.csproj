@@ -360,6 +360,10 @@
     <Compile Include="Migrations\201904101754509_AddPaises.Designer.cs">
       <DependentUpon>201904101754509_AddPaises.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201904101812414_AddDadosExportacao.cs" />
+    <Compile Include="Migrations\201904101812414_AddDadosExportacao.Designer.cs">
+      <DependentUpon>201904101812414_AddDadosExportacao.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer7.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer6.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer5.cs" />
@@ -642,6 +646,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201904101754509_AddPaises.resx">
       <DependentUpon>201904101754509_AddPaises.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904101812414_AddDadosExportacao.resx">
+      <DependentUpon>201904101812414_AddDadosExportacao.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

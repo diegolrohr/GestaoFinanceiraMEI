@@ -153,9 +153,9 @@ namespace Fly01.Core.Mensageria
         {
             return FormatTextMail(htmlContent, tituloEmail, mensagemPrincipal, "", emailEmpresa);
         }
-        public static string FormataMensagem(string htmlContent, string tituloEmail, string mensagemPrincipal, string mensagemComplemento, string emailEmpresa, string simplesNacional, string impostoRenda, string csll, string cofins, string pisPasep, string ipi, string iss, string fcp, string inss)
+        public static string FormataMensagem(string htmlContent, string tituloEmail, string mensagemPrincipal, string mensagemComplemento, string emailEmpresa, string simplesNacional, string impostoRenda, string csll, string cofins, string pisPasep, string iss, string fcp, string inss)
         {
-            return FormatTextMailParametroTributario(htmlContent, tituloEmail, mensagemPrincipal, mensagemComplemento, emailEmpresa, simplesNacional, impostoRenda, csll, cofins, pisPasep, ipi, iss, fcp, inss);
+            return FormatTextMailParametroTributario(htmlContent, tituloEmail, mensagemPrincipal, mensagemComplemento, emailEmpresa, simplesNacional, impostoRenda, csll, cofins, pisPasep, iss, fcp, inss);
         }
 
         public static string FormatTextMail(string htmlContent, string tituloEmail, string mensagemPrincipal, string mensagemComplemento, string emailEmpresa)
@@ -169,7 +169,7 @@ namespace Fly01.Core.Mensageria
         }
 
         public static string FormatTextMailParametroTributario(string htmlContent, string tituloEmail, string mensagemPrincipal, string mensagemComplemento, string emailEmpresa, string simplesNacional,
-             string impostoRenda, string csll, string cofins, string pisPasep, string ipi, string iss, string fcp, string inss)
+             string impostoRenda, string csll, string cofins, string pisPasep, string iss, string fcp, string inss)
         {
             return new StringBuilder(htmlContent
                 .Replace("{TITULO_EMAIL}", HttpUtility.HtmlEncode(tituloEmail))

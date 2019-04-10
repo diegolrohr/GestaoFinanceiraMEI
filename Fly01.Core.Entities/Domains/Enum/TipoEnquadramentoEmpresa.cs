@@ -7,19 +7,19 @@ namespace Fly01.Core.Entities.Domains.Enum
     //Também peça ajuda ao seu contador sempre que possível.
     public enum TipoEnquadramentoEmpresa
     {
-        [Subtitle("Anexo1", "Anexo I - empresas de comércio; lojas em geral...")]
+        [Subtitle("Anexo1", "Anexo I - Empresas de comércio; lojas em geral...")]
         Anexo1 = 1,
 
-        [Subtitle("Anexo2", "Anexo II - empresas indústriais/fábricas...")]
+        [Subtitle("Anexo2", "Anexo II - Empresas industriais/fábricas...")]
         Anexo2 = 2,
 
-        [Subtitle("Anexo3", "Anexo III - empresas de serviços de instalação, reparos e manutenção; de medicina e odontologia; agências de viagens; academias; escritórios de contabilidade; laboratórios...")]
+        [Subtitle("Anexo3", "Anexo III - Empresas de serviços de instalação, reparos e manutenção; de medicina e odontologia; agências de viagens; academias; escritórios de contabilidade; laboratórios...")]
         Anexo3 = 3,
 
-        [Subtitle("Anexo4", "Anexo IV - empresas que fornecem serviço de limpeza, vigilância, obras, construção de imóveis; serviços advocatícios...")]
+        [Subtitle("Anexo4", "Anexo IV - Empresas que fornecem serviço de limpeza, vigilância, obras, construção de imóveis; serviços advocatícios...")]
         Anexo4 = 4,
 
-        [Subtitle("Anexo5", "Anexo V - empresas de serviços de auditoria, tecnologia, jornalismo, engenharia, publicidade...")]
+        [Subtitle("Anexo5", "Anexo V - Empresas de serviços de auditoria, tecnologia, jornalismo, engenharia, publicidade...")]
         Anexo5 = 5
     }
 }

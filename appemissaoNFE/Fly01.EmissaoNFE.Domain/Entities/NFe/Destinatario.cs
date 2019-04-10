@@ -22,18 +22,16 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// <summary>
         /// CPF do destinatário, sem formatação ou máscara
         /// </summary>
-        /// 
         [JsonProperty("CPF")]
         [XmlElement(ElementName = "CPF")]
         public string Cpf { get; set; }
 
-        [MaxLength(20)]
         /// <summary>
         /// No caso de operação com o exterior, ou para comprador estrangeiro informar com o número do passaporte ou outro documento legal para identificar pessoa estrangeira.
         /// Campo aceita valor Nulo.
         /// </summary>
-        /// 
         [JsonProperty("idEstrangeiro")]
+        [StringLength(20)]
         [XmlElement(ElementName = "idEstrangeiro")]
         public string IdentificacaoEstrangeiro { get; set; }
 
@@ -41,7 +39,6 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// <summary>
         /// informar a razão social do destinatário, pode ser omitida no caso de NFC-e.
         /// </summary>
-        /// 
         [JsonProperty("xNome")]
         [XmlElement(ElementName = "xNome")]
         public string Nome { get; set; }
@@ -50,7 +47,6 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// <summary>
         /// Informar o grupo de Endereço
         /// </summary>
-        /// 
         [JsonProperty("enderDest")]
         [XmlElement(ElementName = "enderDest")]
         public Endereco Endereco { get; set; }

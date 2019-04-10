@@ -62,6 +62,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// Informar de acordo com o código EX da TIPI se houver para o NCM do produto.
         /// </summary>
         [JsonProperty("EXTIPI")]
+        [StringLength(3)]
         [XmlElement(ElementName = "EXTIPI")]
         public string EXTIPI { get; set; }
 

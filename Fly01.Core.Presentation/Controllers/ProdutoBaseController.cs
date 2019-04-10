@@ -213,12 +213,13 @@ namespace Fly01.Core.Presentation.Controllers
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "ncmId",
-                Class = "col s12 m12",
+                Class = "col s12 m10",
                 Label = "NCM",
                 DataUrl = @Url.Action("Ncm", "AutoComplete"),
                 LabelId = "ncmDescricao",
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeNCM" } }
             });
+            config.Elements.Add(new InputTextUI { Id = "extipi", Class = "col s12 m2", Label = "EX TIPI", MaxLength = 3 });
 
             config.Elements.Add(new AutoCompleteUI
             {
@@ -269,6 +270,14 @@ namespace Fly01.Core.Presentation.Controllers
             if (tooltips != null)
                 config.Helpers.AddRange(tooltips);
 
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "EXTIPI",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Informe se for necessário para nota fiscal de exportação. Informar de acordo com o código EX da TIPI se houver para o NCM do produto."
+                }
+            });
             cfg.Content.Add(config);
 
             return cfg;

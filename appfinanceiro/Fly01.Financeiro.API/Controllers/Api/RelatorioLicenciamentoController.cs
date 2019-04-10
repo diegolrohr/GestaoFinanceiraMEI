@@ -1,6 +1,7 @@
 ﻿using Fly01.Core.API;
 using Fly01.Core.Rest;
 using Fly01.Financeiro.API.Models.DAL;
+using Newtonsoft.Json;
 using System;
 using System.Data.SqlClient;
 using System.Linq;
@@ -11,17 +12,18 @@ namespace Fly01.Financeiro.API.Controllers.Api
     [RoutePrefix("relatorioLicenciamento")]
     public class RelatorioLicenciamentoController : ApiBaseController
     {
-        [HttpGet]
-        public IHttpActionResult Get(DateTime? dataInicial, DateTime? dataFinal, string plataformaUrl)
+        [HttpPost]
+        public IHttpActionResult Post(object model)
         {
+            var requestParams = JsonConvert.DeserializeObject<RequestParamsVM>(JsonConvert.SerializeObject(model));
             using (AppDataContext context = new AppDataContext())
             {
                 var result = context.Database.SqlQuery<ReportVM>(
-                    "SELECT * FROM GetLicenceReport(@DATAINI, @DATAFIN, @PLATAFORMAURL)",
-                    new SqlParameter("DATAINI", dataInicial.HasValue ? dataInicial.Value.ToString("yyyy-MM-dd") : ""),
-                    new SqlParameter("DATAFIN", dataFinal.HasValue ? dataFinal.Value.ToString("yyyy-MM-dd") : ""),
-                    new SqlParameter("PLATAFORMAURL", plataformaUrl ?? "")
-                ).ToList();
+                    string.Format("SELECT * FROM GetLicenceReport('{0}', '{1}', '{2}')",
+                    requestParams.DataInicial.HasValue ? requestParams.DataInicial.Value.ToString("yyyy-MM-dd") : "",
+                    requestParams.DataFinal.HasValue ? requestParams.DataFinal.Value.ToString("yyyy-MM-dd") : "",
+                    requestParams.PlataformaUrl ?? ""
+                    )).ToList();
 
                 var response = result.GroupBy(x => x.PlataformaUrl).Select(item => new
                 {
@@ -58,6 +60,13 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 });
             }
         }
+    }
+
+    public class RequestParamsVM
+    {
+        public DateTime? DataInicial { get; set; }
+        public DateTime? DataFinal { get; set; }
+        public string PlataformaUrl { get; set; }
     }
 
     public class ReportVM

@@ -14,6 +14,21 @@ namespace Fly01.Core.Presentation.Controllers
         protected JsonResult GetJson(object data) 
             => Json(data, JsonRequestBehavior.AllowGet);
 
+        public JsonResult EstadoSemEX(string term)
+        {
+            var resourceName = AppDefaults.GetResourceName(typeof(EstadoVM));
+            var queryString = AppDefaults.GetQueryStringDefault();
+
+            queryString.AddParam("$filter", $"(contains(nome, '{term}') or contains(sigla, '{term}')) and sigla ne 'EX'");
+            queryString.AddParam("$select", "id,nome,sigla,codigoIbge");
+            queryString.AddParam("$orderby", "nome");
+
+            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<EstadoVM>>(resourceName, queryString).Data
+                                select new { id = item.Id, label = item.Nome, detail = item.Sigla, estadoCodigoIbge = item.CodigoIbge };
+
+            return GetJson(filterObjects);
+        }
+
         public JsonResult Estado(string term)
         {
             var resourceName = AppDefaults.GetResourceName(typeof(EstadoVM));

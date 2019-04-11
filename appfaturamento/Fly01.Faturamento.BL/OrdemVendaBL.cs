@@ -107,6 +107,9 @@ namespace Fly01.Faturamento.BL
                     entity.Fail(entity.TipoVenda == TipoCompraVenda.Complementar && string.IsNullOrEmpty(entity.ChaveNFeReferenciada), new Error("Para finalizar o pedido de complemento que gera nota fiscal, informe a chave da nota fiscal referenciada a ser complementada"));
                 }
 
+                var ehExportacao = TotalTributacaoBL.GetPessoa(entity.ClienteId)?.Estado?.Sigla == "EX";
+                entity.Fail(entity.GeraNotaFiscal && ehExportacao && ((entity.UFSaidaPaisId == null) || (string.IsNullOrEmpty(entity.LocalEmbarque))), new Error("Se UF do destinatário é exterior, informe a UF e o local de embarque da exportação."));
+
                 entity.Fail(entity.MovimentaEstoque && hasEstoqueNegativo & !entity.AjusteEstoqueAutomatico, new Error("Para finalizar o pedido o estoque não poderá ficar negativo, realize os ajustes de entrada ou marque para gerar as movimentações de entrada automáticas"));
                 entity.Fail(entity.GeraNotaFiscal && string.IsNullOrEmpty(entity.NaturezaOperacao) && produtos.Any(), new Error("Para finalizar o pedido que gera nota fiscal, informe a natureza de operação"));
                 entity.Fail(entity.TipoOrdemVenda == TipoOrdemVenda.Orcamento, new Error("Orçamento não pode ser finalizado. Converta em pedido para finalizar"));
@@ -192,6 +195,9 @@ namespace Fly01.Faturamento.BL
             notaFiscal.ContaFinanceiraParcelaPaiIdServicos = entity.ContaFinanceiraParcelaPaiIdServicos;
             notaFiscal.ContaFinanceiraParcelaPaiIdProdutos = entity.ContaFinanceiraParcelaPaiIdProdutos;
             notaFiscal.InformacoesCompletamentaresNFS = entity.InformacoesCompletamentaresNFS;
+            notaFiscal.UFSaidaPaisId = entity.UFSaidaPaisId;
+            notaFiscal.LocalEmbarque = entity.LocalEmbarque;
+            notaFiscal.LocalDespacho = entity.LocalDespacho;
             return notaFiscal;
         }
 

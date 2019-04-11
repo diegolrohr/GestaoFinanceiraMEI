@@ -81,6 +81,7 @@
     <Compile Include="Controllers\Api\PessoaController.cs" />
     <Compile Include="Controllers\Api\ParametroOrdemServicoController.cs" />
     <Compile Include="Controllers\Api\ProdutoServicoController.cs" />
+    <Compile Include="Controllers\Api\RelatorioLicenciamentoOSController.cs" />
     <Compile Include="Controllers\Api\ServicoController.cs" />
     <Compile Include="Controllers\Api\ProdutoController.cs" />
     <Compile Include="Controllers\Api\UnidadeMedidaController.cs" />
@@ -147,6 +148,10 @@
     <ProjectReference Include="..\Fly01.OrdemServico.BL\Fly01.OrdemServico.BL.csproj">
       <Project>{53a83fcd-7b3e-46f0-a837-aa0046ea210f}</Project>
       <Name>Fly01.OrdemServico.BL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fly01.OrdemServico.DAL\Fly01.OrdemServico.DAL.csproj">
+      <Project>{34a5c059-4c42-42de-a272-4aa969b5a6dc}</Project>
+      <Name>Fly01.OrdemServico.DAL</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

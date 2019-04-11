@@ -1,6 +1,7 @@
 ﻿using Fly01.Core.API;
 using Fly01.Core.Rest;
 using Fly01.Financeiro.API.Models.DAL;
+using Newtonsoft.Json;
 using System;
 using System.Data.SqlClient;
 using System.Linq;
@@ -11,17 +12,18 @@ namespace Fly01.Financeiro.API.Controllers.Api
     [RoutePrefix("relatorioLicenciamento")]
     public class RelatorioLicenciamentoController : ApiBaseController
     {
-        [HttpGet]
-        public IHttpActionResult Get(DateTime? dataInicial, DateTime? dataFinal, string plataformaUrl)
+        [HttpPost]
+        public IHttpActionResult Post(object model)
         {
+            var requestParams = JsonConvert.DeserializeObject<RequestParamsVM>(JsonConvert.SerializeObject(model));
             using (AppDataContext context = new AppDataContext())
             {
                 var result = context.Database.SqlQuery<ReportVM>(
-                    "SELECT * FROM GetLicenceReport(@DATAINI, @DATAFIN, @PLATAFORMAURL)",
-                    new SqlParameter("DATAINI", dataInicial.HasValue ? dataInicial.Value.ToString("yyyy-MM-dd") : ""),
-                    new SqlParameter("DATAFIN", dataFinal.HasValue ? dataFinal.Value.ToString("yyyy-MM-dd") : ""),
-                    new SqlParameter("PLATAFORMAURL", plataformaUrl ?? "")
-                ).ToList();
+                    string.Format("SELECT * FROM GetLicenceReport('{0}', '{1}', '{2}')",
+                    requestParams.DataInicial.HasValue ? requestParams.DataInicial.Value.ToString("yyyy-MM-dd") : "",
+                    requestParams.DataFinal.HasValue ? requestParams.DataFinal.Value.ToString("yyyy-MM-dd") : "",
+                    requestParams.PlataformaUrl ?? ""
+                    )).ToList();
 
                 var response = result.GroupBy(x => x.PlataformaUrl).Select(item => new
                 {
@@ -35,6 +37,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                     FormaPagamento = item.FirstOrDefault(i => i.PlataformaUrl == item.Key && i.Tipo == "FORMAPAGAMENTO"),
                     CondicaoParcelamento = item.FirstOrDefault(i => i.PlataformaUrl == item.Key && i.Tipo == "CONDICAOPARCELAMENTO"),
                     Categoria = item.FirstOrDefault(i => i.PlataformaUrl == item.Key && i.Tipo == "CATEGORIA"),
+                    Boleto = item.FirstOrDefault(i => i.PlataformaUrl == item.Key && i.Tipo == "BOLETO")
                 }).ToList();
 
                 return Ok(new
@@ -51,11 +54,19 @@ namespace Fly01.Financeiro.API.Controllers.Api
                         TotalFormaPagamento = i.FormaPagamento != null ? i.FormaPagamento.Total : 0,
                         TotalCondicaoParcelamento = i.CondicaoParcelamento != null ? i.CondicaoParcelamento.Total : 0,
                         TotalCategoria = i.Categoria != null ? i.Categoria.Total : 0,
+                        TotalBoleto = i.Boleto != null ? i.Boleto.Total : 0,
                         RazaoSocial = ApiEmpresaManager.GetEmpresa(i.PlataformaUrl).RazaoSocial
                     }).ToList()
                 });
             }
         }
+    }
+
+    public class RequestParamsVM
+    {
+        public DateTime? DataInicial { get; set; }
+        public DateTime? DataFinal { get; set; }
+        public string PlataformaUrl { get; set; }
     }
 
     public class ReportVM

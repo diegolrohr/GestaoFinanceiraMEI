@@ -91,7 +91,7 @@ namespace Fly01.OrdemServico.Controllers
                 Id = "quantidade",
                 Class = "col s12 l6 numeric",
                 Label = "Quantidade",
-                Digits = 2,
+                Digits = 3,
                 Value = "1",
                 Required = false
             });

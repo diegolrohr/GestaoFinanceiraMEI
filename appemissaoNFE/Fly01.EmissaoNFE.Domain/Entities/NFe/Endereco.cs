@@ -57,13 +57,12 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         [XmlElement(ElementName = "xMun")]
         public string Municipio { get; set; }
 
-        [Required]
-        [StringLength(2, ErrorMessage = "UF inválida.")]
         /// <summary>
         /// informar a sigla da UF
-
         /// </summary>
         /// 
+        [Required]
+        [StringLength(2, ErrorMessage = "UF inválida.")]
         [JsonProperty("UF")]
         [XmlElement(ElementName = "UF")]
         public string UF { get; set; }
@@ -77,11 +76,32 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         [XmlElement(ElementName = "CEP")]
         public string Cep { get; set; }
 
+        /// <summary>
+        /// Informe o código bacen do país, de acordo com o banco central do Brasil
+        /// </summary>
+        [XmlElement(ElementName = "cPais")]
+        public string PaisCodigoBacen { get; set; }
+
+        public bool ShouldSerializePaisCodigoBacen()
+        {
+            return !string.IsNullOrEmpty(PaisNome) && !string.IsNullOrEmpty(PaisCodigoBacen);
+        }
+
+        /// <summary>
+        /// Informa o nome do país
+        /// </summary>
+        [XmlElement(ElementName = "xPais")]
+        public string PaisNome { get; set; }
+
+        public bool ShouldSerializePaisNome()
+        {
+            return !string.IsNullOrEmpty(PaisNome) && !string.IsNullOrEmpty(PaisCodigoBacen);
+        }
+
         [MaxLength(14)]
         /// <summary>
         /// informar o telefone com DDD + número, sem formatação
         /// </summary>
-        /// 
         [JsonProperty("fone")]
         [XmlElement(ElementName = "fone", IsNullable = true)]
         public string Fone { get; set; }

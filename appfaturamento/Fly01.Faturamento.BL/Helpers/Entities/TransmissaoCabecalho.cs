@@ -15,6 +15,7 @@ namespace Fly01.Faturamento.BL.Helpers.Entities
         public FormaPagamento FormaPagamento { get; set; }
         public Pessoa Transportadora { get; set; }
         public SerieNotaFiscal SerieNotaFiscal { get; set; }
+        public Estado UFSaidaPais { get; set; }
         public IQueryable<NFeProduto> NFeProdutos { get; set; }
     }
 }

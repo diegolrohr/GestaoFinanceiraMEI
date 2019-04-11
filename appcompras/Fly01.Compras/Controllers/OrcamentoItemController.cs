@@ -87,7 +87,7 @@ namespace Fly01.Compras.Controllers
                 Label = "Quantidade",
                 Value = "1",
                 Required = true,
-                Digits = 3,
+                Digits = 2,//total vai divergir no xml da nota fiscal, aceita só 2 casas
                 DomEvents = new List<DomEventUI>()
                 {
                     new DomEventUI() {DomEvent = "change", Function = "fnChangeTotal" }

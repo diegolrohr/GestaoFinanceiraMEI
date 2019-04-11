@@ -1,4 +1,5 @@
-﻿using Fly01.EmissaoNFE.Domain.Enums;
+﻿using Fly01.Core.Entities.Domains.Enum;
+using Fly01.EmissaoNFE.Domain.Enums;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Serialization;
@@ -64,7 +65,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// 
         [JsonProperty("indIEDest")]
         [XmlElement(ElementName = "indIEDest")]
-        public IndInscricaoEstadual IndInscricaoEstadual { get; set; }
+        public TipoIndicacaoInscricaoEstadual IndInscricaoEstadual { get; set; }
 
         [MaxLength(14)]
         /// <summary>
@@ -80,7 +81,12 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
 
         public bool ShouldSerializeInscricaoEstadual()
         {
-            return !string.IsNullOrEmpty(InscricaoEstadual);
+            return !string.IsNullOrEmpty(InscricaoEstadual) || EhExportacao();
+        }
+
+        public bool EhExportacao()
+        {
+            return Endereco?.UF == "EX";
         }
     }
 }

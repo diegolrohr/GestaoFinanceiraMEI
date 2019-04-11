@@ -88,8 +88,6 @@ namespace Fly01.Core.Entities.Domains.Commons
         [StringLength(20)]
         public string IdEstrangeiro { get; set; }
 
-
-
         [JsonIgnore]
         public virtual Cidade Cidade { get; set; }
 

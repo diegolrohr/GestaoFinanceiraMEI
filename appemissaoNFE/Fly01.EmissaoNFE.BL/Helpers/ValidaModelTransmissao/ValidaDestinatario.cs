@@ -89,6 +89,10 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
         {            
             entity.Fail(item.Destinatario.EhExportacao() && ((string.IsNullOrEmpty(item.Destinatario.Endereco.PaisCodigoBacen)) || (string.IsNullOrEmpty(item.Destinatario.Endereco.PaisNome))),
                             new Error("Se UF do destinatário é exterior, informe o codigo bacen e nome do País do destinatário.", "Item.Destinatario.Endereco.PaisCodigoBacen"));
+            entity.Fail(item.Destinatario.EhExportacao() && 
+                ((!string.IsNullOrEmpty(item.Destinatario.Endereco.PaisCodigoBacen) && item.Destinatario.Endereco.PaisCodigoBacen == "1058")) ||
+                ((!string.IsNullOrEmpty(item.Destinatario.Endereco.PaisNome) && item.Destinatario.Endereco.PaisNome.ToUpper() == "Brasil")),
+                        new Error("Se UF do destinatário é exterior, o país do destinatário não pode ser Brasil.", "Item.Destinatario.Endereco.PaisCodigoBacen"));
         }
 
         private static void ValidarCodigoMunicipioDestinatario(ItemTransmissaoVM item, EntitiesBLToValidate entitiesBLToValidate, TransmissaoVM entity)
@@ -145,8 +149,8 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
         {
             entity.Fail(item.Destinatario.EhExportacao() && (!string.IsNullOrEmpty(item.Destinatario.Cnpj) || !string.IsNullOrEmpty(item.Destinatario.Cpf)),
                 new Error("Quando UF destinatário for exportação, não informe CPF/CNPJ, informe o identificador do estrangeiro.", "Item.Destinatario.Cnpj"));
-            entity.Fail(item.Destinatario.Cnpj == null && item.Destinatario.Cpf == null,
-                new Error("Informe o CPF/CNPJ ou id estrangeiro do destinatário.", "Item.Destinatario.Cnpj"));
+            entity.Fail(item.Destinatario.Cnpj == null && item.Destinatario.Cpf == null && !item.Destinatario.EhExportacao(),
+                new Error("Informe o CPF/CNPJ do destinatário.", "Item.Destinatario.Cnpj"));
         }
     }
 }

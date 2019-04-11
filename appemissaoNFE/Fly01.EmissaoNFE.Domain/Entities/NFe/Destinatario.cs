@@ -81,7 +81,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
 
         public bool ShouldSerializeInscricaoEstadual()
         {
-            return !string.IsNullOrEmpty(InscricaoEstadual);
+            return !string.IsNullOrEmpty(InscricaoEstadual) || EhExportacao();
         }
 
         public bool EhExportacao()

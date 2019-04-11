@@ -75,7 +75,7 @@ namespace Fly01.OrdemServico.Controllers
                 Id = "quantidade",
                 Class = "col s12 l6 numeric",
                 Label = "Quantidade",
-                Digits = 3,
+                Digits = 2,//total vai divergir no xml da nota fiscal, aceita só 2 casas
                 Value = "1",
                 Required = false
             });

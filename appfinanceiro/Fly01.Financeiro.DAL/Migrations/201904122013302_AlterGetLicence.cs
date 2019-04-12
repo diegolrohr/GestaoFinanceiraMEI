@@ -10,7 +10,7 @@ namespace Fly01.Financeiro.DAL.Migrations
             Sql(@"ALTER FUNCTION[dbo].[GetLicenceReport] (
 	@DATAINI VARCHAR(30),
 	@DATAFIM VARCHAR(30),
-	@PLATAFORMA NVARCHAR(MAX)
+	@PLATAFORMA VARCHAR(250)
 ) RETURNS TABLE AS RETURN(
 
 SELECT

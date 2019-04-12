@@ -18,14 +18,14 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// o local de transposição de fronteira.
         /// </summary>
         [StringLength(60)]
-        [XmlElement(ElementName = "xLocEmbarq")]
+        [XmlElement(ElementName = "xLocExporta")]
         public string LocalEmbarque { get; set; }
 
         /// <summary>
         /// Informação do Recinto Alfandegado do local de despacho.
         /// </summary>
         [StringLength(60)]
-        [XmlElement(ElementName = "xLocDespacho_Opc")]
+        [XmlElement(ElementName = "xLocDespacho")]
         public string LocalDespacho { get; set; }
     }
 }

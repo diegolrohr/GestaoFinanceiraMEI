@@ -62,6 +62,11 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 itemTransmissao.Cobranca = ObterCobranca();
             }
 
+            if (EhExportacao())
+            {
+                itemTransmissao.Exportacao = ObterExportacao();
+            }
+
             var transmissao = ObterTransmissaoVMApartirDoItem(itemTransmissao);
             return transmissao;
         }

@@ -163,7 +163,7 @@ namespace Fly01.Compras.BL
                 var nfeProdutosTributacao = new List<NotaFiscalItemTributacao>();
                 foreach (var x in tributacoesProdutos)
                 {
-                    var nfeProduto = nfeProdutos.Where(y => y.ProdutoId == x.ProdutoId && y.GrupoTributarioId == x.GrupoTributarioId).FirstOrDefault();
+                    var nfeProduto = nfeProdutos.Where(y => y.PedidoItemId == x.PedidoItemId).FirstOrDefault();
                     var grupoTributario = TotalTributacaoBL.GetGrupoTributario(nfeProduto.GrupoTributarioId);
                     NotaFiscalItemTributacaoEntradaBL.Insert(
                         new NotaFiscalItemTributacaoEntrada

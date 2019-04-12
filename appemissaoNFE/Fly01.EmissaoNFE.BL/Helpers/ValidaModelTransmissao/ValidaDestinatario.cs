@@ -3,12 +3,13 @@ using Fly01.EmissaoNFE.Domain.ViewModel;
 using Fly01.EmissaoNFE.Domain.Enums;
 using Fly01.Core.ValueObjects;
 using System.Linq;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
 {
     public static class ValidaDestinatario
     {
-        private static string msgError;
+        private static string msgError;        
 
         public static void ExecutarValidaDestinatario(ItemTransmissaoVM item, EntitiesBLToValidate entitiesBLToValidate, TransmissaoVM entity)
         {
@@ -25,6 +26,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
                 ValidarBairroDestinatario(item, entity);
                 ValidarCodigoMunicipioDestinatario(item, entitiesBLToValidate, entity);
                 ValidarMunicipioDestinatario(item, entity);
+                ValidarPaisDestinatario(item, entity);
                 ValidarInscricaoEstadualDestinatario(item, entity);
                 ValidarCEPDestinatario(item, entitiesBLToValidate, entity);
                 ValidarIdEstrangeiro(item, entity);
@@ -33,7 +35,15 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
 
         private static void ValidarInscricaoEstadualDestinatario(ItemTransmissaoVM item, TransmissaoVM entity)
         {
-            if (!string.IsNullOrEmpty(item.Destinatario.InscricaoEstadual) && item.Destinatario.IndInscricaoEstadual == IndInscricaoEstadual.ContribuinteICMS)
+            if (item.Destinatario.EhExportacao())
+            {
+                entity.Fail(!string.IsNullOrEmpty(item.Destinatario.InscricaoEstadual),
+                                new Error("Se UF do destinatário é exterior, inscrição estadual não deve ser informada.", "item.Destinatario.InscricaoEstadual"));
+                entity.Fail(item.Destinatario.IndInscricaoEstadual != TipoIndicacaoInscricaoEstadual.NaoContribuinte,
+                                new Error("Se UF do destinatário é exterior, indicação da inscrição estadual deve ser não contribuinte.", "item.Destinatario.InscricaoEstadual"));
+            }
+
+            if (!string.IsNullOrEmpty(item.Destinatario.InscricaoEstadual) && item.Destinatario.IndInscricaoEstadual == TipoIndicacaoInscricaoEstadual.ContribuinteICMS && !item.Destinatario.EhExportacao())
             {
                 if (!InscricaoEstadualHelper.IsValid(item.Destinatario.Endereco.UF, item.Destinatario.InscricaoEstadual, out msgError))
                 {
@@ -63,14 +73,26 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
 
         private static void ValidarCEPDestinatario(ItemTransmissaoVM item, EntitiesBLToValidate entitiesBLToValidate, TransmissaoVM entity)
         {
-            entity.Fail(item.Destinatario.Endereco.Cep != null && !entitiesBLToValidate._empresaBL.ValidaCEP(item.Destinatario.Endereco.Cep),
+            entity.Fail(item.Destinatario.Endereco.Cep != null && !item.Destinatario.EhExportacao() && !entitiesBLToValidate._empresaBL.ValidaCEP(item.Destinatario.Endereco.Cep),
                                 new Error("CEP do destinatário inválido.", "item.Destinatario.Endereco.Cep"));
         }
 
         private static void ValidarMunicipioDestinatario(ItemTransmissaoVM item, TransmissaoVM entity)
         {
             entity.Fail(string.IsNullOrEmpty(item.Destinatario.Endereco.Municipio),
-                                new Error("Município do destinatário é um dado obrigatório.", "Item.Destinatario.Endereco.Municipio"));
+                            new Error("Município do destinatário é um dado obrigatório.", "Item.Destinatario.Endereco.Municipio"));
+            entity.Fail(item.Destinatario.EhExportacao() && ((string.IsNullOrEmpty(item.Destinatario.Endereco.Municipio)) || (!string.IsNullOrEmpty(item.Destinatario.Endereco.Municipio) && item.Destinatario.Endereco.Municipio?.ToUpper() != "EXTERIOR")),
+                            new Error("Se UF do destinatário é exterior, município do destinatário também deve ser exterior.", "Item.Destinatario.Endereco.Municipio"));
+        }
+
+        private static void ValidarPaisDestinatario(ItemTransmissaoVM item, TransmissaoVM entity)
+        {            
+            entity.Fail(item.Destinatario.EhExportacao() && ((string.IsNullOrEmpty(item.Destinatario.Endereco.PaisCodigoBacen)) || (string.IsNullOrEmpty(item.Destinatario.Endereco.PaisNome))),
+                            new Error("Se UF do destinatário é exterior, informe o codigo bacen e nome do País do destinatário.", "Item.Destinatario.Endereco.PaisCodigoBacen"));
+            entity.Fail(item.Destinatario.EhExportacao() && 
+                ((!string.IsNullOrEmpty(item.Destinatario.Endereco.PaisCodigoBacen) && item.Destinatario.Endereco.PaisCodigoBacen == "1058")) ||
+                ((!string.IsNullOrEmpty(item.Destinatario.Endereco.PaisNome) && item.Destinatario.Endereco.PaisNome.ToUpper() == "Brasil")),
+                        new Error("Se UF do destinatário é exterior, o país do destinatário não pode ser Brasil.", "Item.Destinatario.Endereco.PaisCodigoBacen"));
         }
 
         private static void ValidarCodigoMunicipioDestinatario(ItemTransmissaoVM item, EntitiesBLToValidate entitiesBLToValidate, TransmissaoVM entity)
@@ -117,14 +139,18 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
 
         private static void ValidarIdEstrangeiro(ItemTransmissaoVM item, TransmissaoVM entity)
         {
+            entity.Fail(item.Destinatario.EhExportacao() && string.IsNullOrEmpty(item.Destinatario.IdentificacaoEstrangeiro),
+                new Error("Quando UF destinatário for exportação, informe o identificador estrangeiro do destinatário.", "Item.Destinatario.IdentificacaoEstrangeiro"));
             entity.Fail(item.Destinatario.IdentificacaoEstrangeiro != null && item.Destinatario.IdentificacaoEstrangeiro?.Length > 20,
                 new Error("Id estrangeiro do destinatário só pode ter até 20 caracteres.", "Item.Destinatario.IdentificacaoEstrangeiro"));
         }
 
         private static void ValidarCPF_CNPJ(ItemTransmissaoVM item, TransmissaoVM entity)
         {
-            entity.Fail(item.Destinatario.Cnpj == null && item.Destinatario.Cpf == null && item.Destinatario.IdentificacaoEstrangeiro == null,
-                new Error("Informe o CPF/CNPJ ou id estrangeiro do destinatário.", "Item.Destinatario.Cnpj"));
+            entity.Fail(item.Destinatario.EhExportacao() && (!string.IsNullOrEmpty(item.Destinatario.Cnpj) || !string.IsNullOrEmpty(item.Destinatario.Cpf)),
+                new Error("Quando UF destinatário for exportação, não informe CPF/CNPJ, informe o identificador do estrangeiro.", "Item.Destinatario.Cnpj"));
+            entity.Fail(item.Destinatario.Cnpj == null && item.Destinatario.Cpf == null && !item.Destinatario.EhExportacao(),
+                new Error("Informe o CPF/CNPJ do destinatário.", "Item.Destinatario.Cnpj"));
         }
     }
 }

@@ -276,10 +276,6 @@
     <Compile Include="Migrations\201904101814188_AddDadosExportacao.Designer.cs">
       <DependentUpon>201904101814188_AddDadosExportacao.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201904122013302_AlterGetLicence.cs" />
-    <Compile Include="Migrations\201904122013302_AlterGetLicence.Designer.cs">
-      <DependentUpon>201904122013302_AlterGetLicence.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer2.cs" />
@@ -474,9 +470,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201904101814188_AddDadosExportacao.resx">
       <DependentUpon>201904101814188_AddDadosExportacao.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201904122013302_AlterGetLicence.resx">
-      <DependentUpon>201904122013302_AlterGetLicence.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

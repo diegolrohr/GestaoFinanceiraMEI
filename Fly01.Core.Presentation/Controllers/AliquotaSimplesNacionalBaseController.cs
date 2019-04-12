@@ -94,21 +94,89 @@ namespace Fly01.Core.Presentation.Controllers
             }
         }
 
-        public ContentResult FormModal(bool isOnCadastroParametros = false)
+        public ContentResult ModalAtualizaIE()
         {
             ModalUIForm config = new ModalUIForm()
             {
-                Title = "Alíquotas Simples Nacional",
+                Title = "Atualizar Inscrição Estadual:",
                 UrlFunctions = @Url.Action("Functions") + "?fns=",
+                ConfirmAction = new ModalUIAction() { Label = "Enviar", OnClickFn = "fnFormReadyAtualizaIE" },
                 CancelAction = new ModalUIAction() { Label = "Cancelar" },
-                ConfirmAction = new ModalUIAction() { Label = isOnCadastroParametros ? "Aplicar" : "Salvar" },
                 Action = new FormUIAction
                 {
-                    Create = Url.Action("Create")
+                    Create = @Url.Action("Create"),
+                    Edit = @Url.Action("Edit"),
+                    Get = @Url.Action("Json") + "/",
+                    List = @Url.Action("List")
+                },
+                Id = "fly01mdlfrmAtualizaIE"
+            };
+            config.Elements.Add(new InputTextUI
+            {
+                Id = "inscricaoEstadualId",
+                Class = "col s12",
+                Label = "Inscrição Estadual"
+            });
+
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "inscricaoEstadualId",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Verificamos que você não possui cadastrado sua Inscrição Estadual nos dados de sua Empresa. Por favor, insira sua inscrição estadual para realizarmos a atualização dos seus parâmetros tributários."
+                }
+            });
+
+            return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
+        }
+
+        public ContentResult FormModal(bool isOnCadastroParametros = false, bool isEdit = false)
+        {
+            var config = new ModalUIFormWizard
+            {
+                Id = "fly01mdlfrmAliquotaSimplesNacional",
+                Action = new FormUIAction
+                {
+                    Create = @Url.Action("Create"),
+                    Edit = @Url.Action("Edit"),
+                    Get = @Url.Action("Json") + "/",
+                    List = @Url.Action("List", "OrdemCompra")
                 },
                 ReadyFn = "fnFormReadyAliquotaSimplesNacional",
-                Id = "fly01mdlfrmAliquotaSimplesNacional"
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                Steps = new List<FormWizardUIStep>()
+                            {
+                                new FormWizardUIStep()
+                                {
+                                    Title = "Entenda",
+                                    Id = "stepEntenda",
+                                    Quantity = 2,
+                                },
+                                new FormWizardUIStep()
+                                {
+                                    Title = "Informe",
+                                    Id = "stepInforme",
+                                    Quantity = 1,
+                                },
+                                new FormWizardUIStep()
+                                {
+                                    Title = "Selecione",
+                                    Id = "stepSelecione",
+                                    Quantity = 1,
+
+                                },
+                                new FormWizardUIStep()
+                                {
+                                    Title = "Finalize",
+                                    Id = "stepFinalize",
+                                    Quantity = 9,
+                                },
+                        },
+                Rule = isEdit ? "parallel" : "linear",
+                ShowStepNumbers = true
             };
+
+
 
             config.Elements.Add(new InputHiddenUI { Id = "isOnCadastroParametros", Value = isOnCadastroParametros.ToString() });
             config.Elements.Add(new DivElementUI { Id = "infoAliquotas", Class = "col s12 text-justify visible", Label = "Informação" });
@@ -116,28 +184,55 @@ namespace Fly01.Core.Presentation.Controllers
             {
                 Id = "tipoFaixaReceitaBruta",
                 Class = "col s12",
-                Label = "Faixa Receita Bruta",
+                Label = "Receita bruta anual (É necessário que você informe sua receita bruta anual para as configurações tributárias)",
                 Required = true,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFaixaReceitaBruta)).ToList()),
                 DomEvents = new List<DomEventUI>
-                {
-                    new DomEventUI() { DomEvent = "change", Function = "fnChangeTipoFaixaReceitaBruta" }
-                }
+                    {
+                        new DomEventUI() { DomEvent = "change", Function = "fnChangeTipoFaixaReceitaBruta" }
+                    }
             });
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "tipoEnquadramentoEmpresa",
                 Class = "col s12",
                 Required = true,
-                Label = "Enquadramento Empresa",
+                Label = "Qual o segmento da sua empresa?",
                 DataUrl = Url.Action("AliquotaSimplesNacional", "AutoComplete"),
                 LabelId = "tipoEnquadramentoEmpresaDescricao",
                 PreFilter = "tipoFaixaReceitaBruta",
                 DomEvents = new List<DomEventUI>
-                {
-                    new DomEventUI() { DomEvent = "autocompleteselect", Function = "fnChangeTipoEnquadramentoEmpresa" }
-                }
+                    {
+                        new DomEventUI() { DomEvent = "autocompleteselect", Function = "fnChangeTipoEnquadramentoEmpresa" }
+                    }
             });
+
+            config.Elements.Add(new DivElementUI { Id = "infoFinal", Class = "col s12 text-justify visible", Label = "Informação" });
+
+            if (!isOnCadastroParametros)
+            {
+                config.Elements.Add(new InputCheckboxUI
+                {
+                    Id = "enviarEmailContador",
+                    Class = "col s12 m4",
+                    Label = "Enviar e-mail para contador",
+                    DomEvents = new List<DomEventUI>
+                    {
+                        new DomEventUI { DomEvent = "change", Function = "fnChkEnviarEmailContador" }
+                    }
+                });
+                config.Elements.Add(new InputEmailUI { Id = "emailContador", Class = "col s12 m8", Label = "E-mail do Contador", MaxLength = 100, });
+
+                config.Helpers.Add(new TooltipUI
+                {
+                    Id = "enviarEmailContador",
+                    Tooltip = new HelperUITooltip()
+                    {
+                        Text = "Se marcar esta opção, ao salvar as alíquotas no seu cadastro de parâmetros tributários, também será enviado ao e-mail informado uma cópia das alíquotas configuradas."
+                    }
+                });
+
+            }
             config.Elements.Add(new InputCustommaskUI
             {
                 Id = "simplesNacional",
@@ -187,67 +282,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
             });
 
-            if (!isOnCadastroParametros)
-            {
-                config.Elements.Add(new InputCheckboxUI
-                {
-                    Id = "enviarEmailContador",
-                    Class = "col s12 m4",
-                    Label = "Enviar e-mail para contador",
-                    DomEvents = new List<DomEventUI>
-                {
-                    new DomEventUI { DomEvent = "change", Function = "fnChkEnviarEmailContador" }
-                }
-                });
-                config.Elements.Add(new InputEmailUI { Id = "emailContador", Class = "col s12 m4", Label = "E-mail do Contador", MaxLength = 100, });
-
-                config.Helpers.Add(new TooltipUI
-                {
-                    Id = "enviarEmailContador",
-                    Tooltip = new HelperUITooltip()
-                    {
-                        Text = "Se marcar esta opção, ao salvar as alíquotas no seu cadastro de parâmetros tributários, também será enviado ao e-mail informado uma cópia das alíquotas configuradas, para você solicitar a conferência e confirmação junto ao seu contador, para evitar problemas fiscais."
-                    }
-                });
-            }
-            
-            return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
-        }
-
-        public ContentResult ModalAtualizaIE()
-        {
-            ModalUIForm config = new ModalUIForm()
-            {
-                Title = "Atualizar Inscrição Estadual:",
-                UrlFunctions = @Url.Action("Functions") + "?fns=",
-                ConfirmAction = new ModalUIAction() { Label = "Enviar", OnClickFn = "fnFormReadyAtualizaIE" },
-                CancelAction = new ModalUIAction() { Label = "Cancelar" },
-                Action = new FormUIAction
-                {
-                    Create = @Url.Action("Create"),
-                    Edit = @Url.Action("Edit"),
-                    Get = @Url.Action("Json") + "/",
-                    List = @Url.Action("List")
-                },
-                Id = "fly01mdlfrmAtualizaIE"
-            };
-            config.Elements.Add(new InputTextUI
-            {
-                Id = "inscricaoEstadualId",
-                Class = "col s12",
-                Label = "Inscrição Estadual"
-            });
-
-            config.Helpers.Add(new TooltipUI
-            {
-                Id = "inscricaoEstadualId",
-                Tooltip = new HelperUITooltip()
-                {
-                    Text = "Verificamos que você não possui cadastrado sua Inscrição Estadual nos dados de sua Empresa. Por favor, insira sua inscrição estadual para realizarmos a atualização dos seus parâmetros tributários."
-                }
-            });
-
-            return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
+            return Content(JsonConvert.SerializeObject(config, uiJS.Defaults.JsonSerializerSetting.Front), "application/json");
         }
     }
 }

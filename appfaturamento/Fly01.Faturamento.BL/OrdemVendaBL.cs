@@ -247,13 +247,14 @@ namespace Fly01.Faturamento.BL
                             ValorICMSSTRetido = x.ValorICMSSTRetido,
                             ValorCreditoICMS = x.ValorCreditoICMS,
                             ValorFCPSTRetidoAnterior = x.ValorFCPSTRetidoAnterior,
-                            ValorBCFCPSTRetidoAnterior = x.ValorBCFCPSTRetidoAnterior
+                            ValorBCFCPSTRetidoAnterior = x.ValorBCFCPSTRetidoAnterior,
+                            OrdemVendaProdutoId = x.Id
                         }).ToList();
 
                 var nfeProdutosTributacao = new List<NotaFiscalItemTributacao>();
                 foreach (var x in tributacoesProdutos)
                 {
-                    var nfeProduto = nfeProdutos.Where(y => y.ProdutoId == x.ProdutoId && y.GrupoTributarioId == x.GrupoTributarioId).FirstOrDefault();
+                    var nfeProduto = nfeProdutos.Where(y => y.OrdemVendaProdutoId == x.OrdemVendaProdutoId).FirstOrDefault();
                     var grupoTributario = TotalTributacaoBL.GetGrupoTributario(nfeProduto.GrupoTributarioId);
                     NotaFiscalItemTributacaoBL.Insert(
                         new NotaFiscalItemTributacao
@@ -338,14 +339,15 @@ namespace Fly01.Faturamento.BL
                             Observacao = x.Observacao,
                             ValorOutrasRetencoes = x.ValorOutrasRetencoes,
                             DescricaoOutrasRetencoes = x.DescricaoOutrasRetencoes,
-                            IsServicoPrioritario = x.IsServicoPrioritario
+                            IsServicoPrioritario = x.IsServicoPrioritario,
+                            OrdemVendaServicoId = x.Id
                         }).ToList();
 
                 var nfeServicosTributacao = new List<NotaFiscalItemTributacao>();
 
                 foreach (var x in tributacoesServicos)
                 {
-                    var nfseServico = nfseServicos.Where(y => y.ServicoId == x.ServicoId && y.GrupoTributarioId == x.GrupoTributarioId).FirstOrDefault();
+                    var nfseServico = nfseServicos.Where(y => y.OrdemVendaServicoId == x.OrdemVendaServicoId).FirstOrDefault();
                     var grupoTributario = TotalTributacaoBL.GetGrupoTributario(nfseServico.GrupoTributarioId);
                     NotaFiscalItemTributacaoBL.Insert(
                         new NotaFiscalItemTributacao

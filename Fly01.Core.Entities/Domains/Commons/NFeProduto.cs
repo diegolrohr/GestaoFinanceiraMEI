@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {
@@ -17,6 +18,9 @@ namespace Fly01.Core.Entities.Domains.Commons
         public double ValorFCPSTRetidoAnterior { get; set; }
 
         public double ValorBCFCPSTRetidoAnterior { get; set; }
+
+        [NotMapped]
+        public Guid OrdemVendaProdutoId { get; set; }
 
         public virtual Produto Produto { get; set; }
     }

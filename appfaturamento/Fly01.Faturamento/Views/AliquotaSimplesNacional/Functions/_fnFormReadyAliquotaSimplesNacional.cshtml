@@ -10,42 +10,58 @@
         $('.collapsible').collapsible();
         fnBindOverrideSubmit();
     }
-
+    
     function fnSetInformacoes() {
+        var negrito = [createElem("h5", { "class": "col s12 center orange-text light" }, "Bemacash Gestão Financeira")];
         var textAliquotas = [
-            createElem("span", null, "O Simples Nacional é composto por 5 anexos "),
-            createElem("a", { "target": "_blank", "href": "http://www.planalto.gov.br/ccivil_03/leis/LCP/Lcp155.htm" }, "(Lei Complementar 155)."),
+
+            createElem("h5", { "class": "col s12 center orange-text light" }, [
+                "Olá! Quando uma empresa emite notas fiscais é necessário que sejam preenchidos alguns dados, e o ",
+                createElem("b", null, "Bemacash Gestão Financeira"),
+                " está aqui para lhe ajudar."
+                ]),
             createElem("br"),
-            createElem("span", null, "Cada anexo possui faixas de alíquotas diferentes "),
-            createElem("a", { "target": "_blank", "href": "http://www.planalto.gov.br/ccivil_03/leis/LCP/Lcp123.htm" }, "(Lei Complementar 123)."),
+            createElem("h5", { "class": "col s12 center orange-text light" }, [
+                "As informações a seguir serão utilizadas caso sua empresa tenha a necessidade de ",
+                createElem("b", null, "emissão de notas fiscais (NF-e, NFS-e)."),
+                ]),
             createElem("br"),
-            createElem("span", null, "O sistema irá sugerir as alíquotas de acordo com as opções escolhidas."),
-            createElem("br"),
-            createElem("span", null, "Utilize a opção de enviar um e-mail com as alíquotas configuradas, para o seu contador."),
-            createElem("br"),
-            createElem("span", null, "Importante! Consulte sempre o seu contador para auxiliar nas configurações de alíquotas e evitar problemas fiscais."),
-            createElem("br"),
-            createElem("span", null, "Peça também para seu contador checar se o seu CNAE se enquadra ao regime tributário Simples Nacional."),
+            createElem("h5", { "class": "col s12 center orange-text light" }, "Fique tranquilo, caso sua empresa não emita notas fiscais, essas configurações apenas ficarão salvas."),
+            createElem("br"), ];
+
+        var textFinal = [
+            createElem("h5", { "class": "col s12 center orange-text light" }, "De acordo com os dados informados, foi realizado a configuração abaixo. Sugerimos que envie uma cópia dos dados ao seu contador para que seja realizada a confirmação."),
             createElem("br"),
         ];
 
-        $("#infoAliquotasField")[0].innerText = "";
+        $("#infoFinalField").append(createElem("ul",
+            { "class": "col s12" },
+            createElem("li", null, [createElem("div", { "class": "col s12" }, textFinal)])
+        ));
+
         $("#infoAliquotasField").append(createElem("ul",
-            { "class": "collapsible", "data-collapsible": "accordion" },
-            createElem("li", null, [
-                createElem("div", { "class": "collapsible-header" }, createElem("h6", { "class": "orange-text light" }, "Informações Importantes!")),
-                createElem("div", { "class": "collapsible-body" }, textAliquotas)
-            ])
+            { "class": "col s12" },
+            createElem("li", null, [createElem("div", { "class": "col s12" }, textAliquotas)])
         ));
     }
 
     function fnBindOverrideSubmit() {
+
+
+        $('#stepSelecione > div.step-actions > button.btn.next-step').click(function () {
+            if ($("form#fly01mdlfrmAliquotaSimplesNacional #tipoEnquadramentoEmpresaDescricao").val() == "") {
+                $$$.toast("Informe o segmento de sua Empresa.", "error");
+                return false;
+            }
+        });
+
+
         $("form#fly01mdlfrmAliquotaSimplesNacional").off("submit");
         $("form#fly01mdlfrmAliquotaSimplesNacional").on("submit", function (e) {
             e.preventDefault();
             if (!$(this).valid()) return false;
             if ($("form#fly01mdlfrmAliquotaSimplesNacional #tipoEnquadramentoEmpresaDescricao").val() == "") {
-                $$$.toast("Informe o enquadramento da Empresa", "error");
+                $$$.toast("Informe o segmento de sua Empresa.", "error");
                 return false;
             }
 

@@ -45,7 +45,7 @@ namespace Fly01.OrdemServico.API.Controllers.Api
                         Servico = i.Servico != null ? i.Servico.Total : 0,
                         Cliente = i.Cliente != null ? i.Cliente.Total : 0,
                         Kit = i.Kit != null ? i.Kit.Total : 0,
-                        RazaoSocial = ApiEmpresaManager.GetEmpresa(i.PlataformaUrl).RazaoSocial
+                        RazaoSocial = ""//ApiEmpresaManager.GetEmpresa(i.PlataformaUrl).RazaoSocial
                     }).ToList()
                 });
             }

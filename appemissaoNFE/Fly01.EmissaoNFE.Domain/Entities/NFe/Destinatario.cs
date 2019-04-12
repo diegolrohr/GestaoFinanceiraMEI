@@ -87,7 +87,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         [XmlElement(ElementName = "IE")]
         public string IE
         {
-            get { return EhExportacao() ? "" : InscricaoEstadual; }
+            get { return EhExportacao() ? " " : InscricaoEstadual; }
             set { InscricaoEstadual = value; }
         }
 

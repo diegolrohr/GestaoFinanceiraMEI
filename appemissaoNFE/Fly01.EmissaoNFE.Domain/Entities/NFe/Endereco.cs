@@ -67,14 +67,18 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         [XmlElement(ElementName = "UF")]
         public string UF { get; set; }
 
-        [StringLength(8, ErrorMessage = "CEP inválido.")]
         /// <summary>
         /// informar o CEP, sem formatação ou máscara, pode ser omitido
         /// </summary>
-        /// 
         [JsonProperty("CEP")]
+        [StringLength(8, ErrorMessage = "CEP inválido.")]
         [XmlElement(ElementName = "CEP")]
         public string Cep { get; set; }
+
+        public bool ShouldSerializeCep()
+        {
+            return !string.IsNullOrEmpty(Cep);
+        }
 
         /// <summary>
         /// Informe o código bacen do país, de acordo com o banco central do Brasil

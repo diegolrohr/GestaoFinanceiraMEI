@@ -73,7 +73,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
 
         private static void ValidarCEPDestinatario(ItemTransmissaoVM item, EntitiesBLToValidate entitiesBLToValidate, TransmissaoVM entity)
         {
-            entity.Fail(item.Destinatario.Endereco.Cep != null && !entitiesBLToValidate._empresaBL.ValidaCEP(item.Destinatario.Endereco.Cep),
+            entity.Fail(item.Destinatario.Endereco.Cep != null && !item.Destinatario.EhExportacao() && !entitiesBLToValidate._empresaBL.ValidaCEP(item.Destinatario.Endereco.Cep),
                                 new Error("CEP do destinatário inválido.", "item.Destinatario.Endereco.Cep"));
         }
 

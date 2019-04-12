@@ -205,8 +205,8 @@ namespace Fly01.Compras.BL
                     {
                         FreteValorFracionado = (freteFracionado * itemProduto.Quantidade),
                         ProdutoId = itemProduto.ProdutoId,
-                        GrupoTributarioId = itemProduto.GrupoTributarioId
-
+                        GrupoTributarioId = itemProduto.GrupoTributarioId,
+                        PedidoItemId = itemProduto.PedidoItemId
                     };
                     var tributacao = new Tributacao();
                     tributacao.ValorBase = itemProduto.Total;
@@ -372,7 +372,8 @@ namespace Fly01.Compras.BL
                 Desconto = x.Desconto,
                 Total = x.Total,
                 ProdutoId = x.ProdutoId,
-                GrupoTributarioId = x.GrupoTributarioId.Value
+                GrupoTributarioId = x.GrupoTributarioId.Value,
+                PedidoItemId = x.Id
             }).ToList(), fornecedorId, tipoCompra, tipoFrete, valorFrete);
         }
 
@@ -484,6 +485,7 @@ namespace Fly01.Compras.BL
     public class TributacaoProduto : TributacaoItem
     {
         public Guid ProdutoId { get; set; }
+        public Guid PedidoItemId { get; set; }
     }
     //se necessário mudar
     public class TributacaoServico : TributacaoItem
@@ -494,6 +496,7 @@ namespace Fly01.Compras.BL
     public class TributacaoProdutoRetorno : TributacaoItemRetorno
     {
         public Guid ProdutoId { get; set; }
+        public Guid PedidoItemId { get; set; }
     }
     //se necessário mudar
     public class TributacaoServicoRetorno : TributacaoItemRetorno

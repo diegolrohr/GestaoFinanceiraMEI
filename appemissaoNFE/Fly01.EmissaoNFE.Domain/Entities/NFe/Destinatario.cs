@@ -81,19 +81,13 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// Quando for exportação a ie deve sair em branco
         /// </summary>        
         [XmlIgnore]
-        public string InscricaoEstadual { get; set; }
-
         [JsonProperty("IE")]
         [XmlElement(ElementName = "IE")]
-        public string IE
-        {
-            get { return EhExportacao() ? "" : InscricaoEstadual; }
-            set { InscricaoEstadual = value; }
-        }
+        public string InscricaoEstadual { get; set; }
 
         public bool ShouldSerializeIE()
         {
-            return !string.IsNullOrEmpty(InscricaoEstadual) || EhExportacao();
+            return !string.IsNullOrEmpty(InscricaoEstadual) && !EhExportacao();
         }
 
         public bool EhExportacao()

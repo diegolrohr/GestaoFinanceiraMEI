@@ -585,7 +585,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "ufSaidaPaisNome",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Informe se for emitir nota fiscal de exportação. UF de embarque ou de transposição de fronteira. A UF de embarque é a UF do local onde será embarcada para o exterior (porto/aeroporto), no caso de ser transporte terrestre deve ser o local de transposição de fronteira."
+                    Text = "Se for emitir nota fiscal de exportação, informe a UF de embarque ou de transposição de fronteira. A UF de embarque é a UF do local onde será embarcada para o exterior (porto/aeroporto), no caso de ser transporte terrestre deve ser o local de transposição de fronteira."
                 }
             });
             config.Helpers.Add(new TooltipUI
@@ -593,7 +593,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "localEmbarque",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Informe se for emitir nota fiscal de exportação. Informar o local de embarque, local onde será embarcada para o exterior (porto/aeroporto), no caso de ser transporte terrestre deve ser o local de transposição de fronteira."
+                    Text = "Se for emitir nota fiscal de exportação, informe o local onde será embarcada para o exterior (porto/aeroporto), no caso de ser transporte terrestre deve ser o local de transposição de fronteira."
                 }
             });
             config.Helpers.Add(new TooltipUI
@@ -601,7 +601,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "localDespacho",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Informe se for emitir nota fiscal de exportação. Informação do Recinto Alfandegado do local de despacho."
+                    Text = "Se for emitir nota fiscal de exportação, informe o Recinto Alfandegado do local de despacho."
                 }
             });
             #endregion

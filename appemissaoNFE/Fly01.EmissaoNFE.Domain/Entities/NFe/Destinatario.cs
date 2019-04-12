@@ -36,6 +36,11 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         [XmlElement(ElementName = "idEstrangeiro")]
         public string IdentificacaoEstrangeiro { get; set; }
 
+        public bool ShouldSerializeIdentificacaoEstrangeiro()
+        {
+            return EhExportacao();
+        }
+
         [MaxLength(60)]
         /// <summary>
         /// informar a razão social do destinatário, pode ser omitida no caso de NFC-e.
@@ -73,13 +78,20 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// A tag não aceita mais a literal "ISENTO", assim só informe a Inscrição Estadual, isto é só informe está tag quando informar a tag indIEDest = 1.
         /// Quando o for emitida uma NF-e para Destinatário, identificado como Isento (indIEDest = 2) ou Não Contribuinte (indIEDest = 9),
         /// que possui Inscrição Estadual (IE) ativa no seu Estado (UF) e essa não for informada em seus Dados, 
-        /// </summary>
-        /// 
-        [JsonProperty("IE")]
-        [XmlElement(ElementName = "IE")]
+        /// Quando for exportação a ie deve sair em branco
+        /// </summary>        
+        [XmlIgnore]
         public string InscricaoEstadual { get; set; }
 
-        public bool ShouldSerializeInscricaoEstadual()
+        [JsonProperty("IE")]
+        [XmlElement(ElementName = "IE")]
+        public string IE
+        {
+            get { return EhExportacao() ? "" : InscricaoEstadual; }
+            set { InscricaoEstadual = value; }
+        }
+
+        public bool ShouldSerializeIE()
         {
             return !string.IsNullOrEmpty(InscricaoEstadual) || EhExportacao();
         }

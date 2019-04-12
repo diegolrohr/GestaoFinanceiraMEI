@@ -42,6 +42,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
 
                 return Ok(new
                 {
+                    success = true,
                     data = response.Select(i => new
                     {
                         PlataformaUrl = i.PlataformaUrl,
@@ -55,7 +56,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                         TotalCondicaoParcelamento = i.CondicaoParcelamento != null ? i.CondicaoParcelamento.Total : 0,
                         TotalCategoria = i.Categoria != null ? i.Categoria.Total : 0,
                         TotalBoleto = i.Boleto != null ? i.Boleto.Total : 0,
-                        RazaoSocial = ApiEmpresaManager.GetEmpresa(i.PlataformaUrl).RazaoSocial
+                        RazaoSocial = ""//ApiEmpresaManager.GetEmpresa(i.PlataformaUrl).RazaoSocial
                     }).ToList()
                 });
             }

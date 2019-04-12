@@ -94,127 +94,6 @@ namespace Fly01.Core.Presentation.Controllers
             }
         }
 
-        public ContentResult FormModal(bool isOnCadastroParametros = false)
-        {
-            ModalUIForm config = new ModalUIForm()
-            {
-                Title = "Alíquotas Simples Nacional",
-                UrlFunctions = @Url.Action("Functions") + "?fns=",
-                CancelAction = new ModalUIAction() { Label = "Cancelar" },
-                ConfirmAction = new ModalUIAction() { Label = isOnCadastroParametros ? "Aplicar" : "Salvar" },
-                Action = new FormUIAction
-                {
-                    Create = Url.Action("Create")
-                },
-                ReadyFn = "fnFormReadyAliquotaSimplesNacional",
-                Id = "fly01mdlfrmAliquotaSimplesNacional"
-            };
-
-            config.Elements.Add(new InputHiddenUI { Id = "isOnCadastroParametros", Value = isOnCadastroParametros.ToString() });
-            config.Elements.Add(new DivElementUI { Id = "infoAliquotas", Class = "col s12 text-justify visible", Label = "Informação" });
-            config.Elements.Add(new SelectUI
-            {
-                Id = "tipoFaixaReceitaBruta",
-                Class = "col s12",
-                Label = "Faixa Receita Bruta",
-                Required = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFaixaReceitaBruta)).ToList()),
-                DomEvents = new List<DomEventUI>
-                {
-                    new DomEventUI() { DomEvent = "change", Function = "fnChangeTipoFaixaReceitaBruta" }
-                }
-            });
-
-            config.Elements.Add(new AutoCompleteUI
-            {
-                Id = "tipoEnquadramentoEmpresa",
-                Class = "col s12",
-                Required = true,
-                Label = "Enquadramento Empresa",
-                DataUrl = Url.Action("AliquotaSimplesNacional", "AutoComplete"),
-                LabelId = "tipoEnquadramentoEmpresaDescricao",
-                PreFilter = "tipoFaixaReceitaBruta",
-                DomEvents = new List<DomEventUI>
-                {
-                    new DomEventUI() { DomEvent = "autocompleteselect", Function = "fnChangeTipoEnquadramentoEmpresa" }
-                }
-            });
-            config.Elements.Add(new InputCustommaskUI
-            {
-                Id = "simplesNacional",
-                Class = "col s12 m4",
-                Label = "ICMS Simples Nacional",
-                Disabled = true,
-                Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
-            });
-            config.Elements.Add(new InputCustommaskUI
-            {
-                Id = "impostoRenda",
-                Class = "col s12 m4",
-                Label = "Imposto de Renda",
-                Disabled = true,
-                Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
-            });
-            config.Elements.Add(new InputCustommaskUI
-            {
-                Id = "csll",
-                Class = "col s12 m4",
-                Label = "CSLL",
-                Disabled = true,
-                Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
-            });
-            config.Elements.Add(new InputCustommaskUI
-            {
-                Id = "cofins",
-                Class = "col s12 m4",
-                Label = "COFINS",
-                Disabled = true,
-                Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
-            });
-            config.Elements.Add(new InputCustommaskUI
-            {
-                Id = "pisPasep",
-                Class = "col s12 m4",
-                Label = "PIS/PASEP",
-                Disabled = true,
-                Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
-            });
-            config.Elements.Add(new InputCustommaskUI
-            {
-                Id = "iss",
-                Class = "col s12 m4",
-                Label = "Imposto Sobre Serviço",
-                Disabled = true,
-                Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
-            });
-
-            if (!isOnCadastroParametros)
-            {
-                config.Elements.Add(new InputCheckboxUI
-                {
-                    Id = "enviarEmailContador",
-                    Class = "col s12 m4",
-                    Label = "Enviar e-mail para contador",
-                    DomEvents = new List<DomEventUI>
-                {
-                    new DomEventUI { DomEvent = "change", Function = "fnChkEnviarEmailContador" }
-                }
-                });
-                config.Elements.Add(new InputEmailUI { Id = "emailContador", Class = "col s12 m4", Label = "E-mail do Contador", MaxLength = 100, });
-
-                config.Helpers.Add(new TooltipUI
-                {
-                    Id = "enviarEmailContador",
-                    Tooltip = new HelperUITooltip()
-                    {
-                        Text = "Se marcar esta opção, ao salvar as alíquotas no seu cadastro de parâmetros tributários, também será enviado ao e-mail informado uma cópia das alíquotas configuradas, para você solicitar a conferência e confirmação junto ao seu contador, para evitar problemas fiscais."
-                    }
-                });
-            }
-
-            return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
-        }
-
         public ContentResult ModalAtualizaIE()
         {
             ModalUIForm config = new ModalUIForm()
@@ -251,28 +130,11 @@ namespace Fly01.Core.Presentation.Controllers
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
 
-
-        public ContentResult FormModalWizard(bool isOnCadastroParametros = false, bool isEdit = false)
+        public ContentResult FormModal(bool isOnCadastroParametros = false, bool isEdit = false)
         {
-            var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
+            var config = new ModalUIFormWizard
             {
-                History = new ContentUIHistory
-                {
-                    Default = Url.Action("Create"),
-                    WithParams = Url.Action("Edit")
-                },
-                Header = new HtmlUIHeader
-                {
-                    Title = "Informações Fiscais",
-                    Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
-                },
-                UrlFunctions = Url.Action("Functions") + "?fns=",
-                //ReadyFn = "fnFormReadyAliquotaSimplesNacional",
-                //Functions = new List<string> { "fnFormReadyOrcamentoItem" }
-            };
-            var config = new FormWizardUI
-            {
-                Id = "fly01frm",
+                Id = "fly01mdlfrmAliquotaSimplesNacional",
                 Action = new FormUIAction
                 {
                     Create = @Url.Action("Create"),
@@ -322,7 +184,7 @@ namespace Fly01.Core.Presentation.Controllers
             {
                 Id = "tipoFaixaReceitaBruta",
                 Class = "col s12",
-                Label = "Faixa Receita Bruta",
+                Label = "Receita bruta anual (É necessário que você informe sua receita bruta anual para as configurações tributárias)",
                 Required = true,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFaixaReceitaBruta)).ToList()),
                 DomEvents = new List<DomEventUI>
@@ -336,7 +198,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Id = "tipoEnquadramentoEmpresa",
                 Class = "col s12",
                 Required = true,
-                Label = "Enquadramento Empresa",
+                Label = "Qual o segmento da sua empresa?",
                 DataUrl = Url.Action("AliquotaSimplesNacional", "AutoComplete"),
                 LabelId = "tipoEnquadramentoEmpresaDescricao",
                 PreFilter = "tipoFaixaReceitaBruta",
@@ -347,6 +209,31 @@ namespace Fly01.Core.Presentation.Controllers
             });
 
             config.Elements.Add(new DivElementUI { Id = "infoFinal", Class = "col s12 text-justify visible", Label = "Informação" });
+
+            if (!isOnCadastroParametros)
+            {
+                config.Elements.Add(new InputCheckboxUI
+                {
+                    Id = "enviarEmailContador",
+                    Class = "col s12 m4",
+                    Label = "Enviar e-mail para contador",
+                    DomEvents = new List<DomEventUI>
+                    {
+                        new DomEventUI { DomEvent = "change", Function = "fnChkEnviarEmailContador" }
+                    }
+                });
+                config.Elements.Add(new InputEmailUI { Id = "emailContador", Class = "col s12 m8", Label = "E-mail do Contador", MaxLength = 100, });
+
+                config.Helpers.Add(new TooltipUI
+                {
+                    Id = "enviarEmailContador",
+                    Tooltip = new HelperUITooltip()
+                    {
+                        Text = "Se marcar esta opção, ao salvar as alíquotas no seu cadastro de parâmetros tributários, também será enviado ao e-mail informado uma cópia das alíquotas configuradas."
+                    }
+                });
+
+            }
             config.Elements.Add(new InputCustommaskUI
             {
                 Id = "simplesNacional",
@@ -396,190 +283,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
             });
 
-            if (!isOnCadastroParametros)
-            {
-                config.Elements.Add(new InputCheckboxUI
-                {
-                    Id = "enviarEmailContador",
-                    Class = "col s12 m4",
-                    Label = "Enviar e-mail para contador",
-                    DomEvents = new List<DomEventUI>
-                    {
-                        new DomEventUI { DomEvent = "change", Function = "fnChkEnviarEmailContador" }
-                    }
-                });
-                config.Elements.Add(new InputEmailUI { Id = "emailContador", Class = "col s12 m4", Label = "E-mail do Contador", MaxLength = 100, });
-
-                config.Helpers.Add(new TooltipUI
-                {
-                    Id = "enviarEmailContador",
-                    Tooltip = new HelperUITooltip()
-                    {
-                        Text = "Se marcar esta opção, ao salvar as alíquotas no seu cadastro de parâmetros tributários, também será enviado ao e-mail informado uma cópia das alíquotas configuradas, para você solicitar a conferência e confirmação junto ao seu contador, para evitar problemas fiscais."
-                    }
-                });
-
-            }
-            cfg.Content.Add(config);
-
-            return Content(JsonConvert.SerializeObject(cfg, uiJS.Defaults.JsonSerializerSetting.Front), "application/json");
+            return Content(JsonConvert.SerializeObject(config, uiJS.Defaults.JsonSerializerSetting.Front), "application/json");
         }
-
-        //public ContentResult FormModalWizard(bool isOnCadastroParametros = false, bool isEdit = false)
-        //{
-        //    ModalUIFormWizard config = new ModalUIFormWizard()
-        //    {
-        //        Title = "Informações Fiscais",
-        //        UrlFunctions = @Url.Action("Functions") + "?fns=",
-        //        CancelAction = new ModalUIAction() { Label = "Cancelar" },
-        //        Action = new FormUIAction
-        //        {
-        //            Create = Url.Action("Create"),
-        //            Edit = @Url.Action("Edit"),
-        //            Get = @Url.Action("Json") + "/",
-        //            List = @Url.Action("List", "OrdemVenda")
-        //        },
-        //        //ReadyFn = "fnFormReadyAliquotaSimplesNacional",
-        //        Id = "fly01mdlfrmAliquotaSimplesNacional",
-        //        Steps = new List<FormWizardUIStep>()
-        //            {
-        //                new FormWizardUIStep()
-        //                {
-        //                    Title = "Entenda",
-        //                    Id = "stepEntenda",
-        //                    Quantity = 2,
-        //                },
-        //                new FormWizardUIStep()
-        //                {
-        //                    Title = "Informe",
-        //                    Id = "stepInforme",
-        //                    Quantity = 3,
-        //                },
-        //                new FormWizardUIStep()
-        //                {
-        //                    Title = "Selecione",
-        //                    Id = "stepSelecione",
-        //                    Quantity = 1,
-
-        //                },
-        //                new FormWizardUIStep()
-        //                {
-        //                    Title = "Finalize",
-        //                    Id = "stepFinalize",
-        //                    Quantity = 8,
-        //                },
-        //        },
-        //        Rule = "linear",
-        //        ShowStepNumbers = true,
-
-        //    };
-
-        //    config.Elements.Add(new InputHiddenUI { Id = "isOnCadastroParametros", Value = isOnCadastroParametros.ToString() });
-        //    config.Elements.Add(new DivElementUI { Id = "infoAliquotas", Class = "col s12 text-justify visible", Label = "Informação" });
-        //    config.Elements.Add(new SelectUI
-        //    {
-        //        Id = "tipoFaixaReceitaBruta",
-        //        Class = "col s12",
-        //        Label = "Faixa Receita Bruta",
-        //        Required = true,
-        //        Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFaixaReceitaBruta)).ToList()),
-        //        DomEvents = new List<DomEventUI>
-        //        {
-        //            new DomEventUI() { DomEvent = "change", Function = "fnChangeTipoFaixaReceitaBruta" }
-        //        }
-        //    });
-
-        //    config.Elements.Add(new AutoCompleteUI
-        //    {
-        //        Id = "tipoEnquadramentoEmpresa",
-        //        Class = "col s12",
-        //        Required = true,
-        //        Label = "Enquadramento Empresa",
-        //        DataUrl = Url.Action("AliquotaSimplesNacional", "AutoComplete"),
-        //        LabelId = "tipoEnquadramentoEmpresaDescricao",
-        //        PreFilter = "tipoFaixaReceitaBruta",
-        //        DomEvents = new List<DomEventUI>
-        //        {
-        //            new DomEventUI() { DomEvent = "autocompleteselect", Function = "fnChangeTipoEnquadramentoEmpresa" }
-        //        }
-        //    });
-
-
-        //    config.Elements.Add(new InputCustommaskUI
-        //    {
-        //        Id = "simplesNacional",
-        //        Class = "col s12 m4",
-        //        Label = "ICMS Simples Nacional",
-        //        Disabled = true,
-        //        Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
-        //    });
-        //    config.Elements.Add(new InputCustommaskUI
-        //    {
-        //        Id = "impostoRenda",
-        //        Class = "col s12 m4",
-        //        Label = "Imposto de Renda",
-        //        Disabled = true,
-        //        Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
-        //    });
-        //    config.Elements.Add(new InputCustommaskUI
-        //    {
-        //        Id = "csll",
-        //        Class = "col s12 m4",
-        //        Label = "CSLL",
-        //        Disabled = true,
-        //        Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
-        //    });
-        //    config.Elements.Add(new InputCustommaskUI
-        //    {
-        //        Id = "cofins",
-        //        Class = "col s12 m4",
-        //        Label = "COFINS",
-        //        Disabled = true,
-        //        Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
-        //    });
-        //    config.Elements.Add(new InputCustommaskUI
-        //    {
-        //        Id = "pisPasep",
-        //        Class = "col s12 m4",
-        //        Label = "PIS/PASEP",
-        //        Disabled = true,
-        //        Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
-        //    });
-        //    config.Elements.Add(new InputCustommaskUI
-        //    {
-        //        Id = "iss",
-        //        Class = "col s12 m4",
-        //        Label = "Imposto Sobre Serviço",
-        //        Disabled = true,
-        //        Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
-        //    });
-
-        //    if (!isOnCadastroParametros)
-        //    {
-        //        config.Elements.Add(new InputCheckboxUI
-        //        {
-        //            Id = "enviarEmailContador",
-        //            Class = "col s12 m4",
-        //            Label = "Enviar e-mail para contador",
-        //            DomEvents = new List<DomEventUI>
-        //        {
-        //            new DomEventUI { DomEvent = "change", Function = "fnChkEnviarEmailContador" }
-        //        }
-        //        });
-        //        config.Elements.Add(new InputEmailUI { Id = "emailContador", Class = "col s12 m4", Label = "E-mail do Contador", MaxLength = 100, });
-
-        //        config.Helpers.Add(new TooltipUI
-        //        {
-        //            Id = "enviarEmailContador",
-        //            Tooltip = new HelperUITooltip()
-        //            {
-        //                Text = "Se marcar esta opção, ao salvar as alíquotas no seu cadastro de parâmetros tributários, também será enviado ao e-mail informado uma cópia das alíquotas configuradas, para você solicitar a conferência e confirmação junto ao seu contador, para evitar problemas fiscais."
-        //            }
-        //        });
-        //    }
-        //    return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
-
-        //}
-
     }
 }

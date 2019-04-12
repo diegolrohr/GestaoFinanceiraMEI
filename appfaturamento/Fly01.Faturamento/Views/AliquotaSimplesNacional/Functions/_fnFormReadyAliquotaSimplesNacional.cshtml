@@ -8,48 +8,36 @@
         }
         fnSetInformacoes();
         $('.collapsible').collapsible();
-        //fnBindOverrideSubmit();
+        fnBindOverrideSubmit();
     }
-
+    
     function fnSetInformacoes() {
+        var negrito = [createElem("h5", { "class": "col s12 center orange-text light" }, "Bemacash Gestão Financeira")];
         var textAliquotas = [
 
-            createElem("h5", { "class": "col s12 center orange-text light" }, "Olá! Quando uma empresa emite notas fiscais é necessário que sejam preenchidos alguns dados, e o Bemacash Gestão está aqui para te ajudar."),
+            createElem("h5", { "class": "col s12 center orange-text light" }, [
+                "Olá! Quando uma empresa emite notas fiscais é necessário que sejam preenchidos alguns dados, e o ",
+                createElem("b", null, "Bemacash Gestão Financeira"),
+                " está aqui para lhe ajudar."
+                ]),
             createElem("br"),
-            createElem("h5", { "class": "col s12 center orange-text light" }, "As informações a seguir serão utilizadas caso sua empresa tenha a rotina de envio de notas fiscais. "),
+            createElem("h5", { "class": "col s12 center orange-text light" }, [
+                "As informações a seguir serão utilizadas caso sua empresa tenha a necessidade de ",
+                createElem("b", null, "emissão de notas fiscais (NF-e, NFS-e)."),
+                ]),
             createElem("br"),
-            createElem("h5", { "class": "col s12 center orange-text light" }, "Caso contrário, o sistema só irá salvar os dados sem alterar nenhum outro processo."),
-            createElem("br"),
-            createElem("span", null, " ")
-
-            //createElem("span", null, "O Simples Nacional é composto por 5 anexos "),
-            //createElem("a", { "target": "_blank", "href": "http://www.planalto.gov.br/ccivil_03/leis/LCP/Lcp155.htm" }, "(Lei Complementar 155)."),
-            //createElem("br"),
-            //createElem("span", null, "Cada anexo possui faixas de alíquotas diferentes "),
-            //createElem("a", { "target": "_blank", "href": "http://www.planalto.gov.br/ccivil_03/leis/LCP/Lcp123.htm" }, "(Lei Complementar 123)."),
-            //createElem("br"),
-            //createElem("span", null, "O sistema irá sugerir as alíquotas de acordo com as opções escolhidas."),
-            //createElem("br"),
-            //createElem("span", null, "Utilize a opção de enviar um e-mail com as alíquotas configuradas, para o seu contador."),
-            //createElem("br"),
-            //createElem("span", null, "Importante! Consulte sempre o seu contador para auxiliar nas configurações de alíquotas e evitar problemas fiscais."),
-            //createElem("br"),
-            //createElem("span", null, "Peça também para seu contador checar se o seu CNAE se enquadra ao regime tributário Simples Nacional."),
-            //createElem("br"),
-        ];
-
+            createElem("h5", { "class": "col s12 center orange-text light" }, "Fique tranquilo, caso sua empresa não emita notas fiscais, essas configurações apenas ficarão salvas."),
+            createElem("br"), ];
 
         var textFinal = [
-            createElem("h5", { "class": "col s12 center orange-text light" }, "Caso sua empresa inicie o processo de emissão de notas fiscais ou seja necessário alterar alguma informação específica, é possível selecionar novamente as opções ou ajustar manualmente no menu Parêmetros Tributários/Atualizar alíquotas(seta no canto superior direito)."),
+            createElem("h5", { "class": "col s12 center orange-text light" }, "De acordo com os dados informados, foi realizado a configuração abaixo. Sugerimos que envie uma cópia dos dados ao seu contador para que seja realizada a confirmação."),
             createElem("br"),
-        ]
+        ];
 
         $("#infoFinalField").append(createElem("ul",
             { "class": "col s12" },
             createElem("li", null, [createElem("div", { "class": "col s12" }, textFinal)])
         ));
-
-
 
         $("#infoAliquotasField").append(createElem("ul",
             { "class": "col s12" },
@@ -60,8 +48,11 @@
     function fnBindOverrideSubmit() {
 
 
-        $('#stepEntenda > div.step-content > div.step-actions > button.btn.next-step').click(function () {
-            return true;
+        $('#stepSelecione > div.step-actions > button.btn.next-step').click(function () {
+            if ($("form#fly01mdlfrmAliquotaSimplesNacional #tipoEnquadramentoEmpresaDescricao").val() == "") {
+                $$$.toast("Informe o segmento de sua Empresa.", "error");
+                return false;
+            }
         });
 
 
@@ -70,7 +61,7 @@
             e.preventDefault();
             if (!$(this).valid()) return false;
             if ($("form#fly01mdlfrmAliquotaSimplesNacional #tipoEnquadramentoEmpresaDescricao").val() == "") {
-                $$$.toast("Informe o enquadramento da Empresa", "error");
+                $$$.toast("Informe o segmento de sua Empresa.", "error");
                 return false;
             }
 

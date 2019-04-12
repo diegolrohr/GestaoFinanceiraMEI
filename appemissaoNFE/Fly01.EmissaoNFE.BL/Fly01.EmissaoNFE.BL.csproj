@@ -41,10 +41,12 @@
   <ItemGroup>
     <Compile Include="CancelarNFSBL.cs" />
     <Compile Include="CartaCorrecaoBL.cs" />
+    <Compile Include="PaisBL.cs" />
     <Compile Include="Helpers\ValidaModelTransmissaoNFS\ValidaConstrucao.cs" />
     <Compile Include="Helpers\ValidaModelTransmissaoNFS\ValidaIntermediador.cs" />
     <Compile Include="Helpers\ValidaModelTransmissaoNFS\ValidaPagamentos.cs" />
     <Compile Include="Helpers\ValidaModelTransmissaoNFS\ValidaFaturas.cs" />
+    <Compile Include="Helpers\ValidaModelTransmissao\ValidaExportacao.cs" />
     <Compile Include="Helpers\ValidaModelTransmissao\ValidaResponsavelTecnico.cs" />
     <Compile Include="IssBL.cs" />
     <Compile Include="ImpostoRendaBL.cs" />

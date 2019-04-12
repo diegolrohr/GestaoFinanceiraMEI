@@ -76,7 +76,9 @@
     <Compile Include="Controllers\Api\NotaFiscalItemTributacaoController.cs" />
     <Compile Include="Controllers\Api\NotaFiscalCancelarController.cs" />
     <Compile Include="Controllers\Api\KitOrdemVendaController.cs" />
+    <Compile Include="Controllers\Api\PaisController.cs" />
     <Compile Include="Controllers\Api\ProdutoServicoController.cs" />
+    <Compile Include="Controllers\Api\RelatorioLicenciamentoFaturamentoController.cs" />
     <Compile Include="Controllers\Api\TipoIndicacaoInscricaoEstadualController.cs" />
     <Compile Include="Controllers\Api\TipoModalidadeController.cs" />
     <Compile Include="Controllers\Api\TipoAmbienteController.cs" />
@@ -210,6 +212,10 @@
     <ProjectReference Include="..\Fly01.Faturamento.BL\Fly01.Faturamento.BL.csproj">
       <Project>{8f8627d2-ef0f-4765-bc89-84541d207a22}</Project>
       <Name>Fly01.Faturamento.BL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fly01.Faturamento.DAL\Fly01.Faturamento.DAL.csproj">
+      <Project>{7bd22722-1bf1-4e63-90d0-d313664155e4}</Project>
+      <Name>Fly01.Faturamento.DAL</Name>
     </ProjectReference>
     <ProjectReference Include="..\Fly01.Faturamento\Fly01.Faturamento.csproj">
       <Project>{2CAB2D20-F8DA-4349-8DC4-1818CF874E84}</Project>

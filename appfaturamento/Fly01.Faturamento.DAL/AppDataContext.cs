@@ -110,5 +110,6 @@ namespace Fly01.Faturamento.DAL
         public DbSet<KitItem> KitItens { get; set; }
         public DbSet<CentroCusto> CentroCustos { get; set; }
         public DbSet<AliquotaSimplesNacional> AliquotasSimplesNacional { get; set; }
+        public DbSet<Pais> Paises { get; set; }
     }
 }

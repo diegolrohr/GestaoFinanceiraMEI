@@ -166,6 +166,9 @@ namespace Fly01.EmissaoNFE.BL
         private CartaCorrecaoBL cartaCorrecaoBL;
         public CartaCorrecaoBL CartaCorrecaoBL => cartaCorrecaoBL ?? (cartaCorrecaoBL = new CartaCorrecaoBL(Context, EntidadeBL));
 
+        private PaisBL paisBL;
+        public PaisBL PaisBL => paisBL ?? (paisBL = new PaisBL(Context));
+
         #endregion
     }
 }

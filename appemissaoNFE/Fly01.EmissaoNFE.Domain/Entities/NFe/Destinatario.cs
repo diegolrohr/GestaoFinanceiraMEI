@@ -1,4 +1,5 @@
-﻿using Fly01.EmissaoNFE.Domain.Enums;
+﻿using Fly01.Core.Entities.Domains.Enum;
+using Fly01.EmissaoNFE.Domain.Enums;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Serialization;
@@ -22,26 +23,28 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// <summary>
         /// CPF do destinatário, sem formatação ou máscara
         /// </summary>
-        /// 
         [JsonProperty("CPF")]
         [XmlElement(ElementName = "CPF")]
         public string Cpf { get; set; }
 
-        [MaxLength(20)]
         /// <summary>
         /// No caso de operação com o exterior, ou para comprador estrangeiro informar com o número do passaporte ou outro documento legal para identificar pessoa estrangeira.
         /// Campo aceita valor Nulo.
         /// </summary>
-        /// 
         [JsonProperty("idEstrangeiro")]
+        [StringLength(20)]
         [XmlElement(ElementName = "idEstrangeiro")]
         public string IdentificacaoEstrangeiro { get; set; }
+
+        public bool ShouldSerializeIdentificacaoEstrangeiro()
+        {
+            return EhExportacao();
+        }
 
         [MaxLength(60)]
         /// <summary>
         /// informar a razão social do destinatário, pode ser omitida no caso de NFC-e.
         /// </summary>
-        /// 
         [JsonProperty("xNome")]
         [XmlElement(ElementName = "xNome")]
         public string Nome { get; set; }
@@ -50,7 +53,6 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// <summary>
         /// Informar o grupo de Endereço
         /// </summary>
-        /// 
         [JsonProperty("enderDest")]
         [XmlElement(ElementName = "enderDest")]
         public Endereco Endereco { get; set; }
@@ -68,7 +70,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// 
         [JsonProperty("indIEDest")]
         [XmlElement(ElementName = "indIEDest")]
-        public IndInscricaoEstadual IndInscricaoEstadual { get; set; }
+        public TipoIndicacaoInscricaoEstadual IndInscricaoEstadual { get; set; }
 
         [MaxLength(14)]
         /// <summary>
@@ -76,15 +78,21 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// A tag não aceita mais a literal "ISENTO", assim só informe a Inscrição Estadual, isto é só informe está tag quando informar a tag indIEDest = 1.
         /// Quando o for emitida uma NF-e para Destinatário, identificado como Isento (indIEDest = 2) ou Não Contribuinte (indIEDest = 9),
         /// que possui Inscrição Estadual (IE) ativa no seu Estado (UF) e essa não for informada em seus Dados, 
-        /// </summary>
-        /// 
+        /// Quando for exportação a ie deve sair em branco
+        /// </summary>        
+        [XmlIgnore]
         [JsonProperty("IE")]
         [XmlElement(ElementName = "IE")]
         public string InscricaoEstadual { get; set; }
 
-        public bool ShouldSerializeInscricaoEstadual()
+        public bool ShouldSerializeIE()
         {
-            return !string.IsNullOrEmpty(InscricaoEstadual);
+            return !string.IsNullOrEmpty(InscricaoEstadual) && !EhExportacao();
+        }
+
+        public bool EhExportacao()
+        {
+            return Endereco?.UF == "EX";
         }
     }
 }

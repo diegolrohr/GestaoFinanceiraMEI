@@ -240,7 +240,7 @@ namespace Fly01.Compras.BL
                     {
                         Cnpj = fornecedor.TipoDocumento == "J" ? fornecedor.CPFCNPJ : null,
                         Cpf = fornecedor.TipoDocumento == "F" ? fornecedor.CPFCNPJ : null,
-                        IndInscricaoEstadual = (IndInscricaoEstadual)System.Enum.Parse(typeof(IndInscricaoEstadual), fornecedor.TipoIndicacaoInscricaoEstadual.ToString()),
+                        IndInscricaoEstadual = fornecedor.TipoIndicacaoInscricaoEstadual,
                         InscricaoEstadual = fornecedor.TipoIndicacaoInscricaoEstadual == TipoIndicacaoInscricaoEstadual.ContribuinteICMS ? fornecedor.InscricaoEstadual : null,
                         IdentificacaoEstrangeiro = null,
                         Nome = fornecedor.Nome,

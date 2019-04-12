@@ -192,7 +192,6 @@ namespace Fly01.Core.Presentation.Controllers
                         new DomEventUI() { DomEvent = "change", Function = "fnChangeTipoFaixaReceitaBruta" }
                     }
             });
-
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "tipoEnquadramentoEmpresa",

@@ -71,6 +71,9 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [JsonProperty("origemMercadoria")]
         public string OrigemMercadoria { get; set; }
 
+        [JsonProperty("extipi")]
+        public string EXTIPI { get; set; }
+
         [JsonProperty("grupoProduto")]
         public virtual GrupoProdutoVM GrupoProduto { get; set; }
 

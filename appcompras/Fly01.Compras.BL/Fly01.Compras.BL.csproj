@@ -73,6 +73,7 @@
     <Compile Include="OrcamentoItemBL.cs" />
     <Compile Include="OrdemCompraItemBL.cs" />
     <Compile Include="OrdemCompraBL.cs" />
+    <Compile Include="PaisBL.cs" />
     <Compile Include="ParametroTributarioBL.cs" />
     <Compile Include="PedidoItemBL.cs" />
     <Compile Include="PedidoBL.cs" />

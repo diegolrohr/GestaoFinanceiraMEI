@@ -157,7 +157,8 @@ namespace Fly01.Compras.BL
                             ValorICMSSTRetido = x.ValorICMSSTRetido,
                             ValorCreditoICMS = x.ValorCreditoICMS,
                             ValorFCPSTRetidoAnterior = x.ValorFCPSTRetidoAnterior,
-                            ValorBCFCPSTRetidoAnterior = x.ValorBCFCPSTRetidoAnterior
+                            ValorBCFCPSTRetidoAnterior = x.ValorBCFCPSTRetidoAnterior,
+                            PedidoItemId = x.Id
                         }).ToList();
 
                 var nfeProdutosTributacao = new List<NotaFiscalItemTributacao>();

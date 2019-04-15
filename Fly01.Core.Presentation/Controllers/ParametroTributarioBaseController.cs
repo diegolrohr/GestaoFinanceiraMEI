@@ -553,10 +553,19 @@ namespace Fly01.Core.Presentation.Controllers
             config.Elements.Add(new InputTextUI
             {
                 Id = "inscricaoEstadualId",
-                Class = "col s12",
+                Class = "col s12 m8",
                 Label = "Inscrição Estadual"
             });
-
+            config.Elements.Add(new InputCheckboxUI
+            {
+                Id = "chkIsento",
+                Class = "col s12 m4",
+                Label = "Sim, é isento de Inscrição Estadual?",
+                DomEvents = new List<DomEventUI>
+                {
+                    new DomEventUI {DomEvent = "change", Function = "fnChkIsentoInscricaoEstadual"}
+                }
+            });
             config.Helpers.Add(new TooltipUI
             {
                 Id = "inscricaoEstadualId",

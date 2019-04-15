@@ -15,14 +15,12 @@ namespace Fly01.Faturamento.API.Controllers.Api
         {
             using (AppDataContext context = new AppDataContext())
             {
-                var result = context.Database.SqlQuery<ReportVM>(
+                var response = context.Database.SqlQuery<ReportVM>(
                     string.Format("SELECT * FROM GetComprasReport('{0}', '{1}', '{2}')",
                     model.DataInicial.HasValue ? model.DataInicial.Value.ToString("yyyy-MM-dd") : "",
                     model.DataFinal.HasValue ? model.DataFinal.Value.ToString("yyyy-MM-dd") : "",
                     model.PlataformaUrl ?? ""
-                    )).ToList();
-
-                var response = result.GroupBy(x => x.PlataformaUrl).Select(item => new
+                )).GroupBy(x => x.PlataformaUrl).Select(item => new
                 {
                     PlataformaUrl = item.Key,
                     Pedido = item.FirstOrDefault(i => i.PlataformaUrl == item.Key && i.Tipo == "PEDIDOS"),

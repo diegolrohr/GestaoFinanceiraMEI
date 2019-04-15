@@ -516,10 +516,6 @@
     <Compile Include="Migrations\201904101813422_AddDadosExportacao.Designer.cs">
       <DependentUpon>201904101813422_AddDadosExportacao.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201904122017391_AlterFaturamentoFunc.cs" />
-    <Compile Include="Migrations\201904122017391_AlterFaturamentoFunc.Designer.cs">
-      <DependentUpon>201904122017391_AlterFaturamentoFunc.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\AliquotaSimplesNacionalDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
@@ -903,9 +899,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201904101813422_AddDadosExportacao.resx">
       <DependentUpon>201904101813422_AddDadosExportacao.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201904122017391_AlterFaturamentoFunc.resx">
-      <DependentUpon>201904122017391_AlterFaturamentoFunc.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

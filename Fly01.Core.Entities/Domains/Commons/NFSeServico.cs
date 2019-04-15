@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {
@@ -16,5 +17,7 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public virtual Servico Servico { get; set; }
 
+        [NotMapped]
+        public Guid OrdemVendaServicoId { get; set; }
     }
 }

@@ -80,12 +80,11 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// que possui Inscrição Estadual (IE) ativa no seu Estado (UF) e essa não for informada em seus Dados, 
         /// Quando for exportação a ie deve sair em branco
         /// </summary>        
-        [XmlIgnore]
         [JsonProperty("IE")]
         [XmlElement(ElementName = "IE")]
         public string InscricaoEstadual { get; set; }
 
-        public bool ShouldSerializeIE()
+        public bool ShouldSerializeInscricaoEstadual()
         {
             return !string.IsNullOrEmpty(InscricaoEstadual) && !EhExportacao();
         }

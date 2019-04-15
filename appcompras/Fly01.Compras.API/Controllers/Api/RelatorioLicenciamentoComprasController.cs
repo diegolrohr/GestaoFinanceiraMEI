@@ -13,15 +13,13 @@ namespace Fly01.Faturamento.API.Controllers.Api
         [HttpPost]
         public IHttpActionResult Post(RequestParamsVM model)
         {
-            var requestParams = JsonConvert.DeserializeObject<RequestParamsVM>(JsonConvert.SerializeObject(model));
-
             using (AppDataContext context = new AppDataContext())
             {
                 var result = context.Database.SqlQuery<ReportVM>(
                     string.Format("SELECT * FROM GetComprasReport('{0}', '{1}', '{2}')",
-                    requestParams.DataInicial.HasValue ? requestParams.DataInicial.Value.ToString("yyyy-MM-dd") : "",
-                    requestParams.DataFinal.HasValue ? requestParams.DataFinal.Value.ToString("yyyy-MM-dd") : "",
-                    requestParams.PlataformaUrl ?? ""
+                    model.DataInicial.HasValue ? model.DataInicial.Value.ToString("yyyy-MM-dd") : "",
+                    model.DataFinal.HasValue ? model.DataFinal.Value.ToString("yyyy-MM-dd") : "",
+                    model.PlataformaUrl ?? ""
                     )).ToList();
 
                 var response = result.GroupBy(x => x.PlataformaUrl).Select(item => new

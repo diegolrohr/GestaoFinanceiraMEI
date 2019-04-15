@@ -11,7 +11,7 @@ namespace Fly01.Faturamento.DAL.Migrations
 ALTER FUNCTION[dbo].[GetFaturamentoReport](
 @DATAINI VARCHAR(30),
 @DATAFIM VARCHAR(30),
-@PLATAFORMA NVARCHAR(MAX)
+@PLATAFORMA VARCHAR(8000)
 ) RETURNS TABLE AS RETURN(
 SELECT * FROM
 (SELECT PLATAFORMAID AS PLATAFORMAURL
@@ -267,8 +267,7 @@ SELECT * FROM
         , 'CERTIFICADODIGITAL' AS TIPO
 		, COUNT(*) AS TOTAL
     FROM CERTIFICADODIGITAL
-    WHERE CERTIFICADOVALIDONFS = 1 
-	AND((@PLATAFORMA = '') OR (EXISTS (SELECT [Value] 
+	((@PLATAFORMA = '') OR (EXISTS (SELECT [Value] 
 											FROM 
 												(SELECT [Value] = LTRIM(RTRIM(SUBSTRING(@PLATAFORMA, [Number], CHARINDEX(',', @PLATAFORMA + ',', [Number]) - [Number])))
 												FROM 
@@ -287,6 +286,7 @@ SELECT * FROM
         
         public override void Down()
         {
+            Sql("DROP FUNCTION [dbo].[GetFaturamentoReport]");
         }
     }
 }

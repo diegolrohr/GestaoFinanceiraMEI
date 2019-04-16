@@ -18,9 +18,7 @@ namespace Fly01.Faturamento.API.Controllers.Api
         [EnableQuery(EnsureStableOrdering = false)]
         public override IHttpActionResult Get()
         {
-            var a = All().ToList();
-
-            return Ok(a);
+            return Ok(All().AsQueryable());
         }
     }
 }

@@ -216,7 +216,7 @@ namespace Fly01.Faturamento.Controllers
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
 
-        private int GetCertificado()
+        private int GetNotasNaoTransmitidas()
         {
             Dictionary<string, string> queryString = AppDefaults.GetQueryStringDefault();
             queryString.AddParam("$filter", $"status eq {AppDefaults.APIEnumResourceName}StatusNotaFiscal'NaoTransmitida'");
@@ -232,7 +232,7 @@ namespace Fly01.Faturamento.Controllers
 
         public JsonResult StatusCard()
         {
-            var numeroNFNaoTransmitida = GetCertificado();
+            var numeroNFNaoTransmitida = GetNotasNaoTransmitidas();
 
             if (numeroNFNaoTransmitida == 0)
                 return Json(new { numeroNFNaoTransmitidas = 0 }, JsonRequestBehavior.AllowGet);

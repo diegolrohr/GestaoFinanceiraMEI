@@ -218,11 +218,15 @@ namespace Fly01.Faturamento.Controllers
 
         private int GetCertificado()
         {
+            Dictionary<string, string> queryString = AppDefaults.GetQueryStringDefault();
+            queryString.AddParam("$filter", $"status eq {AppDefaults.APIEnumResourceName}StatusNotaFiscal'NaoTransmitida'");
+            queryString.AddParam("$select", "id");
+
             ResultBase<NotaFiscalVM> response = RestHelper.ExecuteGetRequest<ResultBase<NotaFiscalVM>>("notafiscal",
-                AppDefaults.GetQueryStringDefault());
+                queryString);
 
             return response != null && response.Data != null
-                ? response.Data.Count(x => x.Status.Equals("NaoTransmitida"))
+                ? response.Data.Count()
                 : 0;
         }
 

@@ -13,6 +13,11 @@
 
 		}
 
+		if ($('select#tipoProduto').val() == undefined || $('select#tipoProduto').val() == 'Servico') {
+		    $('select#tipoProduto').val('Outros');
+		    $('select#tipoProduto').material_select();
+		}
+
 		if ($('input#ncmId').val() == "") {
 			$('input#cestId').attr('disabled', 'disabled');;
 			$('input#cestDescricao').attr('disabled', 'disabled');

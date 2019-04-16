@@ -266,7 +266,7 @@ SELECT * FROM
         , 'CERTIFICADODIGITAL' AS TIPO
 		, COUNT(*) AS TOTAL
     FROM CERTIFICADODIGITAL
-	((@PLATAFORMA = '') OR (EXISTS (SELECT [Value] 
+	WHERE ((@PLATAFORMA = '') OR (EXISTS (SELECT [Value] 
 											FROM 
 												(SELECT [Value] = LTRIM(RTRIM(SUBSTRING(@PLATAFORMA, [Number], CHARINDEX(',', @PLATAFORMA + ',', [Number]) - [Number])))
 												FROM 

@@ -62,10 +62,9 @@ SELECT * FROM
         , 'SERVICOS'
         , COUNT(*) AS TOTAL
     FROM
-        PRODUTO
+        SERVICO
     WHERE
-        TIPOPRODUTO = 3
-        AND ((@DATAINI = '') OR (DATAINCLUSAO >= @DATAINI))
+        ((@DATAINI = '') OR (DATAINCLUSAO >= @DATAINI))
 		AND ((@DATAFIM = '' ) OR (DATAINCLUSAO <= @DATAFIM))
         AND((@PLATAFORMA = '') OR (EXISTS (SELECT [Value] 
 											FROM 

@@ -28,7 +28,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 var response = result.GroupBy(x => x.PlataformaUrl).Select(item => new
                 {
                     PlataformaUrl = item.Key,
-                    ContaReceber = item.FirstOrDefault(i => i.PlataformaUrl == item.Key && i.Tipo == "CONTASRECEBER"),
+                    ContaReceber = item.FirstOrDefault(i => i.PlataformaUrl == item.Key && i.Tipo == "CONTARECEBER"),
                     ContaPagar = item.FirstOrDefault(i => i.PlataformaUrl == item.Key && i.Tipo == "CONTASAPAGAR"),
                     Cliente = item.FirstOrDefault(i => i.PlataformaUrl == item.Key && i.Tipo == "CLIENTES"),
                     Fornecedor = item.FirstOrDefault(i => i.PlataformaUrl == item.Key && i.Tipo == "FORNECEDORES"),

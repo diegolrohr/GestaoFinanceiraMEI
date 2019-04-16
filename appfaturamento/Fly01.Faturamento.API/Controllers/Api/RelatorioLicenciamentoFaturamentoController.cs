@@ -61,7 +61,7 @@ namespace Fly01.Faturamento.API.Controllers.Api
                         Kit = i.Kit != null ? i.Kit.Total : 0,
                         CentroCusto = i.CentroCusto != null ? i.CentroCusto.Total : 0,
                         CertificadoDigital = i.CertificadoDigital != null ? "Sim" : "Não",
-                        RazaoSocial = ""//ApiEmpresaManager.GetEmpresa(i.PlataformaUrl).RazaoSocial
+                        RazaoSocial = ""
                     }).ToList()
                 });
             }

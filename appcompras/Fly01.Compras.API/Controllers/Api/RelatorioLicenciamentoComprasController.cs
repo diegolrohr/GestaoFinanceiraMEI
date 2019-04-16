@@ -54,7 +54,8 @@ namespace Fly01.Faturamento.API.Controllers.Api
                         Servico = i.Servico != null ? i.Servico.Total : 0,
                         Kit = i.Kit != null ? i.Kit.Total : 0,
                         CentroCusto = i.CentroCusto != null ? i.CentroCusto.Total : 0,
-                        CertificadoDigital = i.CertificadoDigital != null ? "Sim" : "Não"
+                        CertificadoDigital = i.CertificadoDigital != null ? "Sim" : "Não",
+                        RazaoSocial = ""
                     }).ToList()
                 });
             }

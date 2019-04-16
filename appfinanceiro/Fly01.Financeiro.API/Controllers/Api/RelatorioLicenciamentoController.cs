@@ -28,7 +28,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 var response = result.GroupBy(x => x.PlataformaUrl).Select(item => new
                 {
                     PlataformaUrl = item.Key,
-                    ContaReceber = item.FirstOrDefault(i => i.PlataformaUrl == item.Key && i.Tipo == "CONTASRECEBER"),
+                    ContaReceber = item.FirstOrDefault(i => i.PlataformaUrl == item.Key && i.Tipo == "CONTARECEBER"),
                     ContaPagar = item.FirstOrDefault(i => i.PlataformaUrl == item.Key && i.Tipo == "CONTASAPAGAR"),
                     Cliente = item.FirstOrDefault(i => i.PlataformaUrl == item.Key && i.Tipo == "CLIENTES"),
                     Fornecedor = item.FirstOrDefault(i => i.PlataformaUrl == item.Key && i.Tipo == "FORNECEDORES"),
@@ -37,7 +37,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                     FormaPagamento = item.FirstOrDefault(i => i.PlataformaUrl == item.Key && i.Tipo == "FORMAPAGAMENTO"),
                     CondicaoParcelamento = item.FirstOrDefault(i => i.PlataformaUrl == item.Key && i.Tipo == "CONDICAOPARCELAMENTO"),
                     Categoria = item.FirstOrDefault(i => i.PlataformaUrl == item.Key && i.Tipo == "CATEGORIA"),
-                    Boleto = item.FirstOrDefault(i => i.PlataformaUrl == item.Key && i.Tipo == "BOLETO")
+                    Boleto = item.FirstOrDefault(i => i.PlataformaUrl == item.Key && i.Tipo == "BOLETOS")
                 }).ToList();
 
                 return Ok(new
@@ -56,7 +56,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                         TotalCondicaoParcelamento = i.CondicaoParcelamento != null ? i.CondicaoParcelamento.Total : 0,
                         TotalCategoria = i.Categoria != null ? i.Categoria.Total : 0,
                         TotalBoleto = i.Boleto != null ? i.Boleto.Total : 0,
-                        RazaoSocial = ""//ApiEmpresaManager.GetEmpresa(i.PlataformaUrl).RazaoSocial
+                        RazaoSocial = ""
                     }).ToList()
                 });
             }

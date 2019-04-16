@@ -33,8 +33,8 @@ namespace Fly01.Faturamento.API.Controllers.Api
                     Orcamento = item.FirstOrDefault(i => i.PlataformaUrl == item.Key && i.Tipo == "ORCAMENTOS"),
                     NFe = item.FirstOrDefault(i => i.PlataformaUrl == item.Key && i.Tipo == "NFE"),
                     NFSe = item.FirstOrDefault(i => i.PlataformaUrl == item.Key && i.Tipo == "NFSE"),
-                    Cliente = item.FirstOrDefault(i => i.PlataformaUrl == item.Key && i.Tipo == "CLIENTE"),
-                    Fornecedor = item.FirstOrDefault(i => i.PlataformaUrl == item.Key && i.Tipo == "FORNECEDOR"),
+                    Cliente = item.FirstOrDefault(i => i.PlataformaUrl == item.Key && i.Tipo == "CLIENTES"),
+                    Fornecedor = item.FirstOrDefault(i => i.PlataformaUrl == item.Key && i.Tipo == "FORNECEDORES"),
                     GrupoTributario = item.FirstOrDefault(i => i.PlataformaUrl == item.Key && i.Tipo == "GRUPOTRIBUTARIO"),
                     Produto = item.FirstOrDefault(i => i.PlataformaUrl == item.Key && i.Tipo == "PRODUTOS"),
                     Servico = item.FirstOrDefault(i => i.PlataformaUrl == item.Key && i.Tipo == "SERVICOS"),
@@ -61,7 +61,7 @@ namespace Fly01.Faturamento.API.Controllers.Api
                         Kit = i.Kit != null ? i.Kit.Total : 0,
                         CentroCusto = i.CentroCusto != null ? i.CentroCusto.Total : 0,
                         CertificadoDigital = i.CertificadoDigital != null ? "Sim" : "Não",
-                        RazaoSocial = ""//ApiEmpresaManager.GetEmpresa(i.PlataformaUrl).RazaoSocial
+                        RazaoSocial = ""
                     }).ToList()
                 });
             }

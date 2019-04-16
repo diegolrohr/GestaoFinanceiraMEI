@@ -31,7 +31,7 @@ namespace Fly01.OrdemServico.API.Controllers.Api
                     OrdemServico = item.FirstOrDefault(i => i.PlataformaUrl == item.Key && i.Tipo == "ORDEMSERVICO"),
                     Produto = item.FirstOrDefault(i => i.PlataformaUrl == item.Key && i.Tipo == "PRODUTOS"),
                     Servico = item.FirstOrDefault(i => i.PlataformaUrl == item.Key && i.Tipo == "SERVICOS"),
-                    Cliente = item.FirstOrDefault(i => i.PlataformaUrl == item.Key && i.Tipo == "CLIENTE"),
+                    Cliente = item.FirstOrDefault(i => i.PlataformaUrl == item.Key && i.Tipo == "CLIENTES"),
                     Kit = item.FirstOrDefault(i => i.PlataformaUrl == item.Key && i.Tipo == "KITS"),
                 }).ToList();
 
@@ -45,7 +45,7 @@ namespace Fly01.OrdemServico.API.Controllers.Api
                         Servico = i.Servico != null ? i.Servico.Total : 0,
                         Cliente = i.Cliente != null ? i.Cliente.Total : 0,
                         Kit = i.Kit != null ? i.Kit.Total : 0,
-                        RazaoSocial = ""//ApiEmpresaManager.GetEmpresa(i.PlataformaUrl).RazaoSocial
+                        RazaoSocial = ""
                     }).ToList()
                 });
             }

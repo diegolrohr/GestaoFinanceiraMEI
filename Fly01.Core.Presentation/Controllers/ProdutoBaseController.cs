@@ -12,6 +12,7 @@ using Fly01.uiJS.Enums;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace Fly01.Core.Presentation.Controllers
@@ -176,7 +177,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Class = "col s12 m3",
                 Label = "Tipo",
                 Required = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoProduto))),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoProduto)).ToList().FindAll(x => "Insumo,ProdutoFinal,Outros".Contains(x.Value))),
                 DomEvents = new List<DomEventUI>() { new DomEventUI() { DomEvent = "change", Function = "fnChangeTipoProduto" } }
             });
 

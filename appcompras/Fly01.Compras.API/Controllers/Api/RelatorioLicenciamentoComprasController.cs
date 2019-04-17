@@ -11,15 +11,17 @@ namespace Fly01.Faturamento.API.Controllers.Api
     public class RelatorioLicenciamentoComprasController : ApiBaseController
     {
         [HttpPost]
-        public IHttpActionResult Post(RequestParamsVM model)
+        public IHttpActionResult Post(object model)
         {
+            var requestParams = JsonConvert.DeserializeObject<RequestParamsVM>(JsonConvert.SerializeObject(model));
+
             using (AppDataContext context = new AppDataContext())
             {
                 var response = context.Database.SqlQuery<ReportVM>(
                     string.Format("SELECT * FROM GetComprasReport('{0}', '{1}', '{2}')",
-                    model.DataInicial.HasValue ? model.DataInicial.Value.ToString("yyyy-MM-dd") : "",
-                    model.DataFinal.HasValue ? model.DataFinal.Value.ToString("yyyy-MM-dd") : "",
-                    model.PlataformaUrl ?? ""
+                    requestParams.DataInicial.HasValue ? requestParams.DataInicial.Value.ToString("yyyy-MM-dd") : "",
+                    requestParams.DataFinal.HasValue ? requestParams.DataFinal.Value.ToString("yyyy-MM-dd") : "",
+                    requestParams.PlataformaUrl ?? ""
                 )).GroupBy(x => x.PlataformaUrl).Select(item => new
                 {
                     PlataformaUrl = item.Key,

@@ -315,7 +315,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputCurrencyUI { Id = "totalServicos", Class = "col s12 m4", Label = "Total serviços", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalRetencoesServicos", Class = "col s12 m4", Label = "Total retenções serviços", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosServicosNaoAgrega", Class = "col s12 m4", Label = "Total de impostos não incidentes", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m4", Label = "Frete a pagar", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m4", Label = "Frete", Readonly = true });
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "geraNotaFiscal",
@@ -376,7 +376,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "totalOrdemVenda",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Total da soma (dos produtos + impostos incidentes nos produtos + serviços + frete (se for por conta da empresa)) menos as retenções dos serviços."
+                    Text = "Total da soma (dos produtos + impostos incidentes nos produtos + serviços + frete (se for por conta do destinatário)) menos as retenções dos serviços."
                 }
             });
             config.Helpers.Add(new TooltipUI

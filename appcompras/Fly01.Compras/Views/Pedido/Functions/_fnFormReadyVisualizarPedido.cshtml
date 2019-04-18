@@ -43,8 +43,9 @@
         var tipoFrete = $('#fly01mdlfrmVisualizarPedido select#tipoFrete').val();
         var tipoCompra = $('#fly01mdlfrmVisualizarPedido select#tipoCompra').val();
         var somaFrete = (
-               tipoFrete == "FOB"
-           );
+                tipoFrete == "FOB"
+            );
+
         if (somaFrete) {
             valorFrete = TryParseFloat(noComma($('input#valorFrete').val()));
         }

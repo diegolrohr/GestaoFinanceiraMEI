@@ -7,7 +7,6 @@ using System.Web.Http;
 using System.Web.OData;
 using Fly01.Core.Notifications;
 using Fly01.Core.ServiceBus;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Entities.Domains;
@@ -205,7 +204,7 @@ namespace Fly01.Compras.API.Controllers.Api
                             transportadora.Id = entity.TransportadoraId.Value;
                             transportadora.CPFCNPJ = NFe.InfoNFe.Transporte?.Transportadora?.CNPJ != null ? NFe.InfoNFe.Transporte?.Transportadora?.CNPJ : NFe.InfoNFe.Transporte?.Transportadora?.CNPJ != null ? NFe.InfoNFe.Transporte?.Transportadora?.CNPJ : null;
                             transportadora.Nome = NFe.InfoNFe.Transporte?.Transportadora?.RazaoSocial;
-                            transportadora.Endereco = NFe.InfoNFe.Transporte?.Transportadora?.Endereco;
+                            transportadora.Endereco = NFe.InfoNFe.Transporte?.Transportadora?.Endereco;                            
                             transportadora.Transportadora = true;
 
                             UnitOfWork.PessoaBL.Update(transportadora);

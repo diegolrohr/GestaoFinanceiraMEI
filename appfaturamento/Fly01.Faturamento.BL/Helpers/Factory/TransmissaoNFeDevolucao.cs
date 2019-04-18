@@ -76,7 +76,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 itemTributacao = TransmissaoBLs.NotaFiscalItemTributacaoBL.All.Where(x => x.NotaFiscalItemId == item.Id).FirstOrDefault();
 
                 var detalhe = ObterDetalhe(item, num);
-                detalhe.Produto.ValorFrete = SomaFrete() ? Math.Round(itemTributacao.FreteValorFracionado, 2) : 0;
+                detalhe.Produto.ValorFrete = SomaFrete() ? Math.Round(itemTributacao.FreteValorFracionado, 2) : 0.0;
 
                 detalhe.Imposto.ICMS = ObterICMS(item, itemTributacao);
                 detalhe.Imposto.IPI = ObterIPI(item, itemTributacao);
@@ -99,11 +99,12 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
         private double CalcularValorTotalNFE(ItemTransmissaoVM itemTransmissao)
         {
             var total = (
-               (itemTransmissao.Total.ICMSTotal.SomatorioProdutos +
-               itemTransmissao.Total.ICMSTotal.SomatorioICMSST +
-               itemTransmissao.Total.ICMSTotal.SomatorioIPI +
-               itemTransmissao.Total.ICMSTotal.SomatorioFCPST) -
-               itemTransmissao.Total.ICMSTotal.SomatorioDesconto);
+                (itemTransmissao.Total.ICMSTotal.SomatorioProdutos +
+                itemTransmissao.Total.ICMSTotal.SomatorioICMSST +
+                itemTransmissao.Total.ICMSTotal.SomatorioIPI +
+                itemTransmissao.Total.ICMSTotal.SomatorioFCPST) -
+                itemTransmissao.Total.ICMSTotal.SomatorioDesconto);
+
             if (SomaFrete())
             {
                 total += itemTransmissao.Total.ICMSTotal.ValorFrete;

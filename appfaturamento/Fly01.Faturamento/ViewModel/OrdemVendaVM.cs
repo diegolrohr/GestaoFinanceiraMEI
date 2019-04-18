@@ -116,15 +116,6 @@ namespace Fly01.Faturamento.ViewModel
         [JsonProperty("centroCustoId")]
         public Guid? CentroCustoId { get; set; }
 
-        [JsonProperty("ufSaidaPaisId")]
-        public Guid? UFSaidaPaisId { get; set; }
-
-        [JsonProperty("localEmbarque")]
-        public string LocalEmbarque { get; set; }
-
-        [JsonProperty("localDespacho")]
-        public string LocalDespacho { get; set; }
-
         [JsonProperty("cliente")]
         public virtual PessoaVM Cliente { get; set; }
 
@@ -148,8 +139,58 @@ namespace Fly01.Faturamento.ViewModel
 
         [JsonProperty("centroCusto")]
         public virtual CentroCustoVM CentroCusto { get; set; }
+    }
+}
+        [JsonProperty("cliente")]
+        public virtual PessoaVM Cliente { get; set; }
+
+        [JsonProperty("grupoTributarioPadrao")]
+        public virtual GrupoTributarioVM GrupoTributarioPadrao { get; set; }
+
+        [JsonProperty("transportadora")]
+        public virtual PessoaVM Transportadora { get; set; }
+
+        [JsonProperty("estadoPlacaVeiculo")]
+        public virtual EstadoVM EstadoPlacaVeiculo { get; set; }
+
+        [JsonProperty("condicaoParcelamento")]
+        public virtual CondicaoParcelamentoVM CondicaoParcelamento { get; set; }
+
+        [JsonProperty("formaPagamento")]
+        public virtual FormaPagamentoVM FormaPagamento { get; set; }
+
+        [JsonProperty("categoria")]
+        [JsonProperty("ufSaidaPaisId")]
+        public Guid? UFSaidaPaisId { get; set; }
+
+        [JsonProperty("localEmbarque")]
+        public string LocalEmbarque { get; set; }
+
+        [JsonProperty("localDespacho")]
+        public string LocalDespacho { get; set; }
+
+        [JsonProperty("cliente")]
+        public virtual PessoaVM Cliente { get; set; }
 
+        [JsonProperty("grupoTributarioPadrao")]
+        public virtual GrupoTributarioVM GrupoTributarioPadrao { get; set; }
+
+        [JsonProperty("transportadora")]
+        public virtual PessoaVM Transportadora { get; set; }
+
+        [JsonProperty("estadoPlacaVeiculo")]
+        public virtual EstadoVM EstadoPlacaVeiculo { get; set; }
+
+        [JsonProperty("condicaoParcelamento")]
+        public virtual CondicaoParcelamentoVM CondicaoParcelamento { get; set; }
+
+        [JsonProperty("formaPagamento")]
+        public virtual FormaPagamentoVM FormaPagamento { get; set; }
+
+        [JsonProperty("categoria")]
+        [JsonProperty("centroCusto")]
+        public virtual CentroCustoVM CentroCusto { get; set; }
+
         [JsonProperty("ufSaidaPais")]
         public virtual EstadoVM UFSaidaPais { get; set; }
     }
-}

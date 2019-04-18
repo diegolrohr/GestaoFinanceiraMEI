@@ -82,8 +82,9 @@
         var tipoVenda = $('#fly01mdlfrmVisualizarOrdemVenda select#tipoVenda').val();
         var tipoNfeComplementar = $('#fly01mdlfrmVisualizarOrdemVenda select#tipoNfeComplementar').val();
         var somaFrete = (
-            (tipoFrete == "FOB" || tipoFrete == "Destinatario")
-        );
+                (tipoFrete == "FOB" || tipoFrete == "Destinatario")
+            );
+
         if (somaFrete) {
             valorFrete = TryParseFloat(noComma($('input#valorFrete').val()));
         }

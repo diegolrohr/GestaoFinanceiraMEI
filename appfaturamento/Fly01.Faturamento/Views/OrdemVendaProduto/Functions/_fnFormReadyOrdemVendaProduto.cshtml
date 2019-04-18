@@ -99,6 +99,7 @@
             e.preventDefault();
             $$$.loading.start();
             var formData = that.serializeObject();
+
             $.ajax({
                 type: that.attr("method"),
                 contentType: 'application/json',

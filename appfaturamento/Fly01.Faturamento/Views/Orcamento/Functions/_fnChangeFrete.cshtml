@@ -6,8 +6,8 @@
         var tipoFrete = $('select#tipoFrete').val();
         var tipoVenda = $('#tipoVenda').val();
         var freteEmpresa = (
-            (tipoFrete == "CIF" || tipoFrete == "Remetente")
-        );
+                (tipoFrete == "CIF" || tipoFrete == "Remetente")
+            );
         if (freteEmpresa) {
             $('#transportadoraNome').rules("add", { required: true });
         }

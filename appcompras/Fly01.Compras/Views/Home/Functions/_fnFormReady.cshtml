@@ -12,7 +12,7 @@
     function fnFormReady() {
         let date = $$$._.mesPicker.pickamonth("picker").get("select");
         var firstDay = new Date(date.year, date.month, 1);
-        $("#btnOrcamento").click();
+        $("#btnPedido").click();
         $("#dataInicial").val(moment(firstDay).format('YYYY-MM-DD'));
         verificaParametrosTributarios();
     }

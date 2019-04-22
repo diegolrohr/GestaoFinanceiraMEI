@@ -104,6 +104,10 @@ namespace Fly01.Compras.BL
 
         public override void ValidaModel(ParametroTributario entity)
         {
+            entity.Cnpj = empresa.CNPJ;
+            entity.UF = empresa.Cidade != null ? (empresa.Cidade.Estado != null ? empresa.Cidade.Estado.Sigla : string.Empty) : string.Empty;
+            entity.InscricaoEstadual = empresa.InscricaoEstadual;
+
             entity.Fail(entity.TipoVersaoNFe != TipoVersaoNFe.v4, new Error("Permitido somente a versão 4.00."));
             if (string.IsNullOrEmpty(entity.VersaoNFSe))
                 entity.VersaoNFSe = "0.00";

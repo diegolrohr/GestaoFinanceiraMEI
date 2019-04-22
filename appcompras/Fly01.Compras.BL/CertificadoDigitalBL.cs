@@ -152,11 +152,30 @@ namespace Fly01.Compras.BL
 
         public EntidadeVM GetEntidade(string plataformaId)
         {
-            var empresa = String.IsNullOrEmpty(plataformaId) ? this.empresa : ApiEmpresaManager.GetEmpresa(plataformaId);
-            var certificado = Everything.Where(x => x.PlataformaId == plataformaId && x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).FirstOrDefault();
-            var ambiente = ParametroTributarioBL.Everything.Where(x => x.PlataformaId == plataformaId && x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).FirstOrDefault();
+            if (string.IsNullOrEmpty(plataformaId))
+            {
+                var empresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
+                var certificado = Everything.Where(x => x.PlataformaId == PlataformaUrl && x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).FirstOrDefault();
+                var ambiente = ParametroTributarioBL.Everything.Where(x => x.PlataformaId == PlataformaUrl && x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).FirstOrDefault();
+                var retorno = RetornaEntidade(certificado, ambiente, empresa);
 
-            if (certificado == null || ambiente == null || plataformaId == null)
+                return retorno;
+            }
+            else
+            {
+                var empresa = ApiEmpresaManager.GetEmpresa(plataformaId);
+                var certificado = Everything.Where(x => x.PlataformaId == plataformaId && x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).FirstOrDefault();
+                var ambiente = ParametroTributarioBL.Everything.Where(x => x.PlataformaId == plataformaId && x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).FirstOrDefault();
+
+                var retorno = RetornaEntidade(certificado, ambiente, empresa);
+
+                return retorno;
+            }
+        }
+
+        protected EntidadeVM RetornaEntidade(CertificadoDigital certificado, ParametroTributario ambiente, ManagerEmpresaVM empresa)
+        {
+            if (certificado == null || ambiente == null || empresa?.PlatformUrlId == null)
                 return null;
 
             var retorno = new EntidadeVM

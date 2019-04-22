@@ -148,6 +148,26 @@
     <Compile Include="Migrations\201901221554269_AlterOS.Designer.cs">
       <DependentUpon>201901221554269_AlterOS.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201904081324379_CreateFunctionGetOSReport.cs" />
+    <Compile Include="Migrations\201904081324379_CreateFunctionGetOSReport.Designer.cs">
+      <DependentUpon>201904081324379_CreateFunctionGetOSReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904101301178_AlterFunctionGetOSReport.cs" />
+    <Compile Include="Migrations\201904101301178_AlterFunctionGetOSReport.Designer.cs">
+      <DependentUpon>201904101301178_AlterFunctionGetOSReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904101747115_AddPaises.cs" />
+    <Compile Include="Migrations\201904101747115_AddPaises.Designer.cs">
+      <DependentUpon>201904101747115_AddPaises.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904101814523_AddDadosExportacao.cs" />
+    <Compile Include="Migrations\201904101814523_AddDadosExportacao.Designer.cs">
+      <DependentUpon>201904101814523_AddDadosExportacao.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904151310423_FunctionOs.cs" />
+    <Compile Include="Migrations\201904151310423_FunctionOs.Designer.cs">
+      <DependentUpon>201904151310423_FunctionOs.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
@@ -164,6 +184,7 @@
     <Compile Include="Migrations\DataInitializer\NBSDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\NCMDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\NewCestDataInitializer.cs" />
+    <Compile Include="Migrations\DataInitializer\PaisDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\UnidadeMedidaDataInitializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -273,6 +294,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201901221554269_AlterOS.resx">
       <DependentUpon>201901221554269_AlterOS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904081324379_CreateFunctionGetOSReport.resx">
+      <DependentUpon>201904081324379_CreateFunctionGetOSReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904101301178_AlterFunctionGetOSReport.resx">
+      <DependentUpon>201904101301178_AlterFunctionGetOSReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904101747115_AddPaises.resx">
+      <DependentUpon>201904101747115_AddPaises.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904101814523_AddDadosExportacao.resx">
+      <DependentUpon>201904101814523_AddDadosExportacao.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904151310423_FunctionOs.resx">
+      <DependentUpon>201904151310423_FunctionOs.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

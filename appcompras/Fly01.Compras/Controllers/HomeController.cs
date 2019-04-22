@@ -67,12 +67,16 @@ namespace Fly01.Compras.Controllers
             if (!UserCanPerformOperation(ResourceHashConst.ComprasComprasDashboard))
                 return new ContentUI { SidebarUrl = @Url.Action("Sidebar") };
 
+            var date = DateTime.Now;
+            var firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
+            var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
+
             var cfg = new ContentUI
             {
                 History = new ContentUIHistory { Default = Url.Action("Index") },
                 Header = new HtmlUIHeader
                 {
-                    Title = "Dashboard"
+                    Title = "Indicadores"
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 SidebarUrl = @Url.Action("Sidebar")
@@ -104,12 +108,14 @@ namespace Fly01.Compras.Controllers
                     new InputHiddenUI()
                     {
                         Id = "dataInicial",
-                        Name = "dataInicial"
+                        Name = "dataInicial",
+                        Value = firstDayOfMonth.ToString("yyyy-MM-dd")
                     },
                     new InputHiddenUI()
                     {
                         Id = "tpOrdemCompra",
-                        Name = "tpOrdemCompra"
+                        Name = "tpOrdemCompra",
+                        Value = lastDayOfMonth.ToString("yyyy-MM-dd")
                     },
                     new ButtonGroupUI()
                     {
@@ -119,8 +125,9 @@ namespace Fly01.Compras.Controllers
                         OnClickFn = "fnChangeTipoOrdemCompra",
                         Options = new List<ButtonGroupOptionUI>
                         {
-                            new ButtonGroupOptionUI { Id = "btnOrcamento", Value = "Orcamento", Label = "Orçamento", Class = "col s6" },
-                            new ButtonGroupOptionUI { Id = "btnPedido", Value = "Pedido", Label = "Pedido", Class = "col s6" }
+                            new ButtonGroupOptionUI { Id = "btnPedido", Value = "Pedido", Label = "Pedido", Class = "col s6" },
+                            new ButtonGroupOptionUI { Id = "btnOrcamento", Value = "Orcamento", Label = "Orçamento", Class = "col s6" }
+                            
                         }
                     }
                 }
@@ -347,8 +354,8 @@ namespace Fly01.Compras.Controllers
                     AppTag = "chat_fly01_gestao",
                 }
             };
-            //if (Request.Url.ToString().Contains("fly01.com.br"))
-            //    config.Widgets.Insights = new InsightsUI { Key = ConfigurationManager.AppSettings["InstrumentationKeyAppInsights"] };
+            if (Request.Url.ToString().Contains("fly01.com.br"))
+                config.Widgets.Insights = new InsightsUI { Key = ConfigurationManager.AppSettings["InstrumentationKeyAppInsights"] };
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }

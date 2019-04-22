@@ -33,7 +33,7 @@ namespace Fly01.Compras.Controllers
         //OrcamentoVM e PedidoVM na mesma controller ordemCompra(gridLoad, form), direcionado para a controller via javaScript
         public PedidoController()
         {
-            ExpandProperties = "condicaoParcelamento($select=id,descricao),formaPagamento($select=id,descricao),fornecedor($select=id,nome),transportadora($select=id,nome),estadoPlacaVeiculo,categoria,centroCusto";
+            ExpandProperties = "condicaoParcelamento($select=id,descricao),formaPagamento($select=id,descricao),fornecedor($select=id,nome,email),transportadora($select=id,nome),estadoPlacaVeiculo,categoria,centroCusto";
         }
 
         [HttpPost]
@@ -285,7 +285,6 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "tipoOrdemCompra", Value = "Pedido" });
             config.Elements.Add(new InputHiddenUI { Id = "grupoTributarioPadraoTipoTributacaoICMS" });
             config.Elements.Add(new InputHiddenUI { Id = "cfopDescricao" });
-
             config.Elements.Add(new InputNumbersUI { Id = "numero", Class = "col s12 m2", Label = "Número", Disabled = true });
 
 

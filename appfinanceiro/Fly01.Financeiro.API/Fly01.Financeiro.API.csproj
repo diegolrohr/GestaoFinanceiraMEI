@@ -59,6 +59,8 @@
     <Compile Include="Controllers\Api\ApiDomainController.cs" />
     <Compile Include="Controllers\Api\ApiPlataformaController.cs" />
     <Compile Include="Controllers\Api\ArquivoRemessaController.cs" />
+    <Compile Include="Controllers\Api\PaisController.cs" />
+    <Compile Include="Controllers\Api\FluxoCaixaRecalcularSaldosController.cs" />
     <Compile Include="Controllers\Api\RelatorioContaFinanceiraController.cs" />
     <Compile Include="Controllers\Api\ArquivoRetornoController.cs" />
     <Compile Include="Controllers\Api\BoletoController.cs" />
@@ -142,6 +144,7 @@
     </None>
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>

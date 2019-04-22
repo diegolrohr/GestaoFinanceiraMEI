@@ -77,16 +77,23 @@ namespace Fly01.Core.Entities.Domains.Commons
         [Required]
         public bool Vendedor { get; set; }
 
+        public string EstadoCodigoIbge { get; set; }
+
+        public string CidadeCodigoIbge { get; set; }
+
+        public TipoSituacaoEspecialNFS SituacaoEspecialNFS { get; set; }
+
+        public Guid? PaisId { get; set; }
+
+        [StringLength(20)]
+        public string IdEstrangeiro { get; set; }
+
         [JsonIgnore]
         public virtual Cidade Cidade { get; set; }
 
         [JsonIgnore]
         public virtual Estado Estado { get; set; }
 
-        public string EstadoCodigoIbge { get; set; }
-
-        public string CidadeCodigoIbge { get; set; }
-
-        public TipoSituacaoEspecialNFS SituacaoEspecialNFS { get; set; }
+        public virtual Pais Pais { get; set; }
     }
 }

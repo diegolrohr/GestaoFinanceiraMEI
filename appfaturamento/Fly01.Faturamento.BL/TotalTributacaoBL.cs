@@ -52,7 +52,7 @@ namespace Fly01.Faturamento.BL
 
         public Pessoa GetPessoa(Guid pessoaId)
         {
-            return PessoaBL.AllIncluding(y => y.Estado, y => y.Cidade).Where(x => x.Id == pessoaId).AsNoTracking().FirstOrDefault();
+            return PessoaBL.AllIncluding(y => y.Estado, y => y.Cidade, y => y.Pais).Where(x => x.Id == pessoaId).AsNoTracking().FirstOrDefault();
         }
 
         public Produto GetProduto(Guid produtoId)

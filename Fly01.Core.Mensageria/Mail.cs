@@ -19,11 +19,50 @@ namespace Fly01.Core.Mensageria
                     SendEmail(item, nomeRemetente, tituloEmail, corpoEmail, anexo, tipoAnexo);
                 }
             }
-            else 
-                SendEmail(emailDestinatario, nomeRemetente, tituloEmail, corpoEmail, anexo, tipoAnexo);            
+            else
+                SendEmail(emailDestinatario, nomeRemetente, tituloEmail, corpoEmail, anexo, tipoAnexo);
         }
 
-        private static void SendEmail(string emailDestinatario, string nomeRemetente, string tituloEmail, string corpoEmail, Stream anexo, string tipoAnexo) {
+        public static void SendNoAttachment(string nomeRemetente, string emailDestinatario, string tituloEmail, string corpoEmail)
+        {
+            var emailsDestintario = emailDestinatario.Split(';');
+            if (emailsDestintario.Length > 1)
+            {
+                foreach (var item in emailsDestintario)
+                {
+                    SendEmailNoAttachment(emailDestinatario, nomeRemetente, tituloEmail, corpoEmail);
+                }
+            }
+            else
+                SendEmailNoAttachment(emailDestinatario, nomeRemetente, tituloEmail, corpoEmail);
+        }
+
+        private static void SendEmailNoAttachment(string emailDestinatario, string nomeRemetente, string tituloEmail, string corpoEmail)
+        {
+
+            var from = new MailAddress(ConfigurationManager.AppSettings["EmailRemetente"], nomeRemetente);
+            var to = new MailAddress(emailDestinatario);
+            var message = new MailMessage(from, to)
+            {
+                Subject = tituloEmail,
+                Body = corpoEmail,
+                IsBodyHtml = true
+            };
+
+            try
+            {
+                SmtpClient client = ConfigSmtpClient();
+
+                client.Send(message);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        private static void SendEmail(string emailDestinatario, string nomeRemetente, string tituloEmail, string corpoEmail, Stream anexo, string tipoAnexo)
+        {
 
             var from = new MailAddress(ConfigurationManager.AppSettings["EmailRemetente"], nomeRemetente);
             var to = new MailAddress(emailDestinatario);
@@ -41,7 +80,7 @@ namespace Fly01.Core.Mensageria
                 else
                     message.Attachments.Add(new Attachment(anexo, $"{tituloEmail}" + tipoAnexo, System.Net.Mime.MediaTypeNames.Application.Pdf));
             }
-                
+
 
             try
             {
@@ -77,7 +116,7 @@ namespace Fly01.Core.Mensageria
                     else
                         message.Attachments.Add(new Attachment(anexo, $"{tituloEmail}" + tiposAnexos[i]));
                     i++;
-                }              
+                }
             }
 
 
@@ -114,6 +153,10 @@ namespace Fly01.Core.Mensageria
         {
             return FormatTextMail(htmlContent, tituloEmail, mensagemPrincipal, "", emailEmpresa);
         }
+        public static string FormataMensagem(string htmlContent, string tituloEmail, string mensagemPrincipal, string mensagemComplemento, string emailEmpresa, string simplesNacional, string impostoRenda, string csll, string cofins, string pisPasep, string iss, string fcp, string inss)
+        {
+            return FormatTextMailParametroTributario(htmlContent, tituloEmail, mensagemPrincipal, mensagemComplemento, emailEmpresa, simplesNacional, impostoRenda, csll, cofins, pisPasep, iss, fcp, inss);
+        }
 
         public static string FormatTextMail(string htmlContent, string tituloEmail, string mensagemPrincipal, string mensagemComplemento, string emailEmpresa)
         {
@@ -122,6 +165,25 @@ namespace Fly01.Core.Mensageria
                 .Replace("{MENSAGEM_1}", HttpUtility.HtmlEncode(mensagemPrincipal))
                 .Replace("{MENSAGEM_2}", HttpUtility.HtmlEncode(mensagemComplemento))
                 .Replace("{EMAIL_EMPRESA}", HttpUtility.HtmlEncode(emailEmpresa))
+            ).ToString();
+        }
+
+        public static string FormatTextMailParametroTributario(string htmlContent, string tituloEmail, string mensagemPrincipal, string mensagemComplemento, string emailEmpresa, string simplesNacional,
+             string impostoRenda, string csll, string cofins, string pisPasep, string iss, string fcp, string inss)
+        {
+            return new StringBuilder(htmlContent
+                .Replace("{TITULO_EMAIL}", HttpUtility.HtmlEncode(tituloEmail))
+                .Replace("{MENSAGEM_1}", HttpUtility.HtmlEncode(mensagemPrincipal))
+                .Replace("{MENSAGEM_2}", HttpUtility.HtmlEncode(mensagemComplemento))
+                .Replace("{EMAIL_EMPRESA}", HttpUtility.HtmlEncode(emailEmpresa))
+                .Replace("{ICMS}", HttpUtility.HtmlEncode(simplesNacional))
+                .Replace("{FCP}", HttpUtility.HtmlEncode(fcp))
+                .Replace("{PIS/PASEP}", HttpUtility.HtmlEncode(pisPasep))
+                .Replace("{COFINS}", HttpUtility.HtmlEncode(cofins))
+                .Replace("{ISS}", HttpUtility.HtmlEncode(iss))
+                .Replace("{CSLL}", HttpUtility.HtmlEncode(csll))
+                .Replace("{INSS}", HttpUtility.HtmlEncode(inss))
+                .Replace("{IR}", HttpUtility.HtmlEncode(impostoRenda))
             ).ToString();
         }
     }

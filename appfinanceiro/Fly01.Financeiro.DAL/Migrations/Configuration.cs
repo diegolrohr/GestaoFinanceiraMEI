@@ -34,6 +34,7 @@ namespace Fly01.Financeiro.DAL.Migrations
                 //new CidadeDataInitializer6().Initialize(context, ufs);
                 //new CidadeDataInitializer7().Initialize(context, ufs);
                 //new CnabDataInitializer().Initialize(context);
+                new PaisDataInitializer().Initialize(context);
 
             }
             catch (DbEntityValidationException ex)

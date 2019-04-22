@@ -23,7 +23,7 @@ namespace Fly01.Core.Presentation.Controllers
 
         public PessoaBaseController()
         {
-            ExpandProperties = "estado($select=id,nome,sigla,codigoIbge),cidade($select=id,nome,estadoId,codigoIbge)";
+            ExpandProperties = "estado($select=id,nome,sigla,codigoIbge),cidade($select=id,nome,estadoId,codigoIbge),pais($select=id,nome)";
         }
 
         public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
@@ -196,16 +196,17 @@ namespace Fly01.Core.Presentation.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "estadoCodigoIbge" });
             config.Elements.Add(new InputHiddenUI { Id = "cidadeCodigoIbge" });
 
-            config.Elements.Add(new InputCpfcnpjUI { Id = "cpfcnpj", Class = "col s12 l4", Label = "CPF / CNPJ", MaxLength = 18 });
-            config.Elements.Add(new InputTextUI { Id = "nome", Class = "col s12 l8", Label = "Razão Social / Nome Completo", Required = true, MaxLength = 180 });
+            config.Elements.Add(new InputCpfcnpjUI { Id = "cpfcnpj", Class = "col s12 l3", Label = "CPF / CNPJ", MaxLength = 18 });
+            config.Elements.Add(new InputTextUI { Id = "nome", Class = "col s12 l5", Label = "Razão Social / Nome Completo", Required = true, MaxLength = 180 });
+            config.Elements.Add(new InputTextUI { Id = "nomeComercial", Class = "col s12 l4", Label = "Nome Comercial", MaxLength = 180 });
 
-            config.Elements.Add(new InputTextUI { Id = "nomeComercial", Class = "col s12 l5", Label = "Nome Comercial", MaxLength = 180 });
-            config.Elements.Add(new InputEmailUI { Id = "email", Class = "col s12 l4", Label = "E-mail", MaxLength = 100 });
+            config.Elements.Add(new InputTextUI { Id = "idEstrangeiro", Class = "col s12 l3", Label = "Identificação Estrangeiro", MaxLength = 20 });
+            config.Elements.Add(new InputEmailUI { Id = "email", Class = "col s12 l5", Label = "E-mail", MaxLength = 100 });
 
             config.Elements.Add(new SelectUI
             {
                 Id = "situacaoEspecialNFS",
-                Class = "col s12 l3",
+                Class = "col s12 l4",
                 Label = "Situação Especial NFS-e",
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoSituacaoEspecialNFS))),
                 ConstrainWidth = true
@@ -241,8 +242,18 @@ namespace Fly01.Core.Presentation.Controllers
 
             config.Elements.Add(new AutoCompleteUI
             {
+                Id = "paisId",
+                Class = "col s12 l2",
+                Label = "País",
+                MaxLength = 35,
+                DataUrl = Url.Action("Pais", "AutoComplete"),
+                LabelId = "paisNome"
+            });
+
+            config.Elements.Add(new AutoCompleteUI
+            {
                 Id = "estadoId",
-                Class = "col s12 l5",
+                Class = "col s12 l4",
                 Label = "Estado",
                 MaxLength = 35,
                 DataUrl = Url.Action("Estado", "AutoComplete"),
@@ -256,7 +267,7 @@ namespace Fly01.Core.Presentation.Controllers
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "cidadeId",
-                Class = "col s12 l5",
+                Class = "col s12 l4",
                 Label = "Cidade (Escolha o estado antes)",
                 MaxLength = 35,
                 DataUrl = Url.Action("Cidade", "AutoComplete"),
@@ -283,6 +294,24 @@ namespace Fly01.Core.Presentation.Controllers
             List<TooltipUI> tooltips = GetHelpers();
             if (tooltips != null)
                 config.Helpers.AddRange(tooltips);
+
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "idEstrangeiro",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Informe se for necessário para nota fiscal de exportação. Informar com o número do passaporte ou outro documento legal para identificar a pessoa estrangeira."
+                }
+            });
+
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "paisNome",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Informe se for necessário para nota fiscal de exportação."
+                }
+            });
 
             cfg.Content.Add(config);
 

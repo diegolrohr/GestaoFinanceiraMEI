@@ -34,12 +34,18 @@
             $("#naturezaOperacaoField").show();
             $("input#naturezaOperacao").rules("add", { required: true });
             $('#mensagemPadraoNotaField').show();
+            $('#ufSaidaPaisIdField').show();
+            $('#localEmbarqueField').show();
+            $('#localDespachoField').show();
         }
         else {
             $("#naturezaOperacaoField").hide();
             $("input#naturezaOperacao").rules("remove", "required");
             $('input#naturezaOperacao').removeClass("invalid")
             $('#mensagemPadraoNotaField').hide();
+            $('#ufSaidaPaisIdField').hide();
+            $('#localEmbarqueField').hide();
+            $('#localDespachoField').hide();
         }
 
         if (geraNotaFiscal && $$$._.dtOrdemVendaServicos.data(0).length > 0) {
@@ -311,6 +317,10 @@
         fnIsNovoPedido();
         fnClickComplementarIsDevolucao();
         $("#naturezaOperacaoField").hide();
+        $('#mensagemPadraoNotaField').hide();
+        $('#ufSaidaPaisIdField').hide();
+        $('#localEmbarqueField').hide();
+        $('#localDespachoField').hide();
         $("#chaveNFeReferenciadaField").hide();
         $$$.fn.updateActiveMenu("/OrdemVenda/List");
 

@@ -241,7 +241,7 @@ namespace Fly01.Compras.BL
                     {
                         Cnpj = fornecedor.TipoDocumento == "J" ? fornecedor.CPFCNPJ : null,
                         Cpf = fornecedor.TipoDocumento == "F" ? fornecedor.CPFCNPJ : null,
-                        IndInscricaoEstadual = (IndInscricaoEstadual)System.Enum.Parse(typeof(IndInscricaoEstadual), fornecedor.TipoIndicacaoInscricaoEstadual.ToString()),
+                        IndInscricaoEstadual = fornecedor.TipoIndicacaoInscricaoEstadual,
                         InscricaoEstadual = fornecedor.TipoIndicacaoInscricaoEstadual == TipoIndicacaoInscricaoEstadual.ContribuinteICMS ? fornecedor.InscricaoEstadual : null,
                         IdentificacaoEstrangeiro = null,
                         Nome = fornecedor.Nome,
@@ -337,14 +337,14 @@ namespace Fly01.Compras.BL
                         if (itemTributacao.CalculaICMS)
                         {
                             detalhe.Imposto.ICMS.ValorICMSSTRetido = Math.Round(item.ValorICMSSTRetido, 2);
-                            detalhe.Imposto.ICMS.ValorICMS = Math.Round(itemTributacao.ICMSValor, 2);
-                            detalhe.Imposto.ICMS.ValorBC = Math.Round(itemTributacao.ICMSBase, 2);
 
                             if (item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.Outros)
                             {
                                 detalhe.Imposto.ICMS.ModalidadeBC = ModalidadeDeterminacaoBCICMS.ValorDaOperacao;
                                 detalhe.Imposto.ICMS.AliquotaICMS = Math.Round(itemTributacao.ICMSAliquota, 2);
                                 detalhe.Imposto.ICMS.ModalidadeBCST = ModalidadeDeterminacaoBCICMSST.MargemValorAgregado;
+                                detalhe.Imposto.ICMS.ValorICMS = Math.Round(itemTributacao.ICMSValor, 2);
+                                detalhe.Imposto.ICMS.ValorBC = Math.Round(itemTributacao.ICMSBase, 2);
                             }
                             if (item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaComPermissaoDeCreditoST
                                 || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaSemPermissaoDeCreditoST

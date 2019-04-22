@@ -208,7 +208,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
 
         private static void ValidarSomatorioBaseCalculoST(ItemTransmissaoVM item, TransmissaoVM entity)
         {
-            double? somatorioBCSTTrue = item.Detalhes.Where(x =>
+            double? somatorioBCSTTrue = item.Detalhes.Where(x => 
                 x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaSemPermissaoDeCreditoST ||
                 x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.Outros ||
                 x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaComPermissaoDeCreditoST ||

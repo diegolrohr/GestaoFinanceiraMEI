@@ -315,8 +315,8 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                         x.CodigoSituacaoOperacao == TipoTributacaoICMS.Outros ||
                         x.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaComPermissaoDeCreditoST ||
                         x.CodigoSituacaoOperacao == TipoTributacaoICMS.IsencaoParaFaixaDeReceitaBrutaST
-                    )) ?
-                    Math.Round(detalhes.Where(x => x.Imposto.ICMS != null && x.Imposto.ICMS.ValorBCST.HasValue &&
+                    )) ? 
+                    Math.Round(detalhes.Where(x => x.Imposto.ICMS != null && x.Imposto.ICMS.ValorBCST.HasValue && 
                     (
                         x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaSemPermissaoDeCreditoST ||
                         x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.Outros ||

@@ -4,6 +4,7 @@ using Fly01.Core.ValueObjects;
 using Fly01.Core.Notifications;
 using System;
 using System.Text.RegularExpressions;
+using Fly01.Core.ValueObjects;
 
 namespace Fly01.EmissaoNFE.BL
 {
@@ -79,7 +80,6 @@ namespace Fly01.EmissaoNFE.BL
         public static Error IEInvalida = new Error("Inscrição Estadual inválida (para este estado).", "InscricaoEstadual");
         public static Error UFInvalida = new Error("Sigla da UF da empresa inválida.", "UF");
         public static Error UFRequerida = new Error("UF é um campo obrigatório.", "UF");
-
 
         public bool ValidaCPF(string cpf)
 

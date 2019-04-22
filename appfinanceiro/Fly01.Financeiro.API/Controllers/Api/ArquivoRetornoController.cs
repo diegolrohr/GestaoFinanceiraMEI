@@ -4,6 +4,8 @@ using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Financeiro.BL;
 using Fly01.Core.Rest;
 using System.Collections.Generic;
+using Fly01.Core;
+using Fly01.Core.ViewModels;
 
 namespace Fly01.Financeiro.API.Controllers.Api
 {

@@ -20,8 +20,9 @@
         var tipoNfeComplementar = $('#tipoNfeComplementar').val();
 
         var somaFrete = (
-             (tipoFrete == "FOB")
-        );
+                (tipoFrete == "FOB")
+            );
+
         if (somaFrete) {
             valorFrete = TryParseFloat(noComma($('input#valorFrete').val()));
         }

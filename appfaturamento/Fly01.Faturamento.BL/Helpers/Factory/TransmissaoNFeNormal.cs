@@ -1,7 +1,5 @@
-﻿using Fly01.Core;
-using Fly01.Core.Entities.Domains.Commons;
+﻿using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Entities.Domains.Enum;
-using Fly01.Core.Rest;
 using Fly01.EmissaoNFE.Domain.Entities.NFe;
 using Fly01.EmissaoNFE.Domain.Entities.NFe.COFINS;
 using Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS;
@@ -110,6 +108,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 itemTransmissao.Total.ICMSTotal.SomatorioIPI +
                 itemTransmissao.Total.ICMSTotal.SomatorioFCPST) -
                 itemTransmissao.Total.ICMSTotal.SomatorioDesconto);
+
             if (SomaFrete())
             {
                 total += itemTransmissao.Total.ICMSTotal.ValorFrete;

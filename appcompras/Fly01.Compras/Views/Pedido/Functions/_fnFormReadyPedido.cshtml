@@ -18,8 +18,9 @@
         var tipoFrete = $('select#tipoFrete').val();
         var tipoCompra = $('#tipoCompra').val();
         var somaFrete = (
-                 tipoFrete == "FOB"
-             );
+                tipoFrete == "FOB"
+            );
+
         if (somaFrete) {
             valorFrete = TryParseFloat(noComma($('input#valorFrete').val()));
         }

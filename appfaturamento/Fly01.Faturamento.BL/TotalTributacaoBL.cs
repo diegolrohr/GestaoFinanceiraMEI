@@ -449,7 +449,7 @@ namespace Fly01.Faturamento.BL
                     { "PlataformaUrl", PlataformaUrl }
                 };
 
-            double freteFracionado = valorFrete.HasValue ? valorFrete.Value / tributacaoItens.Sum(x => x.Quantidade) : 0;
+            double freteFracionado = valorFrete.HasValue ? valorFrete.Value / tributacaoItens.Sum(x => x.Quantidade) : 0.0;
 
             var num = 1;
             foreach (var itemProduto in tributacaoItens)
@@ -825,7 +825,7 @@ namespace Fly01.Faturamento.BL
     {
         public Guid ProdutoId { get; set; }
         public Guid OrdemVendaProdutoId { get; set; }
-}
+    }
 
     public class TributacaoServicoRetorno : TributacaoItemRetorno
     {

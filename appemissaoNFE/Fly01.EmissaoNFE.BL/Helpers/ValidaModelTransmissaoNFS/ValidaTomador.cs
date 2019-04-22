@@ -3,6 +3,7 @@ using System.Linq;
 using Fly01.Core.Notifications;
 using Fly01.Core.ValueObjects;
 using Fly01.EmissaoNFE.Domain.ViewModelNFS;
+using Fly01.Core.ValueObjects;
 
 namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
 {

@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using Fly01.EmissaoNFE.Domain.Enums;
+using Fly01.Core.ViewModels;
 using Fly01.Core.ServiceBus;
 
 namespace Fly01.Compras.BL
@@ -648,7 +649,7 @@ namespace Fly01.Compras.BL
                     { "AppUser", AppUser  },
                     { "PlataformaUrl", PlataformaUrl }
                 };
-                    var queryString = new Dictionary<string, string>()
+                var queryString = new Dictionary<string, string>()
                 {
                     {
                         "contaFinanceiraParcelaPaiId",

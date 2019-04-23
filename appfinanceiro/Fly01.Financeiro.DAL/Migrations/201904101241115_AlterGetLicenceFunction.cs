@@ -231,7 +231,6 @@ FROM
         
         public override void Down()
         {
-            Sql("DROP FUNCTION [dbo].[GetLicenceReport]");
         }
     }
 }

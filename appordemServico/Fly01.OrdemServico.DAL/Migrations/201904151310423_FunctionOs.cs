@@ -2,7 +2,7 @@ namespace Fly01.OrdemServico.DAL.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
-    
+
     public partial class FunctionOs : DbMigration
     {
         public override void Up()
@@ -124,10 +124,9 @@ SELECT * FROM
 	) AS T
 );");
         }
-        
+
         public override void Down()
         {
-            Sql("DROP FUNCTION[dbo].[GetOSReport]");
         }
     }
 }

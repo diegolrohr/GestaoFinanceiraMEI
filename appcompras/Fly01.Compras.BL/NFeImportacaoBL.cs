@@ -14,6 +14,8 @@ using Fly01.EmissaoNFE.Domain.Enums;
 using Fly01.Core.Rest;
 using System.Data.Entity;
 using Fly01.Core.ServiceBus;
+using Fly01.Core;
+using Fly01.Core.ViewModels;
 
 namespace Fly01.Compras.BL
 {

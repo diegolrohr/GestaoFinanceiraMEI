@@ -216,19 +216,23 @@ namespace Fly01.Faturamento.Controllers
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
 
-        private int GetCertificado()
+        private int GetNotasNaoTransmitidas()
         {
+            Dictionary<string, string> queryString = AppDefaults.GetQueryStringDefault();
+            queryString.AddParam("$filter", $"status eq {AppDefaults.APIEnumResourceName}StatusNotaFiscal'NaoTransmitida'");
+            queryString.AddParam("$select", "id");
+
             ResultBase<NotaFiscalVM> response = RestHelper.ExecuteGetRequest<ResultBase<NotaFiscalVM>>("notafiscal",
-                AppDefaults.GetQueryStringDefault());
+                queryString);
 
             return response != null && response.Data != null
-                ? response.Data.Count(x => x.Status.Equals("NaoTransmitida"))
+                ? response.Data.Count()
                 : 0;
         }
 
         public JsonResult StatusCard()
         {
-            var numeroNFNaoTransmitida = GetCertificado();
+            var numeroNFNaoTransmitida = GetNotasNaoTransmitidas();
 
             if (numeroNFNaoTransmitida == 0)
                 return Json(new { numeroNFNaoTransmitidas = 0 }, JsonRequestBehavior.AllowGet);

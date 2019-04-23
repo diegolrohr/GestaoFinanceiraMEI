@@ -7,7 +7,6 @@ using System.Web.Http;
 using System.Web.OData;
 using Fly01.Core.Notifications;
 using Fly01.Core.ServiceBus;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Entities.Domains;
@@ -178,19 +177,19 @@ namespace Fly01.Compras.API.Controllers.Api
                 var hasTagTransportadora = (NFe != null && NFe.InfoNFe != null && NFe.InfoNFe.Transporte != null && NFe.InfoNFe.Transporte.Transportadora != null && NFe.InfoNFe.Transporte.Transportadora?.RazaoSocial != null);
                 if (hasTagTransportadora)
                 {
+                    var ufTransp = NFe.InfoNFe.Transporte?.Transportadora?.UF;
+                    var estadoTransp = UnitOfWork.EstadoBL.All.FirstOrDefault(x => x.Sigla == ufTransp);
+
                     if (entity.NovaTransportadora && entity.TipoFrete != TipoFrete.SemFrete)
                     {
                         entity.TransportadoraId = Guid.NewGuid();
                         var transportadora = new Pessoa()
                         {
                             Id = entity.TransportadoraId.Value,
-                            TipoDocumento = NFe.InfoNFe.Emitente?.Cnpj.Length == 14 ? "J" : "F",
-                            CPFCNPJ = NFe.InfoNFe.Emitente?.Cnpj != null ? NFe.InfoNFe.Emitente?.Cnpj : NFe.InfoNFe.Emitente?.Cpf != null ? NFe.InfoNFe.Emitente?.Cpf : null,
-                            Nome = NFe.InfoNFe.Emitente?.Nome,
-                            InscricaoEstadual = NFe.InfoNFe.Emitente?.InscricaoEstadual,
-                            Endereco = NFe.InfoNFe.Emitente?.Endereco?.Logradouro,
-                            CidadeId = cidade?.Id,
-                            EstadoId = cidade?.EstadoId,
+                            TipoDocumento = NFe.InfoNFe.Transporte?.Transportadora?.CNPJ?.Length == 14 ? "J" : "F",
+                            CPFCNPJ = NFe.InfoNFe.Transporte?.Transportadora?.CNPJ != null ? NFe.InfoNFe.Transporte?.Transportadora?.CNPJ : NFe.InfoNFe.Transporte?.Transportadora?.CNPJ != null ? NFe.InfoNFe.Transporte?.Transportadora?.CNPJ : null,
+                            Nome = NFe.InfoNFe.Transporte?.Transportadora?.RazaoSocial,
+                            Endereco = NFe.InfoNFe.Transporte?.Transportadora?.Endereco,
                             Transportadora = true
                         };
                         UnitOfWork.PessoaBL.Insert(transportadora);
@@ -203,12 +202,11 @@ namespace Fly01.Compras.API.Controllers.Api
                         if (transportadora != null)
                         {
                             transportadora.Id = entity.TransportadoraId.Value;
-                            transportadora.CPFCNPJ = NFe.InfoNFe.Emitente?.Cnpj != null ? NFe.InfoNFe.Emitente?.Cnpj : NFe.InfoNFe.Emitente?.Cpf != null ? NFe.InfoNFe.Emitente?.Cpf : null;
-                            transportadora.Nome = NFe.InfoNFe.Emitente?.Nome;
-                            transportadora.InscricaoEstadual = NFe.InfoNFe.Emitente?.InscricaoEstadual;
-                            transportadora.Endereco = NFe.InfoNFe.Emitente?.Endereco?.Logradouro;
-                            transportadora.CidadeId = cidade?.Id;
-                            transportadora.EstadoId = cidade?.EstadoId;
+                            transportadora.CPFCNPJ = NFe.InfoNFe.Transporte?.Transportadora?.CNPJ != null ? NFe.InfoNFe.Transporte?.Transportadora?.CNPJ : NFe.InfoNFe.Transporte?.Transportadora?.CNPJ != null ? NFe.InfoNFe.Transporte?.Transportadora?.CNPJ : null;
+                            transportadora.Nome = NFe.InfoNFe.Transporte?.Transportadora?.RazaoSocial;
+                            transportadora.Endereco = NFe.InfoNFe.Transporte?.Transportadora?.Endereco;                            
+                            transportadora.Transportadora = true;
+
                             UnitOfWork.PessoaBL.Update(transportadora);
                             listProducers.Add(new NFeImportacaoFinalizarProducer() { Entity = transportadora, Verbo = RabbitConfig.EnHttpVerb.PUT });
                         }

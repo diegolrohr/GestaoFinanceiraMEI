@@ -18,7 +18,7 @@ namespace Fly01.EmissaoNFE.DAL.Migrations.DataInitializer
                     DataInclusao = DateTime.Now,
                     CNPJ = "53113791000122",
                     Contato = "Ramon Martins Da Silva",
-                    Email = "ramon.silva@totvs.com.br",
+                    Email = "resp_tecnico_dfe_mpn@totvs.com.br",
                     Fone = "11966068881",
                 };
                 context.ResponsavelTecnico.AddOrUpdate(x => x.Id, responsavel);

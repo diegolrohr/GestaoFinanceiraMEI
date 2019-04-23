@@ -59,10 +59,10 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
 
         [MaxLength(3)]
         /// <summary>
-        /// informar de acordo com o código EX da TIPI se houver para o NCM do produto.
+        /// Informar de acordo com o código EX da TIPI se houver para o NCM do produto.
         /// </summary>
-        /// 
         [JsonProperty("EXTIPI")]
+        [StringLength(3)]
         [XmlElement(ElementName = "EXTIPI")]
         public string EXTIPI { get; set; }
 
@@ -97,7 +97,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         [XmlElement(ElementName = "qCom")]
         public string QuantidadeString
         {
-            get { return Quantidade.ToString("0.00").Replace(",", "."); }
+            get { return Quantidade.ToString("0.0000").Replace(",", "."); }
             set { Quantidade = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
@@ -113,7 +113,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         [XmlElement(ElementName = "vUnCom")]
         public string ValorUnitarioString
         {
-            get { return ValorUnitario.ToString("0.00").Replace(",", "."); }
+            get { return ValorUnitario.ToString("0.0000").Replace(",", "."); }
             set { ValorUnitario = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault ); }
         }
 
@@ -164,7 +164,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         [XmlElement(ElementName = "qTrib")]
         public string QuantidadeTributadaString
         {
-            get { return QuantidadeTributada.ToString("0.00").Replace(",", "."); }
+            get { return QuantidadeTributada.ToString("0.0000").Replace(",", "."); }
             set { QuantidadeTributada = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
@@ -180,7 +180,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         [XmlElement(ElementName = "vUnTrib")]
         public string ValorUnitarioTributadoString
         {
-            get { return ValorUnitarioTributado.ToString("0.00").Replace(",", "."); }
+            get { return ValorUnitarioTributado.ToString("0.0000").Replace(",", "."); }
             set { ValorUnitarioTributado = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 

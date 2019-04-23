@@ -62,7 +62,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
             return transmissao;
         }
 
-        public override bool PagaFrete()
+        public override bool SomaFrete()
         {
             return false;
         }
@@ -155,14 +155,14 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
             if (itemTributacao.CalculaICMS)
             {
                 ICMS.ValorICMSSTRetido = Math.Round(item.ValorICMSSTRetido, 2);
-                ICMS.ValorICMS = Math.Round(itemTributacao.ICMSValor, 2);
-                ICMS.ValorBC = Math.Round(itemTributacao.ICMSBase, 2);
 
                 if (item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.Outros)
                 {
                     ICMS.ModalidadeBC = ModalidadeDeterminacaoBCICMS.ValorDaOperacao;
                     ICMS.AliquotaICMS = Math.Round(itemTributacao.ICMSAliquota, 2);
                     ICMS.ModalidadeBCST = ModalidadeDeterminacaoBCICMSST.MargemValorAgregado;
+                    ICMS.ValorICMS = Math.Round(itemTributacao.ICMSValor, 2);
+                    ICMS.ValorBC = Math.Round(itemTributacao.ICMSBase, 2);
                 }
 
                 if (item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaComPermissaoDeCreditoST

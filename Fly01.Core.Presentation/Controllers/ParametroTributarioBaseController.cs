@@ -13,6 +13,12 @@ using Fly01.Core.Entities.Domains.Enum;
 using Fly01.uiJS.Classes.Helpers;
 using Fly01.Core.ViewModels;
 using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.Core.Mensageria;
+using System.IO;
+using System.Text.RegularExpressions;
+using Fly01.uiJS.Enums;
+using Fly01.Core.ValueObjects;
+using Fly01.Core.Config;
 
 namespace Fly01.Core.Presentation.Controllers
 {
@@ -38,9 +44,9 @@ namespace Fly01.Core.Presentation.Controllers
                 return Json(new
                 {
                     aliquotaSimplesNacional = "0",
-                    aliquotaISS = "5",
-                    aliquotaPISPASEP = "0,65",
-                    aliquotaCOFINS = "2",
+                    aliquotaISS = "0",
+                    aliquotaPISPASEP = "0",
+                    aliquotaCOFINS = "0",
                     numeroRetornoNF = "1",
                     mensagemPadraoNota = "Nota Fiscal.",
                     tipoVersaoNFe = "v4",
@@ -99,16 +105,47 @@ namespace Fly01.Core.Presentation.Controllers
 
         public override Func<T, object> GetDisplayData() { throw new NotImplementedException(); }
 
-        public override ContentResult List() 
+        public override ContentResult List()
             => Form();
+
+        public ContentResult ModalEnvioEmail()
+        {
+            ModalUIForm config = new ModalUIForm()
+            {
+                Title = "Enviar por e-mail para seu Contador",
+                UrlFunctions = @Url.Action("Functions") + "?fns=",
+                ConfirmAction = new ModalUIAction() { Label = "Enviar" , OnClickFn = "fnFormClickEnvioEmailContador" },
+                CancelAction = new ModalUIAction() { Label = "Cancelar" },
+                Action = new FormUIAction
+                {
+                    Create = @Url.Action("Create"),
+                    Edit = @Url.Action("Edit"),
+                    Get = @Url.Action("Json") + "/",
+                    List = @Url.Action("List")
+                },
+                Id = "fly01mdlfrmEnvioEmailContador"
+            };
+            config.Elements.Add(new InputHiddenUI { Id = "parametroTributarioId" });
+            config.Elements.Add(new InputEmailUI
+            {
+                Id = "emailId",
+                Class = "col s12",
+                Label = "E-mail do seu Contador"
+            });
+
+            return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
+        }
 
         public override List<HtmlUIButton> GetFormButtonsOnHeader()
         {
             var target = new List<HtmlUIButton>();
 
             if (UserCanWrite)
-                target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnAtualizaParametro", Type = "submit" });
-
+            {
+                target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnAtualizaParametro", Type = "submit", Position = HtmlUIButtonPosition.Main });
+                target.Add(new HtmlUIButton { Id = "envioEmail", Label = "Envie para seu contador", OnClickFn = "fnEnviarParametrosEmail", Type = "click", Position = HtmlUIButtonPosition.Out });         
+                target.Add(new HtmlUIButton { Id = "atualizaAliquota", Label = "Atualizar alíquotas", OnClickFn = "fnAtualizarAliquotas", Type = "click" });
+            }
             return target;
         }
 
@@ -152,7 +189,7 @@ namespace Fly01.Core.Presentation.Controllers
                         Title = "Parâmetros de Transmissão NFS-e"
                     }
                 }
-            };      
+            };
 
             var form1 = new FormUI
             {
@@ -168,7 +205,7 @@ namespace Fly01.Core.Presentation.Controllers
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
 
-            form1.Elements.Add(new InputHiddenUI { Id = "id" });            
+            form1.Elements.Add(new InputHiddenUI { Id = "id" });
 
             form1.Elements.Add(new InputCustommaskUI
             {
@@ -288,7 +325,8 @@ namespace Fly01.Core.Presentation.Controllers
                 Id = "tipoAmbiente",
                 Class = "col s6 m6 l3",
                 Label = "Ambiente NF-e",
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoAmbiente)))
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoAmbiente))
+                .ToList().FindAll(x => "Producao,Homologacao".Contains(x.Value)))
             });
 
             form2.Elements.Add(new TextAreaUI { Id = "mensagemPadraoNota", Class = "col s12", Label = "Informações Adicionais", MaxLength = 1000 });
@@ -384,11 +422,51 @@ namespace Fly01.Core.Presentation.Controllers
             return cfg;
         }
 
+        public JsonResult EnviaEmailContador(string simplesNacional, string impostoRenda, string csll, string cofins, string pisPasep, string iss, string email, string fcp, string inss)
+        {
+            try
+            {
+                var empresa = GetDadosEmpresa();
+
+                var ResponseError = ValidarDadosEmail(empresa, email);
+                if (ResponseError != null) return ResponseError;
+
+                MailSend(empresa, simplesNacional, impostoRenda, csll, cofins, pisPasep, iss, email, fcp, inss);
+
+                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
+        private JsonResult ValidarDadosEmail(ManagerEmpresaVM empresa, string email)
+        {
+            const string pattern = @"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$";
+            if (string.IsNullOrEmpty(email)) return JsonResponseStatus.GetFailure("E-mail do seu contador inválido.");       
+            if (!Regex.IsMatch(email ?? "", pattern)) return JsonResponseStatus.GetFailure("E-mail do seu contador inválido.");
+            if (string.IsNullOrEmpty(empresa.Email)) return JsonResponseStatus.GetFailure("Você ainda não configurou um email válido para sua empresa.");
+
+            return null;
+        }
+
+        private void MailSend(ManagerEmpresaVM empresa, string simplesNacional, string impostoRenda, string csll, string cofins, string pisPasep, string iss, string email, string fcp, string inss)
+        {
+            var mensagemPrincipal = $"Razão Social: {empresa.RazaoSocial}".ToUpper();
+            var tituloEmail = $"Este e-mail é referente aos impostos da empresa: {empresa.NomeFantasia}".ToUpper();
+            var mensagemComplemento = $"CNPJ: {empresa.CNPJ}".ToUpper();
+            var conteudoEmail = Mail.FormataMensagem(EmailFilesHelper.GetTemplate("Templates.ParametroTributario.html").Value, tituloEmail, mensagemPrincipal, mensagemComplemento,empresa.Email, simplesNacional, impostoRenda, csll, cofins, pisPasep, iss, fcp, inss);
+
+            Mail.SendNoAttachment(empresa.NomeFantasia, email, tituloEmail, conteudoEmail);
+        }
+
         [OperationRole(PermissionValue = EPermissionValue.Write)]
         public JsonResult ImportaParametro(string id, string mensagem, double simplesNacional, double fcp, double iss, double pispasep, double cofins,
             string numeroRetorno, string modalidade, string versao, string ambiente, string tipoPresencaComprador, string horarioVerao,
             string tipoHorario, string versaoNFSe, string usuarioWebServer, string senhaWebServer, string chaveAutenticacao, string autorizacao,
-              string  tipoTributacaoNFS, string tipoAmbienteNFS, double csll, double inss, double impostoRenda, bool incentivoCultura, bool formatarCodigoISS, string tipoRegimeEspecialTributacao)
+              string tipoTributacaoNFS, string tipoAmbienteNFS, double csll, double inss, double impostoRenda, bool incentivoCultura, bool formatarCodigoISS, string tipoRegimeEspecialTributacao)
         {
             try
             {
@@ -453,6 +531,120 @@ namespace Fly01.Core.Presentation.Controllers
                 ErrorInfo error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
                 return JsonResponseStatus.GetFailure(error.Message);
             }
+        }
+
+        public ContentResult ModalAtualizaIE()
+        {
+            ModalUIForm config = new ModalUIForm()
+            {
+                Title = "Atualizar Inscrição Estadual:",
+                UrlFunctions = @Url.Action("Functions") + "?fns=",
+                ConfirmAction = new ModalUIAction() { Label = "Enviar", OnClickFn = "fnFormReadyAtualizaIE" },
+                CancelAction = new ModalUIAction() { Label = "Cancelar" },
+                Action = new FormUIAction
+                {
+                    Create = @Url.Action("Create"),
+                    Edit = @Url.Action("Edit"),
+                    Get = @Url.Action("Json") + "/",
+                    List = @Url.Action("List")
+                },
+                Id = "fly01mdlfrmAtualizaIE"
+            };
+            config.Elements.Add(new InputTextUI
+            {
+                Id = "inscricaoEstadualId",
+                Class = "col s12 m8",
+                Label = "Inscrição Estadual"
+            });
+            config.Elements.Add(new InputCheckboxUI
+            {
+                Id = "chkIsento",
+                Class = "col s12 m4",
+                Label = "Sim, é isento de Inscrição Estadual?",
+                DomEvents = new List<DomEventUI>
+                {
+                    new DomEventUI {DomEvent = "change", Function = "fnChkIsentoInscricaoEstadual"}
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "inscricaoEstadualId",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Verificamos que você não possui cadastrado sua Inscrição Estadual nos dados de sua Empresa. Por favor, insira sua inscrição estadual para realizarmos a atualização dos seus parâmetros tributários."
+                }
+            });
+
+            return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
+        }
+
+        public JsonResult ValidaDadosEmpresa()
+        {
+            try
+            {
+                ManagerEmpresaVM empresa = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
+                if (!string.IsNullOrEmpty(empresa.InscricaoEstadual))
+                {
+                    return Json(new
+                    {
+                        success = true
+                    }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new
+                    {
+                        success = false,
+                    }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorInfo error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
+        public JsonResult PostAtualizacaoIE(string inscricaoEstadual)
+        {
+            try
+            {
+                ManagerEmpresaVM empresa = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
+
+                var msgErrorInscricaoEstadual = string.Empty;
+                if (InscricaoEstadualHelper.IsValid(empresa.Cidade?.Estado?.Sigla, inscricaoEstadual, out msgErrorInscricaoEstadual))
+                {
+                    empresa.InscricaoEstadual = inscricaoEstadual;
+
+                    var response = RestHelper.ExecutePutRequest<ManagerEmpresaVM>($"{AppDefaults.UrlManager}company/{SessionManager.Current.UserData.PlatformUrl}", empresa, AppDefaults.GetQueryStringDefault());
+
+                    return Json(new
+                    {
+                        success = true,
+                    }, JsonRequestBehavior.AllowGet);
+                }
+                return Json(new
+                {
+                    success = false,
+                    message = "Inscrição Estadual Inválida."
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ErrorInfo error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
+        [HttpGet]
+        public JsonResult ExisteParametroSalvo()
+        {
+            var queryString = new Dictionary<string, string> {
+                    { "$select", "id" }
+            };
+
+            var response = RestHelper.ExecuteGetRequest<ParametroTributarioVM>(ResourceName, queryString);
+            return Json(new { existeParametro = (response?.Id != null && response?.Id != default(Guid)) }, JsonRequestBehavior.AllowGet);
         }
     }
 }

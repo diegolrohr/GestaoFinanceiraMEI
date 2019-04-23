@@ -84,11 +84,10 @@ namespace Fly01.Faturamento.BL
                 var servicos = OrdemVendaServicoBL.All.AsNoTracking().Where(x => x.OrdemVendaId == entity.Id).ToList();
                 var hasEstoqueNegativo = VerificaEstoqueNegativo(entity.Id, entity.TipoVenda.ToString(), entity.TipoNfeComplementar.ToString(), entity.NFeRefComplementarIsDevolucao).Any();
 
-                bool pagaFrete = (
-                    ((entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente) && entity.TipoVenda == TipoCompraVenda.Normal) ||
-                    ((entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario) && entity.TipoVenda == TipoCompraVenda.Devolucao)
+                bool freteEmpresa = (
+                    (entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente)
                 );
-                entity.Fail(pagaFrete && (entity.TransportadoraId == null || entity.TransportadoraId == default(Guid)), new Error("Se configurou o frete por conta da sua empresa, informe a transportadora"));
+                entity.Fail(freteEmpresa && (entity.TransportadoraId == null || entity.TransportadoraId == default(Guid)), new Error("Se configurou o frete por conta da sua empresa, informe a transportadora"));
 
                 if (entity.GeraNotaFiscal)
                 {
@@ -106,6 +105,9 @@ namespace Fly01.Faturamento.BL
                     entity.Fail(entity.TipoNfeComplementar != TipoNfeComplementar.ComplIcms && entity.FormaPagamentoId == null && produtos.Any(), new Error("Para finalizar o pedido que gera nota fiscal, informe a forma de pagamento"));
                     entity.Fail(entity.TipoVenda == TipoCompraVenda.Devolucao && string.IsNullOrEmpty(entity.ChaveNFeReferenciada), new Error("Para finalizar o pedido de devolução que gera nota fiscal, informe a chave da nota fiscal referenciada"));
                     entity.Fail(entity.TipoVenda == TipoCompraVenda.Complementar && string.IsNullOrEmpty(entity.ChaveNFeReferenciada), new Error("Para finalizar o pedido de complemento que gera nota fiscal, informe a chave da nota fiscal referenciada a ser complementada"));
+
+                    var ehExportacao = TotalTributacaoBL.GetPessoa(entity.ClienteId)?.Estado?.Sigla == "EX";
+                    entity.Fail(ehExportacao && ((entity.UFSaidaPaisId == null) || (string.IsNullOrEmpty(entity.LocalEmbarque))), new Error("Se UF do destinatário é exterior, informe a UF e o local de embarque da exportação."));
                 }
 
                 entity.Fail(entity.MovimentaEstoque && hasEstoqueNegativo & !entity.AjusteEstoqueAutomatico, new Error("Para finalizar o pedido o estoque não poderá ficar negativo, realize os ajustes de entrada ou marque para gerar as movimentações de entrada automáticas"));
@@ -193,6 +195,9 @@ namespace Fly01.Faturamento.BL
             notaFiscal.ContaFinanceiraParcelaPaiIdServicos = entity.ContaFinanceiraParcelaPaiIdServicos;
             notaFiscal.ContaFinanceiraParcelaPaiIdProdutos = entity.ContaFinanceiraParcelaPaiIdProdutos;
             notaFiscal.InformacoesCompletamentaresNFS = entity.InformacoesCompletamentaresNFS;
+            notaFiscal.UFSaidaPaisId = entity.UFSaidaPaisId;
+            notaFiscal.LocalEmbarque = entity.LocalEmbarque;
+            notaFiscal.LocalDespacho = entity.LocalDespacho;
             return notaFiscal;
         }
 
@@ -242,13 +247,14 @@ namespace Fly01.Faturamento.BL
                             ValorICMSSTRetido = x.ValorICMSSTRetido,
                             ValorCreditoICMS = x.ValorCreditoICMS,
                             ValorFCPSTRetidoAnterior = x.ValorFCPSTRetidoAnterior,
-                            ValorBCFCPSTRetidoAnterior = x.ValorBCFCPSTRetidoAnterior
+                            ValorBCFCPSTRetidoAnterior = x.ValorBCFCPSTRetidoAnterior,
+                            OrdemVendaProdutoId = x.Id
                         }).ToList();
 
                 var nfeProdutosTributacao = new List<NotaFiscalItemTributacao>();
                 foreach (var x in tributacoesProdutos)
                 {
-                    var nfeProduto = nfeProdutos.Where(y => y.ProdutoId == x.ProdutoId && y.GrupoTributarioId == x.GrupoTributarioId).FirstOrDefault();
+                    var nfeProduto = nfeProdutos.Where(y => y.OrdemVendaProdutoId == x.OrdemVendaProdutoId).FirstOrDefault();
                     var grupoTributario = TotalTributacaoBL.GetGrupoTributario(nfeProduto.GrupoTributarioId);
                     NotaFiscalItemTributacaoBL.Insert(
                         new NotaFiscalItemTributacao
@@ -333,14 +339,15 @@ namespace Fly01.Faturamento.BL
                             Observacao = x.Observacao,
                             ValorOutrasRetencoes = x.ValorOutrasRetencoes,
                             DescricaoOutrasRetencoes = x.DescricaoOutrasRetencoes,
-                            IsServicoPrioritario = x.IsServicoPrioritario
+                            IsServicoPrioritario = x.IsServicoPrioritario,
+                            OrdemVendaServicoId = x.Id
                         }).ToList();
 
                 var nfeServicosTributacao = new List<NotaFiscalItemTributacao>();
 
                 foreach (var x in tributacoesServicos)
                 {
-                    var nfseServico = nfseServicos.Where(y => y.ServicoId == x.ServicoId && y.GrupoTributarioId == x.GrupoTributarioId).FirstOrDefault();
+                    var nfseServico = nfseServicos.Where(y => y.OrdemVendaServicoId == x.OrdemVendaServicoId).FirstOrDefault();
                     var grupoTributario = TotalTributacaoBL.GetGrupoTributario(nfseServico.GrupoTributarioId);
                     NotaFiscalItemTributacaoBL.Insert(
                         new NotaFiscalItemTributacao
@@ -619,8 +626,7 @@ namespace Fly01.Faturamento.BL
             if (entity.GeraFinanceiro)
             {
                 bool pagaFrete = (
-                    ((entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente) && entity.TipoVenda == TipoCompraVenda.Normal) ||
-                    ((entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario) && entity.TipoVenda == TipoCompraVenda.Devolucao)
+                    (entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente)
                 );
 
                 var servicos = OrdemVendaServicoBL.All.Where(e => e.OrdemVendaId == entity.Id && e.Ativo).ToList();

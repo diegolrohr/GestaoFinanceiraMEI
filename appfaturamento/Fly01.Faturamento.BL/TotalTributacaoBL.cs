@@ -52,7 +52,7 @@ namespace Fly01.Faturamento.BL
 
         public Pessoa GetPessoa(Guid pessoaId)
         {
-            return PessoaBL.AllIncluding(y => y.Estado, y => y.Cidade).Where(x => x.Id == pessoaId).AsNoTracking().FirstOrDefault();
+            return PessoaBL.AllIncluding(y => y.Estado, y => y.Cidade, y => y.Pais).Where(x => x.Id == pessoaId).AsNoTracking().FirstOrDefault();
         }
 
         public Produto GetProduto(Guid produtoId)
@@ -305,8 +305,8 @@ namespace Fly01.Faturamento.BL
                     var itemRetorno = new TributacaoServicoRetorno()
                     {
                         ServicoId = itemServico.ServicoId,
-                        GrupoTributarioId = itemServico.GrupoTributarioId
-
+                        GrupoTributarioId = itemServico.GrupoTributarioId,
+                        OrdemVendaServicoId = itemServico.OrdemVendaServicoId
                     };
                     var tributacao = new Tributacao();
                     tributacao.ValorBase = itemServico.Total;
@@ -449,12 +449,7 @@ namespace Fly01.Faturamento.BL
                     { "PlataformaUrl", PlataformaUrl }
                 };
 
-            bool calculaFrete = (
-                ((tipoFrete == TipoFrete.CIF || tipoFrete == TipoFrete.Remetente) && tipoVenda == TipoCompraVenda.Normal) ||
-                ((tipoFrete == TipoFrete.FOB || tipoFrete == TipoFrete.Destinatario) && tipoVenda == TipoCompraVenda.Devolucao)
-            );
-
-            double freteFracionado = calculaFrete && valorFrete.HasValue ? valorFrete.Value / tributacaoItens.Sum(x => x.Quantidade) : 0;
+            double freteFracionado = valorFrete.HasValue ? valorFrete.Value / tributacaoItens.Sum(x => x.Quantidade) : 0.0;
 
             var num = 1;
             foreach (var itemProduto in tributacaoItens)
@@ -476,8 +471,8 @@ namespace Fly01.Faturamento.BL
                 {
                     FreteValorFracionado = (freteFracionado * itemProduto.Quantidade),
                     ProdutoId = itemProduto.ProdutoId,
-                    GrupoTributarioId = itemProduto.GrupoTributarioId
-
+                    GrupoTributarioId = itemProduto.GrupoTributarioId,
+                    OrdemVendaProdutoId = itemProduto.OrdemVendaProdutoId
                 };
                 var tributacao = new Tributacao();
                 tributacao.ValorBase = itemProduto.Total;
@@ -651,7 +646,8 @@ namespace Fly01.Faturamento.BL
                 ProdutoId = x.ProdutoId,
                 GrupoTributarioId = x.GrupoTributarioId.Value,
                 AliquotaFCP = x.Fcp,
-                AliquotaICMS = x.Icms
+                AliquotaICMS = x.Icms,
+                OrdemVendaProdutoId = x.Id
             }).ToList(), clienteId, tipoVenda, tipoNfeComplementar, tipoFrete, nFeRefIsDevolucao, valorFrete);
         }
 
@@ -664,7 +660,8 @@ namespace Fly01.Faturamento.BL
                 Desconto = x.Desconto,
                 Total = x.Total,
                 ServicoId = x.ServicoId,
-                GrupoTributarioId = x.GrupoTributarioId.Value
+                GrupoTributarioId = x.GrupoTributarioId.Value,
+                OrdemVendaServicoId = x.Id
             }).ToList(), clienteId);
         }
 
@@ -815,16 +812,19 @@ namespace Fly01.Faturamento.BL
     public class TributacaoProduto : TributacaoItem
     {
         public Guid ProdutoId { get; set; }
+        public Guid OrdemVendaProdutoId { get; set; }
     }
 
     public class TributacaoServico : TributacaoItem
     {
         public Guid ServicoId { get; set; }
+        public Guid OrdemVendaServicoId { get; set; }
     }
 
     public class TributacaoProdutoRetorno : TributacaoItemRetorno
     {
         public Guid ProdutoId { get; set; }
+        public Guid OrdemVendaProdutoId { get; set; }
     }
 
     public class TributacaoServicoRetorno : TributacaoItemRetorno
@@ -862,6 +862,8 @@ namespace Fly01.Faturamento.BL
         public double ImpostoRendaValor { get; set; }
 
         public double ImpostoRendaValorRetencao { get; set; }
+
+        public Guid OrdemVendaServicoId { get; set; }
     }
     #endregion
 

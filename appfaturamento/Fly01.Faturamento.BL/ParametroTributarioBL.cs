@@ -107,10 +107,19 @@ namespace Fly01.Faturamento.BL
 
         public override void ValidaModel(ParametroTributario entity)
         {
+            entity.Cnpj = empresa.CNPJ;
+            entity.UF = empresa.Cidade != null ? (empresa.Cidade.Estado != null ? empresa.Cidade.Estado.Sigla : string.Empty) : string.Empty;
+            entity.InscricaoEstadual = empresa.InscricaoEstadual;
+
             entity.Fail(entity.TipoVersaoNFe != TipoVersaoNFe.v4, new Error("Permitido somente a versão 4.00."));
             entity.Fail(empresa.Cidade == null, new Error("Seu estado e cidade precisam estar cadastros no menu de Empresa."));
             if (string.IsNullOrEmpty(entity.VersaoNFSe))
                 entity.VersaoNFSe = "0.00";
+
+            entity.Cnpj = empresa.CNPJ;
+            entity.UF = empresa.Cidade != null ? (empresa.Cidade.Estado != null ? empresa.Cidade.Estado.Sigla : string.Empty) : string.Empty;
+            entity.InscricaoEstadual = empresa.InscricaoEstadual;
+
             base.ValidaModel(entity);
         }
     }

@@ -26,9 +26,9 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
             return TipoNota.Entrada;
         }
 
-        public override bool PagaFrete()
+        public override bool SomaFrete()
         {
-            return (NFe.TipoFrete == TipoFrete.FOB || NFe.TipoFrete == TipoFrete.Destinatario);
+            return NFe.TipoFrete == TipoFrete.FOB;
         }
 
         public override TransmissaoVM ObterTransmissaoVM()
@@ -76,7 +76,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 itemTributacao = TransmissaoBLs.NotaFiscalItemTributacaoBL.All.Where(x => x.NotaFiscalItemId == item.Id).FirstOrDefault();
 
                 var detalhe = ObterDetalhe(item, num);
-                detalhe.Produto.ValorFrete = PagaFrete() ? Math.Round(itemTributacao.FreteValorFracionado, 2) : 0;
+                detalhe.Produto.ValorFrete = SomaFrete() ? Math.Round(itemTributacao.FreteValorFracionado, 2) : 0.0;
 
                 detalhe.Imposto.ICMS = ObterICMS(item, itemTributacao);
                 detalhe.Imposto.IPI = ObterIPI(item, itemTributacao);
@@ -98,12 +98,18 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
 
         private double CalcularValorTotalNFE(ItemTransmissaoVM itemTransmissao)
         {
-            return ((itemTransmissao.Total.ICMSTotal.SomatorioProdutos +
+            var total = (
+                (itemTransmissao.Total.ICMSTotal.SomatorioProdutos +
                 itemTransmissao.Total.ICMSTotal.SomatorioICMSST +
-                itemTransmissao.Total.ICMSTotal.ValorFrete +
                 itemTransmissao.Total.ICMSTotal.SomatorioIPI +
                 itemTransmissao.Total.ICMSTotal.SomatorioFCPST) -
                 itemTransmissao.Total.ICMSTotal.SomatorioDesconto);
+
+            if (SomaFrete())
+            {
+                total += itemTransmissao.Total.ICMSTotal.ValorFrete;
+            }
+            return total;
         }
 
         private double CalcularTributosAproximados(ICMSTOT icmsTotal)
@@ -165,14 +171,14 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
             if (itemTributacao.CalculaICMS)
             {
                 ICMS.ValorICMSSTRetido = Math.Round(item.ValorICMSSTRetido, 2);
-                ICMS.ValorICMS = Math.Round(itemTributacao.ICMSValor, 2);
-                ICMS.ValorBC = Math.Round(itemTributacao.ICMSBase, 2);
 
                 if (item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.Outros)
                 {
                     ICMS.ModalidadeBC = ModalidadeDeterminacaoBCICMS.ValorDaOperacao;
                     ICMS.AliquotaICMS = Math.Round(itemTributacao.ICMSAliquota, 2);
                     ICMS.ModalidadeBCST = ModalidadeDeterminacaoBCICMSST.MargemValorAgregado;
+                    ICMS.ValorICMS = Math.Round(itemTributacao.ICMSValor, 2);
+                    ICMS.ValorBC = Math.Round(itemTributacao.ICMSBase, 2);
                 }
 
                 if (item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaComPermissaoDeCreditoST

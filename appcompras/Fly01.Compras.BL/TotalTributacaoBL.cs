@@ -181,12 +181,7 @@ namespace Fly01.Compras.BL
                     { "PlataformaUrl", PlataformaUrl }
                 };
 
-            bool calculaFrete = (
-                ((tipoFrete == TipoFrete.CIF || tipoFrete == TipoFrete.Remetente) && tipoCompra == TipoCompraVenda.Devolucao) ||
-                ((tipoFrete == TipoFrete.FOB || tipoFrete == TipoFrete.Destinatario) && tipoCompra == TipoCompraVenda.Normal)
-            );
-
-            double freteFracionado = calculaFrete && valorFrete.HasValue ? valorFrete.Value / tributacaoItens.Sum(x => x.Quantidade) : 0;
+            double freteFracionado = valorFrete.HasValue ? valorFrete.Value / tributacaoItens.Sum(x => x.Quantidade) : 0;
 
             var num = 1;
             foreach (var itemProduto in tributacaoItens)
@@ -210,8 +205,8 @@ namespace Fly01.Compras.BL
                     {
                         FreteValorFracionado = (freteFracionado * itemProduto.Quantidade),
                         ProdutoId = itemProduto.ProdutoId,
-                        GrupoTributarioId = itemProduto.GrupoTributarioId
-
+                        GrupoTributarioId = itemProduto.GrupoTributarioId,
+                        PedidoItemId = itemProduto.PedidoItemId
                     };
                     var tributacao = new Tributacao();
                     tributacao.ValorBase = itemProduto.Total;
@@ -377,7 +372,8 @@ namespace Fly01.Compras.BL
                 Desconto = x.Desconto,
                 Total = x.Total,
                 ProdutoId = x.ProdutoId,
-                GrupoTributarioId = x.GrupoTributarioId.Value
+                GrupoTributarioId = x.GrupoTributarioId.Value,
+                PedidoItemId = x.Id
             }).ToList(), fornecedorId, tipoCompra, tipoFrete, valorFrete);
         }
 
@@ -489,6 +485,7 @@ namespace Fly01.Compras.BL
     public class TributacaoProduto : TributacaoItem
     {
         public Guid ProdutoId { get; set; }
+        public Guid PedidoItemId { get; set; }
     }
     //se necessário mudar
     public class TributacaoServico : TributacaoItem
@@ -499,6 +496,7 @@ namespace Fly01.Compras.BL
     public class TributacaoProdutoRetorno : TributacaoItemRetorno
     {
         public Guid ProdutoId { get; set; }
+        public Guid PedidoItemId { get; set; }
     }
     //se necessário mudar
     public class TributacaoServicoRetorno : TributacaoItemRetorno

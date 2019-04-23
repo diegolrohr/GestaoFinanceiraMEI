@@ -63,11 +63,10 @@ namespace Fly01.Compras.BL
                 var hasEstoqueNegativo = VerificaEstoqueNegativo(entity.Id, entity.TipoCompra.ToString()).Any();
 
                 bool isNfeImportacao = (entity.NFeImportacaoId != null && entity.NFeImportacaoId != default(Guid));
-                bool pagaFrete = (
-                    ((entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente) && entity.TipoCompra == TipoCompraVenda.Devolucao) ||
-                    ((entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario) && entity.TipoCompra == TipoCompraVenda.Normal)
+                bool freteEmpresa = (
+                    (entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario)
                 );
-                entity.Fail(pagaFrete && !isNfeImportacao && (entity.TransportadoraId == null || entity.TransportadoraId == default(Guid)), new Error("Se configurou o frete por conta da sua empresa, informe a transportadora"));
+                entity.Fail(freteEmpresa && !isNfeImportacao && (entity.TransportadoraId == null || entity.TransportadoraId == default(Guid)), new Error("Se configurou o frete por conta da sua empresa, informe a transportadora"));
 
                 if (entity.GeraNotaFiscal)
                 {
@@ -158,13 +157,14 @@ namespace Fly01.Compras.BL
                             ValorICMSSTRetido = x.ValorICMSSTRetido,
                             ValorCreditoICMS = x.ValorCreditoICMS,
                             ValorFCPSTRetidoAnterior = x.ValorFCPSTRetidoAnterior,
-                            ValorBCFCPSTRetidoAnterior = x.ValorBCFCPSTRetidoAnterior
+                            ValorBCFCPSTRetidoAnterior = x.ValorBCFCPSTRetidoAnterior,
+                            PedidoItemId = x.Id
                         }).ToList();
 
                 var nfeProdutosTributacao = new List<NotaFiscalItemTributacao>();
                 foreach (var x in tributacoesProdutos)
                 {
-                    var nfeProduto = nfeProdutos.Where(y => y.ProdutoId == x.ProdutoId && y.GrupoTributarioId == x.GrupoTributarioId).FirstOrDefault();
+                    var nfeProduto = nfeProdutos.Where(y => y.PedidoItemId == x.PedidoItemId).FirstOrDefault();
                     var grupoTributario = TotalTributacaoBL.GetGrupoTributario(nfeProduto.GrupoTributarioId);
                     NotaFiscalItemTributacaoEntradaBL.Insert(
                         new NotaFiscalItemTributacaoEntrada
@@ -385,16 +385,15 @@ namespace Fly01.Compras.BL
 
             if (entity.GeraFinanceiro)
             {
-                bool pagaFrete = (
-                    ((entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario) && entity.TipoCompra == TipoCompraVenda.Normal) ||
-                    ((entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente) && entity.TipoCompra == TipoCompraVenda.Devolucao)
+                bool freteEmpresa = (
+                    (entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario)
                 );
 
                 double totalProdutos = produtos != null ? produtos.Select(e => (e.Quantidade * e.Valor) - e.Desconto).Sum() : 0;
                 double totalImpostosProdutos = produtos != null && entity.TotalImpostosProdutos.HasValue ? entity.TotalImpostosProdutos.Value : 0;
                 double valorPrevisto = totalProdutos + (entity.GeraNotaFiscal ? totalImpostosProdutos : 0);
 
-                if (pagaFrete)
+                if (freteEmpresa)
                 {
                     var contaPagarTransp = new ContaPagar()
                     {

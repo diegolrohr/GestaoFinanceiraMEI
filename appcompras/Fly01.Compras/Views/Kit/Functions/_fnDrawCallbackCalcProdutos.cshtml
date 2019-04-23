@@ -7,13 +7,26 @@
         let valorVenda = 0;
 
         $$$._.dtKitItens.data().each(function (value, index) {
-            valorVenda = valorVenda + value.valorVenda;
-            valorServico = valorServico + value.valorServico;
-            valorCusto = valorCusto + value.valorCusto;
+            valorVenda = parseFloat(valorVenda.toString().replace(",", ".")) + (value.valorVenda == null ? 0 : parseFloat(value.valorVenda.replace(",", ".")));
+            valorServico = parseFloat(valorServico.toString().replace(",", ".")) + (value.valorServico == null ? 0 : parseFloat(value.valorServico.replace(",", ".")));
+            valorCusto = parseFloat(valorCusto.toString().replace(",", ".")) + (value.valorCusto == null ? 0 : parseFloat(value.valorCusto.replace(",", ".")));
         });
 
-        $('#valorVenda')[0].innerHTML = `Total venda ${valorVenda}R$`;
-        $('#valorServico')[0].innerHTML = `Total serviço ${valorServico}R$`;
-        $('#valorCusto')[0].innerHTML = `Total custo ${valorCusto}R$`;
+        $('#valorVendaTotal').val(valorVenda);
+        $('#valorServicoTotal').val(valorServico);
+        $('#valorCustoTotal').val(valorCusto);
+
+
+        $('#valorCustoTotal').on('click', function () {
+            $("label[for='valorCustoTotal']").removeClass("truncate active");
+        });
+
+        $('#valorServicoTotal').on('click', function () {
+            $("label[for='valorServicoTotal']").removeClass("truncate active");
+        });
+
+        $('#valorVendaTotal').on('click', function () {
+            $("label[for='valorVendaTotal']").removeClass("truncate active");
+        });
     }
 </script>

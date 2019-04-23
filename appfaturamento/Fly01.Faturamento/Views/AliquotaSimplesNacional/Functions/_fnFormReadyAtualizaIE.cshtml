@@ -1,0 +1,22 @@
+﻿<script>
+    function fnFormReadyAtualizaIE() {
+        $$$.loading.start();
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("PostAtualizacaoIE", "ParametroTributario")",
+            data: {
+                inscricaoEstadual: $('#inscricaoEstadualId').val()
+            },
+            success: function (response) {
+                if (response.success) {
+                    $$$.loading.stop();
+                    $$$._.fly01mdlfrmAtualizaIE.close();
+                    $$$.toast("Inscrição estadual atualizada com sucesso.", "success");
+                }
+                else {
+                    $$$.fn.submitErrorHandler(null, response.message);
+                }
+            }
+        });
+    }
+</script>

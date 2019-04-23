@@ -70,6 +70,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 FormaPagamento = TransmissaoBLs.FormaPagamentoBL.All.AsNoTracking().Where(x => x.Id == NFe.FormaPagamentoId).FirstOrDefault(),
                 Transportadora = TransmissaoBLs.PessoaBL.AllIncluding(x => x.Estado, x => x.Cidade).Where(x => x.Transportadora && x.Id == NFe.TransportadoraId).AsNoTracking().FirstOrDefault(),
                 SerieNotaFiscal = TransmissaoBLs.SerieNotaFiscalBL.All.AsNoTracking().Where(x => x.Id == NFe.SerieNotaFiscalId).FirstOrDefault(),
+                UFSaidaPais = TransmissaoBLs.EstadoBL.All.AsNoTracking().Where(x => x.Id == NFe.UFSaidaPaisId).FirstOrDefault(),
                 NFeProdutos = ObterNFeProdutos()
             };
         }
@@ -166,26 +167,33 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
             };
         }
 
+        public bool EhExportacao()
+        {
+            return Cabecalho.Cliente?.Estado?.Sigla == "EX";
+        }
+
         public Destinatario ObterDestinatario()
         {
             return new Destinatario()
             {
-                Cnpj = Cabecalho.Cliente.TipoDocumento == "J" ? Cabecalho.Cliente.CPFCNPJ : null,
-                Cpf = Cabecalho.Cliente.TipoDocumento == "F" ? Cabecalho.Cliente.CPFCNPJ : null,
-                IndInscricaoEstadual = (IndInscricaoEstadual)System.Enum.Parse(typeof(IndInscricaoEstadual), Cabecalho.Cliente.TipoIndicacaoInscricaoEstadual.ToString()),
-                InscricaoEstadual = Cabecalho.Cliente.TipoIndicacaoInscricaoEstadual == TipoIndicacaoInscricaoEstadual.ContribuinteICMS ? Cabecalho.Cliente.InscricaoEstadual : null,
-                IdentificacaoEstrangeiro = null,
+                Cnpj = (Cabecalho.Cliente.TipoDocumento == "J" && !EhExportacao()) ? Cabecalho.Cliente.CPFCNPJ : null,
+                Cpf = (Cabecalho.Cliente.TipoDocumento == "F" && !EhExportacao()) ? Cabecalho.Cliente.CPFCNPJ : null,
+                IndInscricaoEstadual = EhExportacao() ? TipoIndicacaoInscricaoEstadual.NaoContribuinte : Cabecalho.Cliente.TipoIndicacaoInscricaoEstadual,
+                InscricaoEstadual = (Cabecalho.Cliente.TipoIndicacaoInscricaoEstadual == TipoIndicacaoInscricaoEstadual.ContribuinteICMS && !EhExportacao()) ? Cabecalho.Cliente.InscricaoEstadual : null,
+                IdentificacaoEstrangeiro = Cabecalho.Cliente?.IdEstrangeiro,
                 Nome = Cabecalho.Cliente.Nome,
                 Endereco = new Endereco()
                 {
-                    Bairro = Cabecalho.Cliente.Bairro,
-                    Cep = Cabecalho.Cliente.CEP,
-                    CodigoMunicipio = Cabecalho.Cliente.Cidade?.CodigoIbge,
-                    Fone = Cabecalho.Cliente.Telefone,
-                    Logradouro = Cabecalho.Cliente.Endereco,
+                    Bairro = Cabecalho.Cliente?.Bairro,
+                    Cep = Cabecalho.Cliente?.CEP,
+                    CodigoMunicipio = Cabecalho.Cliente?.Cidade?.CodigoIbge,
+                    Fone = Cabecalho.Cliente?.Telefone,
+                    Logradouro = Cabecalho.Cliente?.Endereco,
                     Municipio = Cabecalho.Cliente.Cidade?.Nome,
-                    Numero = Cabecalho.Cliente.Numero,
-                    UF = Cabecalho.Cliente.Estado?.Sigla
+                    Numero = Cabecalho.Cliente?.Numero,
+                    UF = Cabecalho.Cliente?.Estado?.Sigla,
+                    PaisCodigoBacen = Cabecalho.Cliente?.Pais?.CodigoBacen,
+                    PaisNome = Cabecalho.Cliente?.Pais?.Nome
                 }
             };
         }
@@ -196,13 +204,13 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
             {
                 return new Transportadora()
                 {
-                    CNPJ = Cabecalho.Transportadora != null && Cabecalho.Transportadora.TipoDocumento == "J" ? Cabecalho.Transportadora.CPFCNPJ : null,
-                    CPF = Cabecalho.Transportadora != null && Cabecalho.Transportadora.TipoDocumento == "F" ? Cabecalho.Transportadora.CPFCNPJ : null,
+                    CNPJ = Cabecalho.Transportadora != null && Cabecalho.Transportadora?.TipoDocumento == "J" ? Cabecalho.Transportadora?.CPFCNPJ : null,
+                    CPF = Cabecalho.Transportadora != null && Cabecalho.Transportadora?.TipoDocumento == "F" ? Cabecalho.Transportadora?.CPFCNPJ : null,
                     Endereco = Cabecalho.Transportadora?.Endereco,
-                    IE = Cabecalho.Transportadora != null ? (Cabecalho.Transportadora.TipoIndicacaoInscricaoEstadual == TipoIndicacaoInscricaoEstadual.ContribuinteICMS ? Cabecalho.Transportadora.InscricaoEstadual : null) : null,
-                    Municipio = Cabecalho.Transportadora != null && Cabecalho.Transportadora.Cidade != null ? Cabecalho.Transportadora.Cidade.Nome : null,
+                    IE = Cabecalho.Transportadora != null ? (Cabecalho.Transportadora?.TipoIndicacaoInscricaoEstadual == TipoIndicacaoInscricaoEstadual.ContribuinteICMS ? Cabecalho.Transportadora?.InscricaoEstadual : null) : null,
+                    Municipio = Cabecalho.Transportadora != null && Cabecalho?.Transportadora?.Cidade != null ? Cabecalho.Transportadora?.Cidade?.Nome : null,
                     RazaoSocial = Cabecalho.Transportadora?.Nome,
-                    UF = Cabecalho.Transportadora != null && Cabecalho.Transportadora.Estado != null ? Cabecalho.Transportadora.Estado.Sigla : null
+                    UF = Cabecalho.Transportadora != null && Cabecalho?.Transportadora?.Estado != null ? Cabecalho?.Transportadora?.Estado?.Sigla : null
                 };
             }
             else
@@ -252,6 +260,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 ValorDesconto = item.Desconto,
                 AgregaTotalNota = CompoemValorTotal.Compoe,
                 CEST = item.Produto.Cest?.Codigo,
+                EXTIPI = item.Produto?.EXTIPI
             };
         }
 
@@ -300,25 +309,25 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 {
                     SomatorioBC = detalhes.Select(x => x.Imposto.ICMS).Any(x => x != null && x.ValorBC.HasValue) ? Math.Round(detalhes.Where(x => x.Imposto.ICMS != null && x.Imposto.ICMS.ValorBC.HasValue).Sum(x => x.Imposto.ICMS.ValorBC.Value), 2) : 0,
                     SomatorioICMS = detalhes.Select(x => x.Imposto.ICMS).Any(x => x != null && x.ValorICMS.HasValue) ? Math.Round(detalhes.Where(x => x.Imposto.ICMS != null && x.Imposto.ICMS.ValorICMS.HasValue).Sum(x => x.Imposto.ICMS.ValorICMS.Value), 2) : 0,
-                    SomatorioBCST = detalhes.Select(x => x.Imposto.ICMS).Any(x => x != null && x.ValorBCST.HasValue && (x.CodigoSituacaoOperacao.HasFlag
+                    SomatorioBCST = detalhes.Select(x => x.Imposto.ICMS).Any(x => x != null && x.ValorBCST.HasValue &&
                     (
-                        TipoTributacaoICMS.TributadaSemPermissaoDeCreditoST |
-                        TipoTributacaoICMS.Outros |
-                        TipoTributacaoICMS.TributadaComPermissaoDeCreditoST |
-                        TipoTributacaoICMS.IsencaoParaFaixaDeReceitaBrutaST
-                    ))) ? 
-                    Math.Round(detalhes.Where(x => x.Imposto.ICMS != null && x.Imposto.ICMS.ValorBCST.HasValue && x.Imposto.ICMS.CodigoSituacaoOperacao.HasFlag
+                        x.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaSemPermissaoDeCreditoST ||
+                        x.CodigoSituacaoOperacao == TipoTributacaoICMS.Outros ||
+                        x.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaComPermissaoDeCreditoST ||
+                        x.CodigoSituacaoOperacao == TipoTributacaoICMS.IsencaoParaFaixaDeReceitaBrutaST
+                    )) ? 
+                    Math.Round(detalhes.Where(x => x.Imposto.ICMS != null && x.Imposto.ICMS.ValorBCST.HasValue && 
                     (
-                        TipoTributacaoICMS.TributadaSemPermissaoDeCreditoST |
-                        TipoTributacaoICMS.Outros |
-                        TipoTributacaoICMS.TributadaComPermissaoDeCreditoST |
-                        TipoTributacaoICMS.IsencaoParaFaixaDeReceitaBrutaST
+                        x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaSemPermissaoDeCreditoST ||
+                        x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.Outros ||
+                        x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaComPermissaoDeCreditoST ||
+                        x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.IsencaoParaFaixaDeReceitaBrutaST
                     )).Sum(x => x.Imposto.ICMS.ValorBCST.Value), 2) : 0,
                     SomatorioCofins = detalhes.Select(x => x.Imposto.COFINS).Any(x => x != null) ? Math.Round(detalhes.Sum(x => x.Imposto.COFINS.ValorCOFINS), 2) : 0,
                     SomatorioDesconto = detalhes.Select(x => x.Produto).Any(x => x != null) ? Math.Round(detalhes.Sum(x => x.Produto.ValorDesconto ?? 0), 2) : 0,
                     SomatorioICMSST = detalhes.Select(x => x.Imposto.ICMS).Any(x => x != null && x.ValorICMSST.HasValue && CSTsICMSST.Contains(((int)x.CodigoSituacaoOperacao).ToString()))
                         ? Math.Round(detalhes.Where(x => x.Imposto.ICMS != null && x.Imposto.ICMS.ValorICMSST.HasValue && CSTsICMSST.Contains(((int)x.Imposto.ICMS.CodigoSituacaoOperacao).ToString())).Sum(x => x.Imposto.ICMS.ValorICMSST.Value), 2) : 0,
-                    ValorFrete = PagaFrete() ? detalhes.Sum(x => x.Produto.ValorFrete.Value) : 0,
+                    ValorFrete = SomaFrete() ? detalhes.Sum(x => x.Produto.ValorFrete.Value) : 0,
                     ValorSeguro = 0,
                     SomatorioIPI = detalhes.Select(x => x.Imposto.IPI).Any(x => x != null) ? Math.Round(detalhes.Where(x => x.Imposto.IPI != null).Sum(x => x.Imposto.IPI.ValorIPI), 2) : 0,
                     SomatorioIPIDevolucao = detalhes.Select(x => x.Imposto.IPI).Any(x => x != null) ? Math.Round(detalhes.Where(x => x.Imposto.IPI != null).Sum(x => x.Imposto.IPI.ValorIPIDevolucao), 2) : 0,
@@ -332,7 +341,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
             };
         }
 
-        public abstract bool PagaFrete();
+        public abstract bool SomaFrete();
 
         public abstract TipoFormaPagamento ObterTipoFormaPagamento();
 
@@ -452,6 +461,16 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
             {
                 throw new BusinessException("Erro ao tentar obter as contas financeiras parcelas. " + ex.Message );
             }
+        }
+
+        public Exportacao ObterExportacao()
+        {
+            return new Exportacao()
+            {
+                LocalDespacho = NFe?.LocalDespacho,
+                LocalEmbarque = NFe?.LocalEmbarque,
+                UFSaidaPais = Cabecalho?.UFSaidaPais?.Sigla
+            };
         }
     }
 }

@@ -119,7 +119,7 @@ namespace Fly01.Faturamento.Controllers
                     {
                         Title = "Cadastro",
                         Id = "stepCadastro",
-                        Quantity = 12,
+                        Quantity = 13,
                     },
                     new FormWizardUIStep()
                     {
@@ -149,7 +149,7 @@ namespace Fly01.Faturamento.Controllers
                     {
                         Title = "Finalizar",
                         Id = "stepFinalizar",
-                        Quantity = 18,
+                        Quantity = 21,
                     }
                 },
                 Rule = isEdit ? "parallel" : "linear",
@@ -192,6 +192,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "tipoOrdemVenda", Value = "Pedido" });
             config.Elements.Add(new InputHiddenUI { Id = "grupoTributarioPadraoTipoTributacaoICMS" });
             config.Elements.Add(new InputNumbersUI { Id = "numero", Class = "col s12 m2", Label = "Número", Disabled = true });
+            config.Elements.Add(new InputHiddenUI { Id = "cfopDescricao" });
 
             config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m3", Label = "Data", Required = true });
 
@@ -406,7 +407,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputCurrencyUI { Id = "totalServicos", Class = "col s12 m4", Label = "Total serviços", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalRetencoesServicos", Class = "col s12 m4", Label = "Total retenções serviços", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosServicosNaoAgrega", Class = "col s12 m4", Label = "Total de impostos não incidentes", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m6", Label = "Frete a pagar", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m6", Label = "Frete", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalOrdemVenda", Class = "col s12 m6", Label = "Total pedido", Readonly = true });
             config.Elements.Add(new InputCheckboxUI
             {
@@ -431,6 +432,18 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputCheckboxUI { Id = "finalizarPedido", Class = "col s12 m4", Label = "Salvar e Finalizar" });
             config.Elements.Add(new InputTextUI { Id = "naturezaOperacao", Class = "col s12", Label = "Natureza de Operação", MaxLength = 60 });
             config.Elements.Add(new TextAreaUI { Id = "mensagemPadraoNota", Class = "col s12", Label = "Informações Adicionais NF-e", MaxLength = 4000 });
+
+            config.Elements.Add(new AutoCompleteUI
+            {
+                Id = "ufSaidaPaisId",
+                Class = "col s12 l4",
+                Label = "Estado de Saída do País",
+                DataUrl = Url.Action("EstadoSemEX", "AutoComplete"),
+                LabelId = "ufSaidaPaisNome"
+            });
+            config.Elements.Add(new InputTextUI { Id = "localEmbarque", Class = "col s12 m4", Label = "Local de Embarque", MaxLength = 60 });
+            config.Elements.Add(new InputTextUI { Id = "localDespacho", Class = "col s12 m4", Label = "Local de Despacho", MaxLength = 60 });
+
             config.Elements.Add(new TextAreaUI { Id = "informacoesCompletamentaresNFS", Class = "col s12", Label = "Informações Adicionais NFS-e", MaxLength = 1000 });
             config.Elements.Add(new DivElementUI { Id = "infoEstoqueNegativo", Class = "col s12 text-justify visible", Label = "Informação" });
             config.Elements.Add(new LabelSetUI { Id = "produtosEstoqueNegativoLabel", Class = "col s8", Label = "Produtos com estoque faltante" });
@@ -484,7 +497,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "totalOrdemVenda",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Total da soma (dos produtos + impostos incidentes nos produtos + serviços + frete (se for por conta da empresa)) menos as retenções dos serviços."
+                    Text = "Total da soma (dos produtos + impostos incidentes nos produtos + serviços + frete (se for por conta do destinatário)) menos as retenções dos serviços."
                 }
             });
             config.Helpers.Add(new TooltipUI
@@ -532,7 +545,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "naturezaOperacao",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Se marcar Faturar, informe a natureza de operação para a nota fiscal a ser emitida."
+                    Text = "Se marcar Faturar, informe a natureza de operação para a nota fiscal a ser emitida. Quando for um novo pedido, o sistema aplica a descrição do cfop configurado no grupo tributário do primeiro produto adicionado. Confirme e altere se necessário."
                 }
             });
             config.Helpers.Add(new TooltipUI
@@ -540,7 +553,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "totalFrete",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Valor frete a ser pago, se for Normal(CIF/Remetente) ou Devolução(FOB/Destinatário)."
+                    Text = "Valor frete a ser pago pelo cliente quando for FOB."
                 }
             });
             config.Helpers.Add(new TooltipUI
@@ -548,7 +561,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "transportadoraId",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Informe a transportadora, quando configurar frete a ser pago por sua empresa, se for tipo pedido Normal(CIF/Remetente) ou Devolução(FOB/Destinatário)."
+                    Text = "Informe a transportadora, quando configurar frete a ser pago por sua empresa Normal(CIF/Remetente)."
                 }
             });
             config.Helpers.Add(new TooltipUI
@@ -565,6 +578,30 @@ namespace Fly01.Faturamento.Controllers
                 Tooltip = new HelperUITooltip()
                 {
                     Text = "Ao transmitir a NF-e, além das informações aqui digitadas, será gerado automaticamente para o xml, as informações de IBPT e do aproveitamento de crédito de ICMS de acordo ao ARTIGO 23 DA LC 123 (Para CSOSN 101, 201 ou 900, conforme cadastro do Grupo Tributário em cada produto do pedido)."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "ufSaidaPaisNome",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Se for emitir nota fiscal de exportação, informe a UF de embarque ou de transposição de fronteira. A UF de embarque é a UF do local onde será embarcada para o exterior (porto/aeroporto), no caso de ser transporte terrestre deve ser o local de transposição de fronteira."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "localEmbarque",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Se for emitir nota fiscal de exportação, informe o local onde será embarcada para o exterior (porto/aeroporto), no caso de ser transporte terrestre deve ser o local de transposição de fronteira."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "localDespacho",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Se for emitir nota fiscal de exportação, informe o Recinto Alfandegado do local de despacho."
                 }
             });
             #endregion

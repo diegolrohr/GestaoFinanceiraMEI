@@ -62,7 +62,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
         {
             return new TransmissaoCabecalho()
             {
-                IsLocal = AppDefaults.UrlGateway.Contains("fly01local.com.br"),
+                IsLocal = AppDefaults.UrlGateway.Contains("bemacashlocal.com.br"),
                 Versao = EnumHelper.GetValue(typeof(TipoVersaoNFe), this.ParametrosTributarios.TipoVersaoNFe.ToString()),
                 Cliente = TransmissaoBLs.TotalTributacaoBL.GetPessoa(NFe.ClienteId),
                 Empresa = ApiEmpresaManager.GetEmpresa(TransmissaoBLs.PlataformaUrl),

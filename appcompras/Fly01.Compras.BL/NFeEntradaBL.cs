@@ -144,7 +144,7 @@ namespace Fly01.Compras.BL
                         throw new BusinessException("Permitido somente NF-e versão 4.00. Acesse o menu Configurações > Parâmetros Tributários e altere as configurações");
                     }
 
-                    var isLocal = AppDefaults.UrlGateway.Contains("fly01local.com.br");
+                    var isLocal = AppDefaults.UrlGateway.Contains("bemacashlocal.com.br");
 
                     var versao = EnumHelper.GetValue(typeof(TipoVersaoNFe), parametros.TipoVersaoNFe.ToString());
                     var fornecedor = TotalTributacaoBL.GetPessoa(entity.FornecedorId);

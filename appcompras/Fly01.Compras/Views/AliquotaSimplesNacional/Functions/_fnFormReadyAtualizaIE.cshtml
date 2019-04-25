@@ -1,23 +1,28 @@
 ﻿<script>
     function fnFormReadyAtualizaIE() {
-        $$$.loading.start();
-        $.ajax({
-            type: "POST",
-            url: "@Url.Action("PostAtualizacaoIE", "ParametroTributario")",
-            data: {
-                inscricaoEstadual: $('#inscricaoEstadualId').val()
-            },
-            success: function (response) {
-                if (response.success) {
-                    $$$.loading.stop();
-                    $$$._.fly01mdlfrmAtualizaIE.close();
-                    $$$.toast("Inscrição estadual atualizada com sucesso.", "success");
+        if ($('#inscricaoEstadualId').val() == "") {
+            $$$.toast("Inscrição Estadual Inválida.", "error");
+        }
+        else {
+            $$$.loading.start();
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("PostAtualizacaoIE", "ParametroTributario")",
+                data: {
+                    inscricaoEstadual: $('#inscricaoEstadualId').val()
+                },
+                success: function (response) {
+                    if (response.success) {
+                        $$$.loading.stop();
+                        $$$._.fly01mdlfrmAtualizaIE.close();
+                        $$$.toast("Inscrição estadual atualizada com sucesso.", "success");
+                    }
+                    else {
+                        $$$.loading.stop();
+                        $$$.fn.submitErrorHandler(null, response.message);
+                    }
                 }
-                else {
-                    $$$.loading.stop();
-                    $$$.fn.submitErrorHandler(null, response.message);
-                }
-            }
-        });
+            });
+        }
     }
 </script>

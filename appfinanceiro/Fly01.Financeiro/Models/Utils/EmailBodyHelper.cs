@@ -47,7 +47,7 @@ namespace Fly01.Financeiro.Models.Utils
             body.Append("</p>");
             body.Append("<p style=\"font-size:16px; padding-top:20px; padding-bottom:px; color:#8a8886; text-decoration:none;\">CONTAS A PAGAR ");
             body.Append("<strong style=\"color:#456bd5; font-size:12px; font-weight:normal;\">");
-            body.Append("<a href=\"http://financeiro.fly01.com.br/ContaPagar\" style=\"text-decoration:none;\">Ver todos</a> </strong></p></td>");
+            body.Append("<a href=\"http://financeiro.bemacash.com.br/ContaPagar\" style=\"text-decoration:none;\">Ver todos</a> </strong></p></td>");
             body.Append("<tr>");
             body.Append("<td>");
             body.Append("<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\" style=\"color:#8a8886; text-decoration:none; font-family:tahoma, arial; font-size:16px; align:left; font-weight: normal;\">");
@@ -79,7 +79,7 @@ namespace Fly01.Financeiro.Models.Utils
             body.Append("<table width=\"0\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">");
             body.Append("<tr>");
             body.Append("<td width=\"208\"><img src=\"https://totvss1saudehd.blob.core.windows.net/img-mkt/financeiro-email-report-contas-pagar/imagem_rodape_02.gif\" alt=\"imagem_rodape_02\" style=\"display:block; border:0;\"></td>");
-            body.Append("<td width=\"209\" align=\"center\" bgcolor=\"#ff700f\" style=\"border-radius:3px; border:1px solid #d1d1d1;\"><a href=\"http://financeiro.fly01.com.br/Dashboard\" style=\"color:white; text-decoration:none; font-weight: normal; font-size:12px;\">Acessar meu Dashboard</a></td>");
+            body.Append("<td width=\"209\" align=\"center\" bgcolor=\"#ff700f\" style=\"border-radius:3px; border:1px solid #d1d1d1;\"><a href=\"http://financeiro.bemacash.com.br/Dashboard\" style=\"color:white; text-decoration:none; font-weight: normal; font-size:12px;\">Acessar meu Dashboard</a></td>");
             body.Append("<td width=\"208\"></td>");
             body.Append("</tr>");
             body.Append("</table>");

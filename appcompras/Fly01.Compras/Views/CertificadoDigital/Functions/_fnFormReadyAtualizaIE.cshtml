@@ -1,22 +1,27 @@
 ﻿<script>
     function fnFormReadyAtualizaIE() {
-        $$$.loading.start();
-        $.ajax({
-            type: "POST",
-            url: "@Url.Action("PostAtualizacaoIE", "CertificadoDigital")",
-            data: {
-                inscricaoEstadual: $('#inscricaoEstadualId').val()
-            },
-            success: function (response) {
-                if (response.success) {
-                    $$$._.fly01mdlfrmAtualizaIE.close();
-                    fnAtualizaCertificado();
+        if ($('#inscricaoEstadualId').val() == "") {
+            $$$.toast("Inscrição Estadual Inválida.", "error");
+        }
+        else {
+            $$$.loading.start();
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("PostAtualizacaoIE", "CertificadoDigital")",
+                data: {
+                    inscricaoEstadual: $('#inscricaoEstadualId').val()
+                },
+                success: function (response) {
+                    if (response.success) {
+                        $$$._.fly01mdlfrmAtualizaIE.close();
+                        fnAtualizaCertificado();
+                    }
+                    else {
+                        fnGetStatusCertificado();
+                        $$$.fn.submitErrorHandler(null, response.message);
+                    }
                 }
-                else {
-                    fnGetStatusCertificado();
-                    $$$.fn.submitErrorHandler(null, response.message);
-                }
-            }
-        });
+            });
+        }
     }
 </script>

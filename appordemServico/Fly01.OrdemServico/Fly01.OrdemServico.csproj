@@ -125,6 +125,7 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="_app_offline.htm" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

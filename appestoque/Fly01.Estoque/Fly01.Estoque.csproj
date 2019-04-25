@@ -121,6 +121,7 @@
     <Content Include="ReportViewerWebForm.aspx" />
     <Content Include="packages.config" />
     <Content Include="ApplicationInsights.config" />
+    <Content Include="_app_offline.htm" />
     <None Include="Properties\PublishProfiles\HomologacaoStage.pubxml" />
     <None Include="Resources\Microsoft.ReportViewer.ProcessingObjectModel.dll" />
     <None Include="Properties\PublishProfiles\Producao.pubxml" />

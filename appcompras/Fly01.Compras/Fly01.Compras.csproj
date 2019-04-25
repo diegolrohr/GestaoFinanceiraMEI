@@ -62,6 +62,7 @@
   <ItemGroup>
     <Content Include="Reports\ReportImprimirOrcamento.rdlc" />
     <Content Include="Reports\ReportImprimirPedido.rdlc" />
+    <Content Include="_app_offline.htm" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
@@ -426,6 +427,7 @@
     <Content Include="Views\AliquotaSimplesNacional\Functions\_fnFormReadyAtualizaIE.cshtml" />
     <Content Include="Views\ParametroTributario\Functions\_fnChkIsentoInscricaoEstadual.cshtml" />
     <Content Include="Views\CertificadoDigital\Functions\_fnChkIsentoInscricaoEstadual.cshtml" />
+    <Content Include="Views\AliquotaSimplesNacional\Functions\_fnChkIsentoInscricaoEstadual.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

@@ -66,8 +66,8 @@ namespace Fly01.Core.Mensageria
             var host = hostName == "prod" ? ""
                 : hostName == "homolog" ? "dev"
                 : "local";
-
-            var url = $"http://gestao.fly01{host}.com.br/{routeName}/Edit/{messageId}";
+            //TODO: Alterar route prefix... RESOLVER
+            var url = $"http://meu.bemacash{host}.com.br/{routeName}/Edit/{messageId}";
 
             return url;
         }

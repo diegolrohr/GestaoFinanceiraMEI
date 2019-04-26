@@ -142,6 +142,9 @@ namespace Fly01.Faturamento.BL
             {
                 notaFiscal = new NFe();
                 notaFiscal.TipoNfeComplementar = entity.TipoNfeComplementar;
+                notaFiscal.UFSaidaPaisId = entity.UFSaidaPaisId;
+                notaFiscal.LocalEmbarque = entity.LocalEmbarque;
+                notaFiscal.LocalDespacho = entity.LocalDespacho;
             }
             else
             {
@@ -195,9 +198,6 @@ namespace Fly01.Faturamento.BL
             notaFiscal.ContaFinanceiraParcelaPaiIdServicos = entity.ContaFinanceiraParcelaPaiIdServicos;
             notaFiscal.ContaFinanceiraParcelaPaiIdProdutos = entity.ContaFinanceiraParcelaPaiIdProdutos;
             notaFiscal.InformacoesCompletamentaresNFS = entity.InformacoesCompletamentaresNFS;
-            notaFiscal.UFSaidaPaisId = entity.UFSaidaPaisId;
-            notaFiscal.LocalEmbarque = entity.LocalEmbarque;
-            notaFiscal.LocalDespacho = entity.LocalDespacho;
             return notaFiscal;
         }
 

@@ -33,43 +33,43 @@ namespace Fly01.Core.Presentation.Application
             }
         }
 
-        protected void Application_PreRequestHandlerExecute(object sender, EventArgs e)
-        {
-            if (FormsAuthentication.CookiesSupported && Request.Cookies[FormsAuthentication.FormsCookieName] != null)
-            {
-                var clientToken = SessionManager.Current.UserData.ClientToken;
+        //protected void Application_PreRequestHandlerExecute(object sender, EventArgs e)
+        //{
+        //    if (FormsAuthentication.CookiesSupported && Request.Cookies[FormsAuthentication.FormsCookieName] != null)
+        //    {
+        //        var clientToken = SessionManager.Current.UserData.ClientToken;
 
-                try
-                {
-                    RestHelper.ExecuteGetRequest<object>(AppDefaults.UrlGatewayNew.Replace("api/", ""), "token/validate/" + clientToken);
-                }
-                catch (Exception ex)
-                {
-                    if (HttpContext.Current.Session != null)
-                    {
-                        HttpContext.Current.Session.Clear();
-                        HttpContext.Current.Session.Abandon();
-                        HttpContext.Current.Session.RemoveAll();
-                        FormsAuthentication.SignOut();
-                    }
+        //        try
+        //        {
+        //            //RestHelper.ExecuteGetRequest<object>(AppDefaults.UrlGatewayNew.Replace("api/", ""), "token/validate/" + clientToken);
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            if (HttpContext.Current.Session != null)
+        //            {
+        //                HttpContext.Current.Session.Clear();
+        //                HttpContext.Current.Session.Abandon();
+        //                HttpContext.Current.Session.RemoveAll();
+        //                FormsAuthentication.SignOut();
+        //            }
 
-                    if (Request.Headers["Accept"] != null && Request.Headers["Accept"].Contains("application/json"))
-                    {
-                        Response.Write(JsonConvert.SerializeObject(new { urlToRedirect = $"{AppDefaults.UrlLogoutSSO}/{clientToken}" }));
-                        Response.End();
-                    }
-                    else if (Request.Headers["X-Requested-With"] != null && Request.Headers["X-Requested-With"].ToUpper().Equals("XMLHTTPREQUEST"))
-                    {
-                        FormsAuthentication.RedirectToLoginPage();
-                    }
-                    else
-                    {
-                        Response.Write($"<script type=\"text/javascript\">top.location.href='{AppDefaults.UrlLogoutSSO}/{clientToken}';</script>");
-                        Response.End();
-                    }
-                }
-            }
-        }
+        //            if (Request.Headers["Accept"] != null && Request.Headers["Accept"].Contains("application/json"))
+        //            {
+        //                Response.Write(JsonConvert.SerializeObject(new { urlToRedirect = $"{AppDefaults.UrlLogoutSSO}/{clientToken}" }));
+        //                Response.End();
+        //            }
+        //            else if (Request.Headers["X-Requested-With"] != null && Request.Headers["X-Requested-With"].ToUpper().Equals("XMLHTTPREQUEST"))
+        //            {
+        //                FormsAuthentication.RedirectToLoginPage();
+        //            }
+        //            else
+        //            {
+        //                Response.Write($"<script type=\"text/javascript\">top.location.href='{AppDefaults.UrlLogoutSSO}/{clientToken}';</script>");
+        //                Response.End();
+        //            }
+        //        }
+        //    }
+        //}
 
         protected void Application_Start()
         {

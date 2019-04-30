@@ -151,6 +151,9 @@ namespace Fly01.Financeiro.BL
         private CentroCustoBL centroCustoBL;
         public CentroCustoBL CentroCustoBL => centroCustoBL ?? (centroCustoBL = new CentroCustoBL(Context));
 
+        private PaisBL paisBL;
+        public PaisBL PaisBL => paisBL ?? (paisBL = new PaisBL(Context));
+
         #endregion
     }
 }

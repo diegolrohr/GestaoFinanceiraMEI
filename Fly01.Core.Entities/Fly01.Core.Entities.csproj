@@ -63,6 +63,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Domains\Commons\AjusteManual.cs" />
+    <Compile Include="Domains\Commons\AliquotaSimplesNacional.cs" />
+    <Compile Include="Domains\Commons\Pais.cs" />
     <Compile Include="Domains\Commons\KitItem.cs" />
     <Compile Include="Domains\Commons\Kit.cs" />
     <Compile Include="Domains\Commons\Ncm.cs" />
@@ -90,12 +92,14 @@
     <Compile Include="Domains\Enum\ObjetoDeManutencao.cs" />
     <Compile Include="Domains\Enum\OrigemMercadoria.cs" />
     <Compile Include="Domains\Enum\TipoAtualizacaoValor.cs" />
+    <Compile Include="Domains\Enum\TipoEnquadramentoEmpresa.cs" />
     <Compile Include="Domains\Enum\TipoFatorConversao.cs" />
     <Compile Include="Domains\Enum\StatusOrdemServico.cs" />
     <Compile Include="Domains\Commons\OrdemServico.cs" />
     <Compile Include="Domains\Commons\OrdemServicoManutencao.cs" />
     <Compile Include="Domains\Commons\OrdemServicoItemProduto.cs" />
     <Compile Include="Domains\Enum\TipoEspecie.cs" />
+    <Compile Include="Domains\Enum\TipoFaixaReceitaBruta.cs" />
     <Compile Include="Domains\Enum\TipoNfeComplementar.cs" />
     <Compile Include="Domains\Commons\NFeEntrada.cs" />
     <Compile Include="Domains\Commons\NFeProdutoEntrada.cs" />

@@ -55,5 +55,25 @@
         setNFERequiredFields("fly01frm", ["aliquotaSimplesNacional", "aliquotaFCP", ]);
         setNFSERequiredFields("fly01frm", ["aliquotaISS", "aliquotaCSLL", "aliquotaINSS", "aliquotaImpostoRenda"]);
         setNFEAndNFSERequiredFields("fly01frm", ["aliquotaPISPASEP", "aliquotaCOFINS"]);
+        verificaParametrosTributarios();
+    }
+
+    function verificaParametrosTributarios() {
+        var url = '@Url.Action("ExisteParametroSalvo", "ParametroTributario")';
+        $.ajax({
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            type: 'GET',
+            url: url,
+            success: function success(data) {
+                if (!data.existeParametro) {
+                    $$$.modal("@Url.Action("FormModal", "AliquotaSimplesNacional", new { isOnCadastroParametros = "true" })");
+                }
+            },
+            error: function error(jXHR, textStatus) {
+                $$$.toast(textStatus, "error");
+                $$$.loading.stop();
+            }
+        });
     }
 </script>

@@ -259,7 +259,7 @@ namespace Fly01.Faturamento.BL.Helpers
 
         private bool IsLocal()
         {
-            return AppDefaults.UrlGateway.Contains("fly01local.com.br");
+            return AppDefaults.UrlGateway.Contains("bemacashlocal.com.br");
         }
 
         private Identificacao ObterIdentificacao()

@@ -307,6 +307,7 @@ namespace Fly01.Faturamento.BL
                 NotaFiscalInutilizadaBL = NotaFiscalInutilizadaBL,
                 NotaFiscalItemTributacaoBL = NotaFiscalItemTributacaoBL,
                 PessoaBL = PessoaBL,
+                EstadoBL = EstadoBL,
                 SerieNotaFiscalBL = SerieNotaFiscalBL,
                 SubstituicaoTributariaBL = SubstituicaoTributariaBL,
                 TotalTributacaoBL = TotalTributacaoBL,

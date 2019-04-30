@@ -56,6 +56,8 @@
     <Compile Include="ViewModels\PermissionResponseVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\AgendaVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\CentroCustoVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\AliquotaSimplesNacionalVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\PaisVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\MinhaContaConfiguracaoVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\MinhaContaCodigoBarrasResponseVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\MinhaContaResponseVM.cs" />

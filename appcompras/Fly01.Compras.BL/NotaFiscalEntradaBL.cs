@@ -60,11 +60,21 @@ namespace Fly01.Compras.BL
             }
         }
 
+        private bool EhNotaFiscalMigradaDoFlyAntigo(NotaFiscalEntrada notaFiscal)
+        {
+            return (notaFiscal?.OrdemCompraOrigemId == null && notaFiscal?.UsuarioInclusao.ToLower() == "fly01@totvs.com.br");
+        }
+
+        private string ObterIdNotaMigradaFlyAntigo(NotaFiscalEntrada notaFiscal)
+        {
+            return string.Format("{0}{1}", notaFiscal?.SerieNotaFiscal?.Serie?.PadRight(3, ' '), notaFiscal?.NumNotaFiscal?.ToString()?.PadLeft(9, '0'));
+        }
+
         public object NotaFiscalXML(Guid id)
         {
             try
             {
-                var notaFiscal = All.AsNoTracking().Where(x => x.Id == id).FirstOrDefault();
+                var notaFiscal = AllIncluding(x => x.SerieNotaFiscal).AsNoTracking().Where(x => x.Id == id).FirstOrDefault();
                 if (!string.IsNullOrEmpty(notaFiscal.XML))
                 {
                     return new { xml = notaFiscal.XML, numNotaFiscal = notaFiscal.NumNotaFiscal, tipoNotaFiscal = notaFiscal.TipoNotaFiscal.ToString() };
@@ -84,13 +94,14 @@ namespace Fly01.Compras.BL
                         };
 
                         var entidade = CertificadoDigitalBL.GetEntidadeFromCertificado(string.Empty, notaFiscal.TipoAmbiente, notaFiscal.CertificadoDigitalId);
+                        var sefazId = EhNotaFiscalMigradaDoFlyAntigo(notaFiscal) ? ObterIdNotaMigradaFlyAntigo(notaFiscal) : notaFiscal?.SefazId;
 
                         var danfe = new DanfeVM()
                         {
                             Homologacao = entidade.Homologacao,
                             Producao = entidade.Producao,
                             EntidadeAmbiente = entidade.EntidadeAmbiente,
-                            DanfeId = notaFiscal.SefazId.ToString()
+                            DanfeId = sefazId
                         };
 
                         var response = RestHelper.ExecutePostRequest<XMLVM>(AppDefaults.UrlEmissaoNfeApi, "danfeXML", JsonConvert.SerializeObject(danfe), null, header);
@@ -121,7 +132,7 @@ namespace Fly01.Compras.BL
         {
             try
             {
-                var notaFiscal = All.AsNoTracking().Where(x => x.Id == id).FirstOrDefault();
+                var notaFiscal = AllIncluding(x => x.SerieNotaFiscal).AsNoTracking().Where(x => x.Id == id).FirstOrDefault();
                 if (!string.IsNullOrEmpty(notaFiscal.PDF))
                 {
                     return new { pdf = notaFiscal.PDF, numNotaFiscal = notaFiscal.NumNotaFiscal };
@@ -141,13 +152,14 @@ namespace Fly01.Compras.BL
                         };
 
                         var entidade = CertificadoDigitalBL.GetEntidadeFromCertificado(string.Empty, notaFiscal.TipoAmbiente, notaFiscal.CertificadoDigitalId);
+                        var sefazId = EhNotaFiscalMigradaDoFlyAntigo(notaFiscal) ? ObterIdNotaMigradaFlyAntigo(notaFiscal) : notaFiscal?.SefazId;
 
                         var danfe = new DanfeVM()
                         {
                             Homologacao = entidade.Homologacao,
                             Producao = entidade.Producao,
                             EntidadeAmbiente = entidade.EntidadeAmbiente,
-                            DanfeId = notaFiscal.SefazId.ToString()
+                            DanfeId = sefazId
                         };
 
                         var response = RestHelper.ExecutePostRequest<PDFVM>(AppDefaults.UrlEmissaoNfeApi, "danfePDF", JsonConvert.SerializeObject(danfe), null, header);

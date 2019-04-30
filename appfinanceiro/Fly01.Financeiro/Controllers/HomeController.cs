@@ -367,7 +367,7 @@ namespace Fly01.Financeiro.Controllers
                     AppTag = "chat_fly01_gestao",
                 }
             };
-            if (Request.Url.ToString().Contains("fly01.com.br"))
+            if (Request.Url.ToString().Contains("bemacash.com.br"))
                 config.Widgets.Insights = new InsightsUI { Key = ConfigurationManager.AppSettings["InstrumentationKeyAppInsights"] };
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");

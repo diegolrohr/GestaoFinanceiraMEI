@@ -4,7 +4,6 @@
     var arrayConciliacoes = [];
 
     function fnAtualizaValorSelecionados(valorAcumulado) {
-        debugger;
         var valorLancamentoExtrato = parseFloat($('input#valor').val().replace("R$ ", "").replace("R$", "").replace(".", "").replace(",", ".").replace("-", ""));
         $('input#somaValoresSelecionados').val(valorAcumulado);
         $$$.fn.updateTextFields();

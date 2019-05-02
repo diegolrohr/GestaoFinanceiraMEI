@@ -51,7 +51,6 @@ namespace Fly01.Financeiro.API
             builder.EntitySet<TemplateBoleto>("templateboleto");
             builder.EntitySet<StoneAntecipacaoRecebiveis>("stoneantecipacaorecebiveis");
             builder.EntitySet<CentroCusto>("centrocusto");
-            builder.EntitySet<Pais>("pais");
 
             builder.EnableLowerCamelCase();
             return builder.GetEdmModel();

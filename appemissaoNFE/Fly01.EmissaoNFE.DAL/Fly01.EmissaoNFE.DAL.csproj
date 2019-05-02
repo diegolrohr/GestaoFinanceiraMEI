@@ -204,10 +204,6 @@
     <Compile Include="Migrations\201903191357250_InsertResponsavelTecnico.Designer.cs">
       <DependentUpon>201903191357250_InsertResponsavelTecnico.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201904101724196_AddPaises.cs" />
-    <Compile Include="Migrations\201904101724196_AddPaises.Designer.cs">
-      <DependentUpon>201904101724196_AddPaises.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CfopDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
@@ -221,7 +217,6 @@
     <Compile Include="Migrations\DataInitializer\NBSDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\NcmDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\ResponsavelTecnicoDataInitializer.cs" />
-    <Compile Include="Migrations\DataInitializer\PaisDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\SiafiDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\TabelaIcmsDataInitializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -353,9 +348,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201903191357250_InsertResponsavelTecnico.resx">
       <DependentUpon>201903191357250_InsertResponsavelTecnico.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201904101724196_AddPaises.resx">
-      <DependentUpon>201904101724196_AddPaises.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

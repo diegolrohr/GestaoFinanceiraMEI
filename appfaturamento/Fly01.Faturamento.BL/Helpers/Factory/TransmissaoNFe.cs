@@ -62,7 +62,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
         {
             return new TransmissaoCabecalho()
             {
-                IsLocal = AppDefaults.UrlGateway.Contains("bemacashlocal.com.br"),
+                IsLocal = AppDefaults.UrlGateway.Contains("fly01local.com.br"),
                 Versao = EnumHelper.GetValue(typeof(TipoVersaoNFe), this.ParametrosTributarios.TipoVersaoNFe.ToString()),
                 Cliente = TransmissaoBLs.TotalTributacaoBL.GetPessoa(NFe.ClienteId),
                 Empresa = ApiEmpresaManager.GetEmpresa(TransmissaoBLs.PlataformaUrl),
@@ -70,7 +70,6 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 FormaPagamento = TransmissaoBLs.FormaPagamentoBL.All.AsNoTracking().Where(x => x.Id == NFe.FormaPagamentoId).FirstOrDefault(),
                 Transportadora = TransmissaoBLs.PessoaBL.AllIncluding(x => x.Estado, x => x.Cidade).Where(x => x.Transportadora && x.Id == NFe.TransportadoraId).AsNoTracking().FirstOrDefault(),
                 SerieNotaFiscal = TransmissaoBLs.SerieNotaFiscalBL.All.AsNoTracking().Where(x => x.Id == NFe.SerieNotaFiscalId).FirstOrDefault(),
-                UFSaidaPais = TransmissaoBLs.EstadoBL.All.AsNoTracking().Where(x => x.Id == NFe.UFSaidaPaisId).FirstOrDefault(),
                 NFeProdutos = ObterNFeProdutos()
             };
         }
@@ -167,33 +166,26 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
             };
         }
 
-        public bool EhExportacao()
-        {
-            return Cabecalho.Cliente?.Estado?.Sigla == "EX";
-        }
-
         public Destinatario ObterDestinatario()
         {
             return new Destinatario()
             {
-                Cnpj = (Cabecalho.Cliente.TipoDocumento == "J" && !EhExportacao()) ? Cabecalho.Cliente.CPFCNPJ : null,
-                Cpf = (Cabecalho.Cliente.TipoDocumento == "F" && !EhExportacao()) ? Cabecalho.Cliente.CPFCNPJ : null,
-                IndInscricaoEstadual = EhExportacao() ? TipoIndicacaoInscricaoEstadual.NaoContribuinte : Cabecalho.Cliente.TipoIndicacaoInscricaoEstadual,
-                InscricaoEstadual = (Cabecalho.Cliente.TipoIndicacaoInscricaoEstadual == TipoIndicacaoInscricaoEstadual.ContribuinteICMS && !EhExportacao()) ? Cabecalho.Cliente.InscricaoEstadual : null,
-                IdentificacaoEstrangeiro = Cabecalho.Cliente?.IdEstrangeiro,
+                Cnpj = Cabecalho.Cliente.TipoDocumento == "J" ? Cabecalho.Cliente.CPFCNPJ : null,
+                Cpf = Cabecalho.Cliente.TipoDocumento == "F" ? Cabecalho.Cliente.CPFCNPJ : null,
+                IndInscricaoEstadual = (IndInscricaoEstadual)System.Enum.Parse(typeof(IndInscricaoEstadual), Cabecalho.Cliente.TipoIndicacaoInscricaoEstadual.ToString()),
+                InscricaoEstadual = Cabecalho.Cliente.TipoIndicacaoInscricaoEstadual == TipoIndicacaoInscricaoEstadual.ContribuinteICMS ? Cabecalho.Cliente.InscricaoEstadual : null,
+                IdentificacaoEstrangeiro = null,
                 Nome = Cabecalho.Cliente.Nome,
                 Endereco = new Endereco()
                 {
-                    Bairro = Cabecalho.Cliente?.Bairro,
-                    Cep = Cabecalho.Cliente?.CEP,
-                    CodigoMunicipio = Cabecalho.Cliente?.Cidade?.CodigoIbge,
-                    Fone = Cabecalho.Cliente?.Telefone,
-                    Logradouro = Cabecalho.Cliente?.Endereco,
+                    Bairro = Cabecalho.Cliente.Bairro,
+                    Cep = Cabecalho.Cliente.CEP,
+                    CodigoMunicipio = Cabecalho.Cliente.Cidade?.CodigoIbge,
+                    Fone = Cabecalho.Cliente.Telefone,
+                    Logradouro = Cabecalho.Cliente.Endereco,
                     Municipio = Cabecalho.Cliente.Cidade?.Nome,
-                    Numero = Cabecalho.Cliente?.Numero,
-                    UF = Cabecalho.Cliente?.Estado?.Sigla,
-                    PaisCodigoBacen = Cabecalho.Cliente?.Pais?.CodigoBacen,
-                    PaisNome = Cabecalho.Cliente?.Pais?.Nome
+                    Numero = Cabecalho.Cliente.Numero,
+                    UF = Cabecalho.Cliente.Estado?.Sigla
                 }
             };
         }
@@ -204,13 +196,13 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
             {
                 return new Transportadora()
                 {
-                    CNPJ = Cabecalho.Transportadora != null && Cabecalho.Transportadora?.TipoDocumento == "J" ? Cabecalho.Transportadora?.CPFCNPJ : null,
-                    CPF = Cabecalho.Transportadora != null && Cabecalho.Transportadora?.TipoDocumento == "F" ? Cabecalho.Transportadora?.CPFCNPJ : null,
+                    CNPJ = Cabecalho.Transportadora != null && Cabecalho.Transportadora?.TipoDocumento == "J" ? Cabecalho.Transportadora.CPFCNPJ : null,
+                    CPF = Cabecalho.Transportadora != null && Cabecalho.Transportadora?.TipoDocumento == "F" ? Cabecalho.Transportadora.CPFCNPJ : null,
                     Endereco = Cabecalho.Transportadora?.Endereco,
-                    IE = Cabecalho.Transportadora != null ? (Cabecalho.Transportadora?.TipoIndicacaoInscricaoEstadual == TipoIndicacaoInscricaoEstadual.ContribuinteICMS ? Cabecalho.Transportadora?.InscricaoEstadual : null) : null,
-                    Municipio = Cabecalho.Transportadora != null && Cabecalho?.Transportadora?.Cidade != null ? Cabecalho.Transportadora?.Cidade?.Nome : null,
+                    IE = Cabecalho.Transportadora != null ? (Cabecalho.Transportadora?.TipoIndicacaoInscricaoEstadual == TipoIndicacaoInscricaoEstadual.ContribuinteICMS ? Cabecalho.Transportadora.InscricaoEstadual : null) : null,
+                    Municipio = Cabecalho.Transportadora != null && Cabecalho.Transportadora?.Cidade != null ? Cabecalho.Transportadora?.Cidade?.Nome : null,
                     RazaoSocial = Cabecalho.Transportadora?.Nome,
-                    UF = Cabecalho.Transportadora != null && Cabecalho?.Transportadora?.Estado != null ? Cabecalho?.Transportadora?.Estado?.Sigla : null
+                    UF = Cabecalho.Transportadora != null && Cabecalho.Transportadora?.Estado != null ? Cabecalho.Transportadora?.Estado?.Sigla : null
                 };
             }
             else
@@ -260,7 +252,6 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 ValorDesconto = item.Desconto,
                 AgregaTotalNota = CompoemValorTotal.Compoe,
                 CEST = item.Produto.Cest?.Codigo,
-                EXTIPI = item.Produto?.EXTIPI
             };
         }
 
@@ -461,16 +452,6 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
             {
                 throw new BusinessException("Erro ao tentar obter as contas financeiras parcelas. " + ex.Message );
             }
-        }
-
-        public Exportacao ObterExportacao()
-        {
-            return new Exportacao()
-            {
-                LocalDespacho = NFe?.LocalDespacho,
-                LocalEmbarque = NFe?.LocalEmbarque,
-                UFSaidaPais = Cabecalho?.UFSaidaPais?.Sigla
-            };
         }
     }
 }

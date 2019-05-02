@@ -113,7 +113,6 @@
     <Compile Include="Models\Reports\ReportDre.cs" />
     <Compile Include="Models\Reports\WebReportViewer.cs" />
     <Compile Include="Models\Utils\EmailBodyHelper.cs" />
-    <Compile Include="Models\ViewModel\ImprimirListContasFiltroVM.cs" />
     <Compile Include="Models\ViewModel\ImprimirListContasVM.cs" />
     <Compile Include="Models\ViewModel\RenegociacaoRelacionamentoContaReceberVM.cs" />
     <Compile Include="Models\ViewModel\RenegociacaoRelacionamentoContaPagarVM.cs" />
@@ -182,7 +181,6 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="_app_offline.htm" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -491,8 +489,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Fly01.uiJS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Fly01.uiJS.2.0.5.2\lib\net452\Fly01.uiJS.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\Fly01.uiJS.2.0.4.6\lib\net452\Fly01.uiJS.dll</HintPath>
     </Reference>
     <Reference Include="HtmlRenderer, Version=1.5.0.5, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\HtmlRenderer.Core.1.5.0.5\lib\net45\HtmlRenderer.dll</HintPath>

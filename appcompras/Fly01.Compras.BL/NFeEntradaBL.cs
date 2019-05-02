@@ -144,7 +144,7 @@ namespace Fly01.Compras.BL
                         throw new BusinessException("Permitido somente NF-e versão 4.00. Acesse o menu Configurações > Parâmetros Tributários e altere as configurações");
                     }
 
-                    var isLocal = AppDefaults.UrlGateway.Contains("bemacashlocal.com.br");
+                    var isLocal = AppDefaults.UrlGateway.Contains("fly01local.com.br");
 
                     var versao = EnumHelper.GetValue(typeof(TipoVersaoNFe), parametros.TipoVersaoNFe.ToString());
                     var fornecedor = TotalTributacaoBL.GetPessoa(entity.FornecedorId);
@@ -241,7 +241,7 @@ namespace Fly01.Compras.BL
                     {
                         Cnpj = fornecedor.TipoDocumento == "J" ? fornecedor.CPFCNPJ : null,
                         Cpf = fornecedor.TipoDocumento == "F" ? fornecedor.CPFCNPJ : null,
-                        IndInscricaoEstadual = fornecedor.TipoIndicacaoInscricaoEstadual,
+                        IndInscricaoEstadual = (IndInscricaoEstadual)System.Enum.Parse(typeof(IndInscricaoEstadual), fornecedor.TipoIndicacaoInscricaoEstadual.ToString()),
                         InscricaoEstadual = fornecedor.TipoIndicacaoInscricaoEstadual == TipoIndicacaoInscricaoEstadual.ContribuinteICMS ? fornecedor.InscricaoEstadual : null,
                         IdentificacaoEstrangeiro = null,
                         Nome = fornecedor.Nome,
@@ -337,14 +337,14 @@ namespace Fly01.Compras.BL
                         if (itemTributacao.CalculaICMS)
                         {
                             detalhe.Imposto.ICMS.ValorICMSSTRetido = Math.Round(item.ValorICMSSTRetido, 2);
+                            detalhe.Imposto.ICMS.ValorICMS = Math.Round(itemTributacao.ICMSValor, 2);
+                            detalhe.Imposto.ICMS.ValorBC = Math.Round(itemTributacao.ICMSBase, 2);
 
                             if (item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.Outros)
                             {
                                 detalhe.Imposto.ICMS.ModalidadeBC = ModalidadeDeterminacaoBCICMS.ValorDaOperacao;
                                 detalhe.Imposto.ICMS.AliquotaICMS = Math.Round(itemTributacao.ICMSAliquota, 2);
                                 detalhe.Imposto.ICMS.ModalidadeBCST = ModalidadeDeterminacaoBCICMSST.MargemValorAgregado;
-                                detalhe.Imposto.ICMS.ValorICMS = Math.Round(itemTributacao.ICMSValor, 2);
-                                detalhe.Imposto.ICMS.ValorBC = Math.Round(itemTributacao.ICMSBase, 2);
                             }
                             if (item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaComPermissaoDeCreditoST
                                 || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaSemPermissaoDeCreditoST

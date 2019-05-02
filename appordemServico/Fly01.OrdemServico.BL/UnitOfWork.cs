@@ -94,12 +94,8 @@ namespace Fly01.OrdemServico.BL
 
         private KitItemBL kitItemBL;
         public KitItemBL KitItemBL => kitItemBL ?? (kitItemBL = new KitItemBL(Context, KitBL, ProdutoBL, ServicoBL));
-
         private AgendaBL agendaBL;
         public AgendaBL AgendaBL => agendaBL ?? (agendaBL = new AgendaBL(Context, OrdemServicoBL));
-
-        private PaisBL paisBL;
-        public PaisBL PaisBL => paisBL ?? (paisBL = new PaisBL(Context));
 
         #endregion
     }

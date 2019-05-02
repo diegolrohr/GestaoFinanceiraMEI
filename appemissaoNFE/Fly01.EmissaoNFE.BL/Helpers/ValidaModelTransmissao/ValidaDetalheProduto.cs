@@ -40,7 +40,6 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
                 ValidarUnidadeTributacao(detalhe, entity, nItemDetalhe);
 
                 ValidarLengthDescricaoProduto(detalhe, entity, nItemDetalhe);
-                ValidarLengthEXTIPI(detalhe, entity, nItemDetalhe);
                 ValidarLenghtNCMProduto(detalhe, entity, nItemDetalhe);
                 ValidarLengthQuantidadeProduto(detalhe, entity, nItemDetalhe);
                 ValidarLengthValorUnitarioProduto(detalhe, entity, nItemDetalhe);
@@ -256,12 +255,6 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
         {
             entity.Fail(detalhe.Produto.Descricao != null && (detalhe.Produto.Descricao.Length < 1 || detalhe.Produto.Descricao.Length > 120),
                                 new Error("Descrição do produto inválida. (Tam. 1-120) Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Produto.Descricao"));
-        }
-
-        private static void ValidarLengthEXTIPI(Detalhe detalhe, TransmissaoVM entity, int nItemDetalhe)
-        {
-            entity.Fail(detalhe.Produto.EXTIPI != null && (detalhe.Produto.EXTIPI?.Length > 3),
-                new Error("EXTIPI do produto só pode ter até 3 caracteres. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Produto.EXTIPI"));
         }
 
         private static void ValidaCodigoBarrasProduto(Detalhe detalhe, TransmissaoVM entity, int nItemDetalhe)

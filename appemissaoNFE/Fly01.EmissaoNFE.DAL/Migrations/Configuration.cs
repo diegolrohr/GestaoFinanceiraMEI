@@ -32,7 +32,6 @@ namespace Fly01.EmissaoNFE.DAL.Migrations
                 //new NBSDataInitializer().Initialize(context);
                 //new SiafiDataInitializer().Initialize(context);
                 new ResponsavelTecnicoDataInitializer().Initialize(context);
-                new PaisDataInitializer().Initialize(context);
             }
             catch (DbEntityValidationException ex)
             {

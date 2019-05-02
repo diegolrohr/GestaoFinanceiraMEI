@@ -154,13 +154,6 @@ namespace Fly01.Faturamento.BL
 
         private CentroCustoBL centroCustoBL;
         public CentroCustoBL CentroCustoBL => centroCustoBL ?? (centroCustoBL = new CentroCustoBL(Context));
-
-        private AliquotaSimplesNacionalBL aliquotaSimplesNacionalBL;
-        public AliquotaSimplesNacionalBL AliquotaSimplesNacionalBL => aliquotaSimplesNacionalBL ?? (aliquotaSimplesNacionalBL = new AliquotaSimplesNacionalBL(Context));
-
-        private PaisBL paisBL;
-        public PaisBL PaisBL => paisBL ?? (paisBL = new PaisBL(Context));
-
         #endregion
     }
 }

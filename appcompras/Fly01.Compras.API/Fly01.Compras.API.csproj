@@ -54,7 +54,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\Api\AliquotaSimplesNacionalController.cs" />
     <Compile Include="Controllers\Api\ApiDomainController.cs" />
     <Compile Include="Controllers\Api\ApiPlataformaController.cs" />
     <Compile Include="Controllers\Api\ArquivoController.cs" />
@@ -96,10 +95,8 @@
     <Compile Include="Controllers\Api\NotaFiscalXMLController.cs" />
     <Compile Include="Controllers\Api\KitOrcamentoController.cs" />
     <Compile Include="Controllers\Api\OrdemCompraController.cs" />
-    <Compile Include="Controllers\Api\PaisController.cs" />
     <Compile Include="Controllers\Api\ParametroTributarioController.cs" />
     <Compile Include="Controllers\Api\PedidoEstoqueNegativoController.cs" />
-    <Compile Include="Controllers\Api\RelatorioLicenciamentoComprasController.cs" />
     <Compile Include="Controllers\Api\ServicoController.cs" />
     <Compile Include="Controllers\Api\ProdutoServicoController.cs" />
     <Compile Include="Controllers\Api\SerieNotaFiscalController.cs" />
@@ -199,10 +196,6 @@
     <ProjectReference Include="..\Fly01.Compras.BL\Fly01.Compras.BL.csproj">
       <Project>{ec5ebb16-787d-4320-a7f4-8370e518ae27}</Project>
       <Name>Fly01.Compras.BL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Fly01.Compras.DAL\Fly01.Compras.DAL.csproj">
-      <Project>{85C0FA0B-C48F-4799-9093-C61B3BC7D774}</Project>
-      <Name>Fly01.Compras.DAL</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -14,21 +14,6 @@ namespace Fly01.Core.Presentation.Controllers
         protected JsonResult GetJson(object data) 
             => Json(data, JsonRequestBehavior.AllowGet);
 
-        public JsonResult EstadoSemEX(string term)
-        {
-            var resourceName = AppDefaults.GetResourceName(typeof(EstadoVM));
-            var queryString = AppDefaults.GetQueryStringDefault();
-
-            queryString.AddParam("$filter", $"(contains(nome, '{term}') or contains(sigla, '{term}')) and sigla ne 'EX'");
-            queryString.AddParam("$select", "id,nome,sigla,codigoIbge");
-            queryString.AddParam("$orderby", "nome");
-
-            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<EstadoVM>>(resourceName, queryString).Data
-                                select new { id = item.Id, label = item.Nome, detail = item.Sigla, estadoCodigoIbge = item.CodigoIbge };
-
-            return GetJson(filterObjects);
-        }
-
         public JsonResult Estado(string term)
         {
             var resourceName = AppDefaults.GetResourceName(typeof(EstadoVM));
@@ -393,45 +378,6 @@ namespace Fly01.Core.Presentation.Controllers
 
             var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<CentroCustoVM>>(resourceName, queryString).Data
                                 select new { id = item.Id, label = item.Descricao, detail = item.Codigo};
-
-            return GetJson(filterObjects);
-        }
-
-        public JsonResult AliquotaSimplesNacional(string term, string prefilter)
-        {
-            var resourceName = AppDefaults.GetResourceName(typeof(AliquotaSimplesNacionalVM));
-            var queryString = AppDefaults.GetQueryStringDefault();
-
-            queryString.AddParam("$filter", $"tipoFaixaReceitaBruta eq {AppDefaults.APIEnumResourceName}TipoFaixaReceitaBruta'{prefilter}'");
-            queryString.AddParam("$orderby", "tipoEnquadramentoEmpresa");
-
-            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<AliquotaSimplesNacionalVM>>(resourceName, queryString).Data
-                                select new
-                                {
-                                    id = item.TipoEnquadramentoEmpresa,//utilizado no form
-                                    label = EnumHelper.GetValue(typeof(TipoEnquadramentoEmpresa), item.TipoEnquadramentoEmpresa),
-                                    simplesNacional = item.SimplesNacional,
-                                    impostoRenda = item.ImpostoRenda,
-                                    csll = item.Csll,
-                                    cofins = item.Cofins,
-                                    pisPasep = item.PisPasep,
-                                    iss = item.Iss
-                                };
-
-            return GetJson(filterObjects);
-        }
-
-        public JsonResult Pais(string term)
-        {
-            var resourceName = AppDefaults.GetResourceName(typeof(PaisVM));
-            var queryString = AppDefaults.GetQueryStringDefault();
-
-            queryString.AddParam("$filter", $"contains(nome, '{term}') or contains(sigla, '{term}')");
-            queryString.AddParam("$select", "id,nome,sigla,codigoIbge");
-            queryString.AddParam("$orderby", "nome");
-
-            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<PaisVM>>(resourceName, queryString).Data
-                                select new { id = item.Id, label = item.Nome, detail = item.Sigla };
 
             return GetJson(filterObjects);
         }

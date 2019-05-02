@@ -60,13 +60,12 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <EmbeddedResource Include="MailTemplates\Templates\OrdemCompra.html" />
     <Content Include="Reports\ReportImprimirOrcamento.rdlc" />
     <Content Include="Reports\ReportImprimirPedido.rdlc" />
-    <Content Include="_app_offline.htm" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\AliquotaSimplesNacionalController.cs" />
     <Compile Include="Controllers\AutoCompleteController.cs" />
     <Compile Include="Controllers\AvaliacaoAppController.cs" />
     <Compile Include="Controllers\CartaCorrecaoController.cs" />
@@ -108,6 +107,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\FormatTextHelper.cs" />
+    <Compile Include="Helpers\EmailFilesHelper.cs" />
     <Compile Include="Models\Reports\ReportImprimirOrcamento.cs" />
     <Compile Include="Models\Reports\ReportImprimirPedido.cs" />
     <Compile Include="Models\Reports\WebReportViewer.cs" />
@@ -415,19 +415,6 @@
     <Content Include="Views\NotaFiscalEntrada\Functions\_fnEnviarEmailNFe.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnClonarPedido.cshtml" />
     <Content Include="Views\Kit\Functions\_fnDrawCallbackCalcProdutos.cshtml" />
-    <Content Include="Views\AliquotaSimplesNacional\Functions\_fnChangeTipoEnquadramentoEmpresa.cshtml" />
-    <Content Include="Views\AliquotaSimplesNacional\Functions\_fnChangeTipoFaixaReceitaBruta.cshtml" />
-    <Content Include="Views\ParametroTributario\Functions\_fnEnviarParametrosEmail.cshtml" />
-    <Content Include="Views\ParametroTributario\Functions\_fnFormClickEnvioEmailContador.cshtml" />
-    <Content Include="Views\AliquotaSimplesNacional\Functions\_fnFormReadyAliquotaSimplesNacional.cshtml" />
-    <Content Include="Views\AliquotaSimplesNacional\Functions\_fnChkEnviarEmailContador.cshtml" />
-    <Content Include="Views\ParametroTributario\Functions\_fnAtualizarAliquotas.cshtml" />
-    <Content Include="Views\CertificadoDigital\Functions\_fnFormReadyAtualizaIE.cshtml" />
-    <Content Include="Views\ParametroTributario\Functions\_fnFormReadyAtualizaIE.cshtml" />
-    <Content Include="Views\AliquotaSimplesNacional\Functions\_fnFormReadyAtualizaIE.cshtml" />
-    <Content Include="Views\ParametroTributario\Functions\_fnChkIsentoInscricaoEstadual.cshtml" />
-    <Content Include="Views\CertificadoDigital\Functions\_fnChkIsentoInscricaoEstadual.cshtml" />
-    <Content Include="Views\AliquotaSimplesNacional\Functions\_fnChkIsentoInscricaoEstadual.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -442,8 +429,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Fly01.uiJS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Fly01.uiJS.2.0.5.2\lib\net452\Fly01.uiJS.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\Fly01.uiJS.2.0.4.6\lib\net452\Fly01.uiJS.dll</HintPath>
     </Reference>
     <Reference Include="HtmlRenderer, Version=1.5.0.5, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\HtmlRenderer.Core.1.5.0.5\lib\net45\HtmlRenderer.dll</HintPath>

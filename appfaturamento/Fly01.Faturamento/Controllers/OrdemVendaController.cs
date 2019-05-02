@@ -8,6 +8,7 @@ using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
 using Fly01.Core.ViewModels;
 using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.Faturamento.Helpers;
 using Fly01.Faturamento.Models.Reports;
 using Fly01.Faturamento.Models.ViewModel;
 using Fly01.Faturamento.ViewModel;
@@ -29,7 +30,7 @@ namespace Fly01.Faturamento.Controllers
     {
         public OrdemVendaController()
         {
-            ExpandProperties = "cliente($select=id,nome,email),grupoTributarioPadrao($select=id,descricao,tipoTributacaoICMS),transportadora($select=id,nome),estadoPlacaVeiculo,condicaoParcelamento,formaPagamento,categoria,centroCusto,ufSaidaPais($select=id,nome)";
+            ExpandProperties = "cliente($select=id,nome,email),grupoTributarioPadrao($select=id,descricao,tipoTributacaoICMS),transportadora($select=id,nome),estadoPlacaVeiculo,condicaoParcelamento,formaPagamento,categoria,centroCusto";
         }
 
         private JsonResult GetJson(object data)

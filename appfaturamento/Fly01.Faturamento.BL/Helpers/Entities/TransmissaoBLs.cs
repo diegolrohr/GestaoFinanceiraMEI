@@ -12,7 +12,6 @@
         public NotaFiscalItemTributacaoBL NotaFiscalItemTributacaoBL { get; set; }
         public CertificadoDigitalBL CertificadoDigitalBL { get; set; }
         public NotaFiscalInutilizadaBL NotaFiscalInutilizadaBL { get; set; }
-        public EstadoBL EstadoBL { get; set; }
         public string PlataformaUrl { get; set; }
         public string AppUser { get; set; }
     }

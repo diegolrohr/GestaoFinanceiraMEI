@@ -25,8 +25,8 @@ namespace Fly01.EmissaoNFE.BL
 
             if (
                 isUF &&
-                ((tipoAmbiente == TipoAmbiente.Homologacao && nota.Identificador.Emissao.Date >= dataHomologacao.Date) ||
-                (tipoAmbiente == TipoAmbiente.Producao && nota.Identificador.Emissao.Date >= dataProducao.Date))
+                (tipoAmbiente == TipoAmbiente.Homologacao && nota.Identificador.Emissao.Date >= dataHomologacao.Date) ||
+                (tipoAmbiente == TipoAmbiente.Producao && nota.Identificador.Emissao.Date >= dataProducao.Date)
             )
             {
                 var responsavelTecnico = All.Select(x => new ResponsavelTecnicoXML()

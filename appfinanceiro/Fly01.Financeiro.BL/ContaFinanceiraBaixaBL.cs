@@ -62,11 +62,6 @@ namespace Fly01.Financeiro.BL
             throw new BusinessException("Não é possível alterar uma baixa.");
         }
 
-        public void DeleteWithoutRecalc(ContaFinanceiraBaixa entity)
-        {
-            base.Delete(entity);
-        }
-
         public override void Delete(ContaFinanceiraBaixa entity)
         {
             ContaFinanceira contaFinanceira = contaFinanceiraBL.All.FirstOrDefault(x => x.Id == entity.ContaFinanceiraId);

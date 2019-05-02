@@ -8,6 +8,7 @@ using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
 using Fly01.Core.ViewModels;
 using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.OrdemServico.Helpers;
 using Fly01.OrdemServico.Models.Reports;
 using Fly01.OrdemServico.ViewModel;
 using Fly01.uiJS.Classes;
@@ -368,7 +369,7 @@ namespace Fly01.OrdemServico.Controllers
             var anexo = File(GetPDFFile(ordem), "application/pdf");
             var mensagemPrincipal = "VOCÊ ESTÁ RECEBENDO UMA CÓPIA DA SUA ORDEM DE SERVIÇO.";
             var tituloEmail = $"{empresa.NomeFantasia} ORDEM DE SERVIÇO - Nº {ordem.Numero}".ToUpper();
-            var conteudoEmail = Mail.FormataMensagem(EmailFilesHelper.GetTemplate("Templates.OrdemDeServico.html").Value, tituloEmail, mensagemPrincipal, empresa.Email);
+            var conteudoEmail = Mail.FormataMensagem(EmailFilesHelper.GetTemplate("Templates.OrdemServico.html").Value, tituloEmail, mensagemPrincipal, empresa.Email);
             var arquivoAnexo = new FileStreamResult(new MemoryStream(anexo.FileContents), anexo.ContentType);
 
             Mail.Send(empresa.NomeFantasia, ordem.Cliente.Email, tituloEmail, conteudoEmail, arquivoAnexo.FileStream);

@@ -374,7 +374,7 @@ namespace Fly01.Financeiro.Controllers
                 Class = "col s6 l2",
                 Label = "Valor",
                 Required = true,
-                Value = "0", 
+                Value = "0",
                 DomEvents = new List<DomEventUI>
                 {
                     new DomEventUI { DomEvent = "change", Function = "fnHideSimulacaoCondicao" }

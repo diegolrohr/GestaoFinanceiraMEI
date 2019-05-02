@@ -90,15 +90,6 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         [XmlElement(ElementName = "infAdic")]
         public InformacoesAdicionais InformacoesAdicionais { get; set; }
 
-        /// <summary>
-        /// Exportacao
-        /// </summary>
-        [XmlElement(ElementName = "exporta")]
-        public Exportacao Exportacao { get; set; }
-
-        /// <summary>
-        /// Responsável Técnico
-        /// </summary>
         [XmlElement(ElementName = "infRespTec")]
         public ResponsavelTecnico ResponsavelTecnico { get; set; }
 

@@ -59,7 +59,6 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="Helpers\" />
     <Folder Include="Views\NFeProduto\Functions\" />
     <Folder Include="Views\NFSeServico\Functions\" />
   </ItemGroup>
@@ -70,7 +69,6 @@
     <Compile Include="Controllers\CategoriaController.cs" />
     <Compile Include="Controllers\CentroCustoController.cs" />
     <Compile Include="Controllers\EnquadramentoLegalIPIController.cs" />
-    <Compile Include="Controllers\AliquotaSimplesNacionalController.cs" />
     <Compile Include="Controllers\KitItemController.cs" />
     <Compile Include="Controllers\MinhaContaController.cs" />
     <Compile Include="Controllers\NFeController.cs" />
@@ -105,6 +103,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\EmailFilesHelper.cs" />
     <Compile Include="Models\Reports\ReportOrcamentoPedido.cs" />
     <Compile Include="Models\Reports\WebReportViewer.cs" />
     <Compile Include="Models\ViewModel\ImprimirOrcamentoPedidoVM.cs" />
@@ -135,6 +134,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <EmbeddedResource Include="MailTemplates\Templates\OrdemVenda.html" />
     <Content Include="ReportViewerWebForm.aspx" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -145,7 +145,6 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="_app_offline.htm" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -376,19 +375,6 @@
     <Content Include="Views\Servico\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\OrdemVenda\Functions\_fnClonarPedido.cshtml" />
     <Content Include="Views\Kit\Functions\_fnDrawCallbackCalcProdutos.cshtml" />
-    <Content Include="Views\ParametroTributario\Functions\_fnEnviarParametrosEmail.cshtml" />
-    <Content Include="Views\ParametroTributario\Functions\_fnFormClickEnvioEmailContador.cshtml" />
-    <Content Include="Views\CertificadoDigital\Functions\_fnFormReadyAtualizaIE.cshtml" />
-    <Content Include="Views\ParametroTributario\Functions\_fnAtualizarAliquotas.cshtml" />
-    <Content Include="Views\AliquotaSimplesNacional\Functions\_fnChangeTipoEnquadramentoEmpresa.cshtml" />
-    <Content Include="Views\AliquotaSimplesNacional\Functions\_fnChangeTipoFaixaReceitaBruta.cshtml" />
-    <Content Include="Views\AliquotaSimplesNacional\Functions\_fnChkEnviarEmailContador.cshtml" />
-    <Content Include="Views\AliquotaSimplesNacional\Functions\_fnFormReadyAliquotaSimplesNacional.cshtml" />
-    <Content Include="Views\AliquotaSimplesNacional\Functions\_fnFormReadyAtualizaIE.cshtml" />
-    <Content Include="Views\ParametroTributario\Functions\_fnFormReadyAtualizaIE.cshtml" />
-    <Content Include="Views\ParametroTributario\Functions\_fnChkIsentoInscricaoEstadual.cshtml" />
-    <Content Include="Views\CertificadoDigital\Functions\_fnChkIsentoInscricaoEstadual.cshtml" />
-    <Content Include="Views\AliquotaSimplesNacional\Functions\_fnChkIsentoInscricaoEstadual.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -409,8 +395,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Fly01.uiJS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Fly01.uiJS.2.0.5.2\lib\net452\Fly01.uiJS.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\Fly01.uiJS.2.0.4.6\lib\net452\Fly01.uiJS.dll</HintPath>
     </Reference>
     <Reference Include="HtmlRenderer, Version=1.5.0.5, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\HtmlRenderer.Core.1.5.0.5\lib\net45\HtmlRenderer.dll</HintPath>

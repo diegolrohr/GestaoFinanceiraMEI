@@ -12,7 +12,6 @@ using Fly01.uiJS.Enums;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
 
 namespace Fly01.Core.Presentation.Controllers
@@ -177,7 +176,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Class = "col s12 m3",
                 Label = "Tipo",
                 Required = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoProduto)).ToList().FindAll(x => "Insumo,ProdutoFinal,Outros".Contains(x.Value))),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoProduto))),
                 DomEvents = new List<DomEventUI>() { new DomEventUI() { DomEvent = "change", Function = "fnChangeTipoProduto" } }
             });
 
@@ -214,13 +213,12 @@ namespace Fly01.Core.Presentation.Controllers
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "ncmId",
-                Class = "col s12 m10",
+                Class = "col s12 m12",
                 Label = "NCM",
                 DataUrl = @Url.Action("Ncm", "AutoComplete"),
                 LabelId = "ncmDescricao",
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeNCM" } }
             });
-            config.Elements.Add(new InputTextUI { Id = "extipi", Class = "col s12 m2", Label = "EX TIPI", MaxLength = 3 });
 
             config.Elements.Add(new AutoCompleteUI
             {
@@ -271,14 +269,6 @@ namespace Fly01.Core.Presentation.Controllers
             if (tooltips != null)
                 config.Helpers.AddRange(tooltips);
 
-            config.Helpers.Add(new TooltipUI
-            {
-                Id = "extipi",
-                Tooltip = new HelperUITooltip()
-                {
-                    Text = "Informe se for necessário para nota fiscal de exportação. Informar de acordo com o código EX da TIPI se houver para o NCM do produto."
-                }
-            });
             cfg.Content.Add(config);
 
             return cfg;

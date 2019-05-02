@@ -98,15 +98,6 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [APIEnum("TipoIndicacaoInscricaoEstadual")]
         public string TipoIndicacaoInscricaoEstadual { get; set; }
 
-        [JsonProperty("paisId")]
-        public Guid? PaisId { get; set; }
-
-        [JsonProperty("idEstrangeiro")]
-        public string IdEstrangeiro { get; set; }
-
-        [JsonProperty("pais")]
-        public virtual PaisVM Pais { get; set; }
-
         [JsonProperty("estado")]
         public virtual EstadoVM Estado { get; set; }
 

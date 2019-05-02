@@ -5,23 +5,22 @@
 
     function fnAtualizaValorSelecionados(valorAcumulado) {
         var valorLancamentoExtrato = parseFloat($('input#valor').val().replace("R$ ", "").replace("R$", "").replace(".", "").replace(",", ".").replace("-", ""));
-
         $('input#somaValoresSelecionados').val(valorAcumulado);
         $$$.fn.updateTextFields();
         $('input#somaValoresSelecionados').css('color', '');
         $('#save').attr('disabled', 'disabled');
 
-        if (valorAcumulado == valorLancamentoExtrato) {
+        if (valorAcumulado.toFixed(2) == valorLancamentoExtrato) {
             $('#somaValoresSelecionados').css('color', 'green');
             $$$.toast("A soma dos valores conciliados está de acordo ao valor do lançamento", "info");
             $('#save').removeAttr('disabled');
         }
-        else if (valorAcumulado > valorLancamentoExtrato) {
+        else if (valorAcumulado.toFixed(2) > valorLancamentoExtrato) {
             $('#somaValoresSelecionados').css('color', 'red');
             $$$.toast('A soma dos valores conciliados não pode ser maior que o valor da conta.', "error");
             $('#save').attr('disabled', 'disabled');
         }
-        else if (valorAcumulado <= 0) {
+        else if (valorAcumulado.toFixed(2) <= 0) {
             $('#somaValoresSelecionados').css('color', 'red');
             $$$.toast('A soma dos valores conciliados não pode ser igual a zero.', "error");
             $('#save').attr('disabled', 'disabled');

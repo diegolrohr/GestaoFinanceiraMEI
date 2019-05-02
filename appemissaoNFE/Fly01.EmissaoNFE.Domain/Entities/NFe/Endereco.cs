@@ -57,55 +57,31 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         [XmlElement(ElementName = "xMun")]
         public string Municipio { get; set; }
 
-        /// <summary>
-        /// informar a sigla da UF
-        /// </summary>
-        /// 
         [Required]
         [StringLength(2, ErrorMessage = "UF inválida.")]
+        /// <summary>
+        /// informar a sigla da UF
+
+        /// </summary>
+        /// 
         [JsonProperty("UF")]
         [XmlElement(ElementName = "UF")]
         public string UF { get; set; }
 
+        [StringLength(8, ErrorMessage = "CEP inválido.")]
         /// <summary>
         /// informar o CEP, sem formatação ou máscara, pode ser omitido
         /// </summary>
+        /// 
         [JsonProperty("CEP")]
-        [StringLength(8, ErrorMessage = "CEP inválido.")]
         [XmlElement(ElementName = "CEP")]
         public string Cep { get; set; }
-
-        public bool ShouldSerializeCep()
-        {
-            return !string.IsNullOrEmpty(Cep);
-        }
-
-        /// <summary>
-        /// Informe o código bacen do país, de acordo com o banco central do Brasil
-        /// </summary>
-        [XmlElement(ElementName = "cPais")]
-        public string PaisCodigoBacen { get; set; }
-
-        public bool ShouldSerializePaisCodigoBacen()
-        {
-            return !string.IsNullOrEmpty(PaisNome) && !string.IsNullOrEmpty(PaisCodigoBacen);
-        }
-
-        /// <summary>
-        /// Informa o nome do país
-        /// </summary>
-        [XmlElement(ElementName = "xPais")]
-        public string PaisNome { get; set; }
-
-        public bool ShouldSerializePaisNome()
-        {
-            return !string.IsNullOrEmpty(PaisNome) && !string.IsNullOrEmpty(PaisCodigoBacen);
-        }
 
         [MaxLength(14)]
         /// <summary>
         /// informar o telefone com DDD + número, sem formatação
         /// </summary>
+        /// 
         [JsonProperty("fone")]
         [XmlElement(ElementName = "fone", IsNullable = true)]
         public string Fone { get; set; }

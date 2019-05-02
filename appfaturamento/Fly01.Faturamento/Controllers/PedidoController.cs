@@ -149,7 +149,7 @@ namespace Fly01.Faturamento.Controllers
                     {
                         Title = "Finalizar",
                         Id = "stepFinalizar",
-                        Quantity = 21,
+                        Quantity = 18,
                     }
                 },
                 Rule = isEdit ? "parallel" : "linear",
@@ -432,18 +432,6 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputCheckboxUI { Id = "finalizarPedido", Class = "col s12 m4", Label = "Salvar e Finalizar" });
             config.Elements.Add(new InputTextUI { Id = "naturezaOperacao", Class = "col s12", Label = "Natureza de Operação", MaxLength = 60 });
             config.Elements.Add(new TextAreaUI { Id = "mensagemPadraoNota", Class = "col s12", Label = "Informações Adicionais NF-e", MaxLength = 4000 });
-
-            config.Elements.Add(new AutoCompleteUI
-            {
-                Id = "ufSaidaPaisId",
-                Class = "col s12 l4",
-                Label = "Estado de Saída do País",
-                DataUrl = Url.Action("EstadoSemEX", "AutoComplete"),
-                LabelId = "ufSaidaPaisNome"
-            });
-            config.Elements.Add(new InputTextUI { Id = "localEmbarque", Class = "col s12 m4", Label = "Local de Embarque", MaxLength = 60 });
-            config.Elements.Add(new InputTextUI { Id = "localDespacho", Class = "col s12 m4", Label = "Local de Despacho", MaxLength = 60 });
-
             config.Elements.Add(new TextAreaUI { Id = "informacoesCompletamentaresNFS", Class = "col s12", Label = "Informações Adicionais NFS-e", MaxLength = 1000 });
             config.Elements.Add(new DivElementUI { Id = "infoEstoqueNegativo", Class = "col s12 text-justify visible", Label = "Informação" });
             config.Elements.Add(new LabelSetUI { Id = "produtosEstoqueNegativoLabel", Class = "col s8", Label = "Produtos com estoque faltante" });
@@ -578,30 +566,6 @@ namespace Fly01.Faturamento.Controllers
                 Tooltip = new HelperUITooltip()
                 {
                     Text = "Ao transmitir a NF-e, além das informações aqui digitadas, será gerado automaticamente para o xml, as informações de IBPT e do aproveitamento de crédito de ICMS de acordo ao ARTIGO 23 DA LC 123 (Para CSOSN 101, 201 ou 900, conforme cadastro do Grupo Tributário em cada produto do pedido)."
-                }
-            });
-            config.Helpers.Add(new TooltipUI
-            {
-                Id = "ufSaidaPaisNome",
-                Tooltip = new HelperUITooltip()
-                {
-                    Text = "Se for emitir nota fiscal de exportação, informe a UF de embarque ou de transposição de fronteira. A UF de embarque é a UF do local onde será embarcada para o exterior (porto/aeroporto), no caso de ser transporte terrestre deve ser o local de transposição de fronteira."
-                }
-            });
-            config.Helpers.Add(new TooltipUI
-            {
-                Id = "localEmbarque",
-                Tooltip = new HelperUITooltip()
-                {
-                    Text = "Se for emitir nota fiscal de exportação, informe o local onde será embarcada para o exterior (porto/aeroporto), no caso de ser transporte terrestre deve ser o local de transposição de fronteira."
-                }
-            });
-            config.Helpers.Add(new TooltipUI
-            {
-                Id = "localDespacho",
-                Tooltip = new HelperUITooltip()
-                {
-                    Text = "Se for emitir nota fiscal de exportação, informe o Recinto Alfandegado do local de despacho."
                 }
             });
             #endregion

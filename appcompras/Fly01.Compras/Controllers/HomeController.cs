@@ -67,16 +67,12 @@ namespace Fly01.Compras.Controllers
             if (!UserCanPerformOperation(ResourceHashConst.ComprasComprasDashboard))
                 return new ContentUI { SidebarUrl = @Url.Action("Sidebar") };
 
-            var date = DateTime.Now;
-            var firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
-            var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
-
             var cfg = new ContentUI
             {
                 History = new ContentUIHistory { Default = Url.Action("Index") },
                 Header = new HtmlUIHeader
                 {
-                    Title = "Indicadores"
+                    Title = "Dashboard"
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 SidebarUrl = @Url.Action("Sidebar")
@@ -108,14 +104,12 @@ namespace Fly01.Compras.Controllers
                     new InputHiddenUI()
                     {
                         Id = "dataInicial",
-                        Name = "dataInicial",
-                        Value = firstDayOfMonth.ToString("yyyy-MM-dd")
+                        Name = "dataInicial"
                     },
                     new InputHiddenUI()
                     {
                         Id = "tpOrdemCompra",
-                        Name = "tpOrdemCompra",
-                        Value = lastDayOfMonth.ToString("yyyy-MM-dd")
+                        Name = "tpOrdemCompra"
                     },
                     new ButtonGroupUI()
                     {
@@ -125,9 +119,8 @@ namespace Fly01.Compras.Controllers
                         OnClickFn = "fnChangeTipoOrdemCompra",
                         Options = new List<ButtonGroupOptionUI>
                         {
-                            new ButtonGroupOptionUI { Id = "btnPedido", Value = "Pedido", Label = "Pedido", Class = "col s6" },
-                            new ButtonGroupOptionUI { Id = "btnOrcamento", Value = "Orcamento", Label = "Orçamento", Class = "col s6" }
-                            
+                            new ButtonGroupOptionUI { Id = "btnOrcamento", Value = "Orcamento", Label = "Orçamento", Class = "col s6" },
+                            new ButtonGroupOptionUI { Id = "btnPedido", Value = "Pedido", Label = "Pedido", Class = "col s6" }
                         }
                     }
                 }
@@ -350,7 +343,7 @@ namespace Fly01.Compras.Controllers
                 Droz = new DrozUI(),
                 Zendesk = new ZendeskUI() 
                 {
-                    AppName = "Bemacash Gestão",
+                    AppName = "Fly01 Gestão",
                     AppTag = "chat_fly01_gestao",
                 }
             };

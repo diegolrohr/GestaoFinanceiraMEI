@@ -66,11 +66,6 @@ namespace Fly01.EmissaoNFE.Domain.ViewModel
         public InformacoesAdicionais InformacoesAdicionais { get; set; }
 
         /// <summary>
-        /// Exportação
-        /// </summary>
-        public Exportacao Exportacao { get; set; }
-
-        /// <summary>
         /// Responsável Técnico
         /// </summary>
         public ResponsavelTecnico ResponsavelTecnico { get; set; }

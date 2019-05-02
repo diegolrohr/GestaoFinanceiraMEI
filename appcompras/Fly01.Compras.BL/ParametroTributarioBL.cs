@@ -112,10 +112,6 @@ namespace Fly01.Compras.BL
             if (string.IsNullOrEmpty(entity.VersaoNFSe))
                 entity.VersaoNFSe = "0.00";
 
-            entity.Cnpj = empresa.CNPJ;
-            entity.UF = empresa.Cidade != null ? (empresa.Cidade.Estado != null ? empresa.Cidade.Estado.Sigla : string.Empty) : string.Empty;
-            entity.InscricaoEstadual = empresa.InscricaoEstadual;
-
             base.ValidaModel(entity);
         }
     }

@@ -39,7 +39,6 @@ namespace Fly01.OrdemServico.API
             builder.EntitySet<Arquivo>("arquivo");
             builder.EntitySet<Kit>("kit");
             builder.EntitySet<KitItem>("kititem");
-            builder.EntitySet<Pais>("pais");
 
             builder.EnableLowerCamelCase();
             return builder.GetEdmModel();

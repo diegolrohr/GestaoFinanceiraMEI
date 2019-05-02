@@ -15,67 +15,76 @@ namespace Fly01.Core.Presentation.Controllers
     [AllowAnonymous]
     public abstract class AccountController : Controller
     {
+        //public ActionResult Login(string returnUrl, string email = "")
+        //{
+        //    return View("LoginSSO", new SSOGatewayRequest()
+        //    {
+        //        AssertionUrl = Url.Action("Assertion", "Account", null, Request.Url.Scheme),
+        //        AppId = WebConfigurationManager.AppSettings["GatewayUserName"],
+        //        AppPassword = WebConfigurationManager.AppSettings["GatewayPassword"],
+        //        SSOUrl = AppDefaults.UrlLoginSSO
+        //    });
+        //}
+
         public ActionResult Login(string returnUrl, string email = "")
         {
-            return View("LoginSSO", new SSOGatewayRequest()
-            {
-                AssertionUrl = Url.Action("Assertion", "Account", null, Request.Url.Scheme),
-                AppId = WebConfigurationManager.AppSettings["GatewayUserName"],
-                AppPassword = WebConfigurationManager.AppSettings["GatewayPassword"],
-                SSOUrl = AppDefaults.UrlLoginSSO
-            });
+            if (HttpContext.User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Home");
+            ViewBag.LoginUrl = AppDefaults.UrlLoginSSO;
+            return View();
         }
 
-        [HttpPost]
-        public ActionResult Assertion()
-        {
-            var assertion = new AssertionResponseVM(Request.Form);
+        //[HttpPost]
+        //public ActionResult Assertion()
+        //{
+        //    var assertion = new AssertionResponseVM(Request.Form);
 
-            var dataPermission = RestUtils.ExecuteGetRequest<ResponseDataVM<DataUserPermissionVM>>(AppDefaults.UrlManager, "user/permissions", RestUtils.GetAuthHeader(assertion.TokenType + " " + assertion.AccessToken), new Dictionary<string, string>()
-            {
-                { "platformUrl", assertion.PlatformUrl },
-                { "email", assertion.UserEmail },
-            });
+        //    var dataPermission = RestUtils.ExecuteGetRequest<ResponseDataVM<DataUserPermissionVM>>(AppDefaults.UrlManager, "user/permissions", RestUtils.GetAuthHeader(assertion.TokenType + " " + assertion.AccessToken), new Dictionary<string, string>()
+        //    {
+        //        { "platformUrl", assertion.PlatformUrl },
+        //        { "email", assertion.UserEmail },
+        //    });
 
-            var tokenDataVM = new TokenDataVM
-            {
-                AccessToken = assertion.AccessToken,
-                ExpiresIn = assertion.ExpiresIn,
-                TokenType = assertion.TokenType,
-                Username = assertion.Username
-            };
+        //    var tokenDataVM = new TokenDataVM
+        //    {
+        //        AccessToken = assertion.AccessToken,
+        //        ExpiresIn = assertion.ExpiresIn,
+        //        TokenType = assertion.TokenType,
+        //        Username = assertion.Username
+        //    };
 
-            UserDataVM userDataVM = new UserDataVM
-            {
-                PlatformUser = assertion.UserEmail,
-                PlatformUrl = assertion.PlatformUrl,
-                TokenData = tokenDataVM,
-                Permissions = dataPermission.Data.Items,
-                ClientToken = assertion.ClientToken
-            };
+        //    UserDataVM userDataVM = new UserDataVM
+        //    {
+        //        PlatformUser = assertion.UserEmail,
+        //        PlatformUrl = assertion.PlatformUrl,
+        //        TokenData = tokenDataVM,
+        //        Permissions = dataPermission.Data.Items,
+        //        ClientToken = assertion.ClientToken
+        //    };
 
-            SessionManager.Current.UserData = userDataVM;
+        //    SessionManager.Current.UserData = userDataVM;
 
-            HttpCookie mpnData = new HttpCookie("mpndata") { Expires = DateTime.UtcNow.AddDays(2), Path = "/" };
-            mpnData.Values["UserName"] = SessionManager.Current.UserData.TokenData.Username;
-            mpnData.Values["UserEmail"] = assertion.UserEmail;
-            mpnData.Values["TrialUntil"] = assertion.Trial ? assertion.LicenseExpiration : "";
+        //    HttpCookie mpnData = new HttpCookie("mpndata") { Expires = DateTime.UtcNow.AddDays(2), Path = "/" };
+        //    mpnData.Values["UserName"] = SessionManager.Current.UserData.TokenData.Username;
+        //    mpnData.Values["UserEmail"] = assertion.UserEmail;
+        //    mpnData.Values["TrialUntil"] = assertion.Trial ? assertion.LicenseExpiration : "";
 
-            Response.Cookies.Add(mpnData);
+        //    Response.Cookies.Add(mpnData);
 
-            FormsAuthentication.SetAuthCookie(SessionManager.Current.UserData.PlatformUser, false);
+        //    FormsAuthentication.SetAuthCookie(SessionManager.Current.UserData.PlatformUser, false);
 
-            return RedirectToAction("Index", "Home");
-        }
+        //    return RedirectToAction("Index", "Home");
+        //}
 
         public ActionResult LogOff()
         {
-            var clientToken = SessionManager.Current.UserData.ClientToken;
+            //var clientToken = SessionManager.Current.UserData.ClientToken;
 
             if (HttpContext.Session != null)
                 SystemLogOff(System.Web.HttpContext.Current);
 
-            return Redirect($"{AppDefaults.UrlLogoutSSO}/{clientToken}");
+            //return Redirect($"{AppDefaults.UrlLogoutSSO}/{clientToken}");
+            return Redirect(AppDefaults.UrlLogoutSSO);
         }
 
         private bool ValidateToken(HttpContext httpContext)

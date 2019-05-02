@@ -31,8 +31,7 @@ namespace Fly01.Faturamento.DAL.Migrations
             //new CestDataInitializer().Initialize(context);
             //new EnquadramentoLegalIPIDataInitializer().Initialize(context);
             new NewCestDataInitializer().Initialize(context);
-            new AliquotaSimplesNacionalDataInitializer().Initialize(context);
-            new PaisDataInitializer().Initialize(context);
+
         }
     }
 }

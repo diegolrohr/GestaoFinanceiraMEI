@@ -50,6 +50,5 @@ namespace Fly01.EmissaoNFE.DAL
         public DbSet<IbptNcm> IbptNcms { get; set; }
         public DbSet<Siafi> Siafis { get; set; }
         public DbSet<ResponsavelTecnico> ResponsavelTecnico { get; set; }
-        public DbSet<Pais> Paises { get; set; }
     }
 }

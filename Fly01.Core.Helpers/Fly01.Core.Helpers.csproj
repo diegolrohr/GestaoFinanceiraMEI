@@ -85,7 +85,6 @@
     <Compile Include="Attribute\APIEnumAttribute.cs" />
     <Compile Include="Attribute\InputMask.cs" />
     <Compile Include="Attribute\SubtitleAttribute.cs" />
-    <Compile Include="EmailFilesHelper.cs" />
     <Compile Include="SHA1Helper.cs" />
     <Compile Include="Base64Helper.cs" />
     <Compile Include="NFSeTssHelper.cs" />
@@ -121,16 +120,6 @@
       <Project>{89c80f58-c490-4c34-b04e-7c43f5f09951}</Project>
       <Name>Fly01.Core.Notifications</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="MailTemplates\Templates\OrdemCompra.html" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="MailTemplates\Templates\OrdemVenda.html" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="MailTemplates\Templates\ParametroTributario.html" />
-    <EmbeddedResource Include="MailTemplates\Templates\OrdemDeServico.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

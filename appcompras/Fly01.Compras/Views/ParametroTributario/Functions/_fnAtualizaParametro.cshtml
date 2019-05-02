@@ -34,26 +34,6 @@
             $("#aliquotaImpostoRenda").val("0");
         }
         $.ajax({
-            url: '@Url.Action("ValidaDadosEmpresa", "ParametroTributario")',
-            type: "POST",
-            data: {
-            },
-            success: function (response) {
-                if (response.success) {
-                    ImportaParametro();
-                }
-                else {
-                    $$$.loading.stop();
-                    var url = "@Url.Action("ModalAtualizaIE", "ParametroTributario")";
-                    $$$.modal(url);
-                }
-                
-            },
-        });
-    }
-
-    function ImportaParametro() {
-        $.ajax({
             url: '@Url.Action("ImportaParametro", "ParametroTributario")',
             type: "POST",
             data: {
@@ -75,8 +55,8 @@
                 usuarioWebServer: $('#usuarioWebServer').val(),
                 senhaWebServer: $('#senhaWebServer').val(),
                 chaveAutenticacao: $('#chaveAutenticacao').val(),
-                autorizacao: $('#autorizacao').val(),
-                tipoTributacaoNFS: $('#tipoTributacaoNFS').val(),
+                autorizacao : $('#autorizacao').val(),
+                tipoTributacaoNFS : $('#tipoTributacaoNFS').val(),
                 tipoAmbienteNFS: $('#tipoAmbienteNFS').val(),
                 csll: $("#aliquotaCSLL").val(),
                 inss: $("#aliquotaINSS").val(),
@@ -94,8 +74,10 @@
                 else {
                     $$$.fn.submitErrorHandler($('#fly01frm').validate(), response.message, 'error');
                 }
+
                 $$$.loading.stop();
             },
         });
     }
+
 </script>

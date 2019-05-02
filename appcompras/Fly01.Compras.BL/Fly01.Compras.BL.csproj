@@ -43,7 +43,6 @@
     <Compile Include="CategoriaBL.cs" />
     <Compile Include="CentroCustoBL.cs" />
     <Compile Include="CertificadoDigitalBL.cs" />
-    <Compile Include="AliquotaSimplesNacionalBL.cs" />
     <Compile Include="CidadeBL.cs" />
     <Compile Include="DashboardBL.cs" />
     <Compile Include="EnquadramentoLegalIPIBL.cs" />
@@ -73,7 +72,6 @@
     <Compile Include="OrcamentoItemBL.cs" />
     <Compile Include="OrdemCompraItemBL.cs" />
     <Compile Include="OrdemCompraBL.cs" />
-    <Compile Include="PaisBL.cs" />
     <Compile Include="ParametroTributarioBL.cs" />
     <Compile Include="PedidoItemBL.cs" />
     <Compile Include="PedidoBL.cs" />

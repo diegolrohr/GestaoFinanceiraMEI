@@ -264,22 +264,6 @@
     <Compile Include="Migrations\201903271945563_CreateFunctionGetReportLicenciamento.Designer.cs">
       <DependentUpon>201903271945563_CreateFunctionGetReportLicenciamento.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201904101241115_AlterGetLicenceFunction.cs" />
-    <Compile Include="Migrations\201904101241115_AlterGetLicenceFunction.Designer.cs">
-      <DependentUpon>201904101241115_AlterGetLicenceFunction.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201904101739345_AddPaises.cs" />
-    <Compile Include="Migrations\201904101739345_AddPaises.Designer.cs">
-      <DependentUpon>201904101739345_AddPaises.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201904101814188_AddDadosExportacao.cs" />
-    <Compile Include="Migrations\201904101814188_AddDadosExportacao.Designer.cs">
-      <DependentUpon>201904101814188_AddDadosExportacao.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201904151313372_FunctionFinanceiro.cs" />
-    <Compile Include="Migrations\201904151313372_FunctionFinanceiro.Designer.cs">
-      <DependentUpon>201904151313372_FunctionFinanceiro.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer2.cs" />
@@ -290,7 +274,6 @@
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer7.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer6.cs" />
     <Compile Include="Migrations\DataInitializer\MockDataInitializer.cs" />
-    <Compile Include="Migrations\DataInitializer\PaisDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\PessoaDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\EstadoDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\BancoDataInitializer.cs" />
@@ -465,18 +448,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201903271945563_CreateFunctionGetReportLicenciamento.resx">
       <DependentUpon>201903271945563_CreateFunctionGetReportLicenciamento.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201904101241115_AlterGetLicenceFunction.resx">
-      <DependentUpon>201904101241115_AlterGetLicenceFunction.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201904101739345_AddPaises.resx">
-      <DependentUpon>201904101739345_AddPaises.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201904101814188_AddDadosExportacao.resx">
-      <DependentUpon>201904101814188_AddDadosExportacao.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201904151313372_FunctionFinanceiro.resx">
-      <DependentUpon>201904151313372_FunctionFinanceiro.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

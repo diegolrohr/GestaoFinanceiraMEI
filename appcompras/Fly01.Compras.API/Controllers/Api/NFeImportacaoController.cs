@@ -121,7 +121,7 @@ namespace Fly01.Compras.API.Controllers.Api
                 }
 
                 #region Fornecedor
-                var ibge = NFe.InfoNFe.Emitente?.Endereco?.CodigoMunicipio;
+                var ibge = NFe.InfoNFe?.Emitente?.Endereco?.CodigoMunicipio;
                 var cidade = UnitOfWork.CidadeBL.All.FirstOrDefault(x => x.CodigoIbge == ibge);
 
                 if (entity.NovoFornecedor)
@@ -131,18 +131,18 @@ namespace Fly01.Compras.API.Controllers.Api
                     var fornecedor = new Pessoa()
                     {
                         Id = entity.FornecedorId.Value,
-                        Nome = NFe.InfoNFe.Emitente?.Nome,
-                        TipoDocumento = NFe.InfoNFe.Emitente?.Cnpj.Length == 14 ? "J" : "F",
-                        CPFCNPJ = NFe.InfoNFe.Emitente?.Cnpj != null ? NFe.InfoNFe.Emitente?.Cnpj : NFe.InfoNFe.Emitente?.Cpf != null ? NFe.InfoNFe.Emitente?.Cpf : null,
-                        NomeComercial = NFe.InfoNFe.Emitente?.NomeFantasia,
-                        Endereco = NFe.InfoNFe.Emitente?.Endereco?.Logradouro,
-                        Numero = NFe.InfoNFe.Emitente?.Endereco?.Numero,
-                        Complemento = NFe.InfoNFe.Emitente?.Endereco?.Numero,
-                        Bairro = NFe.InfoNFe.Emitente?.Endereco?.Bairro,
+                        Nome = NFe.InfoNFe?.Emitente?.Nome,
+                        TipoDocumento = NFe.InfoNFe?.Emitente?.Cnpj.Length == 14 ? "J" : "F",
+                        CPFCNPJ = NFe.InfoNFe?.Emitente?.Cnpj != null ? NFe.InfoNFe?.Emitente?.Cnpj : NFe.InfoNFe?.Emitente?.Cpf != null ? NFe.InfoNFe?.Emitente?.Cpf : null,
+                        NomeComercial = NFe.InfoNFe?.Emitente?.NomeFantasia,
+                        Endereco = NFe.InfoNFe?.Emitente?.Endereco?.Logradouro,
+                        Numero = NFe.InfoNFe?.Emitente?.Endereco?.Numero,
+                        Complemento = NFe.InfoNFe?.Emitente?.Endereco?.Numero,
+                        Bairro = NFe.InfoNFe?.Emitente?.Endereco?.Bairro,
                         CidadeId = cidade?.Id,
                         EstadoId = cidade?.EstadoId,
-                        CEP = NFe.InfoNFe.Emitente?.Endereco?.Cep,
-                        InscricaoEstadual = NFe.InfoNFe.Emitente?.InscricaoEstadual,
+                        CEP = NFe.InfoNFe?.Emitente?.Endereco?.Cep,
+                        InscricaoEstadual = NFe.InfoNFe?.Emitente?.InscricaoEstadual,
                         Fornecedor = true
                     };
                     UnitOfWork.PessoaBL.Insert(fornecedor);
@@ -154,17 +154,17 @@ namespace Fly01.Compras.API.Controllers.Api
                     var fornecedor = UnitOfWork.PessoaBL.Find(entity.FornecedorId);
                     if (fornecedor != null)
                     {
-                        fornecedor.Nome = NFe.InfoNFe.Emitente?.Nome;
-                        fornecedor.CPFCNPJ = NFe.InfoNFe.Emitente?.Cnpj != null ? NFe.InfoNFe.Emitente?.Cnpj : NFe.InfoNFe.Emitente?.Cpf != null ? NFe.InfoNFe.Emitente?.Cpf : null;
-                        fornecedor.NomeComercial = NFe.InfoNFe.Emitente?.NomeFantasia;
-                        fornecedor.Endereco = NFe.InfoNFe.Emitente?.Endereco?.Logradouro;
-                        fornecedor.Numero = NFe.InfoNFe.Emitente?.Endereco?.Numero;
-                        fornecedor.Complemento = NFe.InfoNFe.Emitente?.Endereco?.Numero;
-                        fornecedor.Bairro = NFe.InfoNFe.Emitente?.Endereco?.Bairro;
+                        fornecedor.Nome = NFe.InfoNFe?.Emitente?.Nome;
+                        fornecedor.CPFCNPJ = NFe.InfoNFe?.Emitente?.Cnpj != null ? NFe.InfoNFe?.Emitente?.Cnpj : NFe.InfoNFe?.Emitente?.Cpf != null ? NFe.InfoNFe?.Emitente?.Cpf : null;
+                        fornecedor.NomeComercial = NFe.InfoNFe?.Emitente?.NomeFantasia;
+                        fornecedor.Endereco = NFe.InfoNFe?.Emitente?.Endereco?.Logradouro;
+                        fornecedor.Numero = NFe.InfoNFe?.Emitente?.Endereco?.Numero;
+                        fornecedor.Complemento = NFe.InfoNFe?.Emitente?.Endereco?.Numero;
+                        fornecedor.Bairro = NFe.InfoNFe?.Emitente?.Endereco?.Bairro;
                         fornecedor.CidadeId = cidade?.Id;
                         fornecedor.EstadoId = cidade?.EstadoId;
-                        fornecedor.CEP = NFe.InfoNFe.Emitente?.Endereco?.Cep;
-                        fornecedor.InscricaoEstadual = NFe.InfoNFe.Emitente?.InscricaoEstadual;
+                        fornecedor.CEP = NFe.InfoNFe?.Emitente?.Endereco?.Cep;
+                        fornecedor.InscricaoEstadual = NFe.InfoNFe?.Emitente?.InscricaoEstadual;
 
                         UnitOfWork.PessoaBL.Update(fornecedor);
                         listProducers.Add(new NFeImportacaoFinalizarProducer() { Entity = fornecedor, Verbo = RabbitConfig.EnHttpVerb.PUT });
@@ -174,10 +174,10 @@ namespace Fly01.Compras.API.Controllers.Api
 
                 #region Transportadora
 
-                var hasTagTransportadora = (NFe != null && NFe.InfoNFe != null && NFe.InfoNFe.Transporte != null && NFe.InfoNFe.Transporte.Transportadora != null && NFe.InfoNFe.Transporte.Transportadora?.RazaoSocial != null);
+                var hasTagTransportadora = (NFe != null && NFe.InfoNFe != null && NFe.InfoNFe?.Transporte != null && NFe.InfoNFe?.Transporte?.Transportadora != null && NFe.InfoNFe?.Transporte?.Transportadora?.RazaoSocial != null);
                 if (hasTagTransportadora)
                 {
-                    var ufTransp = NFe.InfoNFe.Transporte?.Transportadora?.UF;
+                    var ufTransp = NFe.InfoNFe?.Transporte?.Transportadora?.UF;
                     var estadoTransp = UnitOfWork.EstadoBL.All.FirstOrDefault(x => x.Sigla == ufTransp);
 
                     if (entity.NovaTransportadora && entity.TipoFrete != TipoFrete.SemFrete)
@@ -186,10 +186,10 @@ namespace Fly01.Compras.API.Controllers.Api
                         var transportadora = new Pessoa()
                         {
                             Id = entity.TransportadoraId.Value,
-                            TipoDocumento = NFe.InfoNFe.Transporte?.Transportadora?.CNPJ?.Length == 14 ? "J" : "F",
-                            CPFCNPJ = NFe.InfoNFe.Transporte?.Transportadora?.CNPJ != null ? NFe.InfoNFe.Transporte?.Transportadora?.CNPJ : NFe.InfoNFe.Transporte?.Transportadora?.CNPJ != null ? NFe.InfoNFe.Transporte?.Transportadora?.CNPJ : null,
-                            Nome = NFe.InfoNFe.Transporte?.Transportadora?.RazaoSocial,
-                            Endereco = NFe.InfoNFe.Transporte?.Transportadora?.Endereco,
+                            TipoDocumento = NFe.InfoNFe?.Transporte?.Transportadora?.CNPJ?.Length == 14 ? "J" : "F",
+                            CPFCNPJ = NFe.InfoNFe?.Transporte?.Transportadora?.CNPJ != null ? NFe.InfoNFe?.Transporte?.Transportadora?.CNPJ : NFe.InfoNFe?.Transporte?.Transportadora?.CNPJ != null ? NFe.InfoNFe?.Transporte?.Transportadora?.CNPJ : null,
+                            Nome = NFe.InfoNFe?.Transporte?.Transportadora?.RazaoSocial,
+                            Endereco = NFe.InfoNFe?.Transporte?.Transportadora?.Endereco,
                             Transportadora = true
                         };
                         UnitOfWork.PessoaBL.Insert(transportadora);
@@ -202,9 +202,9 @@ namespace Fly01.Compras.API.Controllers.Api
                         if (transportadora != null)
                         {
                             transportadora.Id = entity.TransportadoraId.Value;
-                            transportadora.CPFCNPJ = NFe.InfoNFe.Transporte?.Transportadora?.CNPJ != null ? NFe.InfoNFe.Transporte?.Transportadora?.CNPJ : NFe.InfoNFe.Transporte?.Transportadora?.CNPJ != null ? NFe.InfoNFe.Transporte?.Transportadora?.CNPJ : null;
-                            transportadora.Nome = NFe.InfoNFe.Transporte?.Transportadora?.RazaoSocial;
-                            transportadora.Endereco = NFe.InfoNFe.Transporte?.Transportadora?.Endereco;                            
+                            transportadora.CPFCNPJ = NFe.InfoNFe?.Transporte?.Transportadora?.CNPJ != null ? NFe.InfoNFe?.Transporte?.Transportadora?.CNPJ : NFe.InfoNFe?.Transporte?.Transportadora?.CNPJ != null ? NFe.InfoNFe?.Transporte?.Transportadora?.CNPJ : null;
+                            transportadora.Nome = NFe.InfoNFe?.Transporte?.Transportadora?.RazaoSocial;
+                            transportadora.Endereco = NFe.InfoNFe?.Transporte?.Transportadora?.Endereco;                            
                             transportadora.Transportadora = true;
 
                             UnitOfWork.PessoaBL.Update(transportadora);
@@ -217,7 +217,7 @@ namespace Fly01.Compras.API.Controllers.Api
                 #region Produto
                 foreach (var item in UnitOfWork.NFeImportacaoProdutoBL.All.Where(x => x.NFeImportacaoId == entity.Id))
                 {
-                    var nfeproduto = NFe.InfoNFe.Detalhes.Where(x => x.Produto.GTIN == item.CodigoBarras).Select(x => x.Produto).FirstOrDefault();
+                    var nfeproduto = NFe.InfoNFe?.Detalhes.Where(x => x.Produto.GTIN == item.CodigoBarras).Select(x => x.Produto).FirstOrDefault();
                     if (item.NovoProduto)
                     {
                         var saldoFator = FatorConversaoQuantidade(item.FatorConversao, item.Quantidade, item.TipoFatorConversao);
@@ -225,15 +225,15 @@ namespace Fly01.Compras.API.Controllers.Api
                         var novoproduto = new Produto()
                         {
                             Id = Guid.NewGuid(),
-                            Descricao = item.Descricao,
-                            CodigoBarras = item.CodigoBarras,
-                            UnidadeMedidaId = item.UnidadeMedidaId,
+                            Descricao = item?.Descricao,
+                            CodigoBarras = item?.CodigoBarras,
+                            UnidadeMedidaId = item?.UnidadeMedidaId,
                             ValorCusto = valorFator,
                             ValorVenda = item.AtualizaValorVenda ? item.ValorVenda : 0,
                             NcmId = UnitOfWork.NCMBL.All.AsNoTracking().FirstOrDefault(x => x.Codigo == nfeproduto.NCM)?.Id,
                             CestId = UnitOfWork.CestBL.All.AsNoTracking().FirstOrDefault(x => x.Codigo == nfeproduto.CEST)?.Id,
                             SaldoProduto = item.MovimentaEstoque ? saldoFator : 0,
-                            TipoProduto = TipoProduto.Insumo
+                            TipoProduto = TipoProduto.ProdutoFinal
                         };
                         item.ProdutoId = novoproduto.Id;
                         UnitOfWork.ProdutoBL.Insert(novoproduto);
@@ -248,8 +248,8 @@ namespace Fly01.Compras.API.Controllers.Api
                             if (item.AtualizaDadosProduto)
                             {
                                 var valorFator = FatorConversaoValor(item.FatorConversao, item.Valor, item.TipoFatorConversao);
-                                produto.Descricao = item.Descricao;
-                                produto.CodigoBarras = item.CodigoBarras;
+                                produto.Descricao = item?.Descricao;
+                                produto.CodigoBarras = item?.CodigoBarras;
                                 produto.ValorCusto = valorFator;
                                 produto.NcmId = UnitOfWork.NCMBL.All.AsNoTracking().FirstOrDefault(x => x.Codigo == nfeproduto.NCM)?.Id;
                                 produto.CestId = UnitOfWork.CestBL.All.AsNoTracking().FirstOrDefault(x => x.Codigo == nfeproduto.CEST)?.Id;
@@ -287,7 +287,7 @@ namespace Fly01.Compras.API.Controllers.Api
                                 Observacao = string.Format("Conta a Pagar gerada através da importação do XML da nota {0} - {1} - Nº Duplicata: {2}, aplicativo Bemacash Compras", entity.Serie, entity.Numero, item.Numero),
                                 Descricao = string.Format("Importação do XML, nota {0} - {1}", entity.Serie, entity.Numero),
                                 FormaPagamentoId = entity.FormaPagamentoId.Value,
-                                CentroCustoId = entity.CentroCustoId
+                                CentroCustoId = entity?.CentroCustoId
                             };
                             UnitOfWork.NFeImportacaoCobrancaBL.Update(item);
                             listProducers.Add(new NFeImportacaoFinalizarProducer() { Entity = contaPagar, Verbo = RabbitConfig.EnHttpVerb.POST });
@@ -309,7 +309,7 @@ namespace Fly01.Compras.API.Controllers.Api
                             Descricao = string.Format("Importação do XML, nota {0} - {1}", entity.Serie, entity.Numero),
                             Observacao = string.Format("Conta a Pagar gerada através da importação do XML da nota {0} - {1}, aplicativo Bemacash Compras", entity.Serie, entity.Numero),
                             FormaPagamentoId = entity.FormaPagamentoId.Value,
-                            CentroCustoId = entity.CentroCustoId
+                            CentroCustoId = entity?.CentroCustoId
                         };
                         listProducers.Add(new NFeImportacaoFinalizarProducer() { Entity = contaPagar, Verbo = RabbitConfig.EnHttpVerb.POST });
                     }
@@ -330,7 +330,7 @@ namespace Fly01.Compras.API.Controllers.Api
                             UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao,
                             TipoCompra = entity.Tipo,
                             PlataformaId = PlataformaUrl,
-                            Serie = entity.Serie,
+                            Serie = entity?.Serie,
                             Numero = entity.Numero,
                             IsNFeImportacao = true
                         },
@@ -356,18 +356,18 @@ namespace Fly01.Compras.API.Controllers.Api
                         Data = entity.DataEmissao,
                         Total = entity.ValorTotal,
                         TipoFrete = NFe.InfoNFe.Transporte.ModalidadeFrete,
-                        Marca = NFe.InfoNFe.Transporte?.Volume?.Marca,
+                        Marca = NFe.InfoNFe?.Transporte?.Volume?.Marca,
                         PlacaVeiculo = NFe.InfoNFe?.Transporte?.Veiculo?.Placa,
-                        TipoEspecie = NFe.InfoNFe.Transporte?.Volume?.Especie,
-                        ValorFrete = entity.ValorFrete,
-                        PesoBruto = NFe.InfoNFe.Transporte?.Volume?.PesoBruto,
-                        PesoLiquido = NFe.InfoNFe.Transporte?.Volume?.PesoLiquido,
-                        QuantidadeVolumes = NFe.InfoNFe.Transporte?.Volume?.Quantidade,
+                        TipoEspecie = NFe.InfoNFe?.Transporte?.Volume?.Especie,
+                        ValorFrete = entity?.ValorFrete,
+                        PesoBruto = NFe.InfoNFe?.Transporte?.Volume?.PesoBruto,
+                        PesoLiquido = NFe.InfoNFe?.Transporte?.Volume?.PesoLiquido,
+                        QuantidadeVolumes = NFe.InfoNFe?.Transporte?.Volume?.Quantidade,
                         FormaPagamentoId = entity.FormaPagamentoId,
                         CategoriaId = entity.CategoriaId,
                         CondicaoParcelamentoId = entity.CondicaoParcelamentoId,
                         DataVencimento = entity.DataVencimento,
-                        CentroCustoId = entity.CentroCustoId,
+                        CentroCustoId = entity?.CentroCustoId,
                         Observacao = string.Format("Pedido gerado através da importação do XML da nota {0} - {1}.", entity.Serie, entity.Numero)
                     };
 

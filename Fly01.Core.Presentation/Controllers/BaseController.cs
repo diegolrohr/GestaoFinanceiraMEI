@@ -968,7 +968,7 @@ namespace Fly01.Core.Presentation
                 string cellText = Server.HtmlDecode(data.Columns[x].ColumnName);
                 widths[x] = cellText.Length > 4 ? cellText.Length : 4;
                 PdfPCell cell = new PdfPCell(new Phrase(new Chunk(cellText, FontFactory.GetFont("Roboto", 8, BaseColor.WHITE))))
-                {                    
+                {
                     BorderWidth = 0,
                     BackgroundColor = new BaseColor(System.Drawing.ColorTranslator.FromHtml("#f37021")),
                     Padding = padding
@@ -1063,7 +1063,7 @@ namespace Fly01.Core.Presentation
                 param.Columns.ForEach(y =>
                 {
                     if (!string.IsNullOrWhiteSpace(y.Name))
-                        dtr[y.Name] = o.GetProperty(y.Data.Replace("/","_")).GetValue(x, null);
+                        dtr[y.Name] = o.GetProperty(y.Data.Replace("/", "_")).GetValue(x, null);
                 });
                 dt.Rows.Add(dtr);
             });

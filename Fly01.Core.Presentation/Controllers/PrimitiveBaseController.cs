@@ -16,7 +16,7 @@ namespace Fly01.Core.Presentation.Controllers
 
         private string ControllerName { get; set; }
         private string ActionName { get; set; }
-        
+
         public PrimitiveBaseController()
         {
             var annotationInController = GetType().GetCustomAttributes(FindAnnotationInherit)

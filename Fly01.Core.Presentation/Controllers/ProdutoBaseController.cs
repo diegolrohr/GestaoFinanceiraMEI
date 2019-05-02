@@ -177,7 +177,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Class = "col s12 m3",
                 Label = "Tipo",
                 Required = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoProduto)).ToList().FindAll(x => "Insumo,ProdutoFinal,Outros".Contains(x.Value))),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoProduto)).ToList().FindAll(x => "ProdutoFinal,Insumo,Outros".Contains(x.Value)).OrderByDescending(x => x.Label)),
                 DomEvents = new List<DomEventUI>() { new DomEventUI() { DomEvent = "change", Function = "fnChangeTipoProduto" } }
             });
 

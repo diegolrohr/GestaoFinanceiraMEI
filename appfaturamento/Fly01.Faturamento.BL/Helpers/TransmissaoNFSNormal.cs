@@ -250,11 +250,14 @@ namespace Fly01.Faturamento.BL.Helpers
 
         private Atividade ObterAtividade()
         {
-            return new Atividade()
+            var atividade = 
+            new Atividade()
             {
                 CodigoCNAE = Empresa.CNAE,
                 AliquotaIss = ParametrosTributarios.AliquotaISS,
+                CodigoIBGEPrestador = Empresa.Cidade?.CodigoIbge ?? ""
             };
+            return atividade;
         }
 
         private bool IsLocal()

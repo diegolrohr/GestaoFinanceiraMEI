@@ -28,6 +28,17 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
 
                 entity.ItemTransmissaoNFSVM.AssinaturaHash = Assinatura.GeraAssinatura(entity.ItemTransmissaoNFSVM);
                 unitOfWork.IbptNcmBL.CalculaImpostoIBPTNBS(entity);
+                /// <summary>
+                /// 3547809	Santo André SP não deve sair o CNAE
+                /// </summary>
+                if(entity.ItemTransmissaoNFSVM.Identificacao.CodigoIBGEPrestador == "3547809")
+                {
+                    entity.ItemTransmissaoNFSVM.Atividade.CodigoCNAE = null;
+                    foreach (var item in entity.ItemTransmissaoNFSVM.Servicos)
+                    {
+                        item.CNAE = null;
+                    }
+                }
 
                 try
                 {

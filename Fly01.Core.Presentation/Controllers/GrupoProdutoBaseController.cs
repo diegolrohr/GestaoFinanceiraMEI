@@ -165,7 +165,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Class = "col s6 l3",
                 Label = "Tipo Produto",
                 Required = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoProduto))),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoProduto)).ToList().FindAll(x => "ProdutoFinal,Insumo,Outros".Contains(x.Value)).OrderByDescending(x => x.Label)),
             });
 
             config.Elements.Add(new AutoCompleteUI

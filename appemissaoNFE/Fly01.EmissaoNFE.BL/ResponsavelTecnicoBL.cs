@@ -15,13 +15,14 @@ namespace Fly01.EmissaoNFE.BL
 
         /// <summary>
         /// As regras de validação ZD01-10 e ZD02-10 (identificação do responsável técnico), ficarão para implementação futura, 
-        /// exceto para as UF: AL(27), AM(13), MS(50), PE(26), PR(41), SC(42) e TO(17), que manterão a data de 07/05/2019(Produção) 25/02/2019(Homologação)
+        /// exceto para as UF: AM(13), MS(50), PE(26), PR(41), SC(42) e TO(17), que manterão a data de 07/05/2019(Produção) 25/02/2019(Homologação)
+        /// NT 2018.005 v1.30: AL(27)saiu desta lista de estados,as demais prorrogaram para 03/06/2019(Produção)
         /// </summary>
         public void TagResponsavelTecnico(ItemTransmissaoVM nota, TipoAmbiente tipoAmbiente)
         {
-            var isUF = ("27,13,50,26,41,42,17").Contains(nota.Identificador.CodigoUF.ToString());
+            var isUF = ("13,50,26,41,42,17").Contains(nota.Identificador.CodigoUF.ToString());
             var dataHomologacao = new DateTime(2019, 02, 25);
-            var dataProducao = new DateTime(2019, 05, 07);
+            var dataProducao = new DateTime(2019, 06, 03);
 
             if (
                 isUF &&
@@ -29,7 +30,7 @@ namespace Fly01.EmissaoNFE.BL
                 (tipoAmbiente == TipoAmbiente.Producao && nota.Identificador.Emissao.Date >= dataProducao.Date)
             )
             {
-                var responsavelTecnico = All.Select(x => new ResponsavelTecnicoXML()
+                var responsavelTecnico = All.Where(x => x.Id.ToString() == "A39B871C-6913-495C-88F8-1F2668B6AABA").Select(x => new ResponsavelTecnicoXML()
                 {
                     CNPJ = x.CNPJ,
                     Contato = x.Contato,
@@ -38,6 +39,21 @@ namespace Fly01.EmissaoNFE.BL
                     CodigoResponsavelTecnico = x.CodigoResponsavelTecnico,
                     IdentificadorCodigoResponsavelTecnico = x.IdentificadorCodigoResponsavelTecnico
                 }).FirstOrDefault();
+
+                #region Regra especifica Paraná
+                if (nota.Identificador.CodigoUF.ToString() == "41")
+                {
+                    responsavelTecnico = All.Where(x => x.Id.ToString() == "D21F8B07-580B-47C9-BD1E-5DF033748D7C").Select(x => new ResponsavelTecnicoXML()
+                    {
+                        CNPJ = x.CNPJ,
+                        Contato = x.Contato,
+                        Email = x.Email,
+                        Fone = x.Fone,
+                        CodigoResponsavelTecnico = x.CodigoResponsavelTecnico,
+                        IdentificadorCodigoResponsavelTecnico = x.IdentificadorCodigoResponsavelTecnico
+                    }).FirstOrDefault();
+                }
+                #endregion
 
                 CalculaSHA1ResponsavelTecnico(responsavelTecnico, nota.NotaId);
                 nota.ResponsavelTecnico = responsavelTecnico;

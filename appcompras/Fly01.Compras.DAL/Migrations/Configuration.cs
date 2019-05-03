@@ -24,7 +24,7 @@ namespace Fly01.Compras.DAL.Migrations
             //new CidadeDataInitializer5().Initialize(context, ufs);
             //new CidadeDataInitializer6().Initialize(context, ufs);
             //new CidadeDataInitializer7().Initialize(context, ufs);
-            //new CFOPDataInitializer().Initialize(context);
+            new CFOPDataInitializer().Initialize(context);
             //new CestDataInitializer().Initialize(context);
             //new EnquadramentoLegalIPIDataInitializer().Initialize(context);
             //new ISSDataInitializer().Initialize(context);

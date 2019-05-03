@@ -30,6 +30,14 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         public string CNAE { get; set; }
 
         /// <summary>
+        /// 3547809	Santo André SP não deve sair o CNAE
+        /// </summary>
+        private bool ShouldSerializeCNAE()
+        {
+            return (CodigoIBGEPrestador != "3547809");
+        }
+
+        /// <summary>
         /// Código de tributação do serviço.
         /// </summary>
         [XmlElement(ElementName = "codtrib")]

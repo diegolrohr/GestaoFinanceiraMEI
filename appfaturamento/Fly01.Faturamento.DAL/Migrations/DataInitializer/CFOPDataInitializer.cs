@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Entities.Domains.Commons;
+using System.Data.Entity.Migrations;
 
 namespace Fly01.Faturamento.DAL.Migrations.DataInitializer
 {
@@ -10,7 +11,8 @@ namespace Fly01.Faturamento.DAL.Migrations.DataInitializer
     {
         public void Initialize(AppDataContext context)
         {
-            if (!context.Cfops.Any())
+            var NeedUpdateCfop = true;
+            if (!context.Cfops.Any() || NeedUpdateCfop)
             {
                 var listOfCFOP = new List<Cfop>()
                 {
@@ -594,8 +596,15 @@ namespace Fly01.Faturamento.DAL.Migrations.DataInitializer
                     new Cfop() { Id = Guid.Parse("FBAF4ADC-B655-4F76-9BE8-FF67D4B7713B"), Codigo = 6916, Tipo = TipoCfop.Saida, Descricao = "6.916 - Retorno de mercadoria ou bem recebido p/ conserto ou reparo", DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true },
                     new Cfop() { Id = Guid.Parse("C94DAA7C-1067-4D02-8F5C-FFD28972FD87"), Codigo = 1906, Tipo = TipoCfop.Entrada, Descricao = "1.906 - Retorno de mercadoria remetida p/ depósito fechado ou armazém geral", DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true },
                     new Cfop() { Id = Guid.Parse("CD5C9B1D-3729-4C21-80BA-FFE0466B4678"), Codigo = 1909, Tipo = TipoCfop.Entrada, Descricao = "1.909 - Retorno de bem remetido por conta de contrato de comodato", DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true },
+                    new Cfop() { Id = Guid.Parse("DCB6FBAE-BE7E-4DDC-9E10-CA6179A0A21A"), Codigo = 5404, Tipo = TipoCfop.Saida, Descricao = "5.404 - Venda de mercadoria sujeita ao regime de substituição tributária, cujo imposto já tenha sido retido anteriormente", DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true },
+                    new Cfop() { Id = Guid.Parse("27E98513-2D20-4FB3-9236-27D192AFD9DB"), Codigo = 1215, Tipo = TipoCfop.Entrada, Descricao = "1.215 - Devolução de fornecimento de produção do estabelecimento de ato cooperativo", DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true },
+                    new Cfop() { Id = Guid.Parse("E73F1D6F-A0BB-4A69-A4C3-BAF5ABBE90BD"), Codigo = 1216, Tipo = TipoCfop.Entrada, Descricao = "1.216 - Devolução de fornecimento de mercadoria adquirida ou recebida de terceiros de ato cooperativo", DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true },
+                    new Cfop() { Id = Guid.Parse("CF18E79F-72DD-4FD1-9A49-A9AFA349F978"), Codigo = 2215, Tipo = TipoCfop.Entrada, Descricao = "2.215 - Devolução de fornecimento de produção do estabelecimento de ato cooperativo", DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true },
+                    new Cfop() { Id = Guid.Parse("BD9F5E00-ED97-44C6-ADE9-4BA1B711EC93"), Codigo = 2216, Tipo = TipoCfop.Entrada, Descricao = "2.216 - Devolução de fornecimento de mercadoria adquirida ou recebida de terceiros de ato cooperativo", DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true },
+                    new Cfop() { Id = Guid.Parse("954C90BE-A83D-4C2C-9CC2-FFE3C6E57B02"), Codigo = 5216, Tipo = TipoCfop.Saida, Descricao = "5.216 - Devolução de entrada decorrente do fornecimento de produto ou mercadoria de ato cooperativo", DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true },
+                    new Cfop() { Id = Guid.Parse("5E4D5C07-2A9F-4EAE-9BA1-D724B3B68FE3"), Codigo = 6216, Tipo = TipoCfop.Saida, Descricao = "6.216 - Devolução de entrada decorrente do fornecimento de produto ou mercadoria de ato cooperativo", DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true },
                 };
-                context.Cfops.AddRange(listOfCFOP);
+                context.Cfops.AddOrUpdate(x => x.Id, listOfCFOP.ToArray());
                 context.SaveChanges();
             }
         }

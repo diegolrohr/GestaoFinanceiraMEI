@@ -254,6 +254,7 @@ namespace Fly01.Faturamento.BL.Helpers
             {
                 CodigoCNAE = Empresa.CNAE,
                 AliquotaIss = ParametrosTributarios.AliquotaISS,
+                CodigoIBGEPrestador = Empresa.Cidade?.CodigoIbge ?? ""
             };
         }
 

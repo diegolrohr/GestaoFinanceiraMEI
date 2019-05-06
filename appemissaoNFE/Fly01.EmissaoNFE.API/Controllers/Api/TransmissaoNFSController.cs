@@ -30,15 +30,11 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 unitOfWork.IbptNcmBL.CalculaImpostoIBPTNBS(entity);
 
                 /// <summary>
-                /// 3547809	Santo André SP não deve sair o CNAE
+                /// 3547809	Santo André SP não deve sair a tag atividade, pois não se tem CNAE e dava erro de schemax no TSS
                 /// </summary>
                 if (entity.ItemTransmissaoNFSVM.Identificacao.CodigoIBGEPrestador == "3547809")
                 {
-                    entity.ItemTransmissaoNFSVM.Atividade.CodigoCNAE = string.Empty;
-                    foreach (var item in entity.ItemTransmissaoNFSVM.Servicos)
-                    {
-                        item.CNAE = string.Empty;
-                    }
+                    entity.ItemTransmissaoNFSVM.Atividade = null;
                 }
 
                 try

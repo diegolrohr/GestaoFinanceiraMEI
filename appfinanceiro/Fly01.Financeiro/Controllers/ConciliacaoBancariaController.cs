@@ -195,7 +195,8 @@ namespace Fly01.Financeiro.Controllers
                 else
                 {
                     double somaConciliados = Math.Round(conciliacaoBancariaItem.ConciliacaoBancariaItemContasFinanceiras.Sum(x => x.ValorConciliado), 2);
-                    if (somaConciliados > Math.Abs(conciliacaoBancariaItem.Valor))
+                    double valor = Math.Round(Math.Abs(conciliacaoBancariaItem.Valor), 2);
+                    if (somaConciliados > valor)
                     {
                         return JsonResponseStatus.GetFailure("A soma dos valores conciliados não pode ser superior ao valor do lançamento");
                     }
@@ -203,7 +204,7 @@ namespace Fly01.Financeiro.Controllers
                     {
                         return JsonResponseStatus.GetFailure("A soma dos valores conciliados deve ser superior a zero");
                     }
-                    else if (!(somaConciliados == Math.Round(Math.Abs(conciliacaoBancariaItem.Valor), 2)))
+                    else if (!(somaConciliados == valor))
                     {
                         return JsonResponseStatus.GetFailure("A soma dos valores conciliados deve ser igual ao valor do lançamento no extrato");
                     }

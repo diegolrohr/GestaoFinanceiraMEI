@@ -33,10 +33,10 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 /// </summary>
                 if(entity.ItemTransmissaoNFSVM.Identificacao.CodigoIBGEPrestador == "3547809")
                 {
-                    entity.ItemTransmissaoNFSVM.Atividade.CodigoCNAE = null;
+                    entity.ItemTransmissaoNFSVM.Atividade.CodigoCNAE = string.Empty;
                     foreach (var item in entity.ItemTransmissaoNFSVM.Servicos)
                     {
-                        item.CNAE = null;
+                        item.CNAE = string.Empty;
                     }
                 }
 

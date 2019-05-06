@@ -19,10 +19,10 @@ namespace Fly01.EmissaoNFE.DAL.Migrations.DataInitializer
                     Id = Guid.Parse("A39B871C-6913-495C-88F8-1F2668B6AABA"),
                     UsuarioInclusao = "Seed",
                     DataInclusao = DateTime.Now,
-                    CNPJ = "53113791000122",
+                    CNPJ = "19116002000179",
                     Contato = "Ramon Martins Da Silva",
                     Email = "resp_tecnico_dfe_mpn@totvs.com.br",
-                     Fone = "30032111",
+                     Fone = "1128593905",
                     },
                     new ResponsavelTecnico()//PR
                     {
@@ -32,7 +32,7 @@ namespace Fly01.EmissaoNFE.DAL.Migrations.DataInitializer
                         CNPJ = "06377049838",
                         Contato = "Wilson De Godoy Soares Junior",
                         Email = "resp_tecnico_dfe_mpn@totvs.com.br",
-                        Fone = "30032111",
+                        Fone = "1128593905",
                     }
                 };
                 context.ResponsavelTecnico.AddOrUpdate(x => x.Id, lista.ToArray());

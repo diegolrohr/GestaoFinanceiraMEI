@@ -46,6 +46,8 @@ namespace Fly01.EmissaoNFE.BL
                     {
                         CNPJ = x.CNPJ,
                         Contato = x.Contato,
+                        Email = x.Email,
+                        Fone = x.Fone,
                         CodigoResponsavelTecnico = x.CodigoResponsavelTecnico,
                         IdentificadorCodigoResponsavelTecnico = x.IdentificadorCodigoResponsavelTecnico
                     }).FirstOrDefault();

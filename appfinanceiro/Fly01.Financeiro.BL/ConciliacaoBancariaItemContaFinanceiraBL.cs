@@ -70,7 +70,7 @@ namespace Fly01.Financeiro.BL
             if (items.Any())
               somaValorJaConciliado = items.Sum(y => y.ValorConciliado);
 
-            if ((somaValorJaConciliado + entity.ValorConciliado) > Math.Abs(conciliacaoBancariaItem.Valor))
+            if (Math.Round((somaValorJaConciliado + entity.ValorConciliado),2) > Math.Abs(conciliacaoBancariaItem.Valor))
             {
                 throw new BusinessException("A soma dos valores conciliados não pode ser superior ao valor do lançamento");
             }
@@ -199,8 +199,8 @@ namespace Fly01.Financeiro.BL
             else
             {
                 double somaConciliados = Math.Round(entity.ConciliacaoBancariaItemContasFinanceiras.Sum(x => x.ValorConciliado), 2);
-
-                if (somaConciliados > Math.Round(Math.Abs(conciliacaoBancariaItem.Valor),2))
+                double valor = Math.Round(Math.Abs(conciliacaoBancariaItem.Valor), 2);
+                if (somaConciliados > valor)
                     throw new BusinessException("A soma dos valores conciliados não pode ser superior ao valor do lançamento");
                 else if (somaConciliados <= 0)
                     throw new BusinessException("A soma dos valores conciliados deve ser superior a zero");

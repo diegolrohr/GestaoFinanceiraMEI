@@ -9,7 +9,7 @@
         $$$.fn.updateTextFields();
         $('input#somaValoresSelecionados').css('color', '');
         $('#save').attr('disabled', 'disabled');
-
+       
         if (valorAcumulado.toFixed(2) == valorLancamentoExtrato) {
             $('#somaValoresSelecionados').css('color', 'green');
             $$$.toast("A soma dos valores conciliados está de acordo ao valor do lançamento", "info");

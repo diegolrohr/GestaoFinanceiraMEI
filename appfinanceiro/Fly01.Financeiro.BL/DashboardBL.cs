@@ -4,6 +4,7 @@ using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.Financeiro.API.Models.DAL;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 
 namespace Fly01.Financeiro.BL
@@ -53,20 +54,18 @@ namespace Fly01.Financeiro.BL
         public List<ContasReceberDoDiaVM> GetDashContasReceberPagoPorDia(DateTime filtro)
         {
             var mesAtual = CarregaMes(filtro.Month);
-            return _contaFinanceiraBL.All.Where(x => x.DataVencimento.Month.Equals(filtro.Month) && x.DataVencimento.Year.Equals(filtro.Year)
-                    && x.TipoContaFinanceira == TipoContaFinanceira.ContaReceber && x.ValorPago.HasValue)
-                .Select(x => new
-                {
-                    x.DataVencimento.Day,
-                    x.DataVencimento.Month,
-                    Valor = x.ValorPago == null ? 0 : x.ValorPago
-                }).GroupBy(x => new { x.Day, x.Month })
-                .Select(x => new ContasReceberDoDiaVM
-                {
-                    Dia = x.Key.Day.ToString() + "/" + mesAtual,
-                    Total = x.Sum(v => v.Valor)
-                }).ToList();
-
+            return _contaFinanceiraBaixaBL.AllIncluding(x => x.ContaFinanceira).AsNoTracking().Where(x => x.Data.Month.Equals(filtro.Month) && x.Data.Year.Equals(filtro.Year) && x.ContaFinanceira.TipoContaFinanceira == TipoContaFinanceira.ContaReceber)
+            .Select(x => new
+            {
+                x.Data.Day,
+                x.Data.Month,
+                x.Valor
+            }).GroupBy(x => new { x.Day, x.Month })
+            .Select(x => new ContasReceberDoDiaVM
+            {
+                Dia = x.Key.Day.ToString() + "/" + mesAtual,
+                Total = x.Sum(v => v.Valor)
+            }).ToList();
         }
 
         public String CarregaMes(int mes)

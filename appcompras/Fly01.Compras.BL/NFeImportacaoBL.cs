@@ -114,9 +114,9 @@ namespace Fly01.Compras.BL
                 }
                 return NFe;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new BusinessException("Erro ao deserializar o XML: Verifique o arquivo para identificar possiveis erros de formatação.");
+                throw new BusinessException("Erro ao desserializar o XML: Verifique o arquivo para identificar possiveis erros de formatação.: " + ex?.InnerException?.Message);
             }
         }
 

@@ -12,6 +12,13 @@ namespace Fly01.Compras.Models.ViewModel
         public string Finalidade { get; internal set; }
         public string FormaPagamento { get; internal set; }
         public string Fornecedor { get; internal set; }
+
+        public string EnderecoFornecedor { get; internal set; }
+        public string NumeroEndereco { get; internal set; }
+        public string Bairro { get; internal set; }
+        public string Cidade { get; internal set; }
+        public string CEP { get; internal set; }
+
         public string Id { get; set; }
         public string Marca { get; internal set; }
         public string NomeProduto { get; internal set; }

@@ -46,6 +46,10 @@ namespace Fly01.Core.Entities.Domains.Enum
         [Subtitle("ValeCombustivel", "Vale Combustível")]
         ValeCombustivel = 13,
 
+        [XmlEnum(Name = "14")]
+        [Subtitle("DuplicataMercantil", "Duplicata Mercantil")]
+        DuplicataMercantil = 14,
+
         [XmlEnum(Name = "15")]
         [Subtitle("Boleto", "Boleto")]
         Boleto = 15,

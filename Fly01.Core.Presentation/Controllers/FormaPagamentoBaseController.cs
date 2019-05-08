@@ -9,6 +9,7 @@ using Fly01.uiJS.Enums;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace Fly01.Core.Presentation.Controllers
@@ -113,7 +114,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Class = "col s4 l4",
                 Label = "Tipo",
                 Required = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFormaPagamento)))
+                Options = SystemValueHelper.GetUIElementBase(typeof(TipoFormaPagamento)).Where(x => x.Value != "DuplicataMercantil").ToList()
             });
             config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s8 l8", Label = "Descrição", Required = true });
 
@@ -144,8 +145,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Class = "col s4 l4",
                 Label = "Tipo",
                 Required = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFormaPagamento)))
-
+                Options = SystemValueHelper.GetUIElementBase(typeof(TipoFormaPagamento)).Where(x => x.Id != "DuplicataMercantil").ToList()
             });
             config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s8 l8", Label = "Descrição", Required = true });
 

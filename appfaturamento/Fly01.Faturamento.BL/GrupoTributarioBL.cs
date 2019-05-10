@@ -59,6 +59,6 @@ namespace Fly01.Faturamento.BL
             base.Update(entity);
         }
 
-        public static Error DescricaoRepetida = new Error("Descrição já utilizada anteriormente.", "descricao");
+        public static Error DescricaoRepetida = new Error("Descrição do grupo tributário já utilizada anteriormente.", "descricao");
     }
 }

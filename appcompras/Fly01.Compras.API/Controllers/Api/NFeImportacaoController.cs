@@ -101,7 +101,7 @@ namespace Fly01.Compras.API.Controllers.Api
             var NFe = UnitOfWork.NFeImportacaoBL.DeserializeXMlToNFe(entity.Xml);
             try
             {
-                var condicacaoAVistaId = UnitOfWork.CondicaoParcelamentoBL.All.FirstOrDefault(x => x.QtdParcelas == 1 || x.CondicoesParcelamento == "0")?.Id;
+                var condicacaoAVistaId = UnitOfWork.CondicaoParcelamentoBL.All.AsNoTracking().FirstOrDefault(x => x.QtdParcelas == 1 || x.CondicoesParcelamento == "0")?.Id;
                 if (entity.GeraFinanceiro && entity.GeraContasXml)
                 {
                     if (condicacaoAVistaId == null || condicacaoAVistaId == default(Guid))
@@ -122,7 +122,7 @@ namespace Fly01.Compras.API.Controllers.Api
 
                 #region Fornecedor
                 var ibge = NFe.InfoNFe?.Emitente?.Endereco?.CodigoMunicipio;
-                var cidade = UnitOfWork.CidadeBL.All.FirstOrDefault(x => x.CodigoIbge == ibge);
+                var cidade = UnitOfWork.CidadeBL.All.AsNoTracking().FirstOrDefault(x => x.CodigoIbge == ibge);
 
                 if (entity.NovoFornecedor)
                 {
@@ -178,7 +178,7 @@ namespace Fly01.Compras.API.Controllers.Api
                 if (hasTagTransportadora)
                 {
                     var ufTransp = NFe.InfoNFe?.Transporte?.Transportadora?.UF;
-                    var estadoTransp = UnitOfWork.EstadoBL.All.FirstOrDefault(x => x.Sigla == ufTransp);
+                    var estadoTransp = UnitOfWork.EstadoBL.All.AsNoTracking().FirstOrDefault(x => x.Sigla == ufTransp);
 
                     if (entity.NovaTransportadora && entity.TipoFrete != TipoFrete.SemFrete)
                     {

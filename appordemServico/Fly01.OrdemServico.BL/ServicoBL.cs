@@ -77,7 +77,7 @@ namespace Fly01.OrdemServico.BL
             base.Update(entity);
         }
         public static Error DescricaoEmBranco = new Error("Descrição não foi informada.", "descricao");
-        public static Error DescricaoDuplicada = new Error("Descrição já utilizada anteriormente.", "descricao");
+        public static Error DescricaoDuplicada = new Error("Descrição do serviço já utilizada anteriormente.", "descricao");
         public static Error GrupoServicoInvalido = new Error("Grupo de Servico não foi informado.", "grupoServicoId");
         public static Error CodigoServicoEmBranco = new Error("Código do Servico em branco.", "codigoServico");
         public static Error UnidadeMedidaInvalida = new Error("Unidade de medida não foi informada.", "unidadeMedidaId");

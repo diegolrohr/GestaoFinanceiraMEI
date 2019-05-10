@@ -20,6 +20,6 @@ namespace Fly01.OrdemServico.BL
             base.ValidaModel(entity);
         }
 
-        public static Error DescricaoEmBranco = new Error("Descrição já utilizada anteriormente.", "descricao");
+        public static Error DescricaoEmBranco = new Error("Descrição do grupo de produto já utilizada anteriormente.", "descricao");
     }
 }

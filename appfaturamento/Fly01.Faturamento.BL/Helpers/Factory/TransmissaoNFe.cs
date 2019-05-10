@@ -246,7 +246,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 QuantidadeTributada = Math.Round(item.Quantidade, 4),
                 UnidadeMedida = item.Produto.UnidadeMedida?.Abreviacao,
                 UnidadeMedidaTributada = item.Produto.UnidadeMedida?.Abreviacao,
-                ValorBruto = Math.Round((item.Quantidade > 0 ? (item.Quantidade * item.Valor) : item.Valor), 2),
+                ValorBruto = Math.Round((Math.Round(item.Quantidade, 4) > 0 ? (Math.Round(item.Quantidade, 4) * Math.Round(item.Valor,2)) : Math.Round(item.Valor,4)), 2),
                 ValorUnitario = Math.Round(item.Valor, 4),
                 ValorUnitarioTributado = Math.Round(item.Valor, 4),
                 ValorDesconto = Math.Round(item.Desconto, 2),

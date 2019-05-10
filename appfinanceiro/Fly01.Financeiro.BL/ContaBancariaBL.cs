@@ -22,7 +22,7 @@ namespace Fly01.Financeiro.BL
         public override void ValidaModel(ContaBancaria entity)
         {
             entity.Fail(All.Any(x => x.Id != entity.Id && x.NomeConta.ToUpper() == entity.NomeConta.ToUpper()), 
-                new Error("Descrição já utilizada anteriormente.", "nomeConta", All.FirstOrDefault(x => x.Id != entity.Id && x.NomeConta.ToUpper() == entity.NomeConta.ToUpper())?.Id.ToString()));
+                new Error("Descrição da conta bancária já utilizada anteriormente.", "nomeConta", All.FirstOrDefault(x => x.Id != entity.Id && x.NomeConta.ToUpper() == entity.NomeConta.ToUpper())?.Id.ToString()));
 
             if(entity.BancoId == default(Guid) && !string.IsNullOrEmpty(entity.CodigoBanco))
             {
@@ -53,7 +53,7 @@ namespace Fly01.Financeiro.BL
             saldoHistoricoBL.InsereSaldoInicial(entity.Id);
         }
 
-        public static Error DescricaoDuplicada = new Error("Descrição já utilizada anteriormente.", "nomeConta");
+        public static Error DescricaoDuplicada = new Error("Descrição da conta bancária já utilizada anteriormente.", "nomeConta");
         public static Error AgenciaContaObrigatoria = new Error("Dados de agência e conta são obrigatórios.", "agencia");
         public static Error BancoInvalido = new Error("Código do Banco inválido.", "bancoId");
     }

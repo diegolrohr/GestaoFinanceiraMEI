@@ -79,7 +79,7 @@ namespace Fly01.OrdemServico.BL
             {
                 entity.Fail(
                     All.Any(x => x.CodigoProduto.Trim().ToUpper() == entity.CodigoProduto.Trim().ToUpper() && x.Id != entity.Id) ||
-                    ContextAddedEntriesSelfType().Any(x => x.CodigoProduto.Trim().ToUpper() == entity.CodigoProduto.Trim().ToUpper() && x.Id != entity.Id)
+                    ContextAddedEntriesSelfType().Any(x => x.CodigoProduto?.Trim()?.ToUpper() == entity?.CodigoProduto?.Trim()?.ToUpper() && x.Id != entity.Id)
                 , CodigoProdutoDuplicado);
             }
 

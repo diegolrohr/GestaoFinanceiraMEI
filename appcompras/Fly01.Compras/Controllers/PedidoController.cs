@@ -33,7 +33,7 @@ namespace Fly01.Compras.Controllers
         //OrcamentoVM e PedidoVM na mesma controller ordemCompra(gridLoad, form), direcionado para a controller via javaScript
         public PedidoController()
         {
-            ExpandProperties = "condicaoParcelamento($select=id,descricao),formaPagamento($select=id,descricao),fornecedor($select=id,nome,email,endereco,numero,bairro,cep;$expand=cidade($select=nome)),transportadora($select=id,nome),estadoPlacaVeiculo,categoria,centroCusto"; //expand = Cidade($select = id, nome)
+            ExpandProperties = "condicaoParcelamento($select=id,descricao),formaPagamento($select=id,descricao),fornecedor($select=id,nome,email,endereco,numero,bairro,cep,complemento;$expand=cidade($select=nome)),transportadora($select=id,nome),estadoPlacaVeiculo,categoria,centroCusto"; //expand = Cidade($select = id, nome)
         }
 
         [HttpPost]
@@ -959,6 +959,7 @@ namespace Fly01.Compras.Controllers
                 reportItems.Add(new ImprimirPedidoVM
                 {
                     //PEDIDO
+                    ComplementoEndereco = Pedido.Fornecedor != null && Pedido.Fornecedor.Complemento != null ? Pedido.Fornecedor.Complemento.ToString() : string.Empty,
                     EnderecoFornecedor = Pedido.Fornecedor != null && Pedido.Fornecedor.Endereco != null ? Pedido.Fornecedor.Endereco.ToString() : string.Empty,
                     NumeroEndereco = Pedido.Fornecedor != null && Pedido.Fornecedor.Numero != null ? Pedido.Fornecedor.Numero.ToString() : string.Empty,
                     Bairro = Pedido.Fornecedor != null && Pedido.Fornecedor.Bairro != null ? Pedido.Fornecedor.Bairro.ToString() : string.Empty,
@@ -1002,6 +1003,7 @@ namespace Fly01.Compras.Controllers
             reportItems.Add(new ImprimirPedidoVM
             {
                 //PEDIDO
+                ComplementoEndereco = Pedido.Fornecedor != null && Pedido.Fornecedor.Complemento != null ? Pedido.Fornecedor.Complemento.ToString() : string.Empty,
                 EnderecoFornecedor = Pedido.Fornecedor != null && Pedido.Fornecedor.Endereco != null ? Pedido.Fornecedor.Endereco.ToString() : string.Empty,
                 NumeroEndereco = Pedido.Fornecedor != null && Pedido.Fornecedor.Numero != null ? Pedido.Fornecedor.Numero.ToString() : string.Empty,
                 Bairro = Pedido.Fornecedor != null && Pedido.Fornecedor.Bairro != null ? Pedido.Fornecedor.Bairro.ToString() : string.Empty,

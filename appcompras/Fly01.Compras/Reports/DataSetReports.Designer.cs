@@ -380,6 +380,8 @@ namespace Fly01.Compras.Reports {
             
             private global::System.Data.DataColumn columnCEP;
             
+            private global::System.Data.DataColumn columnComplementoEndereco;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public ImprimirPedidoDataTable() {
@@ -679,6 +681,14 @@ namespace Fly01.Compras.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ComplementoEnderecoColumn {
+                get {
+                    return this.columnComplementoEndereco;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -747,7 +757,8 @@ namespace Fly01.Compras.Reports {
                         string NumeroEndereco, 
                         string Bairro, 
                         string Cidade, 
-                        string CEP) {
+                        string CEP, 
+                        string ComplementoEndereco) {
                 ImprimirPedidoRow rowImprimirPedidoRow = ((ImprimirPedidoRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Id,
@@ -782,7 +793,8 @@ namespace Fly01.Compras.Reports {
                         NumeroEndereco,
                         Bairro,
                         Cidade,
-                        CEP};
+                        CEP,
+                        ComplementoEndereco};
                 rowImprimirPedidoRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowImprimirPedidoRow);
                 return rowImprimirPedidoRow;
@@ -838,6 +850,7 @@ namespace Fly01.Compras.Reports {
                 this.columnBairro = base.Columns["Bairro"];
                 this.columnCidade = base.Columns["Cidade"];
                 this.columnCEP = base.Columns["CEP"];
+                this.columnComplementoEndereco = base.Columns["ComplementoEndereco"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -909,6 +922,8 @@ namespace Fly01.Compras.Reports {
                 base.Columns.Add(this.columnCidade);
                 this.columnCEP = new global::System.Data.DataColumn("CEP", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnCEP);
+                this.columnComplementoEndereco = new global::System.Data.DataColumn("ComplementoEndereco", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnComplementoEndereco);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1982,6 +1997,22 @@ namespace Fly01.Compras.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string ComplementoEndereco {
+                get {
+                    try {
+                        return ((string)(this[this.tableImprimirPedido.ComplementoEnderecoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ComplementoEndereco\' in table \'ImprimirPedido\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableImprimirPedido.ComplementoEnderecoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsIdNull() {
                 return this.IsNull(this.tableImprimirPedido.IdColumn);
             }
@@ -2374,6 +2405,18 @@ namespace Fly01.Compras.Reports {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetCEPNull() {
                 this[this.tableImprimirPedido.CEPColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsComplementoEnderecoNull() {
+                return this.IsNull(this.tableImprimirPedido.ComplementoEnderecoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetComplementoEnderecoNull() {
+                this[this.tableImprimirPedido.ComplementoEnderecoColumn] = global::System.Convert.DBNull;
             }
         }
         

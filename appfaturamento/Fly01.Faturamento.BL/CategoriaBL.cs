@@ -82,7 +82,7 @@ namespace Fly01.Faturamento.BL
 
             TipoCarteiraBL.ValidaTipoCarteira(entity.TipoCarteira);
             entity.Fail(base.All.Any(x => x.Id != entity.Id && x.Descricao.ToUpper() == entity.Descricao.ToUpper()),
-                new Error("Descrição já utilizada anteriormente.", "descricao", base.All.FirstOrDefault(x => x.Id != entity.Id && x.Descricao.ToUpper() == entity.Descricao.ToUpper())?.Id.ToString()));
+                new Error("Descrição da categoria já utilizada anteriormente.", "descricao", base.All.FirstOrDefault(x => x.Id != entity.Id && x.Descricao.ToUpper() == entity.Descricao.ToUpper())?.Id.ToString()));
             entity.Fail(entity.Id == entity.CategoriaPaiId, CategoriaPropria);
 
             entity.Fail(base.All.Where(x => x.Id == entity.CategoriaPaiId).Any(x => x.TipoCarteira != entity.TipoCarteira), TipoCarteiraDiferente);

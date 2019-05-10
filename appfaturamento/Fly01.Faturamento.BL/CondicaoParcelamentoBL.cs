@@ -24,7 +24,7 @@ namespace Fly01.Faturamento.BL
             entity.Fail(entity.QtdParcelas.HasValue && (entity.QtdParcelas < 1 || entity.QtdParcelas > 100), QtdParcelasInvalida);
             entity.Fail(!entity.QtdParcelas.HasValue && !ValidaFormatoCondicoesParcelamento(entity.CondicoesParcelamento), CondicaoParcelamentoInvalida);
             entity.Fail(All.Any(x => x.Id != entity.Id && x.Descricao.ToUpper() == entity.Descricao.ToUpper()),
-                new Error("Descrição já utilizada anteriormente.", "descricao", All.FirstOrDefault(x => x.Id != entity.Id && x.Descricao.ToUpper() == entity.Descricao.ToUpper())?.Id.ToString()));
+                new Error("Descrição da condição de parcelamento já utilizada anteriormente.", "descricao", All.FirstOrDefault(x => x.Id != entity.Id && x.Descricao.ToUpper() == entity.Descricao.ToUpper())?.Id.ToString()));
 
 
             base.ValidaModel(entity);

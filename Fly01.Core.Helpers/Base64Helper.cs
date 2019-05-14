@@ -53,7 +53,7 @@ namespace Fly01.Core.Helpers
 
         public static string RemoveSpecialCharacters(string str)
         {
-            return Regex.Replace(str ?? "", "[~|'|!|¨|&|*|;|'|`|´|{|}|ª|º]", "");
+            return Regex.Replace(str ?? "", "[~|'|!|¨|&|*|;|'|`|´|{|}|º|ª|§|°]", "");
         }
     }
 }

@@ -250,17 +250,19 @@ namespace Fly01.Faturamento.BL.Helpers
 
         private Atividade ObterAtividade()
         {
-            return new Atividade()
+            var atividade = 
+            new Atividade()
             {
                 CodigoCNAE = Empresa.CNAE,
                 AliquotaIss = ParametrosTributarios.AliquotaISS,
                 CodigoIBGEPrestador = Empresa.Cidade?.CodigoIbge ?? ""
             };
+            return atividade;
         }
 
         private bool IsLocal()
         {
-            return AppDefaults.UrlGateway.Contains("fly01local.com.br");
+            return AppDefaults.UrlGateway.Contains("bemacashlocal.com.br");
         }
 
         private Identificacao ObterIdentificacao()

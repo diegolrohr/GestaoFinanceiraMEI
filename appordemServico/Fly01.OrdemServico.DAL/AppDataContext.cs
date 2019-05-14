@@ -76,5 +76,6 @@ namespace Fly01.OrdemServico.DAL
         public DbSet<Arquivo> Arquivos { get; set; }
         public DbSet<Kit> Kits { get; set; }
         public DbSet<KitItem> KitItens{ get; set; }
+        public DbSet<Pais> Paises { get; set; }
     }
 }

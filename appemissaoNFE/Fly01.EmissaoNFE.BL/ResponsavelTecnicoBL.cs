@@ -26,8 +26,8 @@ namespace Fly01.EmissaoNFE.BL
 
             if (
                 isUF &&
-                (tipoAmbiente == TipoAmbiente.Homologacao && nota.Identificador.Emissao.Date >= dataHomologacao.Date) ||
-                (tipoAmbiente == TipoAmbiente.Producao && nota.Identificador.Emissao.Date >= dataProducao.Date)
+                ((tipoAmbiente == TipoAmbiente.Homologacao && nota.Identificador.Emissao.Date >= dataHomologacao.Date) ||
+                (tipoAmbiente == TipoAmbiente.Producao && nota.Identificador.Emissao.Date >= dataProducao.Date))
             )
             {
                 var responsavelTecnico = All.Where(x => x.Id.ToString() == "A39B871C-6913-495C-88F8-1F2668B6AABA").Select(x => new ResponsavelTecnicoXML()
@@ -39,7 +39,6 @@ namespace Fly01.EmissaoNFE.BL
                     CodigoResponsavelTecnico = x.CodigoResponsavelTecnico,
                     IdentificadorCodigoResponsavelTecnico = x.IdentificadorCodigoResponsavelTecnico
                 }).FirstOrDefault();
-
                 #region Regra especifica Paraná
                 if (nota.Identificador.CodigoUF.ToString() == "41")
                 {

@@ -423,7 +423,7 @@ namespace Fly01.OrdemServico.Controllers
                 Droz = new DrozUI(),
                 Zendesk = new ZendeskUI()
                 {
-                    AppName = "Fly01 Gestão",
+                    AppName = "Bemacash Gestão",
                     AppTag = "chat_fly01_gestao",
                 }
             };

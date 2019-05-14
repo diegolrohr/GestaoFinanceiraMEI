@@ -25,13 +25,14 @@ namespace Fly01.Faturamento.DAL.Migrations
             //new CidadeDataInitializer5().Initialize(context, ufs);
             //new CidadeDataInitializer6().Initialize(context, ufs);
             //new CidadeDataInitializer7().Initialize(context, ufs);
-            //new CFOPDataInitializer().Initialize(context);
+            new CFOPDataInitializer().Initialize(context);
             //new ISSDataInitializer().Initialize(context);
             //new NBSDataInitializer().Initialize(context);
             //new CestDataInitializer().Initialize(context);
             //new EnquadramentoLegalIPIDataInitializer().Initialize(context);
             new NewCestDataInitializer().Initialize(context);
-
+            new AliquotaSimplesNacionalDataInitializer().Initialize(context);
+            new PaisDataInitializer().Initialize(context);
         }
     }
 }

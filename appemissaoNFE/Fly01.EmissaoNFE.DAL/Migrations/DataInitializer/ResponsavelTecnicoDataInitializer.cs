@@ -11,19 +11,18 @@ namespace Fly01.EmissaoNFE.DAL.Migrations.DataInitializer
         public void Initialize(AppDataContext context)
         {
             var needUpdateResponsavel = true;
-
             if (!context.ResponsavelTecnico.Any() || needUpdateResponsavel)
             {
                 var lista = new List<ResponsavelTecnico>() {
                     new ResponsavelTecnico()
                     {
-                        Id = Guid.Parse("A39B871C-6913-495C-88F8-1F2668B6AABA"),
-                        UsuarioInclusao = "Seed",
-                        DataInclusao = DateTime.Now,
-                        CNPJ = "19116002000179",
-                        Contato = "Ramon Martins Da Silva",
-                        Email = "resp_tecnico_dfe_mpn@totvs.com.br",
-                        Fone = "1128593905",
+                    Id = Guid.Parse("A39B871C-6913-495C-88F8-1F2668B6AABA"),
+                    UsuarioInclusao = "Seed",
+                    DataInclusao = DateTime.Now,
+                    CNPJ = "19116002000179",
+                    Contato = "Ramon Martins Da Silva",
+                    Email = "resp_tecnico_dfe_mpn@totvs.com.br",
+                     Fone = "1128593905",
                     },
                     new ResponsavelTecnico()//PR
                     {

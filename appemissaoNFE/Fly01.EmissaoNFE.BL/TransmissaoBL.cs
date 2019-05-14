@@ -71,6 +71,7 @@ namespace Fly01.EmissaoNFE.BL
                 nota.InfoNFe.Autorizados.Add(new Autorizados() { CNPJ = "13937073000156" });
             }
 
+            nota.InfoNFe.Exportacao = item.Exportacao;
             nota.InfoNFe.ResponsavelTecnico = item.ResponsavelTecnico;
 
             return nota;

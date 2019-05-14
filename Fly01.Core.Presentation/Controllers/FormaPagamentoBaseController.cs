@@ -145,8 +145,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Class = "col s4 l4",
                 Label = "Tipo",
                 Required = true,
-                Options = SystemValueHelper.GetUIElementBase(typeof(TipoFormaPagamento)).Where(x => x.Value != "DuplicataMercantil").ToList()
-
+                Options = SystemValueHelper.GetUIElementBase(typeof(TipoFormaPagamento)).Where(x => x.Id != "DuplicataMercantil").ToList()
             });
             config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s8 l8", Label = "Descrição", Required = true });
 

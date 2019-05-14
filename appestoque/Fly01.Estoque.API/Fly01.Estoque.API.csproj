@@ -58,6 +58,7 @@
     <Compile Include="Controllers\Api\HelloController.cs" />
     <Compile Include="Controllers\Api\InventarioController.cs" />
     <Compile Include="Controllers\Api\MovimentoEstoqueController.cs" />
+    <Compile Include="Controllers\Api\RelatorioLicenciamentoEstoqueController.cs" />
     <Compile Include="Controllers\Api\RelatorioProdutoController.cs" />
     <Compile Include="Controllers\Api\MinhaContaController.cs" />
     <Compile Include="Controllers\Api\MovimentoOrdemVendaController.cs" />
@@ -330,6 +331,10 @@
       <Project>{fe31de8f-d91c-4233-804b-6d91ac23cfe2}</Project>
       <Name>Fly01.Estoque.BL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Fly01.Estoque.DAL\Fly01.Estoque.DAL.csproj">
+      <Project>{5ca487a2-50ea-4685-8592-c4457ef21f60}</Project>
+      <Name>Fly01.Estoque.DAL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Fly01.Estoque\Fly01.Estoque.csproj">
       <Project>{9e705e63-d43b-42c8-ba80-990f1b909e62}</Project>
       <Name>Fly01.Estoque</Name>
@@ -358,7 +363,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>0</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:54472/</IISUrl>
+          <IISUrl>http://localhost:60155/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

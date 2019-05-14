@@ -28,11 +28,10 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
 
                 entity.ItemTransmissaoNFSVM.AssinaturaHash = Assinatura.GeraAssinatura(entity.ItemTransmissaoNFSVM);
                 unitOfWork.IbptNcmBL.CalculaImpostoIBPTNBS(entity);
-
                 /// <summary>
                 /// 3547809	Santo André SP não deve sair a tag atividade, pois não se tem CNAE e dava erro de schemax no TSS
                 /// </summary>
-                if (entity.ItemTransmissaoNFSVM.Identificacao.CodigoIBGEPrestador == "3547809")
+                if(entity.ItemTransmissaoNFSVM.Identificacao.CodigoIBGEPrestador == "3547809")
                 {
                     entity.ItemTransmissaoNFSVM.Atividade = null;
                     foreach (var item in entity.ItemTransmissaoNFSVM.Servicos)

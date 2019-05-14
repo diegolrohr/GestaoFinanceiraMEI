@@ -21,7 +21,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox1</rd:DefaultName>
         <Top>0.03841cm</Top>
-        <Left>3.36791cm</Left>
+        <Left>3.36792cm</Left>
         <Height>2.50472cm</Height>
         <Width>9.99836cm</Width>
         <Style>
@@ -56,7 +56,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox4</rd:DefaultName>
         <Top>3.12693cm</Top>
-        <Left>0.02164cm</Left>
+        <Left>0.02165cm</Left>
         <Height>0.6cm</Height>
         <Width>16.44508cm</Width>
         <ZIndex>1</ZIndex>
@@ -390,8 +390,8 @@
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>ds</DataSetName>
-        <Top>12.38117cm</Top>
-        <Left>0.18845cm</Left>
+        <Top>13.70465cm</Top>
+        <Left>0.00001cm</Left>
         <Height>1.2cm</Height>
         <Width>16.27345cm</Width>
         <ZIndex>2</ZIndex>
@@ -423,8 +423,8 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Nome</rd:DefaultName>
-        <Top>11.67534cm</Top>
-        <Left>0.18846cm</Left>
+        <Top>13.24575cm</Top>
+        <Left>0.00001cm</Left>
         <Height>0.6cm</Height>
         <Width>16.27344cm</Width>
         <ZIndex>3</ZIndex>
@@ -444,22 +444,16 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>6.79773cm</Width>
+              <Width>5.78113cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>4.99978cm</Width>
+              <Width>5.12748cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.77031cm</Width>
+              <Width>3.73834cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.32749cm</Width>
-            </TablixColumn>
-            <TablixColumn>
-              <Width>0.29395cm</Width>
-            </TablixColumn>
-            <TablixColumn>
-              <Width>0.07938cm</Width>
+              <Width>1.61394cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -501,11 +495,9 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
-                    <ColSpan>6</ColSpan>
+                    <ColSpan>4</ColSpan>
                   </CellContents>
                 </TablixCell>
-                <TablixCell />
-                <TablixCell />
                 <TablixCell />
                 <TablixCell />
                 <TablixCell />
@@ -638,11 +630,9 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
-                    <ColSpan>4</ColSpan>
+                    <ColSpan>2</ColSpan>
                   </CellContents>
                 </TablixCell>
-                <TablixCell />
-                <TablixCell />
                 <TablixCell />
               </TablixCells>
             </TablixRow>
@@ -723,11 +713,9 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
-                    <ColSpan>4</ColSpan>
+                    <ColSpan>2</ColSpan>
                   </CellContents>
                 </TablixCell>
-                <TablixCell />
-                <TablixCell />
                 <TablixCell />
               </TablixCells>
             </TablixRow>
@@ -808,6 +796,251 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <ColSpan>2</ColSpan>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell />
+              </TablixCells>
+            </TablixRow>
+            <TablixRow>
+              <Height>0.6cm</Height>
+              <TablixCells>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox22">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Endereço: </Value>
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                            <TextRun>
+                              <Value>=Fields!EnderecoFornecedor.Value</Value>
+                              <Style />
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox16</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Style>None</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                    <ColSpan>2</ColSpan>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell />
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox31">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Numero: </Value>
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                            <TextRun>
+                              <Value>=Fields!NumeroEndereco.Value</Value>
+                              <Style />
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox31</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Style>None</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                    <ColSpan>2</ColSpan>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell />
+              </TablixCells>
+            </TablixRow>
+            <TablixRow>
+              <Height>0.6cm</Height>
+              <TablixCells>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox64">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Bairro: </Value>
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                            <TextRun>
+                              <Value>=Fields!Bairro.Value</Value>
+                              <Style />
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox64</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Style>None</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox65">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Cidade: </Value>
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                            <TextRun>
+                              <Value>=Fields!Cidade.Value</Value>
+                              <Style />
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox65</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Style>None</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox66">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>CEP: </Value>
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                            <TextRun>
+                              <Value>=Fields!CEP.Value</Value>
+                              <Style />
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox66</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Style>None</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                    <ColSpan>2</ColSpan>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell />
+              </TablixCells>
+            </TablixRow>
+            <TablixRow>
+              <Height>0.6cm</Height>
+              <TablixCells>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox3">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Complemento:</Value>
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                            <TextRun>
+                              <Value>=Fields!ComplementoEndereco.Value</Value>
+                              <Style />
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox3</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Style>None</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
                     <ColSpan>4</ColSpan>
                   </CellContents>
                 </TablixCell>
@@ -824,8 +1057,6 @@
             <TablixMember />
             <TablixMember />
             <TablixMember />
-            <TablixMember />
-            <TablixMember />
           </TablixMembers>
         </TablixColumnHierarchy>
         <TablixRowHierarchy>
@@ -834,13 +1065,15 @@
             <TablixMember />
             <TablixMember />
             <TablixMember />
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>ds</DataSetName>
         <Top>3.90331cm</Top>
-        <Left>0.19328cm</Left>
-        <Height>2.33501cm</Height>
-        <Width>16.26864cm</Width>
+        <Height>4.13501cm</Height>
+        <Width>16.26089cm</Width>
         <ZIndex>4</ZIndex>
         <Style>
           <Border>
@@ -1079,8 +1312,7 @@
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>ds</DataSetName>
-        <Top>9.72894cm</Top>
-        <Left>0.18846cm</Left>
+        <Top>11.27261cm</Top>
         <Height>1.8673cm</Height>
         <Width>16.27345cm</Width>
         <ZIndex>5</ZIndex>
@@ -1621,8 +1853,8 @@
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>ds</DataSetName>
-        <Top>6.47644cm</Top>
-        <Left>0.19328cm</Left>
+        <Top>8.0736cm</Top>
+        <Left>0.02165cm</Left>
         <Height>3.14666cm</Height>
         <Width>16.29507cm</Width>
         <ZIndex>6</ZIndex>
@@ -1879,8 +2111,8 @@
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>ds</DataSetName>
-        <Top>13.72228cm</Top>
-        <Left>0.18845cm</Left>
+        <Top>14.93992cm</Top>
+        <Left>0.02165cm</Left>
         <Height>1.83365cm</Height>
         <Width>16.19361cm</Width>
         <ZIndex>7</ZIndex>
@@ -1896,7 +2128,7 @@
         <MIMEType>image/png</MIMEType>
         <Sizing>FitProportional</Sizing>
         <Top>0.03841cm</Top>
-        <Left>0.21369cm</Left>
+        <Left>0.2137cm</Left>
         <Height>2.50472cm</Height>
         <Width>3.15422cm</Width>
         <ZIndex>8</ZIndex>
@@ -1907,7 +2139,7 @@
         </Style>
       </Image>
     </ReportItems>
-    <Height>6.91269in</Height>
+    <Height>6.92311in</Height>
     <Style />
   </Body>
   <Width>6.56347in</Width>
@@ -1938,7 +2170,7 @@
           </Paragraphs>
           <rd:DefaultName>Textbox2</rd:DefaultName>
           <Top>0.0785cm</Top>
-          <Left>0.21369cm</Left>
+          <Left>0.2137cm</Left>
           <Height>0.73201cm</Height>
           <Width>13.64919cm</Width>
           <Style>
@@ -1970,7 +2202,7 @@
           </Paragraphs>
           <rd:DefaultName>Textbox26</rd:DefaultName>
           <Top>0.0785cm</Top>
-          <Left>14.03926cm</Left>
+          <Left>14.03927cm</Left>
           <Height>0.73201cm</Height>
           <Width>2.5cm</Width>
           <ZIndex>1</ZIndex>
@@ -2119,7 +2351,7 @@
         </Field>
         <Field Name="NumeracaoVolumesTrans">
           <DataField>NumeracaoVolumesTrans</DataField>
-          <rd:TypeName>System.Double</rd:TypeName>
+          <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="TotalImpostosProdutos">
           <DataField>TotalImpostosProdutos</DataField>
@@ -2129,10 +2361,34 @@
           <DataField>Status</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="EnderecoFornecedor">
+          <DataField>EnderecoFornecedor</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="NumeroEndereco">
+          <DataField>NumeroEndereco</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Bairro">
+          <DataField>Bairro</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Cidade">
+          <DataField>Cidade</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="CEP">
+          <DataField>CEP</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ComplementoEndereco">
+          <DataField>ComplementoEndereco</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>DataSetReports</rd:DataSetName>
-        <rd:SchemaPath>C:\git\Fly01.Apps\appcompras\Fly01.Compras\Reports\DataSetReports.xsd</rd:SchemaPath>
+        <rd:SchemaPath>C:\Bemacash_Gestao\Fly01.Apps\appcompras\Fly01.Compras\Reports\DataSetReports.xsd</rd:SchemaPath>
         <rd:TableName>ImprimirPedido</rd:TableName>
         <rd:TableAdapterFillMethod />
         <rd:TableAdapterGetDataMethod />

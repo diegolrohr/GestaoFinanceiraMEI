@@ -1,6 +1,22 @@
 ﻿<script>
-    function fnDrawCallbackCalcProdutos() {
-        $(`#dtKitItens`).loading("stop");
+    function fnDrawCallbackCalcProdutos(oSettings) {
+        this.hideEmptyColumns(this);
+        $('#dtKitItens .fly01-dt-menu.dropdown-button').dropdown({ alignment: "right" });
+        $('#dtKitItens select').material_select();
+        if (oSettings._iDisplayLength >= oSettings.fnRecordsDisplay()) {
+            $(oSettings.nTableWrapper).find(".dataTables_paginate").hide();
+        }
+        else {
+            $(oSettings.nTableWrapper).find(".dataTables_paginate").show();
+        }
+
+        $('#dtKitItens tbody tr').each(function () {
+            $(this).find("td").attr("nowrap", "nowrap");
+        });
+
+        if ($$$._.dtKitItens)
+            $$$._.dtKitItens.columns.adjust();
+        $('#dtKitItens').loading("stop");
 
         let valorCusto = 0;
         let valorServico = 0;

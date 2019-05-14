@@ -17,11 +17,9 @@ using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.uiJS.Enums;
 using Fly01.Core.Mensageria;
 using System.IO;
-using Fly01.Faturamento.Helpers;
 using System.Text;
 using System.IO.Compression;
 using System.Linq;
-using iTextSharp.text.pdf;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -316,10 +314,10 @@ namespace Fly01.Faturamento.Controllers
                 new DataTableUIAction { OnClickFn = "fnTransmitirNFSe", Label = "Transmitir", ShowIf = "((row.status == 'NaoAutorizada' || row.status == 'NaoTransmitida' || row.status == 'FalhaTransmissao') && row.tipoNotaFiscal == 'NFSe')" },
                 new DataTableUIAction { OnClickFn = "fnExcluirNFe", Label = "Excluir", ShowIf = "((row.status == 'NaoAutorizada' || row.status == 'NaoTransmitida' || row.status == 'FalhaTransmissao') && row.tipoNotaFiscal == 'NFe')" },
                 new DataTableUIAction { OnClickFn = "fnExcluirNFSe", Label = "Excluir", ShowIf = "((row.status == 'NaoAutorizada' || row.status == 'NaoTransmitida' || row.status == 'FalhaTransmissao') && row.tipoNotaFiscal == 'NFSe')" },
-                new DataTableUIAction { OnClickFn = "fnBaixarXMLNFe", Label = "Baixar XML", ShowIf = "((row.status == 'NaoAutorizada' || row.status == 'Cancelada'|| row.status == 'Autorizada' || row.status == 'Transmitida' || row.status == 'FalhaTransmissao') && row.tipoNotaFiscal == 'NFe')" },
+                new DataTableUIAction { OnClickFn = "fnBaixarXMLNFe", Label = "Baixar XML", ShowIf = "((row.status == 'NaoAutorizada' || row.status == 'Autorizada' || row.status == 'Transmitida' || row.status == 'FalhaTransmissao') && row.tipoNotaFiscal == 'NFe')" },
                 new DataTableUIAction { OnClickFn = "fnBaixarPDFNFe", Label = "Baixar PDF", ShowIf = "(row.status == 'Autorizada' && row.tipoNotaFiscal == 'NFe')" },
-                new DataTableUIAction { OnClickFn = "fnBaixarXMLNFSe", Label = "Baixar XML", ShowIf = "((row.status == 'FalhaTransmissao' || row.status == 'Cancelada'|| row.status == 'NaoAutorizada' || row.status == 'Autorizada' || row.status == 'Transmitida') && row.tipoNotaFiscal == 'NFSe')" },
-                new DataTableUIAction { OnClickFn = "fnBaixarXMLUnicoNFSe", Label = "Baixar XML TSS", ShowIf = "((row.status == 'NaoAutorizada' || row.status == 'Cancelada'|| row.status == 'Transmitida' || row.status == 'FalhaTransmissao') && row.tipoNotaFiscal == 'NFSe')" },
+                new DataTableUIAction { OnClickFn = "fnBaixarXMLNFSe", Label = "Baixar XML", ShowIf = "((row.status == 'FalhaTransmissao' || row.status == 'NaoAutorizada' || row.status == 'Autorizada' || row.status == 'Transmitida') && row.tipoNotaFiscal == 'NFSe')" },
+                new DataTableUIAction { OnClickFn = "fnBaixarXMLUnicoNFSe", Label = "Baixar XML TSS", ShowIf = "((row.status == 'NaoAutorizada' || row.status == 'Transmitida' || row.status == 'FalhaTransmissao') && row.tipoNotaFiscal == 'NFSe')" },
                 new DataTableUIAction { OnClickFn = "fnCancelarNFe", Label = "Cancelar", ShowIf = "((row.status == 'Autorizada' || row.status == 'FalhaNoCancelamento') && row.tipoNotaFiscal == 'NFe')" },
                 new DataTableUIAction { OnClickFn = "fnCancelarNFSe", Label = "Cancelar", ShowIf = "((row.status == 'Autorizada' || row.status == 'FalhaNoCancelamento') && row.tipoNotaFiscal == 'NFSe')" },
                 new DataTableUIAction { OnClickFn = "fnFormCartaCorrecao", Label = "Carta de Correção", ShowIf = "(row.status == 'Autorizada')" },

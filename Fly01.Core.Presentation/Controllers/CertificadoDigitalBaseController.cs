@@ -13,6 +13,8 @@ using Fly01.uiJS.Enums;
 using Fly01.Core.ViewModels;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.uiJS.Classes.Helpers;
+using Fly01.Core.Config;
+using Fly01.Core.ValueObjects;
 
 namespace Fly01.Core.Presentation.Controllers
 {
@@ -247,5 +249,108 @@ namespace Fly01.Core.Presentation.Controllers
                 return JsonResponseStatus.GetFailure(error.Message);
             }
         }
+
+        public JsonResult ValidaDadosEmpresa()
+        {
+            try
+            {
+                ManagerEmpresaVM empresa = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
+                if (!string.IsNullOrEmpty(empresa.InscricaoEstadual))
+                {
+                    return Json(new
+                    {
+                        success = true
+                    }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new
+                    {
+                        success = false,
+                    }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorInfo error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
+        public ContentResult ModalAtualizaIE()
+        {
+            ModalUIForm config = new ModalUIForm()
+            {
+                Title = "Atualizar Inscrição Estadual:",
+                UrlFunctions = @Url.Action("Functions") + "?fns=",
+                ConfirmAction = new ModalUIAction() { Label = "Enviar", OnClickFn = "fnFormReadyAtualizaIE" },
+                CancelAction = new ModalUIAction() { Label = "Cancelar" },
+                Action = new FormUIAction
+                {
+                    Create = @Url.Action("Create"),
+                    Edit = @Url.Action("Edit"),
+                    Get = @Url.Action("Json") + "/",
+                    List = @Url.Action("List")
+                },
+                Id = "fly01mdlfrmAtualizaIE"
+            };
+            config.Elements.Add(new InputTextUI
+            {
+                Id = "inscricaoEstadualId",
+                Class = "col s12 m8",
+                Label = "Inscrição Estadual"
+            });
+            config.Elements.Add(new InputCheckboxUI
+            {
+                Id = "chkIsento",
+                Class = "col s12 m4",
+                Label = "Sim, é isento de Inscrição Estadual?",
+                DomEvents = new List<DomEventUI>
+                {
+                    new DomEventUI {DomEvent = "change", Function = "fnChkIsentoInscricaoEstadual"}
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "inscricaoEstadualId",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Verificamos que você não possui cadastrado sua Inscrição Estadual nos dados de sua Empresa. Por favor, insira sua inscrição estadual para realizarmos o upload do certificado digital."
+                }
+            });
+
+            return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
+        }
+        public JsonResult PostAtualizacaoIE(string inscricaoEstadual)
+        {
+            try
+            {
+                ManagerEmpresaVM empresa = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
+
+                var msgErrorInscricaoEstadual = string.Empty;
+                if (InscricaoEstadualHelper.IsValid(empresa.Cidade?.Estado?.Sigla, inscricaoEstadual, out msgErrorInscricaoEstadual))
+                {
+                    empresa.InscricaoEstadual = inscricaoEstadual;
+
+                    var response = RestHelper.ExecutePutRequest<ManagerEmpresaVM>($"{AppDefaults.UrlManager}company/{SessionManager.Current.UserData.PlatformUrl}", empresa, AppDefaults.GetQueryStringDefault());
+
+                    return Json(new
+                    {
+                        success = true,
+                    }, JsonRequestBehavior.AllowGet);
+                }
+                return Json(new
+                {
+                    success = false,
+                    message = "Inscrição Estadual Inválida."
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ErrorInfo error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+        
     }
 }

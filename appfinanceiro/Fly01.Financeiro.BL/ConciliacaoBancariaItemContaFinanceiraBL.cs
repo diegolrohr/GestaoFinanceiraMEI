@@ -68,16 +68,14 @@ namespace Fly01.Financeiro.BL
             //não estão no all. porém cada um será salvo e precisa ser validado
             somaValorJaConciliado += somaValorConciliadoExistentes;
             if (items.Any())
-                somaValorJaConciliado = Math.Round(items.Sum(y => y.ValorConciliado), 2);
+              somaValorJaConciliado = Math.Round(items.Sum(y => y.ValorConciliado),2);
 
             var somaConciliado = Math.Round((somaValorJaConciliado + entity.ValorConciliado), 2);
             var valor = Math.Round(conciliacaoBancariaItem.Valor, 2);
-
             if (somaConciliado > valor)
             {
                 throw new BusinessException("A soma dos valores conciliados não pode ser superior ao valor do lançamento");
             }
-
             if (somaConciliado == valor)
             {
                 conciliacaoBancariaItem.StatusConciliado = StatusConciliado.Sim;

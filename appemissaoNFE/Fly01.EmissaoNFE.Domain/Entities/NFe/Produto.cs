@@ -114,7 +114,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         public string ValorUnitarioString
         {
             get { return ValorUnitario.ToString("0.0000").Replace(",", "."); }
-            set { ValorUnitario = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
+            set { ValorUnitario = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault ); }
         }
 
         [Required]

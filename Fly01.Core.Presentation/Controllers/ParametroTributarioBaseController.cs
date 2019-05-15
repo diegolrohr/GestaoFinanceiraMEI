@@ -627,7 +627,7 @@ namespace Fly01.Core.Presentation.Controllers
                 return Json(new
                 {
                     success = false,
-                    message = "Não é possível atualizar a IE."
+                    message = "Inscrição Estudal Inválida."
                 }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)

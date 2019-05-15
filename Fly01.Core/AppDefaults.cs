@@ -32,9 +32,8 @@ namespace Fly01.Core
         public static string MashupUser { get; set; }
 
         public static string UrlGateway { get; set; }
-        public static string UrlGatewayNew { get; set; }
+        //public static string UrlGatewayNew { get; set; }
         public static string UrlApiGateway { get; set; }
-        public static string UrlManager { get; set; }
         public static string UrlFinanceiroApi { get; set; }
         public static string UrlFaturamentoApi { get; set; }
         public static string UrlComprasApi { get; set; }

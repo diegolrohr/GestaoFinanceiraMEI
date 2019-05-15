@@ -155,35 +155,36 @@ namespace Fly01.Core.Presentation.Controllers
             }
         }
 
-        [HttpPost]
-        public JsonResult CodigoBarras(string urlBoleto, string id)
-        {
-            try
-            {
-                //http://www.secretgeek.net/uri_enconding
-                var queryStringCodigo = new Dictionary<string, string>
-                {
-                    { "urlBoleto", Uri.EscapeUriString(urlBoleto)}
-                };
-                var response = RestHelper.ExecuteGetRequest<MinhaContaCodigoBarrasResponseVM>(AppDefaults.UrlGatewayNew, "boletos/codigobarras", queryStringCodigo)?.Data;
-                return Json(new
-                {
-                    success = true,
-                    id = id,
-                    codigoBarras = response.CodigoBarras,
-                    codigoBarrasFormatado = response.CodigoBarrasFormatado,
-                }, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception)
-            {
-                return Json(new
-                {
-                    success = false,
-                    numero = string.Empty,
-                    codigoBarras = string.Empty,
-                    codigoBarrasFormatado = string.Empty,
-                }, JsonRequestBehavior.AllowGet);
-            }
-        }
+        //TODO
+        //[HttpPost]
+        //public JsonResult CodigoBarras(string urlBoleto, string id)
+        //{
+        //    try
+        //    {
+        //        //http://www.secretgeek.net/uri_enconding
+        //        var queryStringCodigo = new Dictionary<string, string>
+        //        {
+        //            { "urlBoleto", Uri.EscapeUriString(urlBoleto)}
+        //        };
+        //        var response = RestHelper.ExecuteGetRequest<MinhaContaCodigoBarrasResponseVM>(AppDefaults.UrlGatewayNew, "boletos/codigobarras", queryStringCodigo)?.Data;
+        //        return Json(new
+        //        {
+        //            success = true,
+        //            id = id,
+        //            codigoBarras = response.CodigoBarras,
+        //            codigoBarrasFormatado = response.CodigoBarrasFormatado,
+        //        }, JsonRequestBehavior.AllowGet);
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return Json(new
+        //        {
+        //            success = false,
+        //            numero = string.Empty,
+        //            codigoBarras = string.Empty,
+        //            codigoBarrasFormatado = string.Empty,
+        //        }, JsonRequestBehavior.AllowGet);
+        //    }
+        //}
     }
 }

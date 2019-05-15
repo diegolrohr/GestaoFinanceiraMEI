@@ -27,30 +27,8 @@ namespace Fly01.Core.Presentation.Controllers
 
         public List<AppUI> AppsList()
         {
-            var listOfApps = RestUtils.ExecuteGetRequest<ResponseDataVM<List<AppVM>>>(AppDefaults.UrlManager, "app",
-               RestUtils.GetAuthHeader("Bearer " + SessionManager.Current.UserData.TokenData.AccessToken), new Dictionary<string, string>()
-            {
-                { "platformUrl", SessionManager.Current.UserData.PlatformUrl},
-                { "platformUser", SessionManager.Current.UserData.PlatformUser },
-                { "originApp", AppDefaults.AppId }
-            });
-
-            if (listOfApps == null)
-                return new List<AppUI>();
-
-            return (from item in listOfApps.Data
-                    select new AppUI()
-                    {
-                        Title = item.Name,
-                        Target = new LinkUI()
-                        {
-                            Link = item.AccessUrl
-                        },
-                        Id = item.ClientId,
-                        Class = "col s12 m3",
-                        Icon = item.ImageUrl ?? "https://cdnfly01.azureedge.net/img/icon/default.png",
-                        Color = item.Cor ?? "#0c9abe"
-                    }).ToList();
+            var requestObject = new { platformUrl = SessionManager.Current.UserData.PlatformUrl, platformUser = SessionManager.Current.UserData.PlatformUser, originApp = AppDefaults.AppId };
+            return RestHelper.ExecutePostRequest<List<AppUI>>(AppDefaults.UrlGateway, "v1/sidebarApps", requestObject);
         }
 
         protected abstract ContentUI HomeJson();

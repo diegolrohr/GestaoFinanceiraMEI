@@ -325,24 +325,25 @@ namespace Fly01.Core.Presentation.Controllers
         {
             try
             {
-                ManagerEmpresaVM empresa = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
+                //ManagerEmpresaVM empresa = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
 
-                var msgErrorInscricaoEstadual = string.Empty;
-                if (InscricaoEstadualHelper.IsValid(empresa.Cidade?.Estado?.Sigla, inscricaoEstadual, out msgErrorInscricaoEstadual))
-                {
-                    empresa.InscricaoEstadual = inscricaoEstadual;
+                //var msgErrorInscricaoEstadual = string.Empty;
+                //if (InscricaoEstadualHelper.IsValid(empresa.Cidade?.Estado?.Sigla, inscricaoEstadual, out msgErrorInscricaoEstadual))
+                //{
+                //    empresa.InscricaoEstadual = inscricaoEstadual;
 
-                    var response = RestHelper.ExecutePutRequest<ManagerEmpresaVM>($"{AppDefaults.UrlManager}company/{SessionManager.Current.UserData.PlatformUrl}", empresa, AppDefaults.GetQueryStringDefault());
+                //    var response = RestHelper.ExecutePutRequest<ManagerEmpresaVM>($"{AppDefaults.UrlManager}company/{SessionManager.Current.UserData.PlatformUrl}", empresa, AppDefaults.GetQueryStringDefault());
 
-                    return Json(new
-                    {
-                        success = true,
-                    }, JsonRequestBehavior.AllowGet);
-                }
+
+                //    return Json(new
+                //    {
+                //        success = true,
+                //    }, JsonRequestBehavior.AllowGet);
+                //}
                 return Json(new
                 {
                     success = false,
-                    message = "Inscrição Estadual Inválida."
+                    message = "Não é possível atualizar a IE."
                 }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)

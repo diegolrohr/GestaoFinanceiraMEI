@@ -154,7 +154,7 @@ namespace Fly01.Core.Presentation.Application
             AppDefaults.MashupUser = ConfigurationManager.AppSettings["MashupUser"];
             AppDefaults.UrlGateway = ConfigurationManager.AppSettings["UrlGateway"];
             AppDefaults.UrlApiGateway = String.Format("{0}{1}", AppDefaults.UrlGateway, ConfigurationManager.AppSettings["GatewayAppApi"]);
-            //AppDefaults.UrlGatewayNew = $"{ConfigurationManager.AppSettings["UrlGatewayNew"]}api/";
+            AppDefaults.UrlGatewayNew = $"{ConfigurationManager.AppSettings["UrlGatewayNew"]}api/";
             //AppDefaults.UrlManager = $"{AppDefaults.UrlGatewayNew}manager/";
             //AppDefaults.UrlLoginSSO = $"{ConfigurationManager.AppSettings["UrlGatewayNew"]}sso/login";
             //AppDefaults.UrlLogoutSSO = $"{ConfigurationManager.AppSettings["UrlGatewayNew"]}sso/logout";

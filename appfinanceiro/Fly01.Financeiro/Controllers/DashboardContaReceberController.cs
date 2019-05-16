@@ -30,10 +30,11 @@ namespace Fly01.Financeiro.Controllers
                     new LabelSetUI {
                         Id = "titleLabel",
                         Class = "col s12",
-                        Label = "Contas Recebidas"
+                        Label = "Valores Recebidos"
                     }
                 }
             });
+
             // CHART Dia/Dia
             dJson.Content.Add(new ChartUI
             {

@@ -616,8 +616,7 @@ namespace Fly01.Core.Presentation.Controllers
                 {
                     empresa.InscricaoEstadual = inscricaoEstadual;
 
-                    //TODO: Não tem rota no gateway antigo rever
-                    var response = RestHelper.ExecutePutRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGatewayNew}empresa/{SessionManager.Current.UserData.PlatformUrl}", empresa, AppDefaults.GetQueryStringDefault());
+                    var response = RestHelper.ExecutePutRequest<ManagerEmpresaVM>($"{AppDefaults.UrlManager}company/{SessionManager.Current.UserData.PlatformUrl}", empresa, AppDefaults.GetQueryStringDefault());
 
                     return Json(new
                     {

@@ -321,29 +321,29 @@ namespace Fly01.Core.Presentation.Controllers
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
+
         public JsonResult PostAtualizacaoIE(string inscricaoEstadual)
         {
             try
             {
-                //ManagerEmpresaVM empresa = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
+                ManagerEmpresaVM empresa = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
 
-                //var msgErrorInscricaoEstadual = string.Empty;
-                //if (InscricaoEstadualHelper.IsValid(empresa.Cidade?.Estado?.Sigla, inscricaoEstadual, out msgErrorInscricaoEstadual))
-                //{
-                //    empresa.InscricaoEstadual = inscricaoEstadual;
+                var msgErrorInscricaoEstadual = string.Empty;
+                if (InscricaoEstadualHelper.IsValid(empresa.Cidade?.Estado?.Sigla, inscricaoEstadual, out msgErrorInscricaoEstadual))
+                {
+                    empresa.InscricaoEstadual = inscricaoEstadual;
 
-                //    var response = RestHelper.ExecutePutRequest<ManagerEmpresaVM>($"{AppDefaults.UrlManager}company/{SessionManager.Current.UserData.PlatformUrl}", empresa, AppDefaults.GetQueryStringDefault());
+                    var response = RestHelper.ExecutePutRequest<ManagerEmpresaVM>($"{AppDefaults.UrlManager}company/{SessionManager.Current.UserData.PlatformUrl}", empresa, AppDefaults.GetQueryStringDefault());
 
-
-                //    return Json(new
-                //    {
-                //        success = true,
-                //    }, JsonRequestBehavior.AllowGet);
-                //}
+                    return Json(new
+                    {
+                        success = true,
+                    }, JsonRequestBehavior.AllowGet);
+                }
                 return Json(new
                 {
                     success = false,
-                    message = "Não é possível atualizar a IE."
+                    message = "Inscrição Estudal Inválida."
                 }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -352,6 +352,6 @@ namespace Fly01.Core.Presentation.Controllers
                 return JsonResponseStatus.GetFailure(error.Message);
             }
         }
-        
+
     }
 }

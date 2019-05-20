@@ -145,7 +145,7 @@ namespace Fly01.Financeiro.Controllers
                 History = new ContentUIHistory { Default = url.Action("Index") },
                 Header = new HtmlUIHeader
                 {
-                    Title = $"Dashboard -  Contas a {tipoConta.Replace("Conta", "")}"
+                    Title = $"Indicadores -  Contas a {tipoConta.Replace("Conta", "")}"
                 },
                 UrlFunctions = url.Action("Functions") + "?fns="
             };

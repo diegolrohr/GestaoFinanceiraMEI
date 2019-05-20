@@ -185,6 +185,7 @@ namespace Fly01.Financeiro.BL
                     x.DataVencimento,
                     x.Descricao,
                     x.ValorPrevisto,
+                    x.ValorPago,
                     x.StatusContaBancaria
                 }).OrderBy(x => x.DataVencimento).Skip(skipRecords).Take(takeRecords).ToList();
 
@@ -192,7 +193,7 @@ namespace Fly01.Financeiro.BL
             {
                 ContasPagarDoDiaVM dashContaPagarDia = new ContasPagarDoDiaVM();
                 dashContaPagarDia.Status = EnumHelper.GetValue(typeof(StatusContaBancaria), item.StatusContaBancaria.ToString());
-                dashContaPagarDia.Valor = item.ValorPrevisto;
+                dashContaPagarDia.Valor = (item.ValorPrevisto - (item.ValorPago ?? 0));
                 dashContaPagarDia.Vencimento = item.DataVencimento;
                 dashContaPagarDia.Descricao = item.Descricao;
                 dashLista.Add(dashContaPagarDia);

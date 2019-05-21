@@ -20,7 +20,7 @@ namespace Fly01.Faturamento.API.Controllers.Api
         }
 
         [HttpPost]
-        public IHttpActionResult CerificadosVencidos()
+        public IHttpActionResult CertificadosVencidos()
         {
             try
             {

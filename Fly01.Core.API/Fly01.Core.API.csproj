@@ -229,6 +229,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AiHandleErrorAttribute.cs" />
+    <Compile Include="SocketIOHelper.cs" />
     <Compile Include="MinhaContaBaseController.cs" />
     <Compile Include="ProdutoServicoBaseController.cs" />
     <Compile Include="ApiBaseController.cs" />
@@ -247,7 +248,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

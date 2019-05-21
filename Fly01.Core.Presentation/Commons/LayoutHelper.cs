@@ -28,8 +28,8 @@ namespace Fly01.Core.Presentation.Commons
         {
             return new HtmlString(
                 $"<script src=\"{vendorJsUrl}\"></script>" +
-                $"<script src=\"{jsUrl}\"></script>"
-                //$"<script src=\"{"https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"}\"></script>"
+                $"<script src=\"{jsUrl}\"></script>"+
+                $"<script src=\"{"https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"}\"></script>"
             );
         }
     }

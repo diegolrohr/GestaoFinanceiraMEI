@@ -11,11 +11,19 @@ using Fly01.Core.Notifications;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.ViewModels;
 using System;
+using Fly01.Core.API;
+using Fly01.Core.ViewModels.Presentation.Commons;
 
 namespace Fly01.Faturamento.BL
 {
     public class CertificadoDigitalBL : PlataformaBaseBL<CertificadoDigital>
     {
+        protected EstadoBL EstadoBL;
+        protected ParametroTributarioBL ParametroTributarioBL;
+        private ManagerEmpresaVM empresa;
+        private string empresaUF;
+        private List<int> PeriodosVerificacao = new List<int>() { 30, 20, 10, 7, 3, 1 };
+
         private Dictionary<string, string> GetHeaderDefault()
         {
             return new Dictionary<string, string>()
@@ -25,45 +33,66 @@ namespace Fly01.Faturamento.BL
             };
         }
 
+        private bool PeriodoNotificacao(int dateDiff)
+        {
+            return PeriodosVerificacao.Contains(dateDiff);
+        }
+
+        private bool CertificadoJaVencido(int dateDiff)
+        {
+            return dateDiff <= 0;
+        }
+
         public void VerificaValidade()
         {
-            //verifcar
-            //emit a mensagem
-            var dataExpiracaoFinal = DateTime.Now.AddDays(30).Date;
-
-            var certificados = new List<int>() { 30, 20, 10, 7, 3, 1 };
-
+            var dataExpiracaoFinal = DateTime.Now.AddDays(PeriodosVerificacao.Max()).Date;
             var certificadosVencidos = Everything.Where(x => x.DataExpiracao.HasValue && x.DataExpiracao.Value <= dataExpiracaoFinal);
-
 
             foreach (var item in certificadosVencidos)
             {
                 var dateDiff = (item.DataExpiracao.Value.Date - DateTime.Now.Date).Days;
-                if (certificados.Contains(dateDiff) || dateDiff <= 0)
+                if (PeriodoNotificacao(dateDiff) || CertificadoJaVencido(dateDiff))
                 {
-                    
+                    var vencimento = " irá vencer em ";
+                    var dias = " dias";
+                    var messageType = SocketMessageType.INFO;
+                    if (dateDiff <= 0)
+                    {
+                        vencimento = " já venceu";
+                        dias = "";
+                        messageType = SocketMessageType.ERROR;
+                    }
+                    else if(dateDiff == 1)
+                    {
+                        dias = "1 dia";
+                        messageType = SocketMessageType.WARNING;
+                    }
+
+                    var message = new SocketMessageVM()
+                    {
+                        Message = $"O Certificado Digital do CNPJ:{item.Cnpj}{vencimento}{dias}({item.DataExpiracao?.ToString("dd/MM/yyyy")}).",
+                        PlatformId = PlataformaUrl,
+                        NotificationDate = DateTime.Now,
+                        MessageType = messageType,
+                        PlatformApps = new List<SocketPlatformAppVM>()
+                        {
+                            new SocketPlatformAppVM()
+                            {
+                                ActionUrl = $"{AppDefaults.UrlFaturamentoWeb}CertificadoDigital",
+                                ClientId = AppDefaults.FaturamentoClientId
+                            },
+                            new SocketPlatformAppVM()
+                            {
+                                ActionUrl = $"{AppDefaults.UrlComprasWeb}CertificadoDigital",
+                                ClientId = AppDefaults.ComprasClientId
+                            }
+                        }
+                    };
+
+                    SocketIOHelper.NewMessage(message);
                 }
             };
-                //&& (x.DataExpiracao.Value.Date - DateTime.Now.Date).Days <= 30 
-                //&& (certificados.Contains((x.DataExpiracao.Value.Date - DateTime.Now.Date).Days) 
-                //|| (x.DataExpiracao.Value.Date - DateTime.Now.Date).Days <= 0));
-
-
-            //certificadosVencidos = certificadosVencidos.Where(x => x.)
-
-            //foreach (var dias in certificadosVencidos)
-            //{
-
-            //}
-
-
-
         }
-
-        protected EstadoBL EstadoBL;
-        protected ParametroTributarioBL ParametroTributarioBL;
-        private ManagerEmpresaVM empresa;
-        private string empresaUF;
 
         public CertificadoDigitalBL(AppDataContext context, EstadoBL estadoBL, ParametroTributarioBL parametroTributarioBL) : base(context)
         {

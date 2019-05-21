@@ -29,6 +29,18 @@ namespace Fly01.Core.API.Application
             AppDefaults.UrlGatewayNew = $"{ConfigurationManager.AppSettings["UrlGatewayNew"]}api/";
             AppDefaults.UrlManager = $"{AppDefaults.UrlGatewayNew}manager/";
             AppDefaults.UrlNotificationSocket = ConfigurationManager.AppSettings["UrlNotificationSocket"];
+
+            AppDefaults.UrlFinanceiroWeb = ConfigurationManager.AppSettings["UrlFinanceiroWeb"];
+            AppDefaults.UrlFaturamentoWeb = ConfigurationManager.AppSettings["UrlFaturamentoWeb"];
+            AppDefaults.UrlComprasWeb = ConfigurationManager.AppSettings["UrlComprasWeb"];
+            AppDefaults.UrlEstoqueWeb = ConfigurationManager.AppSettings["UrlEstoqueWeb"];
+            AppDefaults.UrlOrdemServicoWeb = ConfigurationManager.AppSettings["UrlOrdemServicoWeb"];
+
+            AppDefaults.FinanceiroClientId = ConfigurationManager.AppSettings["FinanceiroClientId"];
+            AppDefaults.FaturamentoClientId = ConfigurationManager.AppSettings["FaturamentoClientId"];
+            AppDefaults.EstoqueClientId = ConfigurationManager.AppSettings["EstoqueClientId"];
+            AppDefaults.ComprasClientId = ConfigurationManager.AppSettings["ComprasClientId"];
+            AppDefaults.OrdemServicoClientId = ConfigurationManager.AppSettings["OrdemServicoClientId"];
         }
 
         protected void Application_Start()

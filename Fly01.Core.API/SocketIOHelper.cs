@@ -9,14 +9,27 @@ namespace Fly01.Core.API
 {
     public class SocketIOHelper
     {
-        public static void Emit(string emitEvent, SocketMessageVM message)
+        public static void NewMessage(SocketMessageVM message)
+        {
+            Emit("newMessage", message);
+        }
+
+        public static void AnotherEventExample(SocketMessageVM message)
+        {
+            Emit("anotherEventExample", message);
+        }
+
+        private static void Emit(string emitEvent, SocketMessageVM message)
         {
             try
             {
                 var socket = IO.Socket(AppDefaults.UrlNotificationSocket);
                 socket.Connect();
 
-                socket.Emit(emitEvent, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message)));
+                //TODO Encoding.UTF8.GetBytes??
+                //aqui não precisa ser canal por aplicativo, nem por plataforma, os dados estão na mensagem
+                //trocar UrlNotificationSocket web configs
+                socket.Emit($"{emitEvent}", Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message)));
 
                 socket.Disconnect();
             }

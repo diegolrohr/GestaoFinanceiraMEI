@@ -55,7 +55,7 @@ namespace Fly01.Faturamento.BL
                 {
                     var vencimento = " irá vencer em ";
                     var dias = " dias";
-                    var messageType = SocketMessageType.INFO;
+                    var messageType = SocketMessageType.WARNING;
                     if (dateDiff <= 0)
                     {
                         vencimento = " já venceu";
@@ -64,13 +64,12 @@ namespace Fly01.Faturamento.BL
                     }
                     else if(dateDiff == 1)
                     {
-                        dias = "1 dia";
-                        messageType = SocketMessageType.WARNING;
+                        dias = "1 dia";                        
                     }
 
                     var message = new SocketMessageVM()
                     {
-                        Message = $"O Certificado Digital do CNPJ:{item.Cnpj}{vencimento}{dias}({item.DataExpiracao?.ToString("dd/MM/yyyy")}).",
+                        Message = $"O Certificado Digital do CNPJ:{item.Cnpj}{vencimento}{dias}({item.DataExpiracao?.ToString("dd/MM/yyyy")}). Atualize para continuar a emitir suas Notas Fiscais.",
                         PlatformId = PlataformaUrl,
                         NotificationDate = DateTime.Now,
                         MessageType = messageType,

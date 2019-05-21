@@ -40,7 +40,6 @@
     </Reference>
     <Reference Include="EngineIoClientDotNet, Version=0.9.22.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\EngineIoClientDotNet.0.9.22\lib\net45\EngineIoClientDotNet.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
@@ -123,7 +122,6 @@
     </Reference>
     <Reference Include="SocketIoClientDotNet, Version=0.9.13.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\SocketIoClientDotNet.0.9.13\lib\net45\SocketIoClientDotNet.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -227,7 +225,6 @@
     <Reference Include="System.Xml" />
     <Reference Include="WebSocket4Net, Version=0.14.1.0, Culture=neutral, PublicKeyToken=eb4e154b696bf72a, processorArchitecture=MSIL">
       <HintPath>..\packages\WebSocket4Net.0.14.1\lib\net45\WebSocket4Net.dll</HintPath>
-      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>

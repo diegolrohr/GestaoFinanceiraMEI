@@ -17,7 +17,6 @@ namespace Fly01.Core
         public const string TenatIdHeader = "TenantId";
         public const int MaxRecordsPerPage = 10;
         public const int MaxRecordsPerPageAPI = 50;
-
         public const string SchedulerAzureBasicUserName = "0A2905B9-8AF8-4789-9732-914946A9C57B";
         public const string SchedulerAzureBasicPassword = "9IURl9t1";
 
@@ -30,6 +29,7 @@ namespace Fly01.Core
         public static string MashupClientId { get; set; }
         public static string MashupPassword { get; set; }
         public static string MashupUser { get; set; }
+        public static string NotificationSocketUrl { get; set; }
 
         public static string UrlGateway { get; set; }
         public static string UrlGatewayNew { get; set; }

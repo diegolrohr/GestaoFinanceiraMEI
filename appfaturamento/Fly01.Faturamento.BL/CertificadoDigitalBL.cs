@@ -25,6 +25,41 @@ namespace Fly01.Faturamento.BL
             };
         }
 
+        public void VerificaValidade()
+        {
+            //verifcar
+            //emit a mensagem
+            var dataExpiracaoFinal = DateTime.Now.AddDays(30).Date;
+
+            var certificados = new List<int>() { 30, 20, 10, 7, 3, 1 };
+
+            var certificadosVencidos = Everything.Where(x => x.DataExpiracao.HasValue && x.DataExpiracao.Value <= dataExpiracaoFinal);
+
+
+            foreach (var item in certificadosVencidos)
+            {
+                var dateDiff = (item.DataExpiracao.Value.Date - DateTime.Now.Date).Days;
+                if (certificados.Contains(dateDiff) || dateDiff <= 0)
+                {
+                    
+                }
+            };
+                //&& (x.DataExpiracao.Value.Date - DateTime.Now.Date).Days <= 30 
+                //&& (certificados.Contains((x.DataExpiracao.Value.Date - DateTime.Now.Date).Days) 
+                //|| (x.DataExpiracao.Value.Date - DateTime.Now.Date).Days <= 0));
+
+
+            //certificadosVencidos = certificadosVencidos.Where(x => x.)
+
+            //foreach (var dias in certificadosVencidos)
+            //{
+
+            //}
+
+
+
+        }
+
         protected EstadoBL EstadoBL;
         protected ParametroTributarioBL ParametroTributarioBL;
         private ManagerEmpresaVM empresa;

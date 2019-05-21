@@ -29,8 +29,8 @@ namespace Fly01.Core
         public static string MashupClientId { get; set; }
         public static string MashupPassword { get; set; }
         public static string MashupUser { get; set; }
-        public static string NotificationSocketUrl { get; set; }
 
+        public static string UrlNotificationSocket { get; set; }
         public static string UrlGateway { get; set; }
         public static string UrlGatewayNew { get; set; }
         public static string UrlManager { get; set; }

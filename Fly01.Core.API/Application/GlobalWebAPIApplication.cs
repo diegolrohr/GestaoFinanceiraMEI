@@ -3,6 +3,7 @@ using Microsoft.OData.Edm;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
+using System.Configuration;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
@@ -15,7 +16,20 @@ namespace Fly01.Core.API.Application
         protected abstract IEdmModel GetEdmModel();
         protected abstract string GetInstrumentationKeyAppInsights();
         protected abstract Task RunServiceBusApps();
-        protected virtual void SetAppDefaults() { }
+
+        protected virtual void SetAppDefaults()
+        {
+            AppDefaults.UrlGateway = ConfigurationManager.AppSettings["UrlGateway"];
+            AppDefaults.UrlEmissaoNfeApi = ConfigurationManager.AppSettings["UrlEmissaoNfeApi"];
+            AppDefaults.UrlEstoqueApi = ConfigurationManager.AppSettings["UrlEstoqueApi"];
+            AppDefaults.UrlFinanceiroApi = ConfigurationManager.AppSettings["UrlFinanceiroApi"];
+            AppDefaults.UrlEmissaoNfeApi = ConfigurationManager.AppSettings["UrlEmissaoNfeApi"];
+            AppDefaults.UrlComprasApi = ConfigurationManager.AppSettings["UrlComprasApi"];
+            AppDefaults.UrlGateway = ConfigurationManager.AppSettings["UrlGateway"];
+            AppDefaults.UrlGatewayNew = $"{ConfigurationManager.AppSettings["UrlGatewayNew"]}api/";
+            AppDefaults.UrlManager = $"{AppDefaults.UrlGatewayNew}manager/";
+            AppDefaults.UrlNotificationSocket = ConfigurationManager.AppSettings["UrlNotificationSocket"];
+        }
 
         protected void Application_Start()
         {

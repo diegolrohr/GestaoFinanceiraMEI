@@ -1,9 +1,9 @@
 ﻿using System;
 using Fly01.Core.Notifications;
 using Quobject.SocketIoClientDotNet.Client;
-using System.Collections.Generic;
-using Newtonsoft.Json;
 using Fly01.Core.ViewModels.Presentation.Commons;
+using System.Text;
+using Newtonsoft.Json;
 
 namespace Fly01.Core.API
 {
@@ -13,10 +13,10 @@ namespace Fly01.Core.API
         {
             try
             {
-                var socket = IO.Socket("AppDefaults");
+                var socket = IO.Socket(AppDefaults.UrlNotificationSocket);
                 socket.Connect();
 
-                socket.Emit(emitEvent, message);
+                socket.Emit(emitEvent, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message)));
 
                 socket.Disconnect();
             }

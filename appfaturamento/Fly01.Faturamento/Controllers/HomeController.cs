@@ -166,6 +166,8 @@ namespace Fly01.Faturamento.Controllers
                         new LinkUI() { Class = ResourceHashConst.FaturamentoConfiguracoesCertificadoDigital, Label = "Certificado Digital", OnClick = @Url.Action("Form", "CertificadoDigital") },
                         new LinkUI() { Class = ResourceHashConst.FaturamentoConfiguracoesParametrosTributarios, Label = "Parâmetros Tributários", OnClick = @Url.Action("Form", "ParametroTributario") },
                         new LinkUI() { Class = ResourceHashConst.FaturamentoConfiguracoesSerieNotasFiscais, Label = "Série de Notas Fiscais", OnClick = @Url.Action("List", "SerieNotaFiscal")},
+                        //TODO:
+                        new LinkUI() { Class = ResourceHashConst.FaturamentoConfiguracoesCertificadoDigital, Label = "Personalizar Sistema", OnClick = @Url.Action("Form", "ConfiguracaoPersonalizacao") },
                         new LinkUI() { Class = ResourceHashConst.FaturamentoConfiguracoesNotasFiscaisInutilizadas, Label = "Notas Fiscais Inutilizadas", OnClick = @Url.Action("List", "NotaFiscalInutilizada") }
                     }
                 },

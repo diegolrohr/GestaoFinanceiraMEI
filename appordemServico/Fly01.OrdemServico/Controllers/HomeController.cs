@@ -386,7 +386,9 @@ namespace Fly01.OrdemServico.Controllers
                     Label = "Configurações",
                     Items = new List<LinkUI>
                     {
-                        new LinkUI() { Class = ResourceHashConst.OrdemServicoConfiguracoesParametros, Label = "Parâmetros", OnClick = @Url.Action("List", "ParametroOrdemServico")}
+                        new LinkUI() { Class = ResourceHashConst.OrdemServicoConfiguracoesParametros, Label = "Parâmetros", OnClick = @Url.Action("List", "ParametroOrdemServico")},
+                        //TODO:
+                        new LinkUI() { Class = ResourceHashConst.FaturamentoConfiguracoesCertificadoDigital, Label = "Personalizar Sistema", OnClick = @Url.Action("Form", "ConfiguracaoPersonalizacao") }
                     }
                 },
                 new SidebarUIMenu()

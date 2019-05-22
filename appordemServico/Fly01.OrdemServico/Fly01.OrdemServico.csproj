@@ -62,6 +62,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AutoCompleteController.cs" />
     <Compile Include="Controllers\AvaliacaoAppController.cs" />
+    <Compile Include="Controllers\ConfiguracaoPersonalizacaoController.cs" />
     <Compile Include="Controllers\KitItemController.cs" />
     <Compile Include="Controllers\KitController.cs" />
     <Compile Include="Controllers\AgendaController.cs" />
@@ -248,6 +249,8 @@
     <Content Include="Views\MinhaConta\Functions\_fnRenderVencimento.cshtml" />
     <Content Include="Views\Account\LoginSSO.cshtml" />
     <Content Include="Views\Kit\Functions\_fnDrawCallbackCalcProdutos.cshtml" />
+    <Content Include="Views\ConfiguracaoPersonalizacao\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\ConfiguracaoPersonalizacao\Index.cshtml" />
     <None Include="Views\OrdemServico\Functions\_fnModalOrdemServicoManutencao.cshtml" />
     <Content Include="Views\ParametroOrdemServico\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\Responsavel\ImportaCadastro.cshtml" />

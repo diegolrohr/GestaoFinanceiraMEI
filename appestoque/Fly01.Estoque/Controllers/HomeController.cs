@@ -235,6 +235,16 @@ namespace Fly01.Estoque.Controllers
                 },
                 new SidebarUIMenu()
                 {
+                    Class = ResourceHashConst.ComprasConfiguracoes,
+                    Label = "Configurações",
+                    Items = new List<LinkUI>
+                    {
+                        //TODO:
+                        new LinkUI() { Class = ResourceHashConst.FaturamentoConfiguracoesCertificadoDigital, Label = "Personalizar Sistema", OnClick = @Url.Action("Form", "ConfiguracaoPersonalizacao") }
+                    }
+                },
+                new SidebarUIMenu()
+                {
                     Class = ResourceHashConst.EstoqueAjuda,
                     Label = "Ajuda",
                     Items = new List<LinkUI>

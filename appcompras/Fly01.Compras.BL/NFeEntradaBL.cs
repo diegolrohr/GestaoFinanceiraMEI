@@ -287,10 +287,10 @@ namespace Fly01.Compras.BL
                     foreach (var item in NFeProdutos)
                     {
                         var st = SubstituicaoTributariaBL.AllIncluding(y => y.EstadoOrigem).AsNoTracking().Where(x =>
-                            x.NcmId == (item.Produto.NcmId.HasValue ? item.Produto.NcmId.Value : Guid.NewGuid()) &
-                            x.CestId == item.Produto.CestId.Value &
-                            x.EstadoOrigem.Sigla == UFSiglaEmpresa &
-                            x.EstadoDestinoId == fornecedor.EstadoId &
+                            x.NcmId == (item.Produto.NcmId.HasValue ? item.Produto.NcmId.Value : Guid.NewGuid()) &&
+                            ((item.Produto.CestId.HasValue && x.CestId == item.Produto.CestId.Value) || !item.Produto.CestId.HasValue) &&
+                            x.EstadoOrigem.Sigla == UFSiglaEmpresa &&
+                            x.EstadoDestinoId == fornecedor.EstadoId &&
                             x.TipoSubstituicaoTributaria == (entity.TipoCompra == TipoCompraVenda.Devolucao ? TipoSubstituicaoTributaria.Saida : TipoSubstituicaoTributaria.Entrada)
                             ).FirstOrDefault();
                         var CST = item.GrupoTributario.TipoTributacaoPIS.HasValue ? item.GrupoTributario.TipoTributacaoPIS.Value.ToString() : "";

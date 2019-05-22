@@ -57,7 +57,7 @@ namespace Fly01.Core.Presentation.Controllers
                     Create = Url.Action("Edit"),
                     Edit = Url.Action("Edit"),
                     Get = Url.Action("Json") + "/",
-                    List = Url.Action("Form")//TODO:
+                    List = Url.Action("Form")
                 },
                 ReadyFn = "fnFormReady",
                 UrlFunctions = Url.Action("Functions", "ConfiguracaoPersonalizacao", null, Request.Url.Scheme) + "?fns=",
@@ -94,8 +94,7 @@ namespace Fly01.Core.Presentation.Controllers
         {
             try
             {
-                var queryString = new Dictionary<string, string>();
-                var entity = RestHelper.ExecuteGetRequest<ResultBase<ConfiguracaoPersonalizacaoVM>>("ConfiguracaoPersonalizacao", queryString)?.Data?.FirstOrDefault();
+                var entity = RestHelper.ExecuteGetRequest<ResultBase<ConfiguracaoPersonalizacaoVM>>("ConfiguracaoPersonalizacao", queryString: null)?.Data?.FirstOrDefault();
 
                 entity = (entity != null && entity.Id != default(Guid))
                     ? entity

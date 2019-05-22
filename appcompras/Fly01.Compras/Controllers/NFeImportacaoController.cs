@@ -568,9 +568,9 @@ namespace Fly01.Compras.Controllers
                 {
                     if (NFe.InfoNFe.Emitente != null)
                     {
-                        entity.FornecedorNomeXml = NFe.InfoNFe.Emitente?.NomeFantasia;
+                        entity.FornecedorNomeXml = NFe.InfoNFe.Emitente?.Nome ?? NFe.InfoNFe.Emitente?.NomeFantasia;
                         entity.FornecedorCnpjXml = NFe.InfoNFe.Emitente?.Cnpj;
-                        entity.FornecedorRazaoSocialXml = NFe.InfoNFe.Emitente?.NomeFantasia;
+                        entity.FornecedorRazaoSocialXml = NFe.InfoNFe.Emitente?.NomeFantasia ?? NFe.InfoNFe.Emitente?.Nome;
                         entity.FornecedorInscEstadualXml = NFe.InfoNFe.Emitente?.InscricaoEstadual;
                     }
                     if (NFe.InfoNFe.Transporte != null && NFe.InfoNFe.Transporte.Transportadora != null)

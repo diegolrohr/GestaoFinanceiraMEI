@@ -36,6 +36,7 @@ namespace Fly01.Estoque.API
             builder.EntitySet<MovimentoOrdemVenda>("movimentoordemvenda");
             builder.EntitySet<Arquivo>("arquivo");
             builder.EntitySet<MovimentoEstoque>("movimentoestoque");
+            builder.EntitySet<ConfiguracaoPersonalizacao>("configuracaopersonalizacao");
 
             builder.EnableLowerCamelCase();
             return builder.GetEdmModel();

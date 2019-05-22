@@ -520,6 +520,10 @@
     <Compile Include="Migrations\201904151315586_FunctionFaturamento.Designer.cs">
       <DependentUpon>201904151315586_FunctionFaturamento.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201905221443105_AddConfiguracaoPersonalizacao.cs" />
+    <Compile Include="Migrations\201905221443105_AddConfiguracaoPersonalizacao.Designer.cs">
+      <DependentUpon>201905221443105_AddConfiguracaoPersonalizacao.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\AliquotaSimplesNacionalDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
@@ -906,6 +910,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201904151315586_FunctionFaturamento.resx">
       <DependentUpon>201904151315586_FunctionFaturamento.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905221443105_AddConfiguracaoPersonalizacao.resx">
+      <DependentUpon>201905221443105_AddConfiguracaoPersonalizacao.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

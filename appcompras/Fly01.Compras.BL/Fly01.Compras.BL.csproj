@@ -48,6 +48,7 @@
     <Compile Include="DashboardBL.cs" />
     <Compile Include="EnquadramentoLegalIPIBL.cs" />
     <Compile Include="EntidadeBL.cs" />
+    <Compile Include="ConfiguracaoPersonalizacaoBL.cs" />
     <Compile Include="GrupoTributarioBL.cs" />
     <Compile Include="CfopBL.cs" />
     <Compile Include="CestBL.cs" />

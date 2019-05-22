@@ -85,6 +85,9 @@ namespace Fly01.Estoque.BL
 
         private EnquadramentoLegalIPIBL enquadramentoLegalIPIBL;
         public EnquadramentoLegalIPIBL EnquadramentoLegalIPIBL => enquadramentoLegalIPIBL ?? (enquadramentoLegalIPIBL = new EnquadramentoLegalIPIBL(Context));
+
+        private ConfiguracaoPersonalizacaoBL configuracaoPersonalizacaoBL;
+        public ConfiguracaoPersonalizacaoBL ConfiguracaoPersonalizacaoBL => configuracaoPersonalizacaoBL ?? (configuracaoPersonalizacaoBL = new ConfiguracaoPersonalizacaoBL(Context));
         #endregion
     }
 }

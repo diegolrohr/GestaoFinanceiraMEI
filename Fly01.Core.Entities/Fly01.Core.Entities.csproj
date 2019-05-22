@@ -72,6 +72,7 @@
     <Compile Include="Domains\Commons\NFeImportacaoCobranca.cs" />
     <Compile Include="Domains\Commons\NFeImportacaoProduto.cs" />
     <Compile Include="Domains\Commons\CentroCusto.cs" />
+    <Compile Include="Domains\Commons\ConfiguracaoPersonalizacao.cs" />
     <Compile Include="Domains\Commons\ResponseDadosBancariosStone.cs" />
     <Compile Include="Domains\Commons\ResponseConfiguracaoStone.cs" />
     <Compile Include="Domains\Commons\ResponseConsultaTotalStone.cs" />

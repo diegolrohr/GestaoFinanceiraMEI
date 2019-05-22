@@ -46,6 +46,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ArquivoBL.cs" />
+    <Compile Include="ConfiguracaoPersonalizacaoBL.cs" />
     <Compile Include="EnquadramentoLegalIPIBL.cs" />
     <Compile Include="GrupoProdutoBL.cs" />
     <Compile Include="InventarioBL.cs" />

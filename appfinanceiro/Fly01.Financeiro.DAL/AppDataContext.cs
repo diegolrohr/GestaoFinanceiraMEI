@@ -97,5 +97,6 @@ namespace Fly01.Financeiro.API.Models.DAL
         public DbSet<StoneAntecipacaoRecebiveis> StoneAntecipacaoRecebiveis { get; set; }
         public DbSet<CentroCusto> CentroCustos { get; set; }
         public DbSet<Pais> Paises { get; set; }
+        public DbSet<ConfiguracaoPersonalizacao> ConfiguracaoPersonalizacoes { get; set; }
     }
 }

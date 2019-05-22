@@ -170,6 +170,10 @@
     <Compile Include="Migrations\201904151749492_CreateGetEstoqueReport.Designer.cs">
       <DependentUpon>201904151749492_CreateGetEstoqueReport.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201905221435497_AddConfiguracaoPersonalizacao.cs" />
+    <Compile Include="Migrations\201905221435497_AddConfiguracaoPersonalizacao.Designer.cs">
+      <DependentUpon>201905221435497_AddConfiguracaoPersonalizacao.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\Contract\IDataInitializer.cs" />
@@ -277,6 +281,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201904151749492_CreateGetEstoqueReport.resx">
       <DependentUpon>201904151749492_CreateGetEstoqueReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905221435497_AddConfiguracaoPersonalizacao.resx">
+      <DependentUpon>201905221435497_AddConfiguracaoPersonalizacao.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

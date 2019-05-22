@@ -168,6 +168,10 @@
     <Compile Include="Migrations\201904151310423_FunctionOs.Designer.cs">
       <DependentUpon>201904151310423_FunctionOs.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201905221451206_AddConfiguracaoPersonalizacao.cs" />
+    <Compile Include="Migrations\201905221451206_AddConfiguracaoPersonalizacao.Designer.cs">
+      <DependentUpon>201905221451206_AddConfiguracaoPersonalizacao.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
@@ -309,6 +313,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201904151310423_FunctionOs.resx">
       <DependentUpon>201904151310423_FunctionOs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905221451206_AddConfiguracaoPersonalizacao.resx">
+      <DependentUpon>201905221451206_AddConfiguracaoPersonalizacao.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

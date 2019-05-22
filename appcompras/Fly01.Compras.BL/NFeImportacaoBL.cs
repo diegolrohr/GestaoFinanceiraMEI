@@ -205,7 +205,8 @@ namespace Fly01.Compras.BL
             if (NotaValida(NFe))
             {
                 var empresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
-                entity.Fail(NFe.InfoNFe.Destinatario.Cnpj.ToUpper() != empresa?.CNPJ.ToUpper(), new Error("CNPJ do destinatário da nota fiscal não corresponde aos dados da sua empresa", "cnpj"));
+                var cnpjCpf = NFe.InfoNFe.Destinatario.Cnpj ?? NFe.InfoNFe.Destinatario.Cpf;
+                entity.Fail(cnpjCpf?.ToUpper() != empresa?.CNPJ.ToUpper(), new Error("CNPJ ou CPF do destinatário da nota fiscal não corresponde aos dados da sua empresa", "cnpj"));
                 entity.Fail(NFe.InfoNFe.Identificador.TipoDocumentoFiscal != TipoNota.Saida, new Error("Só é possível importar nota fiscal do tipo saída"));
                 entity.Fail(NFe.InfoNFe.Versao != "4.00", new Error("Só é possível importar nota fiscal da versão 4.00"));
                 entity.Fail(NFe.InfoNFe.Identificador.FinalidadeEmissaoNFe != TipoCompraVenda.Normal && NFe.InfoNFe.Identificador.FinalidadeEmissaoNFe != TipoCompraVenda.Complementar, new Error("Só é possível importar nota fiscal com finalidade normal/complementar"));

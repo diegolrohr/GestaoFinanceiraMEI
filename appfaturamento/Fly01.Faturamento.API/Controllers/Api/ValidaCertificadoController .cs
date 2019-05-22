@@ -12,11 +12,17 @@ namespace Fly01.Faturamento.API.Controllers.Api
     {
         private async Task VerificaCertificado()
         {
-            using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
+            //using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
+            //{
+            //    unitOfWork.CertificadoDigitalBL.VerificaValidade();
+            //    await unitOfWork.Save();
+            //}
+
+            SocketIOHelper.NewMessage(new Core.ViewModels.Presentation.Commons.SocketMessageVM
             {
-                unitOfWork.CertificadoDigitalBL.VerificaValidade();
-                await unitOfWork.Save();
-            }
+                Message = "Mensagem",
+                MessageType = Core.Entities.Domains.Enum.SocketMessageType.ERROR
+            });
         }
 
         [HttpPost]

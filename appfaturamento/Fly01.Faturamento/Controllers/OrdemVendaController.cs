@@ -831,7 +831,7 @@ namespace Fly01.Faturamento.Controllers
                 Label = "Somar com existentes"
             });
 
-            config.Elements.Add(new LabelSetUI() { Label = "Grupo Tributário Padrão", Class = "col s12" });
+            config.Elements.Add(new LabelSetUI() { Id = "lblGrupoTribuarioPadrao", Label = "Grupo Tributário Padrão", Class = "col s12" });
 
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {

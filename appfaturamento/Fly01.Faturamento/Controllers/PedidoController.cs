@@ -89,6 +89,9 @@ namespace Fly01.Faturamento.Controllers
 
             }
             var emiteNotaFiscal = personalizacao != null ? personalizacao.EmiteNotaFiscal : true;
+            var exibirTransportadora = personalizacao != null ? personalizacao.ExibirStepTransportadoraVendas : true;
+            var exibirProdutos = personalizacao != null ? personalizacao.ExibirStepProdutosVendas : true;
+            var exibirServicos = personalizacao != null ? personalizacao.ExibirStepServicosVendas : true;
 
             var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
             {
@@ -117,7 +120,7 @@ namespace Fly01.Faturamento.Controllers
                 },
                 ReadyFn = "fnFormReadyPedido",
                 UrlFunctions = Url.Action("Functions") + "?fns=",
-                Functions = new List<string> { "fnChangeEstado", "fnClickComplementarIsDevolucao" },
+                Functions = new List<string> { "fnChangeEstado", "fnClickComplementarIsDevolucao", "fnChangeFrete" },
                 Steps = new List<FormWizardUIStep>()
                 {
                     new FormWizardUIStep()
@@ -160,7 +163,7 @@ namespace Fly01.Faturamento.Controllers
                     {
                         Title = "Finalizar",
                         Id = "stepFinalizar",
-                        Quantity = 16,
+                        Quantity = 13,
                     }
                 },
                 Rule = isEdit ? "parallel" : "linear",
@@ -204,7 +207,7 @@ namespace Fly01.Faturamento.Controllers
             #region step Cadastro
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
-            config.Elements.Add(new InputHiddenUI { Id = "tipoVenda", Value = (personalizacao != null && !personalizacao.EmiteNotaFiscal) ? "Normal" : tipoVenda });
+            config.Elements.Add(new InputHiddenUI { Id = "tipoVenda", Value = (emiteNotaFiscal) ? "Normal" : tipoVenda });
             config.Elements.Add(new InputHiddenUI { Id = "tipoCarteira", Value = "Receita" });
             config.Elements.Add(new InputHiddenUI { Id = "status", Value = "Aberto" });
             config.Elements.Add(new InputHiddenUI { Id = "tipoOrdemVenda", Value = "Pedido" });
@@ -219,12 +222,12 @@ namespace Fly01.Faturamento.Controllers
                 config.Elements.Add(new InputHiddenUI { Id = "nFeRefComplementarIsDevolucao", Value = "true" });
             }
 
-            config.Elements.Add(new InputHiddenUI { Id = "emiteNotaFiscal", Value = personalizacao != null ? personalizacao.EmiteNotaFiscal.ToString() : "True" });
-            config.Elements.Add(new InputHiddenUI { Id = "exibeStepTransportadora", Value = personalizacao != null ? personalizacao.ExibirStepTransportadoraVendas.ToString() : "True" });
-            config.Elements.Add(new InputHiddenUI { Id = "exibeStepProdutos", Value = personalizacao != null ? personalizacao.ExibirStepProdutosVendas.ToString() : "True" });
-            config.Elements.Add(new InputHiddenUI { Id = "exibeStepServicos", Value = personalizacao != null ? personalizacao.ExibirStepServicosVendas.ToString() : "True" });
+            config.Elements.Add(new InputHiddenUI { Id = "emiteNotaFiscal", Value = emiteNotaFiscal.ToString() });
+            config.Elements.Add(new InputHiddenUI { Id = "exibeStepTransportadora", Value = exibirTransportadora.ToString() });
+            config.Elements.Add(new InputHiddenUI { Id = "exibeStepProdutos", Value = exibirProdutos.ToString() });
+            config.Elements.Add(new InputHiddenUI { Id = "exibeStepServicos", Value = exibirServicos.ToString() });
 
-            if (personalizacao != null && !personalizacao.ExibirStepTransportadoraVendas)
+            if (!exibirTransportadora)
             {
                 var stepCadastro = config?.Steps?.Find(x => x.Id == "stepCadastro");
                 stepCadastro.Quantity += 1;
@@ -283,7 +286,7 @@ namespace Fly01.Faturamento.Controllers
             #endregion
 
             #region step Produtos
-            if (personalizacao != null && !personalizacao.ExibirStepProdutosVendas)
+            if (!exibirProdutos)
             {
                 config?.Steps?.Remove(config?.Steps?.Find(x => x.Id == "stepProdutos"));
             }
@@ -316,7 +319,7 @@ namespace Fly01.Faturamento.Controllers
             #endregion
 
             #region step Serviços
-            if (personalizacao != null && !personalizacao.ExibirStepServicosVendas)
+            if (!exibirServicos)
             {
                 config?.Steps?.Remove(config?.Steps?.Find(x => x.Id == "stepServicos"));
             }
@@ -407,9 +410,9 @@ namespace Fly01.Faturamento.Controllers
             #endregion
 
             #region step Transporte
-            if (personalizacao != null && !personalizacao.ExibirStepTransportadoraVendas)
+            if (!exibirTransportadora)
             {
-                config?.Steps?.Remove(config?.Steps?.Find(x => x.Id == "stepTransportadora"));
+                config?.Steps?.Remove(config?.Steps?.Find(x => x.Id == "stepTransporte"));
             }
             else
             {
@@ -471,35 +474,50 @@ namespace Fly01.Faturamento.Controllers
             #endregion
 
             #region step Finalizar
-            config.Elements.Add(new InputCurrencyUI { Id = "totalProdutos", Class = "col s12 m4", Label = "Total produtos", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalServicos", Class = "col s12 m4", Label = "Total serviços", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m4", Label = "Frete", Readonly = true });
-
-            if (emiteNotaFiscal)
+            var stepFinalizar = config?.Steps?.Find(x => x.Id == "stepFinalizar");
+            if (exibirProdutos)
             {
-                var stepCadastro = config?.Steps?.Find(x => x.Id == "stepFinalizar");
-                stepCadastro.Quantity += 4;
+                config.Elements.Add(new InputCurrencyUI { Id = "totalProdutos", Class = "col s12 m4", Label = "Total produtos", Readonly = true });
+                stepFinalizar.Quantity += 1;
+                if (emiteNotaFiscal)
+                {
+                    stepFinalizar.Quantity += 2;
+                    config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutos", Class = "col s12 m4", Label = "Total de impostos incidentes", Readonly = true });
+                    config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutosNaoAgrega", Class = "col s12 m4", Label = "Total de impostos não incidentes", Readonly = true });
+                }
+            }
 
-                config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutos", Class = "col s12 m4", Label = "Total de impostos incidentes", Readonly = true });
-                config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutosNaoAgrega", Class = "col s12 m4", Label = "Total de impostos não incidentes", Readonly = true });
-                config.Elements.Add(new InputCurrencyUI { Id = "totalRetencoesServicos", Class = "col s12 m4", Label = "Total retenções serviços", Readonly = true });
-                config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosServicosNaoAgrega", Class = "col s12 m4", Label = "Total de impostos não incidentes", Readonly = true });
+            if (exibirServicos)
+            {
+                config.Elements.Add(new InputCurrencyUI { Id = "totalServicos", Class = "col s12 m4", Label = "Total serviços", Readonly = true });
+                stepFinalizar.Quantity += 1;
+                if (emiteNotaFiscal)
+                {
+                    stepFinalizar.Quantity += 2;
+                    config.Elements.Add(new InputCurrencyUI { Id = "totalRetencoesServicos", Class = "col s12 m4", Label = "Total retenções serviços", Readonly = true });
+                    config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosServicosNaoAgrega", Class = "col s12 m4", Label = "Total de impostos não incidentes", Readonly = true });
+                }
+            }
+            
+            if (exibirTransportadora)
+            {
+                stepFinalizar.Quantity += 1;
+                config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m4", Label = "Frete", Readonly = true });
             }
 
             config.Elements.Add(new InputCurrencyUI { Id = "totalOrdemVenda", Class = "col s12 m4", Label = "Total pedido", Readonly = true });
             if (emiteNotaFiscal)
             {
-                var stepCadastro = config?.Steps?.Find(x => x.Id == "stepFinalizar");
-                stepCadastro.Quantity += 1;
+                stepFinalizar.Quantity += 1;
                 config.Elements.Add(new InputCheckboxUI
                 {
                     Id = "geraNotaFiscal",
                     Class = "col s12 m4",
                     Label = "Faturar",
                     DomEvents = new List<DomEventUI>
-                {
-                    new DomEventUI { DomEvent = "click", Function = "fnClickGeraNotaFiscal" }
-                }
+                    {
+                        new DomEventUI { DomEvent = "click", Function = "fnClickGeraNotaFiscal" }
+                    }
                 });
             }
 

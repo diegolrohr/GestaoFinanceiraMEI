@@ -62,6 +62,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AutoCompleteController.cs" />
     <Compile Include="Controllers\AvaliacaoAppController.cs" />
+    <Compile Include="Controllers\ConfiguracaoPersonalizacaoController.cs" />
     <Compile Include="Controllers\EnquadramentoLegalIPIController.cs" />
     <Compile Include="Controllers\InventarioController.cs" />
     <Compile Include="Controllers\InventarioItemController.cs" />
@@ -223,6 +224,8 @@
     <Content Include="Views\RelatorioProduto\Functions\_fnChangeNCM.cshtml" />
     <Content Include="Views\RelatorioProduto\Functions\_fnImprimirRelatorioProduto.cshtml" />
     <Content Include="Views\Relatorio\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\ConfiguracaoPersonalizacao\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\ConfiguracaoPersonalizacao\Index.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

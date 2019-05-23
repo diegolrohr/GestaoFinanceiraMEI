@@ -25,42 +25,45 @@
     function fnFormReadyOrdemVendaProduto() {
 
         var id = $("form#fly01mdlfrmOrdemVendaProduto input#id").val();
+        var emiteNotaFiscal = $('#emiteNotaFiscal').val() == "True";
 
         if (id.length == 0) {
-
-            $$$.loading.start();
-
-            $.ajax({
-                url: '@Url.Action("GetParametrosTributarios", "OrdemVendaProduto")',
-                type: "GET",
-                data: {}
-            })
-            .done(function (data) {
-                if (data.success) {
-                    if (data.imposto != null) {
-                        $('input#fcp').val(data.imposto.AliquotaFCP);
-                        $('input#icms').val(data.imposto.AliquotaSimplesNacional);
-                        $$$.fn.updateTextFields();
+            if (emiteNotaFiscal) {
+                $$$.loading.start();
+                $.ajax({
+                    url: '@Url.Action("GetParametrosTributarios", "OrdemVendaProduto")',
+                    type: "GET",
+                    data: {}
+                })
+                .done(function (data) {
+                    if (data.success) {
+                        if (data.imposto != null) {
+                            $('input#fcp').val(data.imposto.AliquotaFCP);
+                            $('input#icms').val(data.imposto.AliquotaSimplesNacional);
+                            $$$.fn.updateTextFields();
+                        }
                     }
-                }
-                else {
+                    else {
 
-                    $$$.fn.submitErrorHandler(null, data.message);
-                }
-                $$$.loading.stop();
-            })
-            .fail(function (jqxhr, textStatus, error) {
-                var err = 'Ocorreu um erro na requisição: ' + textStatus + ", " + error;
-                $$$.toast(err, "error");
-                $$$.loading.stop();
-            });
+                        $$$.fn.submitErrorHandler(null, data.message);
+                    }
+                    $$$.loading.stop();
+                })
+                .fail(function (jqxhr, textStatus, error) {
+                    var err = 'Ocorreu um erro na requisição: ' + textStatus + ", " + error;
+                    $$$.toast(err, "error");
+                    $$$.loading.stop();
+                });
+            }
 
             $('form#fly01mdlfrmOrdemVendaProduto input#ordemVendaId').val($('form#fly01frm input#id').val());
             $('form#fly01mdlfrmOrdemVendaProduto input#grupoTributarioIdProduto').val($('form#fly01frm input#grupoTributarioPadraoId').val());
             $('form#fly01mdlfrmOrdemVendaProduto input#grupoTributarioDescricaoProduto').val($('form#fly01frm input#grupoTributarioPadraoDescricao').val());
             $('form#fly01mdlfrmOrdemVendaProduto #grupoTributarioTipoTributacaoICMS').val($('form#fly01frm #grupoTributarioPadraoTipoTributacaoICMS').val());
         }
+
         fnConfiguraTipoTributacaoICMSProduto();
+        if (!emiteNotaFiscal) { fnHideCamposEmissaoNotaProduto(); }
 
         $$$.fn.updateTextFields();
         fnOverrideSubmitOrdemVendaProduto();
@@ -78,9 +81,15 @@
         setNFERequiredFields("fly01mdlfrmOrdemVendaProduto", ["produtoDescricao", "grupoTributarioDescricaoProduto", "quantidade", "valorCreditoICMS", "valorBCSTRetido", "valorICMSSTRetido", "valorBCFCPSTRetidoAnterior", "valorFCPSTRetidoAnterior", "icms", "fcp"]);
     }
 
+    function fnHideCamposEmissaoNotaProduto() {
+        $('form#fly01mdlfrmOrdemVendaProduto #grupoTributarioIdProdutoField').hide();
+        $('form#fly01mdlfrmOrdemVendaProduto #icmsField').hide();
+        $('form#fly01mdlfrmOrdemVendaProduto #fcpField').hide();
+    }
+
     function fnSetNaturezaOperacao(idItem) {
         //adicionando o primeiro ou editando o único adicionado
-        if (($$$._.dtOrdemVendaProdutos.ajax.json().recordsTotal == 0 && idItem.length == 0) || ($$$._.dtOrdemVendaProdutos.ajax.json().recordsTotal == 1 && idItem.length != 0)) {
+        if ($('input#exibeStepProdutos').val() == "True" && ($$$._.dtOrdemVendaProdutos.ajax.json().recordsTotal == 0 && idItem.length == 0) || ($$$._.dtOrdemVendaProdutos.ajax.json().recordsTotal == 1 && idItem.length != 0)) {
             var cfopDescricao = $('input#cfopDescricao').val();
             $('input#naturezaOperacao').val(cfopDescricao.substring(0, (cfopDescricao.length > 60 ? 60 : cfopDescricao.length)));
             $$$.fn.updateTextFields();

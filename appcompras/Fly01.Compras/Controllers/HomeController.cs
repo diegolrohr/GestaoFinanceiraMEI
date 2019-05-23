@@ -313,6 +313,8 @@ namespace Fly01.Compras.Controllers
                         new LinkUI() { Class = ResourceHashConst.ComprasConfiguracoesCertificadoDigital, Label = "Certificado Digital", OnClick = @Url.Action("Form", "CertificadoDigital") },
                         new LinkUI() { Class = ResourceHashConst.ComprasConfiguracoesParametrosTributarios, Label = "Parâmetros Tributários", OnClick = @Url.Action("Form", "ParametroTributario") },
                         new LinkUI() { Class = ResourceHashConst.ComprasConfiguracoesSerieNotasFiscais, Label = "Série de Notas Fiscais", OnClick = @Url.Action("List", "SerieNotaFiscal")},
+                        //Personalizar Sistema não vai ter hash especifico de permissão, segundo Fraga
+                        new LinkUI() { Class = ResourceHashConst.ComprasConfiguracoes, Label = "Personalizar Sistema", OnClick = @Url.Action("Form", "ConfiguracaoPersonalizacao") },
                         new LinkUI() { Class = ResourceHashConst.ComprasConfiguracoesNotasFiscaisInutilizadas, Label = "Notas Fiscais Inutilizadas", OnClick = @Url.Action("List", "NotaFiscalInutilizada") }
                     }
                 },

@@ -10,7 +10,7 @@ namespace Fly01.Faturamento.API.Controllers.Api
     public class CalculaTotalOrdemVendaController : ApiBaseController
     {
         [HttpGet]
-        public IHttpActionResult Get(Guid ordemVendaId, Guid clienteId, bool geraNotaFiscal, string tipoNfeComplementar, string tipoFrete, double? valorFrete = 0, bool onList = false)
+        public IHttpActionResult Get(Guid ordemVendaId, Guid clienteId, bool geraNotaFiscal, string tipoNfeComplementar = "NaoComplementar", string tipoFrete = "SemFrete", double? valorFrete = 0, bool onList = false)
         {
             try
             {

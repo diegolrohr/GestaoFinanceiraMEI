@@ -15,11 +15,12 @@
         }
     }
 
-    function fnHaveToShow() {
+    function fnHaveToShow() {        
         return (
                 ($$$._.dtProdutosEstoqueNegativo.ajax.json().recordsTotal > 0) &&
                 $('#movimentaEstoque').is(':checked') &&
-                ($('#tipoVenda').val() == "Normal" || ($('#tipoVenda').val() == "Complementar" && $('#tipoNfeComplementar').val() == "ComplPrecoQtd"))
+                ($('#tipoVenda').val() == "Normal" || ($('#tipoVenda').val() == "Complementar" && $('#tipoNfeComplementar').val() == "ComplPrecoQtd")) &&
+                $('input#exibeStepProdutos').val() == "True"
             );
     }
 </script>

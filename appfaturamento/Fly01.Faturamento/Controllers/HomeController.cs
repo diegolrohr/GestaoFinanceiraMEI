@@ -12,6 +12,9 @@ using System.Configuration;
 using Fly01.uiJS.Classes.Widgets;
 using Fly01.Core.Presentation;
 using Fly01.Core.Helpers;
+using Fly01.Core.ViewModels.Presentation.Commons;
+using System;
+using Fly01.uiJS.Classes.Elements;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -21,6 +24,15 @@ namespace Fly01.Faturamento.Controllers
         {
             if (!UserCanPerformOperation(ResourceHashConst.FaturamentoFaturamentoVisaoGeral))
                 return new ContentUI { SidebarUrl = @Url.Action("Sidebar") };
+
+            ConfiguracaoPersonalizacaoVM personalizacao = null;
+            try
+            {
+                personalizacao = RestHelper.ExecuteGetRequest<ResultBase<ConfiguracaoPersonalizacaoVM>>("ConfiguracaoPersonalizacao", queryString: null)?.Data?.FirstOrDefault();
+            }
+            catch (Exception){}
+
+            var emiteNotaFiscal = personalizacao != null ? personalizacao.EmiteNotaFiscal : true;
 
             var cfg = new ContentUI
             {
@@ -42,77 +54,89 @@ namespace Fly01.Faturamento.Controllers
                 Id = "fly01frm",
                 ReadyFn = "fnFormReady",
                 UrlFunctions = Url.Action("Functions", "Home", null, Request.Url.Scheme) + "?fns=",
-                Class = "col s12"
-            });
-
-            cfg.Content.Add(new CardUI
-            {
                 Class = "col s12",
-                Color = "totvs-blue",
-                Id = "cardNotaFiscal",
-                Title = "Nota Fiscal",
-                Placeholder = "Número de Notas Fiscais não transmitidas",
-                Action = new LinkUI
+                Elements = new List<BaseUI>()
                 {
-                    Label = "Ver mais",
-                    OnClick = Url.Action("List", "NotaFiscal") + "?action=GridLoadNoFilter"
+                    new InputHiddenUI() { Id = "emiteNotaFiscal", Value = emiteNotaFiscal.ToString() }
                 }
             });
 
-            var classCard = "col s12 m4";
-            var empresa = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
-            var cidadeHomologadaTss = (!string.IsNullOrEmpty(empresa?.Cidade?.CodigoIbge) && NFSeTssHelper.IbgesCidadesHomologadasTssNFSe.Contains(empresa?.Cidade?.CodigoIbge));
-            if (cidadeHomologadaTss)
+            if (emiteNotaFiscal)
             {
-                classCard = "col s12 m3";
+                cfg.Content.Add(new CardUI
+                {
+                    Class = "col s12",
+                    Color = "totvs-blue",
+                    Id = "cardNotaFiscal",
+                    Title = "Nota Fiscal",
+                    Placeholder = "Número de Notas Fiscais não transmitidas",
+                    Action = new LinkUI
+                    {
+                        Label = "Ver mais",
+                        OnClick = Url.Action("List", "NotaFiscal") + "?action=GridLoadNoFilter"
+                    }
+                });
+
+                var classCard = "col s12 m4";
+                var empresa = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
+                var cidadeHomologadaTss = (!string.IsNullOrEmpty(empresa?.Cidade?.CodigoIbge) && NFSeTssHelper.IbgesCidadesHomologadasTssNFSe.Contains(empresa?.Cidade?.CodigoIbge));
+                if (cidadeHomologadaTss)
+                {
+                    classCard = "col s12 m3";
+                    cfg.Content.Add(new AppUI()
+                    {
+                        Id = "nfsenormal",
+                        Class = classCard,
+                        Title = "NFS-e Serviço",
+                        Icon = "https://mpn.azureedge.net/img/icon/nfe/servico.svg",
+                        Target = new LinkUI
+                        {
+                            Go = Url.Action("FormPedido", "Pedido", new { isEdit = "false", tipoVenda = "Normal" })
+                        }
+                    });
+                }
+
                 cfg.Content.Add(new AppUI()
                 {
-                    Id = "nfsenormal",
+                    Id = "nfenormal",
                     Class = classCard,
-                    Title = "NFS-e Serviço",
-                    Icon = "https://mpn.azureedge.net/img/icon/nfe/servico.svg",
+                    Title = "NF-e Normal",
+                    Icon = "https://mpn.azureedge.net/img/icon/nfe/normal.svg",
                     Target = new LinkUI
                     {
                         Go = Url.Action("FormPedido", "Pedido", new { isEdit = "false", tipoVenda = "Normal" })
                     }
                 });
+
+                cfg.Content.Add(new AppUI()
+                {
+                    Id = "nfedevolucao",
+                    Class = classCard,
+                    Title = "NF-e Devolução",
+                    Icon = "https://mpn.azureedge.net/img/icon/nfe/devolucao.svg",
+                    Target = new LinkUI
+                    {
+                        Go = Url.Action("FormPedido", "Pedido", new { isEdit = "false", tipoVenda = "Devolucao" })
+                    }
+                });
+
+                cfg.Content.Add(new AppUI()
+                {
+                    Id = "nfecomplemento",
+                    Class = classCard,
+                    Title = "NF-e Complemento",
+                    Icon = "https://mpn.azureedge.net/img/icon/nfe/complemento.svg",
+                    Target = new LinkUI
+                    {
+                        Go = Url.Action("FormPedido", "Pedido", new { isEdit = "false", tipoVenda = "Complementar" })
+                    }
+                });
+
             }
-
-            cfg.Content.Add(new AppUI()
+            else
             {
-                Id = "nfenormal",
-                Class = classCard,
-                Title = "NF-e Normal",
-                Icon = "https://mpn.azureedge.net/img/icon/nfe/normal.svg",
-                Target = new LinkUI
-                {
-                    Go = Url.Action("FormPedido", "Pedido", new { isEdit = "false", tipoVenda = "Normal" })
-                }
-            });
-
-            cfg.Content.Add(new AppUI()
-            {
-                Id = "nfedevolucao",
-                Class = classCard,
-                Title = "NF-e Devolução",
-                Icon = "https://mpn.azureedge.net/img/icon/nfe/devolucao.svg",
-                Target = new LinkUI
-                {
-                    Go = Url.Action("FormPedido", "Pedido", new { isEdit = "false", tipoVenda = "Devolucao" })
-                }
-            });
-
-            cfg.Content.Add(new AppUI()
-            {
-                Id = "nfecomplemento",
-                Class = classCard,
-                Title = "NF-e Complemento",
-                Icon = "https://mpn.azureedge.net/img/icon/nfe/complemento.svg",
-                Target = new LinkUI
-                {
-                    Go = Url.Action("FormPedido", "Pedido", new { isEdit = "false", tipoVenda = "Complementar" })
-                }
-            });            
+                //redirect no JavaScript até Fraga decidir um dashboard
+            }
 
             return cfg;
         }

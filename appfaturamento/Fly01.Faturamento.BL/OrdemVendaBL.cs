@@ -295,9 +295,9 @@ namespace Fly01.Faturamento.BL
                             RetemPIS = grupoTributario.RetemPis,
                             #endregion
                             #region FCPST
-                            FCPSTBase = x.FCPBase,
-                            FCPSTAliquota = x.FCPAliquota,
-                            FCPSTValor = x.FCPValor,
+                            FCPSTBase = x.FCPSTBase,
+                            FCPSTAliquota = x.FCPSTAliquota,
+                            FCPSTValor = x.FCPSTValor,
                             #endregion
                             #region FCP
                             FCPBase = x.FCPBase,

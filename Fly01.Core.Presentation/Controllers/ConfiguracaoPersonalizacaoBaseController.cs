@@ -4,6 +4,7 @@ using Fly01.Core.Rest;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
+using Fly01.uiJS.Classes.Helpers;
 using Fly01.uiJS.Defaults;
 using Newtonsoft.Json;
 using System;
@@ -64,13 +65,58 @@ namespace Fly01.Core.Presentation.Controllers
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
-            config.Elements.Add(new InputCheckboxUI { Id = "emiteNotaFiscal", Class = "col s12 m6 l3", Label = "Emite NotaFiscal" });
-            config.Elements.Add(new InputCheckboxUI { Id = "exibirStepProdutosVendas", Class = "col s12 m6 l3", Label = "exibirStepProdutosVendas" });
-            config.Elements.Add(new InputCheckboxUI { Id = "exibirStepProdutosCompras", Class = "col s12 m6 l3", Label = "exibirStepProdutosCompras" });
-            config.Elements.Add(new InputCheckboxUI { Id = "exibirStepServicosVendas", Class = "col s12 m6 l3", Label = "exibirStepServicosVendas" });
-            config.Elements.Add(new InputCheckboxUI { Id = "exibirStepServicosCompras", Class = "col s12 m6 l3", Label = "exibirStepServicosCompras" });
-            config.Elements.Add(new InputCheckboxUI { Id = "exibirStepTransportadoraVendas", Class = "col s12 m6 l3", Label = "exibirStepTransportadoraVendas" });
-            config.Elements.Add(new InputCheckboxUI { Id = "exibirStepTransportadoraCompras", Class = "col s12 m6 l3", Label = "exibirStepTransportadoraCompras" });
+            config.Elements.Add(new InputCheckboxUI { Id = "emiteNotaFiscal", Class = "col s12 m6 l3", Label = "Vou emitir Nota Fiscal" });
+
+            config.Elements.Add(new LabelSetUI() { Id = "lblFaturamento", Label = "Aplicativo Faturamento" });
+            config.Elements.Add(new InputCheckboxUI { Id = "exibirStepProdutosVendas", Class = "col s12 m6 l4", Label = "Exibir aba de Produtos nas Vendas" });
+            config.Elements.Add(new InputCheckboxUI { Id = "exibirStepServicosVendas", Class = "col s12 m6 l4", Label = "Exibir aba de Serviços nas Vendas" });
+            config.Elements.Add(new InputCheckboxUI { Id = "exibirStepTransportadoraVendas", Class = "col s12 m6 l4", Label = "Exibir aba de Transportadora nas Vendas" });
+
+            config.Elements.Add(new LabelSetUI() { Id = "lblCompras", Label = "Aplicativo Compras" });
+            config.Elements.Add(new InputCheckboxUI { Id = "exibirStepTransportadoraCompras", Class = "col s12 m6 l5", Label = "Exibir aba de Transportadora nos Pedidos" });
+
+            #region Helpers            
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "emiteNotaFiscal",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Se desmarcar, diversos campos referente a emissão de notas fiscais, deixam de ser obrigatórios e não são mais exibidos no cadastro das Vendas e no cadastro dos Pedidos de Compra. Exemplo: grupo tributário dos produtos/serviços, alíquotas e cálculos de impostos, opção de faturar o pedido."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "exibirStepProdutosVendas",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Se desmarcar, deixa de exibir a aba de adicionar Produtos no cadastro das Vendas."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "exibirStepServicosVendas",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Se desmarcar, deixa de exibir a aba de adicionar Serviços no cadastro das Vendas."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "exibirStepTransportadoraVendas",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Se desmarcar, deixa de exibir a aba de adicionar Transportadora e informações de frete, no cadastro das Vendas."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "exibirStepTransportadoraCompras",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Se desmarcar, deixa de exibir a aba de adicionar Transportadora e informações de frete, no cadastro dos Pedidos de Compra."
+                }
+            });
+            #endregion
 
             cfg.Content.Add(config);
 
@@ -100,10 +146,8 @@ namespace Fly01.Core.Presentation.Controllers
                     ? entity
                     : new ConfiguracaoPersonalizacaoVM()
                     {
-                        EmiteNotaFiscal  = true,
-                        ExibirStepProdutosCompras = true,
+                        EmiteNotaFiscal  = true,                        
                         ExibirStepProdutosVendas = true,
-                        ExibirStepServicosCompras = true,
                         ExibirStepServicosVendas = true,
                         ExibirStepTransportadoraCompras = true,
                         ExibirStepTransportadoraVendas = true,

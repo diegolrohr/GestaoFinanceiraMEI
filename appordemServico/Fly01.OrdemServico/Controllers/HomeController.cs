@@ -387,8 +387,8 @@ namespace Fly01.OrdemServico.Controllers
                     Items = new List<LinkUI>
                     {
                         new LinkUI() { Class = ResourceHashConst.OrdemServicoConfiguracoesParametros, Label = "Parâmetros", OnClick = @Url.Action("List", "ParametroOrdemServico")},
-                        //TODO:
-                        new LinkUI() { Class = ResourceHashConst.FaturamentoConfiguracoesCertificadoDigital, Label = "Personalizar Sistema", OnClick = @Url.Action("Form", "ConfiguracaoPersonalizacao") }
+                        //Personalizar Sistema não vai ter hash especifico de permissão, segundo Fraga
+                        //new LinkUI() { Class = ResourceHashConst.OrdemServicoConfiguracoes, Label = "Personalizar Sistema", OnClick = @Url.Action("Form", "ConfiguracaoPersonalizacao") }
                     }
                 },
                 new SidebarUIMenu()

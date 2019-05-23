@@ -30,7 +30,7 @@
         var idPedido = $("form#fly01frm input#id").val();
         var idCliente = $("form#fly01frm input#clienteId").val();
         var geraNotaFiscal = $('input#geraNotaFiscal:checked').val() == "true";
-        if (geraNotaFiscal && $$$._.dtOrdemVendaProdutos.data(0).length > 0) {
+        if (geraNotaFiscal && $('input#exibeStepProdutos').val() == "True" && $$$._.dtOrdemVendaProdutos.data(0).length > 0) {
             $("#naturezaOperacaoField").show();
             $("input#naturezaOperacao").rules("add", { required: true });
             $('#mensagemPadraoNotaField').show();
@@ -48,7 +48,7 @@
             $('#localDespachoField').hide();
         }
 
-        if (geraNotaFiscal && $$$._.dtOrdemVendaServicos.data(0).length > 0) {
+        if (geraNotaFiscal &&  $('input#exibeStepServicos').val() == "True" && $$$._.dtOrdemVendaServicos.data(0).length > 0) {
             $("#informacoesCompletamentaresNFSField").show();
             $("input#informacoesCompletamentaresNFS").rules("add", { required: true });
             $('#informacoesCompletamentaresNFSField').show();
@@ -245,8 +245,8 @@
                             $("form#fly01frm input#id").val(data.id);
                             $("form#fly01frm input#numero").val(data.numero);
 
-                            $$$._.dtOrdemVendaProdutos.refresh();
-                            $$$._.dtOrdemVendaServicos.refresh();
+                            if ($('input#exibeStepProdutos').val() == "True") { $$$._.dtOrdemVendaProdutos.refresh(); }
+                            if ($('input#exibeStepServicos').val() == "True") { $$$._.dtOrdemVendaServicos.refresh(); }
                             var url = window.location.href.replace('/Create', '/Edit/' + data.id);
                             window.history.pushState({}, document.title, url);
                             $("form#fly01frm").data("action", "@Url.Action("Edit", "Pedido")");
@@ -305,7 +305,7 @@
     }
 
     function fnValidarCamposDeProdutos() {
-        if ($$$._.dtOrdemVendaProdutos.data(0).length == 0) {
+        if (($('input#exibeStepProdutos').val() == "True") && $$$._.dtOrdemVendaProdutos.data(0).length == 0) {
             $('#movimentaEstoque').prop('checked', false);
             $('#movimentaEstoqueField').hide();
         } else {
@@ -341,8 +341,8 @@
 
             disableStepFinalidade();
             if (!onCancelMustDeletePedido) { $('li#stepCadastro div.step-title').click(); }
-            $$$._.dtOrdemVendaProdutos.refresh();
-            $$$._.dtOrdemVendaServicos.refresh();
+            if ($('input#exibeStepProdutos').val() == "True") { $$$._.dtOrdemVendaProdutos.refresh(); }
+            if ($('input#exibeStepProdutos').val() == "True") { $$$._.dtOrdemVendaServicos.refresh(); }
         }
 
         fnBindOverrideSubmit();

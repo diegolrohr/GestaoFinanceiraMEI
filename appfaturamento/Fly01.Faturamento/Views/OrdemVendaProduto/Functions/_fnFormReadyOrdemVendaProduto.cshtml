@@ -25,9 +25,9 @@
     function fnFormReadyOrdemVendaProduto() {
 
         var id = $("form#fly01mdlfrmOrdemVendaProduto input#id").val();
+        var emiteNotaFiscal = $('#emiteNotaFiscal').val() == "True";
 
-        if (id.length == 0) {
-
+        if (emiteNotaFiscal && id.length == 0) {
             $$$.loading.start();
 
             $.ajax({
@@ -60,7 +60,9 @@
             $('form#fly01mdlfrmOrdemVendaProduto input#grupoTributarioDescricaoProduto').val($('form#fly01frm input#grupoTributarioPadraoDescricao').val());
             $('form#fly01mdlfrmOrdemVendaProduto #grupoTributarioTipoTributacaoICMS').val($('form#fly01frm #grupoTributarioPadraoTipoTributacaoICMS').val());
         }
-        fnConfiguraTipoTributacaoICMSProduto();
+
+        if (emiteNotaFiscal) { fnConfiguraTipoTributacaoICMSProduto(); }
+        if (!emiteNotaFiscal) { fnHideCamposEmissaoNotaProduto(); }
 
         $$$.fn.updateTextFields();
         fnOverrideSubmitOrdemVendaProduto();
@@ -76,6 +78,12 @@
         });
 
         setNFERequiredFields("fly01mdlfrmOrdemVendaProduto", ["produtoDescricao", "grupoTributarioDescricaoProduto", "quantidade", "valorCreditoICMS", "valorBCSTRetido", "valorICMSSTRetido", "valorBCFCPSTRetidoAnterior", "valorFCPSTRetidoAnterior", "icms", "fcp"]);
+    }
+
+    function fnHideCamposEmissaoNotaProduto() {
+        $('form#fly01mdlfrmOrdemVendaProduto #grupoTributarioIdProdutoField').hide();
+        $('form#fly01mdlfrmOrdemVendaProduto #icmsField').hide();
+        $('form#fly01mdlfrmOrdemVendaProduto #fcpField').hide();
     }
 
     function fnSetNaturezaOperacao(idItem) {

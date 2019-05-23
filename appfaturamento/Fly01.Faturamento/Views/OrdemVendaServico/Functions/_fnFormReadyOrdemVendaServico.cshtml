@@ -3,12 +3,14 @@
 
     function fnFormReadyOrdemVendaServico() {
         var id = $("form#fly01mdlfrmOrdemVendaServico input#id").val();
+        var emiteNotaFiscal = $('#emiteNotaFiscal').val() == "True";
 
         if (id.length == 0) {
             $('form#fly01mdlfrmOrdemVendaServico input#ordemVendaId').val($('form#fly01frm input#id').val());
             $('form#fly01mdlfrmOrdemVendaServico input#grupoTributarioIdServico').val($('form#fly01frm input#grupoTributarioPadraoId').val());
             $('form#fly01mdlfrmOrdemVendaServico input#grupoTributarioDescricaoServico').val($('form#fly01frm input#grupoTributarioPadraoDescricao').val());
         }
+        if (!emiteNotaFiscal) { fnHideCamposEmissaoNotaServico(); }
 
         $$$.fn.updateTextFields();
         fnOverrideSubmitOrdemVendaServico();
@@ -24,6 +26,13 @@
         });
 
         setNFSERequiredFields("fly01mdlfrmOrdemVendaServico", ["servicoDescricao", "grupoTributarioDescricaoServico", "quantidade", "valor", "descricaoOutrasRetencoes", "valorOutrasRetencoes", "isServicoPrioritario"]);
+    }
+
+    function fnHideCamposEmissaoNotaServico() {
+        $('form#fly01mdlfrmOrdemVendaServico #grupoTributarioIdServicoField').hide();
+        $('form#fly01mdlfrmOrdemVendaServico #descricaoOutrasRetencoesField').hide();
+        $('form#fly01mdlfrmOrdemVendaServico #valorOutrasRetencoesField').hide();
+        $('form#fly01mdlfrmOrdemVendaServico #isServicoPrioritarioField').hide();
     }
 
     function fnOverrideSubmitOrdemVendaServico() {

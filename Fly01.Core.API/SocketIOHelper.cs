@@ -5,6 +5,7 @@ using Fly01.Core.ViewModels.Presentation.Commons;
 using System.Text;
 using Newtonsoft.Json;
 using SocketIOClient;
+using Fly01.Core.Rest;
 
 namespace Fly01.Core.API
 {
@@ -24,29 +25,8 @@ namespace Fly01.Core.API
         {
             try
             {
-                //IEmitter io = new Emitter(new EmitterOptions
-                //{
-                //    Host = "http://10.51.4.35:5000/",
-                //    Port = 5000
-                //})
-                var socket = new Client("ws://10.51.4.35:5000/socket.io/?EIO=3&transport=polling&t=MhXJhSH/");
-                //http://10.51.4.35:5000/socket.io/?EIO=3&transport=polling&t=MhXJhSH
-                socket.Connect("AppsGestao");
-                socket.Emit(emitEvent, message);
-
-                var socket2 = new Client("http://10.51.4.35:5000/socket.io/?EIO=3&transport=polling&t=MhXJhSH/");
-                socket2.Connect("AppsGestao");
-                socket2.Emit(emitEvent, message);
-                //var socket = IO.Socket(AppDefaults.UrlNotificationSocket);
-                //var socket = IO.Socket("http://10.51.4.35:5000/AppsGestao");
-                //socket.Connect();
-
-                //TODO Encoding.UTF8.GetBytes??
-                //aqui não precisa ser canal por aplicativo, nem por plataforma, os dados estão na mensagem
-                //trocar UrlNotificationSocket web configs
-                //socket.Emit($"{emitEvent}", Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message)));
-
-                //socket.Disconnect();
+                //RestHelper.ExecutePostRequest<Object>()
+                RestHelper.ExecutePostRequest("http://localhost:3000/api/notifications", "/newmessage", JsonConvert.SerializeObject(message), null, null, 300);
             }
             catch (Exception ex)
             {

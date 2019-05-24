@@ -374,6 +374,17 @@ namespace Fly01.Faturamento.Controllers
 
         public ContentResult ListOrdemVenda(string gridLoad = "GridLoad")
         {
+            ConfiguracaoPersonalizacaoVM personalizacao = null;
+            try
+            {
+                personalizacao = RestHelper.ExecuteGetRequest<ResultBase<ConfiguracaoPersonalizacaoVM>>("ConfiguracaoPersonalizacao", queryString: null)?.Data?.FirstOrDefault();
+            }
+            catch (Exception)
+            {
+
+            }
+            var emiteNotaFiscal = personalizacao != null ? personalizacao.EmiteNotaFiscal : true;
+
             var buttonLabel = "Mostrar todas as vendas";
             var buttonOnClick = "fnRemoveFilter";
 
@@ -457,7 +468,7 @@ namespace Fly01.Faturamento.Controllers
                 new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "(row.status == 'Aberto')" },
                 new DataTableUIAction { OnClickFn = "fnConverterParaPedido", Label = "Converter em pedido", ShowIf = "(row.status == 'Aberto' && row.tipoOrdemVenda == 'Orcamento')" },
                 new DataTableUIAction { OnClickFn = "fnFinalizarPedido", Label = "Finalizar pedido", ShowIf = "(row.status == 'Aberto' && row.tipoOrdemVenda == 'Pedido' && row.geraNotaFiscal == false)" },
-                new DataTableUIAction { OnClickFn = "fnFinalizarFaturarPedido", Label = "Finalizar e faturar", ShowIf = "(row.status == 'Aberto' && row.tipoOrdemVenda == 'Pedido')" },
+                new DataTableUIAction { OnClickFn = "fnFinalizarFaturarPedido", Label = "Finalizar e faturar", ShowIf = $"({emiteNotaFiscal.ToString().ToLower()} && row.status == 'Aberto' && row.tipoOrdemVenda == 'Pedido')" },
                 new DataTableUIAction { OnClickFn = "fnImprimirOrcamentoPedido", Label = "Imprimir" },
                 new DataTableUIAction { OnClickFn = "fnEnviarEmailOrcamentoPedido", Label = "Enviar por e-mail" },
                 new DataTableUIAction { OnClickFn = "fnClonarPedido", Label = "Clonar Pedido", ShowIf = "(row.status == 'Finalizado' && row.tipoOrdemVenda == 'Pedido')" }

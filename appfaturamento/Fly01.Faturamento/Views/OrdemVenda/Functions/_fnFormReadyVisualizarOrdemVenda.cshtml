@@ -1,6 +1,169 @@
 ﻿<script>
     @Html.Partial("Functions/_fnMain");
 
+    function fnFormReadyVisualizarOrdemVenda() {
+        listProdutos();
+        listServicos();
+        calculaTotalOrdemVenda();
+        collapseCadastro();
+        if ($('#fly01mdlfrmVisualizarOrdemVenda #exibeStepProdutos').val() == "True") {
+            collapseProdutos();
+        }
+        if ($('#fly01mdlfrmVisualizarOrdemVenda #exibeStepServicos').val() == "True") {
+            collapseServicos();
+        }
+        collapseFinanceiro();
+        if ($('#fly01mdlfrmVisualizarOrdemVenda #exibeStepTransportadora').val() == "True") {
+            collapseTransporte();
+        }
+        collapseTotais();
+
+        $('#fly01mdlfrmVisualizarOrdemVenda .collapsible').collapsible();
+        expandInitialCollapse();
+    }
+
+    function expandInitialCollapse() {
+        $("#fly01mdlfrmVisualizarOrdemVenda #collapseCadastroField .collapsible-header").addClass("active");
+        $("#fly01mdlfrmVisualizarOrdemVenda #collapseCadastroField .collapsible").collapsible({ accordion: false });
+        if ($('#exibeStepProdutos').val() == "True") {
+            $("#fly01mdlfrmVisualizarOrdemVenda #collapseProdutosField .collapsible-header").addClass("active");
+            $("#fly01mdlfrmVisualizarOrdemVenda #collapseProdutosField .collapsible").collapsible({ accordion: false });
+        }
+        else{
+            $("#fly01mdlfrmVisualizarOrdemVenda #collapseServicosField .collapsible-header").addClass("active");
+            $("#fly01mdlfrmVisualizarOrdemVenda #collapseServicosField .collapsible").collapsible({ accordion: false });
+        }
+    }
+
+    function collapseCadastro() {
+        var elements = [];
+        elements.push($('#fly01mdlfrmVisualizarOrdemVenda #numeroField')[0]);
+        elements.push($('#fly01mdlfrmVisualizarOrdemVenda #dataField')[0]);
+        elements.push($('#fly01mdlfrmVisualizarOrdemVenda #tipoVendaField')[0]);
+
+        if ($('#fly01mdlfrmVisualizarOrdemVenda #emiteNotaFiscal').val() == "True") {
+            elements.push($('#fly01mdlfrmVisualizarOrdemVenda #nFeRefComplementarIsDevolucaoField')[0]);
+            elements.push($('#fly01mdlfrmVisualizarOrdemVenda #tipoNfeComplementarField')[0]);
+            elements.push($('#fly01mdlfrmVisualizarOrdemVenda #chaveNFeReferenciadaField')[0]);
+        }
+
+        elements.push($('#fly01mdlfrmVisualizarOrdemVenda #clienteIdField')[0]);
+        elements.push($('#fly01mdlfrmVisualizarOrdemVenda #observacaoField')[0]);
+
+        $("#collapseCadastroField").append(createElem("ul",
+              { "class": "collapsible", "data-collapsible": "accordion" },
+              createElem("li", null, [
+                  createElem("div", { "class": "collapsible-header" }, createElem("h6", { "class": "orange-text light" }, "Cadastro")),
+                  createElem("div", { "class": "collapsible-body" }, createElem("div", { "class": "row" }, elements))
+              ])
+          ));
+    };
+
+    function collapseProdutos() {
+        var elements = [];
+        elements.push($('#fly01mdlfrmVisualizarOrdemVenda #ordemVendaProdutosDataTableField')[0]);
+        elements.push($('#fly01mdlfrmVisualizarOrdemVenda #totalProdutosDtField')[0]);
+        
+        $("#collapseProdutosField").append(createElem("ul",
+              { "class": "collapsible", "data-collapsible": "accordion" },
+              createElem("li", null, [
+                  createElem("div", { "class": "collapsible-header" }, createElem("h6", { "class": "orange-text light" }, "Produtos")),
+                  createElem("div", { "class": "collapsible-body" }, createElem("div", { "class": "row" }, elements))
+              ])
+          ));
+    };
+
+    function collapseServicos() {
+        var elements = [];
+        elements.push($('#fly01mdlfrmVisualizarOrdemVenda #ordemVendaServicosDataTableField')[0]);
+        elements.push($('#fly01mdlfrmVisualizarOrdemVenda #totalServicosDtField')[0]);
+
+        $("#collapseServicosField").append(createElem("ul",
+              { "class": "collapsible", "data-collapsible": "accordion" },
+              createElem("li", null, [
+                  createElem("div", { "class": "collapsible-header" }, createElem("h6", { "class": "orange-text light" }, "Serviços")),
+                  createElem("div", { "class": "collapsible-body" }, createElem("div", { "class": "row" }, elements))
+              ])
+          ));
+    };
+
+    function collapseFinanceiro() {
+        var elements = [];
+        elements.push($('#fly01mdlfrmVisualizarOrdemVenda #formaPagamentoIdField')[0]);
+        elements.push($('#fly01mdlfrmVisualizarOrdemVenda #condicaoParcelamentoIdField')[0]);
+        elements.push($('#fly01mdlfrmVisualizarOrdemVenda #categoriaIdField')[0]);
+        elements.push($('#fly01mdlfrmVisualizarOrdemVenda #centroCustoIdField')[0]);
+        elements.push($('#fly01mdlfrmVisualizarOrdemVenda #dataVencimentoField')[0]);
+
+        $("#collapseFinanceiroField").append(createElem("ul",
+              { "class": "collapsible", "data-collapsible": "accordion" },
+              createElem("li", null, [
+                  createElem("div", { "class": "collapsible-header" }, createElem("h6", { "class": "orange-text light" }, "Financeiro")),
+                  createElem("div", { "class": "collapsible-body" }, createElem("div", { "class": "row" }, elements))
+              ])
+          ));
+    };
+
+    function collapseTransporte() {
+        var elements = [];
+        elements.push($('#fly01mdlfrmVisualizarOrdemVenda #tipoFreteField')[0]);
+        elements.push($('#fly01mdlfrmVisualizarOrdemVenda #transportadoraIdField')[0]);
+        elements.push($('#fly01mdlfrmVisualizarOrdemVenda #placaVeiculoField')[0]);
+        elements.push($('#fly01mdlfrmVisualizarOrdemVenda #estadoPlacaVeiculoIdField')[0]);
+        elements.push($('#fly01mdlfrmVisualizarOrdemVenda #valorFreteField')[0]);
+        elements.push($('#fly01mdlfrmVisualizarOrdemVenda #pesoBrutoField')[0]);
+        elements.push($('#fly01mdlfrmVisualizarOrdemVenda #marcaField')[0]);
+        elements.push($('#fly01mdlfrmVisualizarOrdemVenda #pesoLiquidoField')[0]);
+        elements.push($('#fly01mdlfrmVisualizarOrdemVenda #quantidadeVolumesField')[0]);
+        elements.push($('#fly01mdlfrmVisualizarOrdemVenda #tipoEspecieField')[0]);
+        elements.push($('#fly01mdlfrmVisualizarOrdemVenda #numeracaoVolumesTransField')[0]);
+
+        $("#collapseTransporteField").append(createElem("ul",
+              { "class": "collapsible", "data-collapsible": "accordion" },
+              createElem("li", null, [
+                  createElem("div", { "class": "collapsible-header" }, createElem("h6", { "class": "orange-text light" }, "Transporte")),
+                  createElem("div", { "class": "collapsible-body" }, createElem("div", { "class": "row" }, elements))
+              ])
+          ));
+    };
+
+    function collapseTotais() {
+        var elements = [];
+
+        if ($('#fly01mdlfrmVisualizarOrdemVenda #exibeStepProdutos').val() == "True") {
+            elements.push($('#fly01mdlfrmVisualizarOrdemVenda #totalProdutosField')[0]);
+            if ($('#emiteNotaFiscal').val() == "True") {
+                elements.push($('#fly01mdlfrmVisualizarOrdemVenda #totalImpostosProdutosField')[0]);
+                elements.push($('#fly01mdlfrmVisualizarOrdemVenda #totalImpostosProdutosNaoAgregaField')[0]);
+            }
+        }
+
+        if ($('#fly01mdlfrmVisualizarOrdemVenda #exibeStepServicos').val() == "True") {
+            elements.push($('#fly01mdlfrmVisualizarOrdemVenda #totalServicosField')[0]);
+            if ($('#emiteNotaFiscal').val() == "True") {
+                elements.push($('#fly01mdlfrmVisualizarOrdemVenda #totalRetencoesServicosField')[0]);
+                elements.push($('#fly01mdlfrmVisualizarOrdemVenda #totalImpostosServicosNaoAgregaField')[0]);
+            }
+        }
+        
+        if ($('#fly01mdlfrmVisualizarOrdemVenda #exibeStepTransportadora').val() == "True") { elements.push($('#fly01mdlfrmVisualizarOrdemVenda #totalFreteField')[0]); }
+        elements.push($('#fly01mdlfrmVisualizarOrdemVenda #totalOrdemVendaField')[0]);
+
+        if ($('#fly01mdlfrmVisualizarOrdemVenda #emiteNotaFiscal').val() == "True") { elements.push($('#fly01mdlfrmVisualizarOrdemVenda #naturezaOperacaoField')[0]); }
+        
+        elements.push($('#fly01mdlfrmVisualizarOrdemVenda #movimentaEstoqueField')[0]);
+        elements.push($('#fly01mdlfrmVisualizarOrdemVenda #geraNotaFiscalField')[0]);
+        elements.push($('#fly01mdlfrmVisualizarOrdemVenda #geraFinanceiroField')[0]);
+
+        $("#collapseTotaisField").append(createElem("ul",
+              { "class": "collapsible", "data-collapsible": "accordion" },
+              createElem("li", null, [
+                  createElem("div", { "class": "collapsible-header" }, createElem("h6", { "class": "orange-text light" }, "Totais")),
+                  createElem("div", { "class": "collapsible-body" }, createElem("div", { "class": "row" }, elements))
+              ])
+          ));
+    };
+
     function listProdutos() {
         $.ajax({
             type: "POST",
@@ -78,9 +241,9 @@
 
     function calculaTotalOrdemVenda() {
         var valorFrete = 0;
-        var tipoFrete = $('#fly01mdlfrmVisualizarOrdemVenda select#tipoFrete').val();
-        var tipoVenda = $('#fly01mdlfrmVisualizarOrdemVenda select#tipoVenda').val();
-        var tipoNfeComplementar = $('#fly01mdlfrmVisualizarOrdemVenda select#tipoNfeComplementar').val();
+        var tipoFrete = $('#fly01mdlfrmVisualizarOrdemVenda #tipoFrete').val();
+        var tipoVenda = $('#fly01mdlfrmVisualizarOrdemVenda #tipoVenda').val();
+        var tipoNfeComplementar = $('#fly01mdlfrmVisualizarOrdemVenda #tipoNfeComplementar').val();
         var somaFrete = (
                 (tipoFrete == "FOB" || tipoFrete == "Destinatario")
             );
@@ -126,9 +289,4 @@
         });
     }
 
-    function fnFormReadyVisualizarOrdemVenda() {
-        listProdutos();
-        listServicos();
-        calculaTotalOrdemVenda();
-    }
 </script>

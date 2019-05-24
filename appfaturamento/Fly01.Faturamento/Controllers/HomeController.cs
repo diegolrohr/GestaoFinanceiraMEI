@@ -223,10 +223,15 @@ namespace Fly01.Faturamento.Controllers
 
             #endregion
 
+            string token = GenerateJWT();
+
             config.Name = SessionManager.Current.UserData.TokenData.Username;
             config.Email = SessionManager.Current.UserData.PlatformUser;
-            config.NotificationSocketUrl = AppDefaults.UrlNotificationSocket;
-            //config.SocketRoom = "_" + SessionManager.Current.UserData.PlatformUrl + "_" + AppDefaults.AppId;
+            config.NotificationSocketUrl = AppDefaults.UrlNotificationSocket + "?=" + token;
+            config.SocketRoom = "_" + SessionManager.Current.UserData.PlatformUrl + "_" + AppDefaults.AppId;
+            
+            
+            //jwt
 
             config.Widgets = new WidgetsUI
             {
@@ -242,6 +247,17 @@ namespace Fly01.Faturamento.Controllers
                 config.Widgets.Insights = new InsightsUI { Key = ConfigurationManager.AppSettings["InstrumentationKeyAppInsights"] };
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
+        }
+
+        private string GenerateJWT()
+        {
+            var payload = new Dictionary<string, string>()
+                {
+                    {  "platformUrl", /*SessionManager.Current.UserData.PlatformUser*/"Ola" },
+                    {  "url", /*AppDefaults.UrlNotificationSocket*/"vitor.com" },
+                };
+            var token = JWTHelper.Encode(payload, /*O que vai aqui?*/"https://meu.bemacash.com.br/", DateTime.Now.AddMinutes(60));
+            return token;
         }
 
         private int GetNotasNaoTransmitidas()

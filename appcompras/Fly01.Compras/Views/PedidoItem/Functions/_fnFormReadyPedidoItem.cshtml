@@ -25,6 +25,8 @@
     function fnFormReadyPedidoItem() {
         setNFERequiredFields("fly01mdlfrmPedidoItem", ["grupoTributarioDescricaoProduto", "valor"]);
 
+        var emiteNotaFiscal = $('#emiteNotaFiscal').val() == "True";
+
         var id = $("form#fly01mdlfrmPedidoItem input#id").val();
 
         if (id.length == 0) {
@@ -34,6 +36,7 @@
             $('form#fly01mdlfrmPedidoItem #grupoTributarioTipoTributacaoICMS').val($('form#fly01frm #grupoTributarioPadraoTipoTributacaoICMS').val());
         }
         fnConfiguraTipoTributacaoICMSProduto();
+        if (!emiteNotaFiscal) { fnHideCamposEmissaoNotaProduto(); }
 
         $$$.fn.updateTextFields();
         fnOverrideSubmitPedidoItem();
@@ -47,6 +50,10 @@
         $('form#fly01mdlfrmPedidoItem input#quantidade').on('change', function () {
             fnChangeTotalProduto();
         });
+    }
+
+    function fnHideCamposEmissaoNotaProduto() {
+        $('form#fly01mdlfrmPedidoItem #grupoTributarioIdProdutoField').hide();
     }
 
     function fnSetNaturezaOperacao(idItem) {

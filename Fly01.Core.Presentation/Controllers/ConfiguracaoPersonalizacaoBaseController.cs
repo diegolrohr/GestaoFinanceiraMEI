@@ -89,7 +89,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Id = "exibirStepProdutosVendas",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Se desmarcar, deixa de exibir a aba de adicionar Produtos no cadastro das Vendas."
+                    Text = "Se desmarcar, deixa de exibir a aba de adicionar Produtos no cadastro das Vendas(Orçamento/Pedido)."
                 }
             });
             config.Helpers.Add(new TooltipUI
@@ -97,7 +97,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Id = "exibirStepServicosVendas",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Se desmarcar, deixa de exibir a aba de adicionar Serviços no cadastro das Vendas."
+                    Text = "Se desmarcar, deixa de exibir a aba de adicionar Serviços no cadastro das Vendas(Orçamento/Pedido)."
                 }
             });
             config.Helpers.Add(new TooltipUI
@@ -105,7 +105,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Id = "exibirStepTransportadoraVendas",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Se desmarcar, deixa de exibir a aba de adicionar Transportadora e informações de frete, no cadastro das Vendas."
+                    Text = "Se desmarcar, deixa de exibir a aba de adicionar Transportadora e informações de frete, no cadastro das Vendas(Orçamento/Pedido)."
                 }
             });
             config.Helpers.Add(new TooltipUI

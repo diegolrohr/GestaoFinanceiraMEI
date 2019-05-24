@@ -31,11 +31,13 @@
         if (geraNotaFiscal) {
             $("#naturezaOperacaoField").show();
             $("input#naturezaOperacao").rules("add", { required: true });
+            $('#mensagemPadraoNotaField').show();
         }
         else {
             $("#naturezaOperacaoField").hide();
             $("input#naturezaOperacao").rules("remove", "required");
-            $('input#naturezaOperacao').removeClass("invalid")
+            $('input#naturezaOperacao').removeClass("invalid");
+            $('#mensagemPadraoNotaField').hide();
         }
 
         $$$.loading.start();
@@ -110,11 +112,13 @@
             $("#categoriaDescricao").data("url-post", "@Url.Action("NovaCategoriaDespesa")?tipo=" + $("#tipoCarteira").val());
 
         if ($('#tipoCompra').val() == "Devolucao") {
-            $("#fly01btngrpFinalidade.group .tab:has(#btnNormal)").hide();
+            $("#fly01btngrpFinalidade #btnNormal").hide();
+            $("#fly01btngrpFinalidade #btnDevolucao").show();
             $("#chaveNFeReferenciadaField").show();
         }
         else {
-            $("#fly01btngrpFinalidade.group .tab:has(#btnDevolucao)").hide();
+            $("#fly01btngrpFinalidade #btnDevolucao").hide();
+            $("#fly01btngrpFinalidade #btnNormal").show();
             $("#tipoNfeComplementarField").hide();
         }
     }
@@ -254,18 +258,17 @@
                 $('#btnNormal').click();
             }
             else {
-                if ($('input#tipoCompra').val() == "Devolucao") {
-                    $('#btnDevolucao').click();
-                }
+                $('#btnDevolucao').click();
             }
             disableStepFinalidade();
+            $("div#fornecedorIdField").show();
             if (!onCancelMustDeletePedido) { $('li#stepCadastro div.step-title').click(); }
             $$$._.dtPedidoItens.refresh();
         }
 
         fnBindOverrideSubmit();
         fnValidaCamposGeraFinanceiro();
-        fnChangeFrete();
+        if ($('input#exibeStepTransportadora').val() == "True") { fnChangeFrete() };
         fnSetInformacoes();
 
         $('li#stepFinalizar div.step-title').click(function () {
@@ -273,6 +276,7 @@
                 EstoqueNegativoETotal();
             }
         });
+
         $('#stepTransporte > div.step-content > div.step-actions > button.btn.next-step').click(function () {
             if (!isCreate() && $("form#fly01frm").valid()) {
                 EstoqueNegativoETotal();
@@ -284,10 +288,18 @@
                 EstoqueNegativoETotal();
             }
         });
+
+        if ($('input#exibeStepTransportadora').val() == "False") {
+            $('#stepFinanceiro > div.step-content > div.step-actions > button.btn.next-step').click(function () {
+                if (!isCreate() && $("form#fly01frm").valid()) {
+                    EstoqueNegativoETotal();
+                }
+            });
+        }
     }
 
     $("#stepFinanceiro .step-actions button.next-step, #stepTransporte:not(.active) .step-title, #stepFinalizar .step-actions button.previous-step").on("click", () => {
-        if ($("#tipoFreteField .select-dropdown").val() == "Sem frete")
+        if ($("#tipoFreteField .select-dropdown").val() == "Sem frete" && $('input#exibeStepTransportadora').val() == "True")
             fnDisableInput();
     });
 

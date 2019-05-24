@@ -25,8 +25,7 @@ namespace Fly01.Core.API
         {
             try
             {
-                //RestHelper.ExecutePostRequest<Object>()
-                RestHelper.ExecutePostRequest("http://localhost:3000/api/notifications", "/newmessage", JsonConvert.SerializeObject(message), null, null, 300);
+                RestHelper.ExecutePostRequest(AppDefaults.UrlGatewayNew, "/notifications/newmessage", JsonConvert.SerializeObject(message), null, null, 300);
             }
             catch (Exception ex)
             {

@@ -66,13 +66,14 @@ namespace Fly01.Financeiro.BL
         public List<FluxoCaixaProjecao> GetProjecao(DateTime dataInicial, DateTime dataFinal, DateGroupType groupType)
         {
             var saldoInicial = saldoHistoricoBL.GetSaldos().FirstOrDefault(x => x.ContaBancariaId == Guid.Empty).SaldoConsolidado;
+            var dataInicialVencidas = dataInicial.AddDays(-1);
 
             var contasFinanceirasVencidas = contaFinanceiraBL.All
                 .Where(x => x.StatusContaBancaria == StatusContaBancaria.EmAberto || x.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente)
-                .Where(x => x.DataVencimento <= dataInicial)
+                .Where(x => x.DataVencimento < dataInicial)
                 .Select(item => new
                 {
-                    Data = dataInicial,
+                    Data = dataInicialVencidas,
                     ValorPago = item.ValorPago == null ? default(double) : (double)item.ValorPago,
                     item.Id,
                     item.TipoContaFinanceira,
@@ -81,7 +82,7 @@ namespace Fly01.Financeiro.BL
 
             var contasFinanceirasPeriodo = contaFinanceiraBL.All
                 .Where(x => x.StatusContaBancaria == StatusContaBancaria.EmAberto || x.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente)
-                .Where(x => x.DataVencimento > dataInicial && x.DataVencimento <= dataFinal)
+                .Where(x => x.DataVencimento >= dataInicial && x.DataVencimento <= dataFinal)
                 .Select(item => new
                 {
                     Data = item.DataVencimento,

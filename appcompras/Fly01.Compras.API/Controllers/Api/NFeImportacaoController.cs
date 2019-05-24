@@ -131,10 +131,10 @@ namespace Fly01.Compras.API.Controllers.Api
                     var fornecedor = new Pessoa()
                     {
                         Id = entity.FornecedorId.Value,
-                        Nome = NFe.InfoNFe?.Emitente?.Nome,
+                        Nome = NFe.InfoNFe?.Emitente?.Nome ?? NFe.InfoNFe?.Emitente?.NomeFantasia,
                         TipoDocumento = NFe.InfoNFe?.Emitente?.Cnpj.Length == 14 ? "J" : "F",
                         CPFCNPJ = NFe.InfoNFe?.Emitente?.Cnpj != null ? NFe.InfoNFe?.Emitente?.Cnpj : NFe.InfoNFe?.Emitente?.Cpf != null ? NFe.InfoNFe?.Emitente?.Cpf : null,
-                        NomeComercial = NFe.InfoNFe?.Emitente?.NomeFantasia,
+                        NomeComercial = NFe.InfoNFe?.Emitente?.NomeFantasia ?? NFe.InfoNFe?.Emitente?.Nome,
                         Endereco = NFe.InfoNFe?.Emitente?.Endereco?.Logradouro,
                         Numero = NFe.InfoNFe?.Emitente?.Endereco?.Numero,
                         Complemento = NFe.InfoNFe?.Emitente?.Endereco?.Numero,

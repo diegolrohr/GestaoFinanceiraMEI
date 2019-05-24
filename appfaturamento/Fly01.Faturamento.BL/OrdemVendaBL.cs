@@ -295,9 +295,9 @@ namespace Fly01.Faturamento.BL
                             RetemPIS = grupoTributario.RetemPis,
                             #endregion
                             #region FCPST
-                            FCPSTBase = x.FCPBase,
-                            FCPSTAliquota = x.FCPAliquota,
-                            FCPSTValor = x.FCPValor,
+                            FCPSTBase = x.FCPSTBase,
+                            FCPSTAliquota = x.FCPSTAliquota,
+                            FCPSTValor = x.FCPSTValor,
                             #endregion
                             #region FCP
                             FCPBase = x.FCPBase,
@@ -835,7 +835,7 @@ namespace Fly01.Faturamento.BL
             return produtos;
         }
 
-        public TotalPedidoNotaFiscal CalculaTotalOrdemVenda(Guid ordemVendaId, Guid clienteId, bool geraNotaFiscal, string tipoNfeComplementar, string tipoFrete, double? valorFrete = 0, bool onList = false)
+        public TotalPedidoNotaFiscal CalculaTotalOrdemVenda(Guid ordemVendaId, Guid clienteId, bool geraNotaFiscal, string tipoNfeComplementar = "NaoComplementar", string tipoFrete = "SemFrete", double? valorFrete = 0, bool onList = false)
         {
             var tipoFreteEnum = (TipoFrete)Enum.Parse(typeof(TipoFrete), tipoFrete, true);
             var tipoNfeComplementarEnum = (TipoNfeComplementar)Enum.Parse(typeof(TipoNfeComplementar), tipoNfeComplementar, true);

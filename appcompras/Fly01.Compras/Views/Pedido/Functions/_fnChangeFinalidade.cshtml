@@ -1,14 +1,14 @@
 ﻿<script>
     function fnShowHideNFeReferenciada(tipoCompra) {
         if (tipoCompra == "Devolucao" || tipoCompra == "Complementar") {
-            $("#chaveNFeReferenciada").rules("add", { required: true });
-            $("#chaveNFeReferenciadaField").show();
-
-            $("div#fornecedorIdField").hide();
+            if ($('#emiteNotaFiscal').val() == "True") {
+                $("#chaveNFeReferenciada").rules("add", { required: true });
+                $("#chaveNFeReferenciadaField").show();
+                $("div#fornecedorIdField").hide();
+            }
 
             if (tipoCompra == "Devolucao") {
-                $("#grupoTributarioPadraoDescricao").rules("add", { required: true });
-
+                if ($('#emiteNotaFiscal').val() == "True") { $("#grupoTributarioPadraoDescricao").rules("add", { required: true }); }
                 $("input#tipoCarteira").val("Despesa");
             } else {
                 $("#grupoTributarioPadraoDescricao").rules("remove", "required");

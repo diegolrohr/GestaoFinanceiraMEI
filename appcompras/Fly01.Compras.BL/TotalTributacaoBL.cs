@@ -253,10 +253,10 @@ namespace Fly01.Compras.BL
                             || (tipoCompra == TipoCompraVenda.Complementar);
 
                         var st = SubstituicaoTributariaBL.AllIncluding(y => y.EstadoOrigem, y => y.EstadoDestino).AsNoTracking().Where(x =>
-                            x.NcmId == (produto.NcmId.HasValue ? produto.NcmId.Value : Guid.NewGuid()) &
-                            x.CestId == produto.CestId.Value &
-                            x.EstadoOrigem.Sigla == (tipoCompra != TipoCompraVenda.Devolucao ? fornecedor.Estado.Sigla : estadoOrigem) &
-                            x.EstadoDestino.Sigla == (tipoCompra != TipoCompraVenda.Devolucao ? estadoOrigem : fornecedor.Estado.Sigla) &
+                            x.NcmId == (produto.NcmId.HasValue ? produto.NcmId.Value : Guid.NewGuid()) &&
+                            ((produto.CestId.HasValue && x.CestId == produto.CestId.Value) || !produto.CestId.HasValue) &&
+                            x.EstadoOrigem.Sigla == (tipoCompra != TipoCompraVenda.Devolucao ? fornecedor.Estado.Sigla : estadoOrigem) &&
+                            x.EstadoDestino.Sigla == (tipoCompra != TipoCompraVenda.Devolucao ? estadoOrigem : fornecedor.Estado.Sigla) &&
                             x.TipoSubstituicaoTributaria == (isEntrada ? TipoSubstituicaoTributaria.Entrada : TipoSubstituicaoTributaria.Saida)
                             ).FirstOrDefault();
 

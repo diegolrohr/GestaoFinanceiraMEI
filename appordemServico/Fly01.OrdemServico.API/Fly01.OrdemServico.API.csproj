@@ -62,6 +62,7 @@
     <Compile Include="Controllers\Api\AvaliacaoAppController.cs" />
     <Compile Include="Controllers\Api\CalculaTotalOrdemServicoController.cs" />
     <Compile Include="Controllers\Api\CidadeController.cs" />
+    <Compile Include="Controllers\Api\ConfiguracaoPersonalizacaoController.cs" />
     <Compile Include="Controllers\Api\DashboardController.cs" />
     <Compile Include="Controllers\Api\EstadoController.cs" />
     <Compile Include="Controllers\Api\GrupoProdutoController.cs" />

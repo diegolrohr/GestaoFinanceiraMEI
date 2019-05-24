@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ConfiguracaoPersonalizacaoController.cs" />
     <Compile Include="Controllers\AutoCompleteController.cs" />
     <Compile Include="Controllers\AvaliacaoAppController.cs" />
     <Compile Include="Controllers\CategoriaController.cs" />
@@ -389,6 +390,8 @@
     <Content Include="Views\ParametroTributario\Functions\_fnChkIsentoInscricaoEstadual.cshtml" />
     <Content Include="Views\CertificadoDigital\Functions\_fnChkIsentoInscricaoEstadual.cshtml" />
     <Content Include="Views\AliquotaSimplesNacional\Functions\_fnChkIsentoInscricaoEstadual.cshtml" />
+    <Content Include="Views\ConfiguracaoPersonalizacao\Index.cshtml" />
+    <Content Include="Views\ConfiguracaoPersonalizacao\Functions\_fnFormReady.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

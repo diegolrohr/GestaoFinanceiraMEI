@@ -280,6 +280,14 @@
     <Compile Include="Migrations\201904151313372_FunctionFinanceiro.Designer.cs">
       <DependentUpon>201904151313372_FunctionFinanceiro.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201905221449098_AddConfiguracaoPersonalizacao.cs" />
+    <Compile Include="Migrations\201905221449098_AddConfiguracaoPersonalizacao.Designer.cs">
+      <DependentUpon>201905221449098_AddConfiguracaoPersonalizacao.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905231847409_AlterConfiguracaoPersonalizacao.cs" />
+    <Compile Include="Migrations\201905231847409_AlterConfiguracaoPersonalizacao.Designer.cs">
+      <DependentUpon>201905231847409_AlterConfiguracaoPersonalizacao.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer2.cs" />
@@ -477,6 +485,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201904151313372_FunctionFinanceiro.resx">
       <DependentUpon>201904151313372_FunctionFinanceiro.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905221449098_AddConfiguracaoPersonalizacao.resx">
+      <DependentUpon>201905221449098_AddConfiguracaoPersonalizacao.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905231847409_AlterConfiguracaoPersonalizacao.resx">
+      <DependentUpon>201905231847409_AlterConfiguracaoPersonalizacao.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

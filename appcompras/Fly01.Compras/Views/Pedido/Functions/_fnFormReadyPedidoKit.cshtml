@@ -1,5 +1,11 @@
 ﻿<script>
     function fnFormReadyPedidoKit() {
+        var emiteNotaFiscal = $('#emiteNotaFiscal').val() == "True";
+
+        if (!emiteNotaFiscal) {
+            $('#grupoTributarioProdutoIdKitField').hide();
+        }
+
         $('form#fly01mdlfrmPedidoKit input#orcamentoPedidoId').val($('form#fly01frm input#id').val());
         $("form#fly01mdlfrmPedidoKit input#adicionarProdutos").prop("checked", true);
         $("form#fly01mdlfrmPedidoKit input#somarExistentes").prop("checked", true);

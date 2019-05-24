@@ -60,6 +60,7 @@ namespace Fly01.Compras.API
             builder.EntitySet<CentroCusto>("centrocusto");
             builder.EntitySet<AliquotaSimplesNacional>("aliquotasimplesnacional");
             builder.EntitySet<Pais>("pais");
+            builder.EntitySet<ConfiguracaoPersonalizacao>("configuracaopersonalizacao");
 
             builder.EnableLowerCamelCase();
             return builder.GetEdmModel();

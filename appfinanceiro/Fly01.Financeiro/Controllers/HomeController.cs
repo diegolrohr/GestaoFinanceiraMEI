@@ -327,7 +327,9 @@ namespace Fly01.Financeiro.Controllers
                     Items = new List<LinkUI>
                     {
                         new LinkUI() { Class = ResourceHashConst.FinanceiroConfiguracoesNotificacoes, Label = "Notificações", OnClick = @Url.Action("Form", "ConfiguracaoNotificacao")},
-                        new LinkUI() { Class = ResourceHashConst.FinanceiroConfiguracoesTemplateBoleto, Label = "Template de E-mail", OnClick = @Url.Action("Form", "TemplateBoleto")}
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroConfiguracoesTemplateBoleto, Label = "Template de E-mail", OnClick = @Url.Action("Form", "TemplateBoleto")},
+                        //Personalizar Sistema não vai ter hash especifico de permissão, segundo Fraga
+                        //new LinkUI() { Class = ResourceHashConst.FinanceiroConfiguracoes, Label = "Personalizar Sistema", OnClick = @Url.Action("Form", "ConfiguracaoPersonalizacao") }
                     }
                 },
                 new SidebarUIMenu()

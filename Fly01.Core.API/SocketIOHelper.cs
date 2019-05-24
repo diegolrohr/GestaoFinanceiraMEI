@@ -1,10 +1,7 @@
 ﻿using System;
 using Fly01.Core.Notifications;
-//using Quobject.SocketIoClientDotNet.Client;
 using Fly01.Core.ViewModels.Presentation.Commons;
-using System.Text;
 using Newtonsoft.Json;
-using SocketIOClient;
 using Fly01.Core.Rest;
 
 namespace Fly01.Core.API

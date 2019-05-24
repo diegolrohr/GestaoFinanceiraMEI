@@ -225,6 +225,8 @@ namespace Fly01.Faturamento.Controllers
 
             config.Name = SessionManager.Current.UserData.TokenData.Username;
             config.Email = SessionManager.Current.UserData.PlatformUser;
+            config.NotificationSocketUrl = AppDefaults.UrlNotificationSocket;
+            //config.SocketRoom = "_" + SessionManager.Current.UserData.PlatformUrl + "_" + AppDefaults.AppId;
 
             config.Widgets = new WidgetsUI
             {

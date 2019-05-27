@@ -1101,8 +1101,8 @@ namespace Fly01.Compras.Controllers
                     TipoEspecie = Pedido.TipoEspecie != null ? Pedido.TipoEspecie : "",
                     Marca = Pedido.Marca != null ? Pedido.Marca : "",
                     NumeracaoVolumesTrans = Pedido.NumeracaoVolumesTrans != null ? Pedido.NumeracaoVolumesTrans : "",
-                    TotalImpostosProdutos = Pedido.TotalImpostosProdutos != null ? Pedido.TotalImpostosProdutos : 0,
-                    TotalGeral = Pedido.Total + Pedido.TotalImpostosProdutos,
+                    TotalImpostosProdutos = Pedido?.TotalImpostosProdutos ?? 0.0,
+                    TotalGeral = Pedido.Total + Pedido?.TotalImpostosProdutos ?? 0.0,
                     Status = Pedido.Status,
                     //PRODUTO
                     Id = produtospedido.Id.ToString(),

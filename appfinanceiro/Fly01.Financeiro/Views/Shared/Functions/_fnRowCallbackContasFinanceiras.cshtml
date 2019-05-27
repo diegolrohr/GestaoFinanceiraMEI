@@ -1,0 +1,23 @@
+﻿<script>
+    function fnRowCallbackContasFinanceiras(row, data) {
+        //comportamento padrão
+        $("#fly01dt tbody tr").each(function () {
+            $(this).find("td").attr("nowrap", "nowrap");
+        });
+        $("#fly01dt").DataTable().responsive.recalc();
+        if ($$$._.fly01dt.selected) {
+            if ($.inArray(data.id, $$$._.fly01dt.selected) !== -1) {
+                $(row).addClass("selected");
+            }
+        }
+        $$$.fn.maskFields();
+
+        console.log(data.statusContaBancaria);
+        //comportamento específico
+        //vencidas não pagas, ficar em vermelho
+        if (((data.statusContaBancaria == 'BPAR') || (data.statusContaBancaria == 'ABER')) && moment(data.dataVencimento, 'DD/MM/YYYY').isBefore(moment())) {
+            $(row).addClass("red-text");
+        }
+        return row;
+    };
+</script>

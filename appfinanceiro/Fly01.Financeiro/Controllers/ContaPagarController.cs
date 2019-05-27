@@ -207,7 +207,8 @@ namespace Fly01.Financeiro.Controllers
                         Id = "dataInicial",
                         Name = "dataInicial"
                     }
-                }
+                },
+                Functions = { "fnRowCallbackContasFinanceiras" }
             };
 
             if (gridLoad == "GridLoad")
@@ -246,8 +247,11 @@ namespace Fly01.Financeiro.Controllers
                 {
                     OrderColumn = 1,
                     OrderDir = "desc"
+                },
+                Callbacks = new DataTableUICallbacks()
+                {
+                    RowCallback = "fnRowCallbackContasFinanceiras"
                 }
-
             };
 
             config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()

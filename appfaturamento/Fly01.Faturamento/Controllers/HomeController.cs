@@ -223,15 +223,12 @@ namespace Fly01.Faturamento.Controllers
 
             #endregion
 
-            string token = GenerateJWT();
-
             config.Name = SessionManager.Current.UserData.TokenData.Username;
             config.Email = SessionManager.Current.UserData.PlatformUser;
-            config.NotificationSocketUrl = AppDefaults.UrlNotificationSocket + "?=" + token;
-            config.SocketRoom = "_" + SessionManager.Current.UserData.PlatformUrl + "_" + AppDefaults.AppId;
+            config.Notification.Channel = "_" + SessionManager.Current.UserData.PlatformUrl + "_" + AppDefaults.AppId;
+            config.Notification.JWT = @Url.Action("NotificationJwt");
+            config.Notification.SocketServer = AppDefaults.UrlNotificationSocket;
             
-            
-            //jwt
 
             config.Widgets = new WidgetsUI
             {
@@ -253,11 +250,19 @@ namespace Fly01.Faturamento.Controllers
         {
             var payload = new Dictionary<string, string>()
                 {
-                    {  "platformUrl", /*SessionManager.Current.UserData.PlatformUser*/"Ola" },
-                    {  "url", /*AppDefaults.UrlNotificationSocket*/"vitor.com" },
+                    {  "platformUrl", SessionManager.Current.UserData.PlatformUrl },
+                    {  "clientId", AppDefaults.AppId },
                 };
-            var token = JWTHelper.Encode(payload, /*O que vai aqui?*/"https://meu.bemacash.com.br/", DateTime.Now.AddMinutes(60));
+            var token = JWTHelper.Encode(payload,"https://meu.bemacash.com.br/", DateTime.Now.AddMinutes(60));
             return token;
+        }
+
+        public JsonResult NotificationJwt()
+        {
+            return Json(new
+            {
+                token = GenerateJWT()
+            }, JsonRequestBehavior.AllowGet);
         }
 
         private int GetNotasNaoTransmitidas()
@@ -273,7 +278,7 @@ namespace Fly01.Faturamento.Controllers
                 ? response.Data.Count()
                 : 0;
         }
-
+                
         public JsonResult StatusCard()
         {
             var numeroNFNaoTransmitida = GetNotasNaoTransmitidas();

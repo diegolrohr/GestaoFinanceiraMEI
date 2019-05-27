@@ -12,6 +12,8 @@ using Fly01.Core.Rest;
 using Fly01.Core.ViewModels;
 using Fly01.uiJS.Enums;
 using Fly01.Core.Presentation;
+using Fly01.Core;
+using Fly01.Core.Helpers;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -247,9 +249,32 @@ namespace Fly01.Financeiro.Controllers
             return cfg;
         }
 
+        private string GenerateJWT()
+        {
+            var payload = new Dictionary<string, string>()
+                {
+                    {  "platformUrl", SessionManager.Current.UserData.PlatformUrl },
+                    {  "clientId", AppDefaults.AppId },
+                };
+            var token = JWTHelper.Encode(payload, "https://meu.bemacash.com.br/", DateTime.Now.AddMinutes(60));
+            return token;
+        }
+
+        public JsonResult NotificationJwt()
+        {
+            return Json(new
+            {
+                token = GenerateJWT()
+            }, JsonRequestBehavior.AllowGet);
+        }
+
         public override ContentResult Sidebar()
         {
             var config = new SidebarUI() { Id = "nav-bar", AppName = "Financeiro", Parent = "header" };
+
+            config.Notification.Channel = "_" + SessionManager.Current.UserData.PlatformUrl + "_" + AppDefaults.AppId;
+            config.Notification.JWT = @Url.Action("NotificationJwt");
+            config.Notification.SocketServer = AppDefaults.UrlNotificationSocket;
 
             var financeiroMenuItens = new SidebarUIMenu()
             {

@@ -289,9 +289,12 @@ namespace Fly01.Compras.Controllers
         {
             var config = new SidebarUI() { Id = "nav-bar", AppName = "Compras", Parent = "header" };
 
-            config.Notification.Channel = "_" + SessionManager.Current.UserData.PlatformUrl + "_" + AppDefaults.AppId;
-            config.Notification.JWT = @Url.Action("NotificationJwt");
-            config.Notification.SocketServer = AppDefaults.UrlNotificationSocket;
+            config.Notification = new SidebarUINotification()
+            {
+                Channel = "_" + SessionManager.Current.UserData.PlatformUrl + "_" + AppDefaults.AppId,
+                JWT = @Url.Action("NotificationJwt"),
+                SocketServer = AppDefaults.UrlNotificationSocket
+            };
 
             #region MenuItems
             var menuItems = new List<SidebarUIMenu>()

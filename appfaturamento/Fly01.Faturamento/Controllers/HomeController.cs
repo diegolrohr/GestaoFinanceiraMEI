@@ -225,9 +225,11 @@ namespace Fly01.Faturamento.Controllers
 
             config.Name = SessionManager.Current.UserData.TokenData.Username;
             config.Email = SessionManager.Current.UserData.PlatformUser;
-            config.Notification.Channel = "_" + SessionManager.Current.UserData.PlatformUrl + "_" + AppDefaults.AppId;
-            config.Notification.JWT = @Url.Action("NotificationJwt");
-            config.Notification.SocketServer = AppDefaults.UrlNotificationSocket;
+            config.Notification = new SidebarUINotification() {
+                Channel = "_" + SessionManager.Current.UserData.PlatformUrl + "_" + AppDefaults.AppId,
+                JWT = @Url.Action("NotificationJwt"),
+                SocketServer = AppDefaults.UrlNotificationSocket
+            };
             
 
             config.Widgets = new WidgetsUI

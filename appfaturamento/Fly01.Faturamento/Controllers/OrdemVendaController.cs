@@ -607,7 +607,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new SelectUI
             {
                 Id = "tipoVenda",
-                Class = "col s12 m6 l4",
+                Class = "col s12 m4",
                 Label = "Tipo Venda",
                 Value = "Normal",
                 Disabled = true,

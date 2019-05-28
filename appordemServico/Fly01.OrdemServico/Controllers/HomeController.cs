@@ -375,7 +375,7 @@ namespace Fly01.OrdemServico.Controllers
 
             config.Notification = new SidebarUINotification()
             {
-                Channel = AppDefaults.AppId + "_" + SessionManager.Current.UserData.PlatformUrl,,
+                Channel = AppDefaults.AppId + "_" + SessionManager.Current.UserData.PlatformUrl,
                 JWT = @Url.Action("NotificationJwt"),
                 SocketServer = AppDefaults.UrlNotificationSocket
             };

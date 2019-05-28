@@ -27,8 +27,8 @@ namespace Fly01.Financeiro.BL
         {
             var contasPagar = ContaPagarBL
                                     .AllIncluding(c => c.Categoria)
-                                    .Where(x => x.DataVencimento >= dataInicial &&
-                                                  x.DataVencimento <= dataFinal)
+                                    .Where(x => x.DataEmissao >= dataInicial &&
+                                                  x.DataEmissao <= dataFinal)
                                     .ToList();
 
             var despesasPorCategoria = contasPagar
@@ -47,7 +47,7 @@ namespace Fly01.Financeiro.BL
                                             CategoriaPaiId = g.Key.CategoriaPaiId,
                                             Previsto = g.Sum(s => s.ValorPrevisto - (s.ValorPago ?? 0)) * -1,
                                             Realizado = g.Sum(s => s.ValorPago) * -1,
-                                            Soma = g.Sum(s => somaRealizados ? s.ValorPago : s.ValorPrevisto - s.ValorPago) * -1,
+                                            Soma = g.Sum(s => s.ValorPrevisto) * -1,
                                             TipoCarteira = g.Key.TipoCarteira,
                                             TipoContaFinanceira = TipoContaFinanceira.ContaPagar,
                                         })
@@ -89,7 +89,7 @@ namespace Fly01.Financeiro.BL
                                     .Where(r => r.CategoriaId == x.Id ||
                                                 r.Categoria.CategoriaPaiId == x.Id)
                                     .Sum(s => s.ValorPago) * -1,
-                            Soma = contasPagar.Where(r => r.CategoriaId == x.Id || r.Categoria.CategoriaPaiId == x.Id).Sum(s => somaRealizados ? s.ValorPago : s.ValorPrevisto - (s.ValorPago ?? 0)) * -1,
+                            Soma = contasPagar.Where(r => r.CategoriaId == x.Id || r.Categoria.CategoriaPaiId == x.Id).Sum(s => s.ValorPrevisto) * -1,
                             TipoCarteira = x.TipoCarteira,
                             TipoContaFinanceira = TipoContaFinanceira.ContaPagar
                         })

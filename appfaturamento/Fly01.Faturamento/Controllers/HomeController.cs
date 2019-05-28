@@ -226,9 +226,9 @@ namespace Fly01.Faturamento.Controllers
             config.Name = SessionManager.Current.UserData.TokenData.Username;
             config.Email = SessionManager.Current.UserData.PlatformUser;
             config.Notification = new SidebarUINotification() {
-                Channel = "_" + SessionManager.Current.UserData.PlatformUrl + "_" + AppDefaults.AppId,
+                Channel = AppDefaults.AppId + "_" + SessionManager.Current.UserData.PlatformUrl,
                 JWT = @Url.Action("NotificationJwt"),
-                SocketServer = AppDefaults.UrlNotificationSocket
+                SocketServer = "http://10.51.4.29:5000/AppsGestao"//AppDefaults.UrlNotificationSocket
             };
             
 

@@ -17,7 +17,7 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         public string Message { get; set; }
 
         [JsonProperty("messageType")]
-        public SocketMessageType MessageType { get; set; }
+        public string MessageType { get; set; }
 
         [JsonProperty("platformApps")]
         public List<SocketPlatformAppVM> PlatformApps { get; set; }
@@ -26,6 +26,6 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         public DateTime NotificationDate { get; set; }
 
         [JsonProperty("readDate")]
-        public DateTime ReadDate { get; set; }
+        public DateTime? ReadDate { get; set; }
     }
 }

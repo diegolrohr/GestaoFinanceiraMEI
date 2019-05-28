@@ -291,11 +291,11 @@ namespace Fly01.Compras.Controllers
 
             config.Notification = new SidebarUINotification()
             {
-                Channel = "_" + SessionManager.Current.UserData.PlatformUrl + "_" + AppDefaults.AppId,
+                Channel = AppDefaults.AppId + "_" + SessionManager.Current.UserData.PlatformUrl,
                 JWT = @Url.Action("NotificationJwt"),
-                SocketServer = AppDefaults.UrlNotificationSocket
+                SocketServer = "http://10.51.4.29:5000/AppsGestao"//AppDefaults.UrlNotificationSocket
             };
-
+            
             #region MenuItems
             var menuItems = new List<SidebarUIMenu>()
             {

@@ -55,12 +55,12 @@ namespace Fly01.Faturamento.BL
                 {
                     var vencimento = " irá vencer em ";
                     var dias = " dias";
-                    var messageType = SocketMessageType.WARNING;
+                    var messageType = EnumHelper.GetKey(typeof(SocketMessageType), "WARNING");
                     if (dateDiff <= 0)
                     {
                         vencimento = " já venceu";
                         dias = "";
-                        messageType = SocketMessageType.ERROR;
+                        messageType = EnumHelper.GetKey(typeof(SocketMessageType), "ERROR");
                     }
                     else if(dateDiff == 1)
                     {
@@ -72,7 +72,7 @@ namespace Fly01.Faturamento.BL
                         Message = $"O Certificado Digital do CNPJ:{item.Cnpj}{vencimento}{dias}({item.DataExpiracao?.ToString("dd/MM/yyyy")}). Atualize para continuar a emitir suas Notas Fiscais.",
                         PlatformId = PlataformaUrl,
                         NotificationDate = DateTime.Now,
-                        MessageType = messageType,
+                        MessageType = messageType.ToString(),
                         PlatformApps = new List<SocketPlatformAppVM>()
                         {
                             new SocketPlatformAppVM()
@@ -85,7 +85,8 @@ namespace Fly01.Faturamento.BL
                                 ActionUrl = $"{AppDefaults.UrlComprasWeb}CertificadoDigital",
                                 ClientId = AppDefaults.ComprasClientId
                             }
-                        }
+                        },
+                        ReadDate = null
                     };
 
                     SocketIOHelper.NewMessage(message);

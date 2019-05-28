@@ -257,7 +257,9 @@
                                 $$$._.fly01frm.refresh(data.id);
                                 $('li#stepProdutos div.step-title').click();
                             }
-                            getInformacoesComplementares();
+                            if ($('#emiteNotaFiscal').val() == "True") {
+                                getInformacoesComplementares();
+                            }
 
                             return true;
                         }

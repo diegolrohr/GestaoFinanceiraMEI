@@ -77,8 +77,9 @@
         $('form#fly01mdlfrmOrdemVendaProduto input#quantidade').on('change', function () {
             fnChangeTotalProduto();
         });
-
-        setNFERequiredFields("fly01mdlfrmOrdemVendaProduto", ["produtoDescricao", "grupoTributarioDescricaoProduto", "quantidade", "valorCreditoICMS", "valorBCSTRetido", "valorICMSSTRetido", "valorBCFCPSTRetidoAnterior", "valorFCPSTRetidoAnterior", "icms", "fcp"]);
+        if (emiteNotaFiscal) {
+            setNFERequiredFields("fly01mdlfrmOrdemVendaProduto", ["produtoDescricao", "grupoTributarioDescricaoProduto", "quantidade", "valorCreditoICMS", "valorBCSTRetido", "valorICMSSTRetido", "valorBCFCPSTRetidoAnterior", "valorFCPSTRetidoAnterior", "icms", "fcp"]);
+        }
     }
 
     function fnHideCamposEmissaoNotaProduto() {

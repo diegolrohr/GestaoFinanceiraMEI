@@ -67,6 +67,15 @@ namespace Fly01.Compras.Controllers
             if (!UserCanPerformOperation(ResourceHashConst.ComprasComprasDashboard))
                 return new ContentUI { SidebarUrl = @Url.Action("Sidebar") };
 
+            ConfiguracaoPersonalizacaoVM personalizacao = null;
+            try
+            {
+                personalizacao = RestHelper.ExecuteGetRequest<ResultBase<ConfiguracaoPersonalizacaoVM>>("ConfiguracaoPersonalizacao", queryString: null)?.Data?.FirstOrDefault();
+            }
+            catch (Exception) { }
+
+            var emiteNotaFiscal = personalizacao != null ? personalizacao.EmiteNotaFiscal : true;
+
             var date = DateTime.Now;
             var firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
             var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
@@ -90,6 +99,7 @@ namespace Fly01.Compras.Controllers
                 Class = "col s12",
                 Elements = new List<BaseUI>()
                 {
+                    new InputHiddenUI() { Id = "emiteNotaFiscal", Value = emiteNotaFiscal.ToString() },
                     new PeriodPickerUI()
                     {
                        Label= "Selecione o período",

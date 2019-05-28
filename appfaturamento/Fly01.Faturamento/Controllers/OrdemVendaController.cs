@@ -467,7 +467,7 @@ namespace Fly01.Faturamento.Controllers
                 new DataTableUIAction { OnClickFn = "fnEditarOrcamento", Label = "Editar", ShowIf = "(row.status == 'Aberto' && row.tipoOrdemVenda == 'Orcamento')" },
                 new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "(row.status == 'Aberto')" },
                 new DataTableUIAction { OnClickFn = "fnConverterParaPedido", Label = "Converter em pedido", ShowIf = "(row.status == 'Aberto' && row.tipoOrdemVenda == 'Orcamento')" },
-                new DataTableUIAction { OnClickFn = "fnFinalizarPedido", Label = "Finalizar pedido", ShowIf = "(row.status == 'Aberto' && row.tipoOrdemVenda == 'Pedido' && row.geraNotaFiscal == false)" },
+                new DataTableUIAction { OnClickFn = "fnFinalizarPedido", Label = "Finalizar pedido", ShowIf = "(row.status == 'Aberto' && row.tipoOrdemVenda == 'Pedido')" },
                 new DataTableUIAction { OnClickFn = "fnFinalizarFaturarPedido", Label = "Finalizar e faturar", ShowIf = $"({emiteNotaFiscal.ToString().ToLower()} && row.status == 'Aberto' && row.tipoOrdemVenda == 'Pedido')" },
                 new DataTableUIAction { OnClickFn = "fnImprimirOrcamentoPedido", Label = "Imprimir" },
                 new DataTableUIAction { OnClickFn = "fnEnviarEmailOrcamentoPedido", Label = "Enviar por e-mail" },

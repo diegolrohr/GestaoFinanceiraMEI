@@ -226,6 +226,7 @@
     <Content Include="Views\Relatorio\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\ConfiguracaoPersonalizacao\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\ConfiguracaoPersonalizacao\Index.cshtml" />
+    <Content Include="Views\RelatorioProduto\Functions\_fnFormReady.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

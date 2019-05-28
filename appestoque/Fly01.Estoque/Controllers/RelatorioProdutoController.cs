@@ -13,6 +13,7 @@ using Fly01.Estoque.Models.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Classes.Helpers;
+using System.Linq;
 
 namespace Fly01.Estoque.Controllers
 {
@@ -42,6 +43,17 @@ namespace Fly01.Estoque.Controllers
 
         protected override ContentUI FormJson()
         {
+            ConfiguracaoPersonalizacaoVM personalizacao = null;
+            try
+            {
+                personalizacao = RestHelper.ExecuteGetRequest<ResultBase<ConfiguracaoPersonalizacaoVM>>("ConfiguracaoPersonalizacao", queryString: null)?.Data?.FirstOrDefault();
+            }
+            catch (Exception)
+            {
+
+            }
+            var emiteNotaFiscal = personalizacao != null ? personalizacao.EmiteNotaFiscal : true;
+
             var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
             {
                 History = new ContentUIHistory
@@ -63,10 +75,9 @@ namespace Fly01.Estoque.Controllers
                 Id = "fly01frmRelatorioProduto",
                 Action = new FormUIAction
                 {
-                    //Create = @Url.Action("Create"),
-                    //List = Url.Action("Form")
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                ReadyFn = "fnFormReady"
             };
 
             config.Elements.Add(new InputTextUI { Id = "descricaoid", Class = "col s12 m4", Label = "Descrição", MaxLength = 200 });
@@ -76,9 +87,10 @@ namespace Fly01.Estoque.Controllers
                 Id = "tipoProduto",
                 Class = "col s12 m3",
                 Label = "Tipo",
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoProduto))),
-                DomEvents = new List<DomEventUI>() { new DomEventUI() { DomEvent = "change", Function = "fnChangeTipoProduto" } }
+                Required = true,
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoProduto)).ToList().FindAll(x => "ProdutoFinal,Insumo,Outros".Contains(x.Value)).OrderByDescending(x => x.Label))                
             });
+
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "grupoProdutoId",
@@ -97,29 +109,57 @@ namespace Fly01.Estoque.Controllers
                 DataUrl = @Url.Action("UnidadeMedida", "AutoComplete"),
                 LabelId = "unidadeMedidaDescricao"
             });
-            config.Elements.Add(new AutoCompleteUI
+            if (emiteNotaFiscal)
             {
-                Id = "ncmId",
-                Class = "col s12 m6",
-                Label = "NCM",
-                DataUrl = @Url.Action("Ncm", "AutoComplete"),
-                LabelId = "ncmDescricao",
-            });
-            config.Elements.Add(new AutoCompleteUI()
+                config.Elements.Add(new AutoCompleteUI
+                {
+                    Id = "ncmId",
+                    Class = "col s12 m6",
+                    Label = "NCM",
+                    DataUrl = @Url.Action("Ncm", "AutoComplete"),
+                    LabelId = "ncmDescricao",
+                });
+                config.Elements.Add(new AutoCompleteUI()
+                {
+                    Id = "enquadramentoLegalIPIId",
+                    Class = "col s12 m6",
+                    Label = "Enquadramento Legal do IPI",
+                    DataUrl = @Url.Action("EnquadramentoLegalIPI", "AutoComplete"),
+                    LabelId = "enquadramentoLegalIPIDescricao"
+                });
+                config.Elements.Add(new SelectUI
+                {
+                    Id = "origemMercadoria",
+                    Class = "col s12 m6",
+                    Label = "Origem Mercadoria",
+                    Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(OrigemMercadoria)))
+                });
+            }
+            else
             {
-                Id = "enquadramentoLegalIPIId",
-                Class = "col s12 m6",
-                Label = "Enquadramento Legal do IPI",
-                DataUrl = @Url.Action("EnquadramentoLegalIPI", "AutoComplete"),
-                LabelId = "enquadramentoLegalIPIDescricao"
-            });
-            config.Elements.Add(new SelectUI
+                config.Elements.Add(new InputHiddenUI() { Id = "ncmId" });
+                config.Elements.Add(new InputHiddenUI() { Id = "enquadramentoLegalIPIId" });
+                config.Elements.Add(new InputHiddenUI() { Id = "origemMercadoria" });
+            }
+
+            config.Elements.Add(new LabelSetUI() { Id = "labelSetImprimirColunas", Label = "Configurar impressão das colunas"});
+            config.Elements.Add(new InputCheckboxUI { Id = "imprimirQuantidade", Class = "col s12 m6 l4", Label = "Imprimir quantidade estoque" });
+            config.Elements.Add(new InputCheckboxUI { Id = "imprimirValorCusto", Class = "col s12 m6 l4", Label = "Imprimir valor de custo" });
+            config.Elements.Add(new InputCheckboxUI { Id = "imprimirValorVenda", Class = "col s12 m6 l4", Label = "Imprimir valor de venda" });
+
+            if (emiteNotaFiscal)
             {
-                Id = "origemMercadoria",
-                Class = "col s12 m6",
-                Label = "Origem Mercadoria",
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(OrigemMercadoria)))
-            });
+                config.Elements.Add(new InputCheckboxUI { Id = "imprimirNCM", Class = "col s12 m6 l4", Label = "Imprimir NCM" });
+                config.Elements.Add(new InputCheckboxUI { Id = "imprimirEnquadramentoIPI", Class = "col s12 m6 l4", Label = "Imprimir Enquadramento legal IPI" });
+                config.Elements.Add(new InputCheckboxUI { Id = "imprimirOrigemMercadoria", Class = "col s12 m6 l4", Label = "Imprimir origem mercadoria" });
+            }
+            else
+            {
+                config.Elements.Add(new InputHiddenUI() { Id = "imprimirNCM", Value = "false" });
+                config.Elements.Add(new InputHiddenUI() { Id = "imprimirEnquadramentoIPI", Value = "false" });
+                config.Elements.Add(new InputHiddenUI() { Id = "imprimirOrigemMercadoria", Value = "false" });
+            }
+
             cfg.Content.Add(config);
             return cfg;
         }
@@ -132,18 +172,30 @@ namespace Fly01.Estoque.Controllers
                                 string unidadeMedidaId, 
                                 string ncmId, 
                                 string enquadramentoLegalIPIId, 
-                                string origemMercadoria)
+                                string origemMercadoria,
+                                string imprimirQuantidade,
+                                string imprimirValorCusto,
+                                string imprimirValorVenda,
+                                string imprimirNCM,
+                                string imprimirEnquadramentoIPI,
+                                string imprimirOrigemMercadoria)
         {
             var queryString = new Dictionary<string, string>
             {
                 { "descricao", descricao},
                 { "codigo", codigo},
                 { "tipoProduto", tipoProduto},
+                { "origemMercadoria", origemMercadoria},
+                { "imprimirQuantidade", imprimirQuantidade},
+                { "imprimirValorCusto", imprimirValorCusto},
+                { "imprimirValorVenda", imprimirValorVenda},
+                { "imprimirNCM", imprimirNCM},
+                { "imprimirEnquadramentoIPI", imprimirEnquadramentoIPI},
+                { "imprimirOrigemMercadoria", imprimirOrigemMercadoria},
                 { "grupoProdutoId", grupoProdutoId},
                 { "unidadeMedidaId", unidadeMedidaId},
                 { "ncmId", ncmId},
-                { "enquadramentoLegalIPIId", enquadramentoLegalIPIId},
-                { "origemMercadoria", origemMercadoria},
+                { "enquadramentoLegalIPIId", enquadramentoLegalIPIId}
             };
 
             var response = RestHelper.ExecuteGetRequest<ResultBase<RelatorioProdutoVM>>("relatorioProduto", queryString);

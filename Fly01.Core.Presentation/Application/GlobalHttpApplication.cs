@@ -169,7 +169,7 @@ namespace Fly01.Core.Presentation.Application
             AppDefaults.RootPathApplication = ConfigurationManager.AppSettings["RootPathApplication"];
             AppDefaults.APIEnumResourceName = "Fly01.Core.Entities.Domains.Enum.";
             AppDefaults.FaturamentoClientId = ConfigurationManager.AppSettings["FaturamentoClientId"];
-
+            AppDefaults.UrlNotificationSocket = ConfigurationManager.AppSettings["UrlNotificationSocket"];
 
             GlobalConfiguration.Configure(WebAPIConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);

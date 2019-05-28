@@ -22,7 +22,7 @@ namespace Fly01.Core.API
         {
             try
             {
-                RestHelper.ExecutePostRequest(AppDefaults.UrlGatewayNew, "/notifications/newmessage", JsonConvert.SerializeObject(message), null, null, 300);
+                RestHelper.ExecutePostRequest(AppDefaults.UrlGatewayNew, "notifications/newmessage", JsonConvert.SerializeObject(message), null, null, 300);
             }
             catch (Exception ex)
             {

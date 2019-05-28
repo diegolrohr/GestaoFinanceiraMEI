@@ -14,7 +14,10 @@
         var firstDay = new Date(date.year, date.month, 1);
         $("#btnPedido").click();
         $("#dataInicial").val(moment(firstDay).format('YYYY-MM-DD'));
-        verificaParametrosTributarios();
+
+        if ($('#emiteNotaFiscal').val() == "True") {
+            verificaParametrosTributarios();
+        }
     }
 
     function verificaParametrosTributarios() {

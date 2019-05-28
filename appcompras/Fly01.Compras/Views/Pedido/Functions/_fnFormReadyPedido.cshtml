@@ -72,7 +72,9 @@
         });
 
         $$$.loading.stop();
-        getInformacoesComplementares()
+        if ($('#emiteNotaFiscal').val() == "True") {
+            getInformacoesComplementares();
+        }
     }
 
     function getInformacoesComplementares() {

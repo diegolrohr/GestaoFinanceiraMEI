@@ -25,7 +25,9 @@
             fnChangeTotalServico();
         });
 
-        setNFSERequiredFields("fly01mdlfrmOrdemVendaServico", ["servicoDescricao", "grupoTributarioDescricaoServico", "quantidade", "valor", "descricaoOutrasRetencoes", "valorOutrasRetencoes", "isServicoPrioritario"]);
+        if (emiteNotaFiscal) {
+            setNFSERequiredFields("fly01mdlfrmOrdemVendaServico", ["servicoDescricao", "grupoTributarioDescricaoServico", "quantidade", "valor", "descricaoOutrasRetencoes", "valorOutrasRetencoes", "isServicoPrioritario"]);
+        }
     }
 
     function fnHideCamposEmissaoNotaServico() {

@@ -12,9 +12,8 @@
         }
         $$$.fn.maskFields();
 
-        console.log(data.statusContaBancaria);
         //comportamento específico
-        //vencidas não pagas, ficar em vermelho
+        //vencidas com saldo em aberto, ficar em vermelho
         if (((data.statusContaBancaria == 'BPAR') || (data.statusContaBancaria == 'ABER')) && moment(data.dataVencimento, 'DD/MM/YYYY').isBefore(moment())) {
             $(row).addClass("red-text");
         }

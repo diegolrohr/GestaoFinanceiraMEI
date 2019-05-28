@@ -23,9 +23,11 @@
     }
 
     function fnFormReadyPedidoItem() {
-        setNFERequiredFields("fly01mdlfrmPedidoItem", ["grupoTributarioDescricaoProduto", "valor"]);
 
         var emiteNotaFiscal = $('#emiteNotaFiscal').val() == "True";
+        if (emiteNotaFiscal) {
+            setNFERequiredFields("fly01mdlfrmPedidoItem", ["grupoTributarioDescricaoProduto", "valor"]);
+        }
 
         var id = $("form#fly01mdlfrmPedidoItem input#id").val();
 

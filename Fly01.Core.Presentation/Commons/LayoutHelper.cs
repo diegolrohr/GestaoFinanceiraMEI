@@ -5,12 +5,12 @@ namespace Fly01.Core.Presentation.Commons
 {
     public static class LayoutHelper
     {
-        //private static string cdnVersion = "0.1.5"; /*
+        //private static string cdnVersion = "0.1.6"; /*
         private static string cdnVersion = "stage"; /* */
         private static string libName = "mpnui";
 
         private static string serverUrl = $"https://mpn.azureedge.net/lib/{cdnVersion}"; /*
-        //private static string serverUrl = $"http://192.168.1.8:8000/{cdnVersion}"; /* */
+        private static string serverUrl = $"http://10.51.5.33:8000/{cdnVersion}"; /* */
 
         private static string cssUrl = $"{serverUrl}/{libName}.css";
         private static string jsUrl = $"{serverUrl}/{libName}.js";
@@ -29,7 +29,6 @@ namespace Fly01.Core.Presentation.Commons
             return new HtmlString(
                 $"<script src=\"{vendorJsUrl}\"></script>" +
                 $"<script src=\"{jsUrl}\"></script>"
-                //$"<script src=\"{"https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"}\"></script>"
             );
         }
     }

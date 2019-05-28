@@ -67,15 +67,5 @@ namespace Fly01.Financeiro.API
 
             new Consumer(Assembly.Load("Fly01.Financeiro.BL").GetType("Fly01.Financeiro.BL.UnitOfWork")).Consume();
         });
-
-        protected override void SetAppDefaults()
-        {
-            AppDefaults.UrlGateway = ConfigurationManager.AppSettings["UrlGateway"];
-            AppDefaults.UrlStone = ConfigurationManager.AppSettings["UrlStone"];
-            AppDefaults.UrlGatewayNew = $"{ConfigurationManager.AppSettings["UrlGatewayNew"]}api/";
-            AppDefaults.UrlManager = $"{AppDefaults.UrlGatewayNew}manager/";
-
-            base.SetAppDefaults();
-        }
     }
 }

@@ -225,6 +225,12 @@ namespace Fly01.Faturamento.Controllers
 
             config.Name = SessionManager.Current.UserData.TokenData.Username;
             config.Email = SessionManager.Current.UserData.PlatformUser;
+            config.Notification = new SidebarUINotification() {
+                Channel = AppDefaults.AppId + "_" + SessionManager.Current.UserData.PlatformUrl,
+                JWT = @Url.Action("NotificationJwt"),
+                SocketServer = AppDefaults.UrlNotificationSocket
+            };
+            
 
             config.Widgets = new WidgetsUI
             {
@@ -242,6 +248,25 @@ namespace Fly01.Faturamento.Controllers
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
 
+        private string GenerateJWT()
+        {
+            var payload = new Dictionary<string, string>()
+                {
+                    {  "platformUrl", SessionManager.Current.UserData.PlatformUrl },
+                    {  "clientId", AppDefaults.AppId },
+                };
+            var token = JWTHelper.Encode(payload,"https://meu.bemacash.com.br/", DateTime.Now.AddMinutes(60));
+            return token;
+        }
+
+        public JsonResult NotificationJwt()
+        {
+            return Json(new
+            {
+                token = GenerateJWT()
+            }, JsonRequestBehavior.AllowGet);
+        }
+
         private int GetNotasNaoTransmitidas()
         {
             Dictionary<string, string> queryString = AppDefaults.GetQueryStringDefault();
@@ -255,7 +280,7 @@ namespace Fly01.Faturamento.Controllers
                 ? response.Data.Count()
                 : 0;
         }
-
+                
         public JsonResult StatusCard()
         {
             var numeroNFNaoTransmitida = GetNotasNaoTransmitidas();

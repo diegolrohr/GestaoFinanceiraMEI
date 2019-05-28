@@ -74,22 +74,6 @@ namespace Fly01.Compras.Controllers
             return target;
         }
 
-        public override List<DataTableUIAction> GetActionsInGrid(List<DataTableUIAction> customWriteActions)
-        {
-            if (UserCanWrite)
-                return customWriteActions;
-
-            return new List<DataTableUIAction>
-            {
-                new DataTableUIAction { OnClickFn = "fnVisualizar", Label = "Visualizar" },
-                new DataTableUIAction { OnClickFn = "fnEditarPedido", Label = "Editar", ShowIf = "(row.status == 'Aberto' && row.tipoOrdemCompra == 'Pedido')" },
-                new DataTableUIAction { OnClickFn = "fnEditarOrcamento", Label = "Editar", ShowIf = "(row.status == 'Aberto' && row.tipoOrdemCompra == 'Orcamento')" },
-                new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "(row.status == 'Aberto')" },
-                new DataTableUIAction { OnClickFn = "fnFinalizarPedido", Label = "Finalizar pedido", ShowIf = "(row.status == 'Aberto' && row.tipoOrdemCompra == 'Pedido' && row.geraNotaFiscal == false)" },
-                new DataTableUIAction { OnClickFn = "fnFinalizarFaturarPedido", Label = "Finalizar e faturar", ShowIf = "(row.status == 'Aberto' && row.tipoOrdemCompra == 'Pedido')" },
-            };
-        }
-
         protected ContentUI OrdemCompraJson(UrlHelper url, string scheme, string gridLoad = "GridLoad")
         {
             ConfiguracaoPersonalizacaoVM personalizacao = null;

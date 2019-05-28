@@ -283,7 +283,7 @@ namespace Fly01.Estoque.Controllers
             config.Email = SessionManager.Current.UserData.PlatformUser;
             config.Notification = new SidebarUINotification()
             {
-                Channel = "_" + SessionManager.Current.UserData.PlatformUrl + "_" + AppDefaults.AppId,
+                Channel = AppDefaults.AppId + "_" + SessionManager.Current.UserData.PlatformUrl,
                 JWT = @Url.Action("NotificationJwt"),
                 SocketServer = AppDefaults.UrlNotificationSocket
             };

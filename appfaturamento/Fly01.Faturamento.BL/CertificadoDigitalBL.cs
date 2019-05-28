@@ -13,6 +13,7 @@ using Fly01.Core.ViewModels;
 using System;
 using Fly01.Core.API;
 using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.Core.Config;
 
 namespace Fly01.Faturamento.BL
 {
@@ -50,30 +51,34 @@ namespace Fly01.Faturamento.BL
 
             foreach (var item in certificadosVencidos)
             {
-                var dateDiff = (item.DataExpiracao.Value.Date - DateTime.Now.Date).Days;
-                if (PeriodoNotificacao(dateDiff) || CertificadoJaVencido(dateDiff))
-                {
-                    var vencimento = " irá vencer em ";
-                    var dias = " dias";
-                    var messageType = EnumHelper.GetKey(typeof(SocketMessageType), "WARNING");
-                    if (dateDiff <= 0)
-                    {
-                        vencimento = " já venceu";
-                        dias = "";
-                        messageType = EnumHelper.GetKey(typeof(SocketMessageType), "ERROR");
-                    }
-                    else if(dateDiff == 1)
-                    {
-                        dias = "1 dia";                        
-                    }
+                var dadosEmpresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
 
-                    var message = new SocketMessageVM()
+                if (item.Cnpj == dadosEmpresa.CNPJ)
+                {
+                    var dateDiff = (item.DataExpiracao.Value.Date - DateTime.Now.Date).Days;
+                    if (PeriodoNotificacao(dateDiff) || CertificadoJaVencido(dateDiff))
                     {
-                        Message = $"O Certificado Digital do CNPJ:{item.Cnpj}{vencimento}{dias}({item.DataExpiracao?.ToString("dd/MM/yyyy")}). Atualize para continuar a emitir suas Notas Fiscais.",
-                        PlatformId = PlataformaUrl,
-                        NotificationDate = DateTime.Now,
-                        MessageType = messageType.ToString(),
-                        PlatformApps = new List<SocketPlatformAppVM>()
+                        var vencimento = " irá vencer em ";
+                        var dias = " dias";
+                        var messageType = EnumHelper.GetKey(typeof(SocketMessageType), "WARNING");
+                        if (dateDiff <= 0)
+                        {
+                            vencimento = " já venceu";
+                            dias = "";
+                            messageType = EnumHelper.GetKey(typeof(SocketMessageType), "ERROR");
+                        }
+                        else if (dateDiff == 1)
+                        {
+                            dias = "1 dia";
+                        }
+
+                        var message = new SocketMessageVM()
+                        {
+                            Message = $"O Certificado Digital do CNPJ:{item.Cnpj}{vencimento}{dias}({item.DataExpiracao?.ToString("dd/MM/yyyy")}). Atualize para continuar a emitir suas Notas Fiscais.",
+                            PlatformId = PlataformaUrl,
+                            NotificationDate = DateTime.Now,
+                            MessageType = messageType.ToString(),
+                            PlatformApps = new List<SocketPlatformAppVM>()
                         {
                             new SocketPlatformAppVM()
                             {
@@ -86,10 +91,11 @@ namespace Fly01.Faturamento.BL
                                 ClientId = AppDefaults.ComprasClientId
                             }
                         },
-                        ReadDate = null
-                    };
+                            ReadDate = null
+                        };
 
-                    SocketIOHelper.NewMessage(message);
+                        SocketIOHelper.NewMessage(message);
+                    }
                 }
             };
         }

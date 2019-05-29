@@ -41,5 +41,8 @@ namespace Fly01.Compras.Models.ViewModel
         public double? ValorFrete { get; internal set; }
         public double? ValorTotal { get; internal set; }
         public double? ValorUnitario { get; internal set; }
+
+        public string EmiteNotaFiscal { get; set; }
+        public string ExibirTransportadora { get; set; }
     }
 }

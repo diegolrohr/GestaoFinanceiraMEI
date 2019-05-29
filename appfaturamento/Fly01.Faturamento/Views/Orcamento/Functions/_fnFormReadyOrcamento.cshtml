@@ -19,7 +19,7 @@
         var tipoVenda = $('input#tipoVenda').val();
         var tipoNfeComplementar = $('input#tipoNfeComplementar').val();
         var somaFrete = (
-            (tipoFrete == "FOB")
+            (tipoFrete == "FOB") && $('input#exibeStepTransportadora').val() == "True"
         );
 
         if (somaFrete) {

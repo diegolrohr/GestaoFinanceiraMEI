@@ -8,6 +8,7 @@ using Fly01.Estoque.BL;
 using System.Collections.Generic;
 using Fly01.Estoque.Models.ViewModel;
 using System.Linq;
+using Fly01.Core;
 
 namespace Fly01.Estoque.API.Controllers.Api
 {
@@ -17,11 +18,17 @@ namespace Fly01.Estoque.API.Controllers.Api
         public IHttpActionResult Get(string descricao,
                                 string codigo,
                                 string tipoProduto,
+                                string origemMercadoria,
+                                string imprimirQuantidade,
+                                string imprimirValorCusto,
+                                string imprimirValorVenda,
+                                string imprimirNCM,
+                                string imprimirEnquadramentoIPI,
+                                string imprimirOrigemMercadoria,
                                 Guid? grupoProdutoId,
                                 Guid? unidadeMedidaId,
                                 Guid? ncmId,
-                                Guid? enquadramentoLegalIPIId,
-                                string origemMercadoria)
+                                Guid? enquadramentoLegalIPIId)
         {
 
             Func<Produto, bool> filterPredicate = (x => (
@@ -43,15 +50,17 @@ namespace Fly01.Estoque.API.Controllers.Api
                     x => x.UnidadeMedida,
                     x => x.Ncm,
                     x => x.EnquadramentoLegalIPI
-                ).Where(filterPredicate)
+                )
+                .Where(filterPredicate)
                 .Take(2000)
-                .Select(GetDisplayData()).ToList();
+                .OrderBy(x => x.Descricao)
+                .Select(GetDisplayData(imprimirQuantidade, imprimirValorCusto, imprimirValorVenda, imprimirNCM, imprimirEnquadramentoIPI, imprimirOrigemMercadoria)).ToList();
 
                 return Ok(new { count = result.Count, value = result });
             }
         }
 
-        private Func<Produto, RelatorioProdutoVM> GetDisplayData()
+        private Func<Produto, RelatorioProdutoVM> GetDisplayData(string imprimirQuantidade, string imprimirValorCusto, string imprimirValorVenda, string imprimirNCM, string imprimirEnquadramentoIPI, string imprimirOrigemMercadoria)
         {
             return x => new RelatorioProdutoVM()
             {
@@ -61,9 +70,18 @@ namespace Fly01.Estoque.API.Controllers.Api
                 TipoProduto = EnumHelper.GetEnumDescription(x.TipoProduto),
                 GrupoProduto = x.GrupoProduto?.Descricao?? "",
                 UnidadeMedida = x.UnidadeMedida?.Descricao?? "",
-                Ncm = x.Ncm?.Descricao?? "",
-                EnquadramentoLegalIPI = x.EnquadramentoLegalIPI?.Descricao?? "",
+                Ncm = x.Ncm?.Codigo?? "",
+                EnquadramentoLegalIPI = x.EnquadramentoLegalIPI?.Codigo?? "",
                 OrigemMercadoria = EnumHelper.GetEnumDescription(x.OrigemMercadoria),
+                Quantidade = x.SaldoProduto.HasValue ? x.SaldoProduto.Value.ToString("C", AppDefaults.CultureInfoDefault).Replace("R$", "").Replace("R$ ", "") : "0,00",
+                ValorVenda = x.ValorVenda.ToString("C", AppDefaults.CultureInfoDefault).Replace("R$","").Replace("R$ ",""),
+                ValorCusto = x.ValorCusto.ToString("C", AppDefaults.CultureInfoDefault).Replace("R$", "").Replace("R$ ", ""),
+                ImprimirEnquadramentoIPI = imprimirEnquadramentoIPI,
+                ImprimirNCM = imprimirNCM,
+                ImprimirOrigemMercadoria = imprimirOrigemMercadoria,
+                ImprimirQuantidade = imprimirQuantidade,
+                ImprimirValorCusto = imprimirValorCusto,
+                ImprimirValorVenda = imprimirValorVenda
             };
         }
     }

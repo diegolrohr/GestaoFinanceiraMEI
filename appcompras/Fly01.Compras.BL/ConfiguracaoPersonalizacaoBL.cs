@@ -16,7 +16,7 @@ namespace Fly01.Compras.BL
         public override void ValidaModel(ConfiguracaoPersonalizacao entity)
         {
             entity.Fail(All.AsNoTracking().Any(x => x.Id != entity.Id), new Error("Já existe um registro de configuração de personalização, atualize o existente, não é possível ter mais de 1 registro.", "id"));
-            entity.Fail(!entity.ExibirStepProdutosVendas && !entity.ExibirStepServicosVendas, new Error("Para cadastrar um orçamento/pedido é necessário possuir ao menos 1 produto ou serviço. Não é possível ocultar as 2 abas.", ""));
+            entity.Fail(!entity.ExibirStepProdutosVendas && !entity.ExibirStepServicosVendas, new Error("Não é possível desmarcar Produtos e Serviços simultaneamente. É necessário que pelo menos uma das opções esteja habilitada.", ""));
             base.ValidaModel(entity);
         }
     }

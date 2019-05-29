@@ -230,8 +230,9 @@ namespace Fly01.Faturamento.Controllers
             if (!exibirTransportadora)
             {
                 var stepCadastro = config?.Steps?.Find(x => x.Id == "stepCadastro");
-                stepCadastro.Quantity += 1;
+                stepCadastro.Quantity += 2;
                 config.Elements.Add(new InputHiddenUI { Id = "tipoFrete", Value = "SemFrete" });
+                config.Elements.Add(new InputHiddenUI { Id = "valorFrete", Value = "0" });
             }
 
             config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m3", Label = "Data", Required = true });

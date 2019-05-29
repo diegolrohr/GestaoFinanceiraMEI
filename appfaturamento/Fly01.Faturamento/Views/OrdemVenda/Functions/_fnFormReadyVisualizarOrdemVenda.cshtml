@@ -245,7 +245,7 @@
         var tipoVenda = $('#fly01mdlfrmVisualizarOrdemVenda #tipoVenda').val();
         var tipoNfeComplementar = $('#fly01mdlfrmVisualizarOrdemVenda #tipoNfeComplementar').val();
         var somaFrete = (
-                (tipoFrete == "FOB" || tipoFrete == "Destinatario")
+                (tipoFrete == "FOB" || tipoFrete == "Destinatario") && $('input#exibeStepTransportadora').val() == "True"
             );
 
         if (somaFrete) {

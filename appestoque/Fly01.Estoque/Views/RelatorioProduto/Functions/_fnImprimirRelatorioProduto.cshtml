@@ -1,5 +1,4 @@
-﻿
-<script>
+﻿<script>
     @Html.Partial("Functions/_fnImprimir");    
     function fnImprimirRelatorioProduto() {
         var countValues = 0;
@@ -23,7 +22,13 @@
                 "&unidadeMedidaId=" + $("#unidadeMedidaId").val() +
                 "&ncmId=" + $("#ncmId").val() +
                 "&enquadramentoLegalIPIId=" + $("#enquadramentoLegalIPIId").val() +
-                "&origemMercadoria=" + $('#origemMercadoria').val();
+                "&origemMercadoria=" + $('#origemMercadoria').val() +
+                "&imprimirQuantidade=" + $('#imprimirQuantidade').is(':checked') +
+                "&imprimirValorCusto=" + $('#imprimirValorCusto').is(':checked') +
+                "&imprimirValorVenda=" + $('#imprimirValorVenda').is(':checked') +
+                "&imprimirNCM=" + $('#imprimirNCM').is(':checked') +
+                "&imprimirEnquadramentoIPI=" + $('#imprimirEnquadramentoIPI').is(':checked') +
+                "&imprimirOrigemMercadoria=" + $('#imprimirOrigemMercadoria').is(':checked');
 
             fnImprimir(url);
         }

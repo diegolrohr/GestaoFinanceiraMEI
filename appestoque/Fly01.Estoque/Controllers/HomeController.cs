@@ -235,6 +235,16 @@ namespace Fly01.Estoque.Controllers
                 },
                 new SidebarUIMenu()
                 {
+                    Class = ResourceHashConst.EstoqueConfiguracoes,
+                    Label = "Configurações",
+                    Items = new List<LinkUI>
+                    {
+                        //Personalizar Sistema não vai ter hash especifico de permissão, segundo Fraga
+                        new LinkUI() { Class = ResourceHashConst.EstoqueConfiguracoes, Label = "Personalizar Sistema", OnClick = @Url.Action("Form", "ConfiguracaoPersonalizacao") },
+                    }
+                },
+                new SidebarUIMenu()
+                {
                     Class = ResourceHashConst.EstoqueAjuda,
                     Label = "Ajuda",
                     Items = new List<LinkUI>

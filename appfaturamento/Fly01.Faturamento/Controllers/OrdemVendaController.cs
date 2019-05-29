@@ -82,8 +82,13 @@ namespace Fly01.Faturamento.Controllers
             bool calculaFrete = (
                 (OrdemVenda.TipoFrete == "CIF" || OrdemVenda.TipoFrete == "Remetente") && exibirTransportadora
             );
-            var resource = string.Format("CalculaTotalOrdemVenda?&ordemVendaId={0}&clienteId={1}&geraNotaFiscal={2}&tipoNfeComplementar={3}&tipoFrete={4}&valorFrete={5}&onList={6}", id.ToString(), OrdemVenda.ClienteId.ToString(), (OrdemVenda.GeraNotaFiscal && emiteNotaFiscal).ToString(),
-                 OrdemVenda.TipoNfeComplementar, OrdemVenda.TipoFrete, calculaFrete ? OrdemVenda.ValorFrete.ToString().Replace(", ", ".") : 0.ToString(), true);
+            var resource = string.Format("CalculaTotalOrdemVenda?&ordemVendaId={0}&clienteId={1}&geraNotaFiscal={2}&tipoNfeComplementar={3}&tipoFrete={4}&valorFrete={5}&onList={6}",
+                id.ToString(),
+                OrdemVenda.ClienteId.ToString(),
+                (OrdemVenda.GeraNotaFiscal && emiteNotaFiscal).ToString(),
+                OrdemVenda.TipoNfeComplementar,
+                (exibirTransportadora ? OrdemVenda.TipoFrete : "SemFrete"),
+                (calculaFrete ? OrdemVenda.ValorFrete.ToString().Replace(", ", ".") : 0.ToString()), true);
             var response = RestHelper.ExecuteGetRequest<TotalPedidoNotaFiscalVM>(resource, queryString: null);
 
             List<ImprimirOrcamentoPedidoVM> reportItems = new List<ImprimirOrcamentoPedidoVM>();

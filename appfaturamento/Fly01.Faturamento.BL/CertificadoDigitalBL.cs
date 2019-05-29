@@ -51,7 +51,7 @@ namespace Fly01.Faturamento.BL
 
             foreach (var item in certificadosVencidos)
             {
-                var dadosEmpresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
+                var dadosEmpresa = ApiEmpresaManager.GetEmpresa(item.PlataformaId);
 
                 if (item.Cnpj == dadosEmpresa.CNPJ)
                 {
@@ -59,7 +59,7 @@ namespace Fly01.Faturamento.BL
                     if (PeriodoNotificacao(dateDiff) || CertificadoJaVencido(dateDiff))
                     {
                         var vencimento = " irá vencer em ";
-                        var dias = " dias";
+                        var dias = dateDiff + " dias ";
                         var messageType = EnumHelper.GetKey(typeof(SocketMessageType), "WARNING");
                         if (dateDiff <= 0)
                         {
@@ -75,7 +75,7 @@ namespace Fly01.Faturamento.BL
                         var message = new SocketMessageVM()
                         {
                             Message = $"O Certificado Digital do CNPJ:{item.Cnpj}{vencimento}{dias}({item.DataExpiracao?.ToString("dd/MM/yyyy")}). Atualize para continuar a emitir suas Notas Fiscais.",
-                            PlatformId = PlataformaUrl,
+                            PlatformId = item.PlataformaId,
                             NotificationDate = DateTime.Now,
                             MessageType = messageType.ToString(),
                             PlatformApps = new List<SocketPlatformAppVM>()

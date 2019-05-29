@@ -59,13 +59,30 @@ namespace Fly01.Faturamento.Controllers
 
         private List<ImprimirOrcamentoPedidoVM> GetDadosOrcamentoPedido(string id, OrdemVendaVM OrdemVenda)
         {
-            var produtos = GetProdutos(Guid.Parse(id));
-            var servicos = GetServicos(Guid.Parse(id));
+            ConfiguracaoPersonalizacaoVM personalizacao = null;
+            try
+            {
+                personalizacao = RestHelper.ExecuteGetRequest<ResultBase<ConfiguracaoPersonalizacaoVM>>("ConfiguracaoPersonalizacao", queryString: null)?.Data?.FirstOrDefault();
+            }
+            catch (Exception)
+            {
+
+            }
+            var emiteNotaFiscal = personalizacao != null ? personalizacao.EmiteNotaFiscal : true;
+            var exibirTransportadora = personalizacao != null ? personalizacao.ExibirStepTransportadoraVendas : true;
+            var exibirProdutos = personalizacao != null ? personalizacao.ExibirStepProdutosVendas : true;
+            var exibirServicos = personalizacao != null ? personalizacao.ExibirStepServicosVendas : true;
+
+            var produtos = new List<OrdemVendaProdutoVM>();
+            if (exibirProdutos) { GetProdutos(Guid.Parse(id)); };
+
+            var servicos = new List<OrdemVendaServicoVM>();
+            if (exibirProdutos) { GetServicos(Guid.Parse(id)); };
+
             bool calculaFrete = (
-                ((OrdemVenda.TipoFrete == "CIF" || OrdemVenda.TipoFrete == "Remetente") && OrdemVenda.TipoVenda == "Normal") ||
-                ((OrdemVenda.TipoFrete == "FOB" || OrdemVenda.TipoFrete == "Destinatario") && OrdemVenda.TipoVenda == "Devolucao")
+                (OrdemVenda.TipoFrete == "CIF" || OrdemVenda.TipoFrete == "Remetente") && exibirTransportadora
             );
-            var resource = string.Format("CalculaTotalOrdemVenda?&ordemVendaId={0}&clienteId={1}&geraNotaFiscal={2}&tipoNfeComplementar={3}&tipoFrete={4}&valorFrete={5}&onList={6}", id.ToString(), OrdemVenda.ClienteId.ToString(), OrdemVenda.GeraNotaFiscal.ToString(),
+            var resource = string.Format("CalculaTotalOrdemVenda?&ordemVendaId={0}&clienteId={1}&geraNotaFiscal={2}&tipoNfeComplementar={3}&tipoFrete={4}&valorFrete={5}&onList={6}", id.ToString(), OrdemVenda.ClienteId.ToString(), (OrdemVenda.GeraNotaFiscal && emiteNotaFiscal).ToString(),
                  OrdemVenda.TipoNfeComplementar, OrdemVenda.TipoFrete, calculaFrete ? OrdemVenda.ValorFrete.ToString().Replace(", ", ".") : 0.ToString(), true);
             var response = RestHelper.ExecuteGetRequest<TotalPedidoNotaFiscalVM>(resource, queryString: null);
 
@@ -109,7 +126,11 @@ namespace Fly01.Faturamento.Controllers
                     Finalidade = OrdemVenda.TipoVenda,
                     Marca = OrdemVenda.Marca,
                     NumeracaoVolumesTrans = OrdemVenda.NumeracaoVolumesTrans,
-                    TipoEspecie = OrdemVenda.TipoEspecie
+                    TipoEspecie = OrdemVenda.TipoEspecie,
+                    EmiteNotaFiscal = emiteNotaFiscal.ToString(),
+                    ExibirProdutos = exibirProdutos.ToString(),
+                    ExibirServicos = exibirServicos.ToString(),
+                    ExibirTransportadora = exibirTransportadora.ToString()
                 });
             }
 
@@ -151,7 +172,11 @@ namespace Fly01.Faturamento.Controllers
                     Finalidade = OrdemVenda.TipoVenda,
                     Marca = OrdemVenda.Marca,
                     NumeracaoVolumesTrans = OrdemVenda.NumeracaoVolumesTrans,
-                    TipoEspecie = OrdemVenda.TipoEspecie
+                    TipoEspecie = OrdemVenda.TipoEspecie,
+                    EmiteNotaFiscal = emiteNotaFiscal.ToString(),
+                    ExibirProdutos = exibirProdutos.ToString(),
+                    ExibirServicos = exibirServicos.ToString(),
+                    ExibirTransportadora = exibirTransportadora.ToString()
                 });
             }
 
@@ -181,7 +206,11 @@ namespace Fly01.Faturamento.Controllers
                     Finalidade = OrdemVenda.TipoVenda,
                     Marca = OrdemVenda.Marca,
                     NumeracaoVolumesTrans = OrdemVenda.NumeracaoVolumesTrans,
-                    TipoEspecie = OrdemVenda.TipoEspecie
+                    TipoEspecie = OrdemVenda.TipoEspecie,
+                    EmiteNotaFiscal = emiteNotaFiscal.ToString(),
+                    ExibirProdutos = exibirProdutos.ToString(),
+                    ExibirServicos = exibirServicos.ToString(),
+                    ExibirTransportadora = exibirTransportadora.ToString()
                 });
             }
 

@@ -598,6 +598,7 @@ namespace Fly01.Faturamento.BL
             {
                 entity.GeraNotaFiscal = entity.GeraNotaFiscal ? (entity.GeraNotaFiscal && emiteNotaFiscal) : false;
                 entity.MovimentaEstoque = entity.MovimentaEstoque ? (entity.MovimentaEstoque && exibirProdutos) : false;
+                entity.ValorFrete = exibirTransportadora ? entity.ValorFrete : 0.0;
             }
 
             if (entity.Status == Status.Finalizado && entity.TipoOrdemVenda == TipoOrdemVenda.Pedido && (entity.GeraNotaFiscal && emiteNotaFiscal) && entity.IsValid())

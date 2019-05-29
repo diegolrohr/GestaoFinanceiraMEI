@@ -351,6 +351,7 @@ namespace Fly01.Compras.BL
             if (entity.Status == StatusOrdemCompra.Finalizado)
             {
                 entity.GeraNotaFiscal = entity.GeraNotaFiscal ? (entity.GeraNotaFiscal && emiteNotaFiscal) : false;
+                entity.ValorFrete = exibirTransportadora ? entity.ValorFrete : 0.0;
             }
 
             if (entity.Status == StatusOrdemCompra.Finalizado && entity.TipoOrdemCompra == TipoOrdemCompra.Pedido && (entity.GeraNotaFiscal && emiteNotaFiscal) && entity.IsValid())

@@ -74,21 +74,67 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>7.1352cm</Width>
+              <Width>7.16695cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.47041cm</Width>
+              <Width>2.50216cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.68699cm</Width>
+              <Width>2.71874cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>3.98085cm</Width>
+              <Width>4.20587cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
             <TablixRow>
               <Height>0.6cm</Height>
+              <TablixCells>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox13">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Produtos</Value>
+                              <Style>
+                                <FontSize>12pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                                <Color>Orange</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox13</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>Black</BackgroundColor>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                    <ColSpan>4</ColSpan>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell />
+                <TablixCell />
+                <TablixCell />
+              </TablixCells>
+            </TablixRow>
+            <TablixRow>
+              <Height>0.56472cm</Height>
               <TablixCells>
                 <TablixCell>
                   <CellContents>
@@ -385,15 +431,18 @@
               <KeepWithGroup>After</KeepWithGroup>
             </TablixMember>
             <TablixMember>
+              <KeepWithGroup>After</KeepWithGroup>
+            </TablixMember>
+            <TablixMember>
               <Group Name="Details" />
             </TablixMember>
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>ds</DataSetName>
-        <Top>13.70465cm</Top>
+        <Top>13.06965cm</Top>
         <Left>0.00001cm</Left>
-        <Height>1.2cm</Height>
-        <Width>16.27345cm</Width>
+        <Height>1.76472cm</Height>
+        <Width>16.59372cm</Width>
         <ZIndex>2</ZIndex>
         <Style>
           <Border>
@@ -401,45 +450,6 @@
           </Border>
         </Style>
       </Tablix>
-      <Textbox Name="Nome">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value>Produtos</Value>
-                <Style>
-                  <FontSize>12pt</FontSize>
-                  <FontWeight>Bold</FontWeight>
-                  <TextDecoration>None</TextDecoration>
-                  <Color>Orange</Color>
-                </Style>
-              </TextRun>
-            </TextRuns>
-            <Style>
-              <TextAlign>Center</TextAlign>
-            </Style>
-          </Paragraph>
-        </Paragraphs>
-        <rd:DefaultName>Nome</rd:DefaultName>
-        <Top>13.24575cm</Top>
-        <Left>0.00001cm</Left>
-        <Height>0.6cm</Height>
-        <Width>16.27344cm</Width>
-        <ZIndex>3</ZIndex>
-        <Style>
-          <Border>
-            <Color>LightGrey</Color>
-            <Style>Solid</Style>
-          </Border>
-          <BackgroundColor>#242424</BackgroundColor>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
-        </Style>
-      </Textbox>
       <Tablix Name="Tablix8">
         <TablixBody>
           <TablixColumns>
@@ -453,7 +463,7 @@
               <Width>3.73834cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.61394cm</Width>
+              <Width>1.87852cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -488,7 +498,7 @@
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
-                        <BackgroundColor>#242424</BackgroundColor>
+                        <BackgroundColor>Black</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -1073,8 +1083,8 @@
         <DataSetName>ds</DataSetName>
         <Top>3.90331cm</Top>
         <Height>4.13501cm</Height>
-        <Width>16.26089cm</Width>
-        <ZIndex>4</ZIndex>
+        <Width>16.52547cm</Width>
+        <ZIndex>3</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -1085,10 +1095,10 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>9.91447cm</Width>
+              <Width>9.94622cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>6.35898cm</Width>
+              <Width>6.64275cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -1123,7 +1133,7 @@
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
-                        <BackgroundColor>#242424</BackgroundColor>
+                        <BackgroundColor>Black</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -1314,8 +1324,8 @@
         <DataSetName>ds</DataSetName>
         <Top>11.27261cm</Top>
         <Height>1.8673cm</Height>
-        <Width>16.27345cm</Width>
-        <ZIndex>5</ZIndex>
+        <Width>16.58897cm</Width>
+        <ZIndex>4</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -1341,7 +1351,7 @@
               <Width>2.51691cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.96859cm</Width>
+              <Width>3.23317cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -1376,7 +1386,7 @@
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
-                        <BackgroundColor>#242424</BackgroundColor>
+                        <BackgroundColor>Black</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -1856,8 +1866,11 @@
         <Top>8.0736cm</Top>
         <Left>0.02165cm</Left>
         <Height>3.14666cm</Height>
-        <Width>16.29507cm</Width>
-        <ZIndex>6</ZIndex>
+        <Width>16.55965cm</Width>
+        <ZIndex>5</ZIndex>
+        <Visibility>
+          <Hidden>=Fields!ExibirTransportadora.Value &lt;&gt; "True"</Hidden>
+        </Visibility>
         <Style>
           <Border>
             <Style>None</Style>
@@ -1868,10 +1881,10 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>7.77693cm</Width>
+              <Width>7.84043cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>8.41668cm</Width>
+              <Width>8.73165cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -1906,7 +1919,7 @@
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
-                        <BackgroundColor>#242424</BackgroundColor>
+                        <BackgroundColor>Black</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -1990,6 +2003,9 @@
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox3</rd:DefaultName>
+                      <Visibility>
+                        <Hidden>=Fields!EmiteNotaFiscal.Value &lt;&gt; "True"</Hidden>
+                      </Visibility>
                       <Style>
                         <Border>
                           <Style>None</Style>
@@ -2041,6 +2057,9 @@
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox11</rd:DefaultName>
+                      <Visibility>
+                        <Hidden>=Fields!ExibirTransportadora.Value &lt;&gt; "True"</Hidden>
+                      </Visibility>
                       <Style>
                         <Border>
                           <Style>None</Style>
@@ -2114,8 +2133,8 @@
         <Top>14.93992cm</Top>
         <Left>0.02165cm</Left>
         <Height>1.83365cm</Height>
-        <Width>16.19361cm</Width>
-        <ZIndex>7</ZIndex>
+        <Width>16.57208cm</Width>
+        <ZIndex>6</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -2131,7 +2150,7 @@
         <Left>0.2137cm</Left>
         <Height>2.50472cm</Height>
         <Width>3.15422cm</Width>
-        <ZIndex>8</ZIndex>
+        <ZIndex>7</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -2142,7 +2161,7 @@
     <Height>6.92311in</Height>
     <Style />
   </Body>
-  <Width>6.56347in</Width>
+  <Width>6.56165in</Width>
   <Page>
     <PageFooter>
       <Height>2.271cm</Height>
@@ -2385,10 +2404,18 @@
           <DataField>ComplementoEndereco</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="EmiteNotaFiscal">
+          <DataField>EmiteNotaFiscal</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ExibirTransportadora">
+          <DataField>ExibirTransportadora</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>DataSetReports</rd:DataSetName>
-        <rd:SchemaPath>C:\Bemacash_Gestao\Fly01.Apps\appcompras\Fly01.Compras\Reports\DataSetReports.xsd</rd:SchemaPath>
+        <rd:SchemaPath>C:\SaaS\Fly01.Apps\appcompras\Fly01.Compras\Reports\DataSetReports.xsd</rd:SchemaPath>
         <rd:TableName>ImprimirPedido</rd:TableName>
         <rd:TableAdapterFillMethod />
         <rd:TableAdapterGetDataMethod />

@@ -312,8 +312,9 @@ namespace Fly01.Compras.Controllers
             if (!exibirTransportadora)
             {
                 var stepCadastro = config?.Steps?.Find(x => x.Id == "stepCadastro");
-                stepCadastro.Quantity += 1;
+                stepCadastro.Quantity += 2;
                 config.Elements.Add(new InputHiddenUI { Id = "tipoFrete", Value = "SemFrete" });
+                config.Elements.Add(new InputHiddenUI { Id = "valorFrete", Value = "0" });
             }
 
             config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m3", Label = "Data", Required = true });
@@ -907,18 +908,29 @@ namespace Fly01.Compras.Controllers
             }
         }
 
-
         public virtual ActionResult ImprimirPedido(Guid id)
         {
+            ConfiguracaoPersonalizacaoVM personalizacao = null;
+            try
+            {
+                personalizacao = RestHelper.ExecuteGetRequest<ResultBase<ConfiguracaoPersonalizacaoVM>>("ConfiguracaoPersonalizacao", queryString: null)?.Data?.FirstOrDefault();
+            }
+            catch (Exception)
+            {
+
+            }
+            var emiteNotaFiscal = personalizacao != null ? personalizacao.EmiteNotaFiscal : true;
+            var exibirTransportadora = personalizacao != null ? personalizacao.ExibirStepTransportadoraCompras : true;
+
             PedidoVM Pedido = Get(id);
 
             var produtos = GetProdutos(id);
             List<ImprimirPedidoVM> reportItems = new List<ImprimirPedidoVM>();
 
             if (!produtos.Any())
-                AdicionarInformacoesPadrao(Pedido, reportItems);
+                AdicionarInformacoesPadrao(Pedido, reportItems, emiteNotaFiscal, exibirTransportadora);
             else
-                MontarItensParaPrint(Pedido, produtos, reportItems);
+                MontarItensParaPrint(Pedido, produtos, reportItems, emiteNotaFiscal, exibirTransportadora);
 
             var reportViewer = new WebReportViewer<ImprimirPedidoVM>(ReportImprimirPedido.Instance);
             return File(reportViewer.Print(reportItems, SessionManager.Current.UserData.PlatformUrl), "application/pdf");
@@ -1056,19 +1068,31 @@ namespace Fly01.Compras.Controllers
 
         private byte[] GetPDFFile(PedidoVM pedido)
         {
+            ConfiguracaoPersonalizacaoVM personalizacao = null;
+            try
+            {
+                personalizacao = RestHelper.ExecuteGetRequest<ResultBase<ConfiguracaoPersonalizacaoVM>>("ConfiguracaoPersonalizacao", queryString: null)?.Data?.FirstOrDefault();
+            }
+            catch (Exception)
+            {
+
+            }
+            var emiteNotaFiscal = personalizacao != null ? personalizacao.EmiteNotaFiscal : true;
+            var exibirTransportadora = personalizacao != null ? personalizacao.ExibirStepTransportadoraCompras : true;
+
             var produtos = GetProdutos(pedido.Id);
             List<ImprimirPedidoVM> reportItems = new List<ImprimirPedidoVM>();
 
             if (!produtos.Any())
-                AdicionarInformacoesPadrao(pedido, reportItems);
+                AdicionarInformacoesPadrao(pedido, reportItems, emiteNotaFiscal, exibirTransportadora);
             else
-                MontarItensParaPrint(pedido, produtos, reportItems);
+                MontarItensParaPrint(pedido, produtos, reportItems, emiteNotaFiscal, exibirTransportadora);
 
             var reportViewer = new WebReportViewer<ImprimirPedidoVM>(ReportImprimirPedido.Instance);
             return reportViewer.Print(reportItems, SessionManager.Current.UserData.PlatformUrl);
         }
 
-        private static void MontarItensParaPrint(PedidoVM Pedido, List<PedidoItemVM> produtos, List<ImprimirPedidoVM> reportItems)
+        private static void MontarItensParaPrint(PedidoVM Pedido, List<PedidoItemVM> produtos, List<ImprimirPedidoVM> reportItems, bool emiteNotaFiscal, bool exibirTransportadora)
         {
             foreach (PedidoItemVM produtospedido in produtos)
             {
@@ -1091,7 +1115,7 @@ namespace Fly01.Compras.Controllers
                     Observacao = Pedido.Observacao,
                     PesoBruto = Pedido.PesoBruto != null ? Pedido.PesoBruto : 0,
                     PesoLiquido = Pedido.PesoLiquido != null ? Pedido.PesoLiquido : 0,
-                    ValorFrete = Pedido.ValorFrete != null ? Pedido.ValorFrete : 0,
+                    ValorFrete = (exibirTransportadora && Pedido.ValorFrete.HasValue) ? Pedido.ValorFrete : 0,
                     TipoFrete = Pedido.TipoFrete,
                     QuantVolumes = Pedido.QuantidadeVolumes != null ? Pedido.QuantidadeVolumes : 0,
                     Data = Pedido.Data,
@@ -1109,12 +1133,14 @@ namespace Fly01.Compras.Controllers
                     NomeProduto = produtospedido.Produto != null ? produtospedido.Produto.Descricao : string.Empty,
                     QtdProduto = produtospedido.Quantidade,
                     ValorUnitario = produtospedido.Valor,
-                    ValorTotal = produtospedido.Total
+                    ValorTotal = produtospedido.Total,
+                    ExibirTransportadora = exibirTransportadora.ToString(),
+                    EmiteNotaFiscal = emiteNotaFiscal.ToString()
                 });
             }
         }
 
-        private static void AdicionarInformacoesPadrao(PedidoVM Pedido, List<ImprimirPedidoVM> reportItems)
+        private static void AdicionarInformacoesPadrao(PedidoVM Pedido, List<ImprimirPedidoVM> reportItems, bool emiteNotaFiscal, bool exibirTransportadora)
         {
             reportItems.Add(new ImprimirPedidoVM
             {
@@ -1135,7 +1161,7 @@ namespace Fly01.Compras.Controllers
                 Observacao = Pedido.Observacao,
                 PesoBruto = Pedido.PesoBruto ?? 0,
                 PesoLiquido = Pedido.PesoLiquido ?? 0,
-                ValorFrete = Pedido.ValorFrete ?? 0,
+                ValorFrete = (exibirTransportadora && Pedido.ValorFrete.HasValue) ? Pedido.ValorFrete : 0,
                 TipoFrete = Pedido.TipoFrete,
                 TotalGeral = Pedido.Total ?? 0,
                 Data = Pedido.Data,
@@ -1148,7 +1174,8 @@ namespace Fly01.Compras.Controllers
                 TotalProdutos = Pedido.Total,
                 TotalImpostosProdutos = Pedido.TotalImpostosProdutos,
                 Status = Pedido.Status,
-
+                ExibirTransportadora = exibirTransportadora.ToString(),
+                EmiteNotaFiscal = emiteNotaFiscal.ToString()
             });
         }
 

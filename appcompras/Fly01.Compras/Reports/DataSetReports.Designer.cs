@@ -382,6 +382,10 @@ namespace Fly01.Compras.Reports {
             
             private global::System.Data.DataColumn columnComplementoEndereco;
             
+            private global::System.Data.DataColumn columnEmiteNotaFiscal;
+            
+            private global::System.Data.DataColumn columnExibirTransportadora;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public ImprimirPedidoDataTable() {
@@ -689,6 +693,22 @@ namespace Fly01.Compras.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn EmiteNotaFiscalColumn {
+                get {
+                    return this.columnEmiteNotaFiscal;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ExibirTransportadoraColumn {
+                get {
+                    return this.columnExibirTransportadora;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -758,7 +778,9 @@ namespace Fly01.Compras.Reports {
                         string Bairro, 
                         string Cidade, 
                         string CEP, 
-                        string ComplementoEndereco) {
+                        string ComplementoEndereco, 
+                        string EmiteNotaFiscal, 
+                        string ExibirTransportadora) {
                 ImprimirPedidoRow rowImprimirPedidoRow = ((ImprimirPedidoRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Id,
@@ -794,7 +816,9 @@ namespace Fly01.Compras.Reports {
                         Bairro,
                         Cidade,
                         CEP,
-                        ComplementoEndereco};
+                        ComplementoEndereco,
+                        EmiteNotaFiscal,
+                        ExibirTransportadora};
                 rowImprimirPedidoRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowImprimirPedidoRow);
                 return rowImprimirPedidoRow;
@@ -851,6 +875,8 @@ namespace Fly01.Compras.Reports {
                 this.columnCidade = base.Columns["Cidade"];
                 this.columnCEP = base.Columns["CEP"];
                 this.columnComplementoEndereco = base.Columns["ComplementoEndereco"];
+                this.columnEmiteNotaFiscal = base.Columns["EmiteNotaFiscal"];
+                this.columnExibirTransportadora = base.Columns["ExibirTransportadora"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -924,6 +950,10 @@ namespace Fly01.Compras.Reports {
                 base.Columns.Add(this.columnCEP);
                 this.columnComplementoEndereco = new global::System.Data.DataColumn("ComplementoEndereco", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnComplementoEndereco);
+                this.columnEmiteNotaFiscal = new global::System.Data.DataColumn("EmiteNotaFiscal", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnEmiteNotaFiscal);
+                this.columnExibirTransportadora = new global::System.Data.DataColumn("ExibirTransportadora", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnExibirTransportadora);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2013,6 +2043,38 @@ namespace Fly01.Compras.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string EmiteNotaFiscal {
+                get {
+                    try {
+                        return ((string)(this[this.tableImprimirPedido.EmiteNotaFiscalColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'EmiteNotaFiscal\' in table \'ImprimirPedido\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableImprimirPedido.EmiteNotaFiscalColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string ExibirTransportadora {
+                get {
+                    try {
+                        return ((string)(this[this.tableImprimirPedido.ExibirTransportadoraColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ExibirTransportadora\' in table \'ImprimirPedido\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableImprimirPedido.ExibirTransportadoraColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsIdNull() {
                 return this.IsNull(this.tableImprimirPedido.IdColumn);
             }
@@ -2417,6 +2479,30 @@ namespace Fly01.Compras.Reports {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetComplementoEnderecoNull() {
                 this[this.tableImprimirPedido.ComplementoEnderecoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsEmiteNotaFiscalNull() {
+                return this.IsNull(this.tableImprimirPedido.EmiteNotaFiscalColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetEmiteNotaFiscalNull() {
+                this[this.tableImprimirPedido.EmiteNotaFiscalColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsExibirTransportadoraNull() {
+                return this.IsNull(this.tableImprimirPedido.ExibirTransportadoraColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetExibirTransportadoraNull() {
+                this[this.tableImprimirPedido.ExibirTransportadoraColumn] = global::System.Convert.DBNull;
             }
         }
         

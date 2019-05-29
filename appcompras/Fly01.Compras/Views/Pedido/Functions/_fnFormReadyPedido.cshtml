@@ -18,7 +18,7 @@
         var tipoFrete = $('#tipoFrete').val();
         var tipoCompra = $('#tipoCompra').val();
         var somaFrete = (
-                tipoFrete == "FOB"
+                (tipoFrete == "FOB") && $('input#exibeStepTransportadora').val() == "True"
             );
 
         if (somaFrete) {

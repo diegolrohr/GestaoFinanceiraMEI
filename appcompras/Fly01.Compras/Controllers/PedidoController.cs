@@ -1126,7 +1126,7 @@ namespace Fly01.Compras.Controllers
                     Marca = Pedido.Marca != null ? Pedido.Marca : "",
                     NumeracaoVolumesTrans = Pedido.NumeracaoVolumesTrans != null ? Pedido.NumeracaoVolumesTrans : "",
                     TotalImpostosProdutos = Pedido?.TotalImpostosProdutos ?? 0.0,
-                    TotalGeral = Pedido.Total + Pedido?.TotalImpostosProdutos ?? 0.0,
+                    TotalGeral = Pedido.Total + (Pedido?.TotalImpostosProdutos ?? 0.0),
                     Status = Pedido.Status,
                     //PRODUTO
                     Id = produtospedido.Id.ToString(),
@@ -1163,7 +1163,7 @@ namespace Fly01.Compras.Controllers
                 PesoLiquido = Pedido.PesoLiquido ?? 0,
                 ValorFrete = (exibirTransportadora && Pedido.ValorFrete.HasValue) ? Pedido.ValorFrete : 0,
                 TipoFrete = Pedido.TipoFrete,
-                TotalGeral = Pedido.Total ?? 0,
+                TotalGeral = Pedido.Total + (Pedido?.TotalImpostosProdutos ?? 0.0),
                 Data = Pedido.Data,
                 Finalidade = Pedido.TipoCompra,
                 PlacaVeiculo = Pedido.PlacaVeiculo,

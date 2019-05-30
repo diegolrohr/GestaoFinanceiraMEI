@@ -14,7 +14,11 @@
 
         //comportamento específico
         //vencidas com saldo em aberto, ficar em vermelho
-        if (((data.statusContaBancaria == 'BPAR') || (data.statusContaBancaria == 'ABER')) && moment(data.dataVencimento, 'DD/MM/YYYY').isBefore(moment())) {
+        var dataVencimento = moment(data.dataVencimento, 'DD/MM/YYYY').format('YYYY-MM-DD');
+        var hoje = moment().format('YYYY-MM-DD');
+        console.log(dataVencimento < hoje);
+
+        if (((data.statusContaBancaria == 'BPAR') || (data.statusContaBancaria == 'ABER')) && (dataVencimento < hoje)) {
             $(row).addClass("red-text");
         }
         return row;

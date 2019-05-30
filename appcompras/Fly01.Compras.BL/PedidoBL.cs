@@ -44,7 +44,7 @@ namespace Fly01.Compras.BL
             TotalTributacaoBL = totalTributacaoBL;
             KitItemBL = kitItemBL;
             EstadoBL = estadoBL;
-            ConfiguracaoPersonalizacao = configuracaoPersonalizacaoBL.All.AsNoTracking().First();
+            ConfiguracaoPersonalizacao = configuracaoPersonalizacaoBL.All.AsNoTracking().FirstOrDefault();
             emiteNotaFiscal = ConfiguracaoPersonalizacao != null ? ConfiguracaoPersonalizacao.EmiteNotaFiscal : true;
             exibirTransportadora = ConfiguracaoPersonalizacao != null ? ConfiguracaoPersonalizacao.ExibirStepTransportadoraCompras : true;
         }

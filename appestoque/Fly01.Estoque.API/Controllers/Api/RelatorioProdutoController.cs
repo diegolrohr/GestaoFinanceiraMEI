@@ -32,8 +32,8 @@ namespace Fly01.Estoque.API.Controllers.Api
         {
 
             Func<Produto, bool> filterPredicate = (x => (
-                ((string.IsNullOrWhiteSpace(descricao)) || (x.Descricao == descricao)) &&
-                ((string.IsNullOrWhiteSpace(codigo)) || (x.CodigoProduto == codigo)) &&
+                ((string.IsNullOrWhiteSpace(descricao)) || (x.Descricao.Contains(descricao))) &&
+                ((string.IsNullOrWhiteSpace(codigo)) || (x.CodigoProduto.Contains(codigo))) &&
                 ((string.IsNullOrWhiteSpace(tipoProduto)) || (x.TipoProduto == (TipoProduto)Enum.Parse(typeof(TipoProduto), tipoProduto, true))) &&
                 ((!grupoProdutoId.HasValue) || (x.GrupoProdutoId == grupoProdutoId)) &&
                 ((!unidadeMedidaId.HasValue) || (x.UnidadeMedidaId == unidadeMedidaId)) &&

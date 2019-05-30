@@ -29,22 +29,66 @@ namespace Fly01.Financeiro.BL
                  .Select(x => new
                  {
                      Status = x.StatusContaBancaria,
-                     x.ValorPrevisto
+                     x.ValorPrevisto,
+                     VPg = (x.ValorPago ?? 0),
+                     Dif = x.ValorPrevisto - (x.ValorPago ?? 0)
                  }).GroupBy(x => new { x.Status })
                  .Select(x => new
                  {
                      Tipo = x.Key.Status,
                      Total = x.Sum(v => v.ValorPrevisto),
+                     Total2 = x.Sum(v => v.Dif),
+                     Total3 = x.Sum(v => v.VPg),
                      Quantidade = x.Count()
                  }).ToList();
+
+            double parcial = 0;
+            int quantidadeParcial = 0;
+            DashboardFinanceiroVM aberto = null;
 
             foreach (var item in contaFinanceira)
             {
                 DashboardFinanceiroVM dashFinanceiro = new DashboardFinanceiroVM();
                 dashFinanceiro.Tipo = EnumHelper.GetValue(typeof(StatusContaBancaria), item.Tipo.ToString());
-                dashFinanceiro.Quantidade = item.Quantidade;
-                dashFinanceiro.Total = item.Total;
+
+
+                if (dashFinanceiro.Tipo == "Em aberto")
+                {
+                    dashFinanceiro.Quantidade = item.Quantidade;
+                    dashFinanceiro.Total = item.Total2;
+                    aberto = dashFinanceiro;
+                }
+
+                else if (dashFinanceiro.Tipo == "Pago")
+                {
+                    dashFinanceiro.Quantidade = item.Quantidade;
+                    dashFinanceiro.Total = item.Total3;
+
+                }
+
+                else if (dashFinanceiro.Tipo == "Baixado Parcialmente")
+                {
+                    dashFinanceiro.Quantidade = item.Quantidade;
+                    dashFinanceiro.Total = item.Total3;
+                    parcial = item.Total - item.Total3;
+                    quantidadeParcial = item.Quantidade;
+                }
+
                 DashboardFinanceiroLista.Add(dashFinanceiro);
+
+            }
+            
+            if (parcial > 0)
+            {
+                if (aberto == null)
+                {
+                    aberto = new DashboardFinanceiroVM();
+                    aberto.Tipo = EnumHelper.GetValue(typeof(StatusContaBancaria), StatusContaBancaria.EmAberto.ToString());
+                    DashboardFinanceiroLista.Add(aberto);
+                }
+                aberto.Total += parcial;
+                aberto.Quantidade += quantidadeParcial;
+
             }
 
             return DashboardFinanceiroLista;

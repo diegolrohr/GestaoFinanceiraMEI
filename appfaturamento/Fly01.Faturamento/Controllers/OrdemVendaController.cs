@@ -74,10 +74,10 @@ namespace Fly01.Faturamento.Controllers
             var exibirServicos = personalizacao != null ? personalizacao.ExibirStepServicosVendas : true;
 
             var produtos = new List<OrdemVendaProdutoVM>();
-            if (exibirProdutos) { GetProdutos(Guid.Parse(id)); };
+            if (exibirProdutos) { produtos = GetProdutos(Guid.Parse(id)); };
 
             var servicos = new List<OrdemVendaServicoVM>();
-            if (exibirProdutos) { GetServicos(Guid.Parse(id)); };
+            if (exibirProdutos) { servicos = GetServicos(Guid.Parse(id)); };
 
             bool calculaFrete = (
                 (OrdemVenda.TipoFrete == "CIF" || OrdemVenda.TipoFrete == "Remetente") && exibirTransportadora

@@ -2191,7 +2191,7 @@ IIF(Fields!ExibirProdutos.Value = "True", "Produtos" ,"Serviços"))</Value>
                             <TextRun>
                               <Value>=IIf(Fields!TipoOrdemVenda.Value = "Orcamento"
 		,"Orçamento"
-		, "Pedido")</Value>
+		, "Pedido de Venda")</Value>
                               <Style>
                                 <FontSize>16pt</FontSize>
                                 <FontWeight>Bold</FontWeight>

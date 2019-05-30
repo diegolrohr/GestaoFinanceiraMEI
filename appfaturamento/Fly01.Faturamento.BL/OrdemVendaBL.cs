@@ -52,7 +52,7 @@ namespace Fly01.Faturamento.BL
             NotaFiscalItemTributacaoBL = notaFiscalItemTributacaoBL;
             EstadoBL = estadoBL;
             KitItemBL = kitItemBl;
-            ConfiguracaoPersonalizacao = configuracaoPersonalizacaoBL.All.AsNoTracking().First();
+            ConfiguracaoPersonalizacao = configuracaoPersonalizacaoBL.All.AsNoTracking().FirstOrDefault();
             emiteNotaFiscal = ConfiguracaoPersonalizacao != null ? ConfiguracaoPersonalizacao.EmiteNotaFiscal : true;
             exibirProdutos = ConfiguracaoPersonalizacao != null ? ConfiguracaoPersonalizacao.ExibirStepProdutosVendas : true;
             exibirServicos = ConfiguracaoPersonalizacao != null ? ConfiguracaoPersonalizacao.ExibirStepServicosVendas : true;

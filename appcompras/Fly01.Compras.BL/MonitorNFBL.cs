@@ -34,7 +34,7 @@ namespace Fly01.Compras.BL
         public void AtualizaStatusTSS(string plataformaUrl)
         {
             var notasFiscaisByPlataforma = (from nf in NFeEntradaBL.Everything.Where(x => (x.Status == StatusNotaFiscal.Transmitida || x.Status == StatusNotaFiscal.EmCancelamento))
-                                            where string.IsNullOrEmpty(plataformaUrl) || nf.PlataformaId == plataformaUrl && nf.TipoNotaFiscal == TipoNotaFiscal.NFe
+                                            where (string.IsNullOrEmpty(plataformaUrl) || nf.PlataformaId == plataformaUrl) && nf.TipoNotaFiscal == TipoNotaFiscal.NFe
                                             group nf by new { nf.PlataformaId, nf.TipoAmbiente, nf.CertificadoDigitalId } into g
                                             select new
                                             {

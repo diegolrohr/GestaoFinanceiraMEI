@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Web.Http;
 using Fly01.Core.Entities.Domains.Enum;
+using Fly01.EmissaoNFE.API.NFSE001;
 
 namespace Fly01.EmissaoNFE.API.Controllers.Api
 {
@@ -84,10 +85,31 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                     retorno.Recomendacao = nfse?.RECOMENDACAO;
                     retorno.Status = nfse?.STATUS;
                     retorno.Protocolo = nfse?.PROTOCOLO?.Trim();
-                    if(statusNFSTSS == StatusNFSTSS.Autorizada)
+                    //TODO: Diego
+                    if (statusNFSTSS == StatusNFSTSS.Autorizada)
                     {
-                        retorno.XML = nfse.XMLRETTSS;
+                        NFS5 nfsXMl = new NFSE001.NFSE001().RETORNANFSE(
+                            AppDefault.Token,
+                            entity.Producao,
+                            new NFSID()
+                            {
+                                NOTAS = new NFSESID1[1]
+                                {
+                                    new NFSESID1()
+                                    {
+                                        ID = nfse.ID
+                                    }
+                                }
+                            },
+                            null
+                        );
+                        if(nfsXMl != null)
+                        {
+                            var xml = nfsXMl?.NOTAS[0]?.NFE?.XML;
+                            retorno.XML = xml != null ? xml.Replace("<![CDATA[", "").Replace("]]>", "") : "";
+                        }
                     }
+
                     if (nfse.ERRO.Length != 0)
                     {
                         retorno.Erros = new List<ErroNFSVM>();
@@ -139,6 +161,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                     retorno.Recomendacao = nfse.RECOMENDACAO;
                     retorno.Status = nfse?.STATUS;
                     retorno.Protocolo = nfse.PROTOCOLO.Trim();
+                    //TODO: Refatorar
                     retorno.XML = nfse.XMLRETTSS;
                     if (nfse.ERRO.Length != 0)
                     {

@@ -89,6 +89,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                     entity.CodigoIBGE
                 );
 
+                //TODO: Diego
                 //if (cancelamento.ID.Length > 0)
                 //{
                 //    response.Nota = cancelamento.ID[0];

@@ -65,7 +65,7 @@ namespace Fly01.Core.Presentation.Controllers
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
-            config.Elements.Add(new InputCheckboxUI { Id = "emiteNotaFiscal", Class = "col s12 m6 l4", Label = "Habilitar emissão e Notas Fiscais" });
+            config.Elements.Add(new InputCheckboxUI { Id = "emiteNotaFiscal", Class = "col s12 m6 l4", Label = "Habilitar emissão de notas fiscais" });
 
             config.Elements.Add(new LabelSetUI() { Id = "lblFaturamento", Label = "Aplicativo Faturamento" });
             config.Elements.Add(new InputCheckboxUI { Id = "exibirStepProdutosVendas", Class = "col s12 m6 l4", Label = "Habilitar venda de produtos" });

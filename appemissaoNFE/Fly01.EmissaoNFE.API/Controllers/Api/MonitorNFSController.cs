@@ -77,11 +77,17 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 foreach (NFSE001Prod.MONITORNFSE nfse in monitor)
                 {
                     var retorno = new MonitorNFSRetornoVM();
-                    retorno.NotaFiscalId = nfse.ID;
-                    retorno.Modalidade = nfse.MODALIDADE;
-                    retorno.Recomendacao = nfse.RECOMENDACAO;
-                    retorno.Protocolo = nfse.PROTOCOLO.Trim();
-                    retorno.XML = nfse.XMLRETTSS;
+                    StatusNFSTSS statusNFSTSS = (StatusNFSTSS)Enum.Parse(typeof(StatusNFSTSS), nfse.STATUS, true);
+
+                    retorno.NotaFiscalId = nfse?.ID;
+                    retorno.Modalidade = nfse?.MODALIDADE;
+                    retorno.Recomendacao = nfse?.RECOMENDACAO;
+                    retorno.Status = nfse?.STATUS;
+                    retorno.Protocolo = nfse?.PROTOCOLO?.Trim();
+                    if(statusNFSTSS == StatusNFSTSS.Autorizada)
+                    {
+                        retorno.XML = nfse.XMLRETTSS;
+                    }
                     if (nfse.ERRO.Length != 0)
                     {
                         retorno.Erros = new List<ErroNFSVM>();
@@ -131,6 +137,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                     retorno.NotaFiscalId = nfse.ID;
                     retorno.Modalidade = nfse.MODALIDADE;
                     retorno.Recomendacao = nfse.RECOMENDACAO;
+                    retorno.Status = nfse?.STATUS;
                     retorno.Protocolo = nfse.PROTOCOLO.Trim();
                     retorno.XML = nfse.XMLRETTSS;
                     if (nfse.ERRO.Length != 0)

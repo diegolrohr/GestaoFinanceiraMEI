@@ -11,6 +11,7 @@ namespace Fly01.EmissaoNFE.Domain.ViewModel
         public string Protocolo { get; set; }
         public string XML { get; set; }
         public string Recomendacao { get; set; }
+        public string Status { get; set; }
         public List<ErroNFSVM> Erros { get; set; }
     }
 }

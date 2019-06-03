@@ -57,6 +57,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
         public CancelarNFSRetornoVM Producao(CancelarNFSVM entity)
         {
             var response = new CancelarNFSRetornoVM();
+            response.Nota = entity.IdNotaFiscal;
 
             var municipiosHomologados = new NFSE001Prod.NFSE001().RETMUNCANC(
                     AppDefault.Token
@@ -88,14 +89,14 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                     entity.CodigoIBGE
                 );
 
-                if (cancelamento.ID.Length > 0)
-                {
-                    response.Nota = cancelamento.ID[0];
-                }
-                else
-                {
-                    throw new BusinessException(string.Format("Cancelamento solicitado sem retorno do TSS"));
-                }
+                //if (cancelamento.ID.Length > 0)
+                //{
+                //    response.Nota = cancelamento.ID[0];
+                //}
+                //else
+                //{
+                //    throw new BusinessException(string.Format("Cancelamento solicitado sem retorno do TSS"));
+                //}
             }
             else
             {

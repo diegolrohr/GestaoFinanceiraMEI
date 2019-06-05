@@ -77,5 +77,6 @@ namespace Fly01.OrdemServico.DAL
         public DbSet<Kit> Kits { get; set; }
         public DbSet<KitItem> KitItens{ get; set; }
         public DbSet<Pais> Paises { get; set; }
+        public DbSet<ConfiguracaoPersonalizacao> ConfiguracaoPersonalizacoes { get; set; }
     }
 }

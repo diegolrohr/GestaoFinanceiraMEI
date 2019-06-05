@@ -525,7 +525,7 @@ namespace Fly01.Faturamento.BL
 
                     var st = SubstituicaoTributariaBL.AllIncluding(y => y.EstadoOrigem, y => y.EstadoDestino).AsNoTracking().Where(x =>
                         x.NcmId == (produto.NcmId.HasValue ? produto.NcmId.Value : Guid.NewGuid()) &&
-                          ((produto.CestId.HasValue && x.CestId == produto.CestId.Value) || !produto.CestId.HasValue) &&
+                        ((produto.CestId.HasValue && x.CestId == produto.CestId.Value) || !produto.CestId.HasValue) &&
                         x.EstadoOrigem.Sigla == (tipoVenda != TipoCompraVenda.Devolucao ? estadoOrigem : cliente.Estado.Sigla) && //inverte na devolução
                         x.EstadoDestino.Sigla == (tipoVenda != TipoCompraVenda.Devolucao ? cliente.Estado.Sigla : estadoOrigem) &&
                         x.TipoSubstituicaoTributaria == (isSaida ? TipoSubstituicaoTributaria.Saida : TipoSubstituicaoTributaria.Entrada)

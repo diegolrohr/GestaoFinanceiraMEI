@@ -17,7 +17,7 @@ namespace Fly01.Estoque.DAL.Migrations
             try
             {
                 //new EstadoDataInitializer().Initialize(context);
-                //new UnidadeMedidaDataInitializer().Initialize(context);
+                new UnidadeMedidaDataInitializer().Initialize(context);
                 //new NCMDataInitializer().Initialize(context);
                 //new CestDataInitializer().Initialize(context);
                 //new EnquadramentoLegalIPIDataInitializer().Initialize(context);

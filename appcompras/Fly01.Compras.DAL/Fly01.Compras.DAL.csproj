@@ -368,6 +368,18 @@
     <Compile Include="Migrations\201904151847134_FunctionComprasReport.Designer.cs">
       <DependentUpon>201904151847134_FunctionComprasReport.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201905221430011_AddConfiguracaoPersonalizacao.cs" />
+    <Compile Include="Migrations\201905221430011_AddConfiguracaoPersonalizacao.Designer.cs">
+      <DependentUpon>201905221430011_AddConfiguracaoPersonalizacao.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905231839066_AlterConfiguracaoPersonalizacao.cs" />
+    <Compile Include="Migrations\201905231839066_AlterConfiguracaoPersonalizacao.Designer.cs">
+      <DependentUpon>201905231839066_AlterConfiguracaoPersonalizacao.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906051447431_AlterUnidadeMedida.cs" />
+    <Compile Include="Migrations\201906051447431_AlterUnidadeMedida.Designer.cs">
+      <DependentUpon>201906051447431_AlterUnidadeMedida.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer7.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer6.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer5.cs" />
@@ -656,6 +668,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201904151847134_FunctionComprasReport.resx">
       <DependentUpon>201904151847134_FunctionComprasReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905221430011_AddConfiguracaoPersonalizacao.resx">
+      <DependentUpon>201905221430011_AddConfiguracaoPersonalizacao.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905231839066_AlterConfiguracaoPersonalizacao.resx">
+      <DependentUpon>201905231839066_AlterConfiguracaoPersonalizacao.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906051447431_AlterUnidadeMedida.resx">
+      <DependentUpon>201906051447431_AlterUnidadeMedida.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

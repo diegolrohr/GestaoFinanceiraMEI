@@ -52,6 +52,7 @@
     <Compile Include="ArquivoRetornoBL.cs" />
     <Compile Include="BoletoBL.cs" />
     <Compile Include="CentroCustoBL.cs" />
+    <Compile Include="ConfiguracaoPersonalizacaoBL.cs" />
     <Compile Include="PaisBL.cs" />
     <Compile Include="CnabBL.cs" />
     <Compile Include="ConfiguracaoNotificacaoBL.cs" />

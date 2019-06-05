@@ -50,6 +50,7 @@
     <Compile Include="ArquivoBL.cs" />
     <Compile Include="Base\OrdemServicoItemBaseBL.cs" />
     <Compile Include="CestBL.cs" />
+    <Compile Include="ConfiguracaoPersonalizacaoBL.cs" />
     <Compile Include="DashboardBL.cs" />
     <Compile Include="CidadeBL.cs" />
     <Compile Include="EnquadramentoLegalIPIBL.cs" />

@@ -138,10 +138,10 @@
         public static bool IsValid(string siglaUf, string inscricaoEstadual, out string msgError)
         {
             string strIE = RemoveMascara(inscricaoEstadual);
-            siglaUf = siglaUf.ToUpper();
+            siglaUf = siglaUf?.ToUpper();
 
             msgError = string.Empty;
-            if (inscricaoEstadual.ToUpper() == "ISENTO" || siglaUf == "EX")
+            if (inscricaoEstadual?.ToUpper() == "ISENTO" || siglaUf == "EX")
                 return true;
 
             switch (siglaUf)

@@ -17,7 +17,6 @@ namespace Fly01.Core
         public const string TenatIdHeader = "TenantId";
         public const int MaxRecordsPerPage = 10;
         public const int MaxRecordsPerPageAPI = 50;
-
         public const string SchedulerAzureBasicUserName = "0A2905B9-8AF8-4789-9732-914946A9C57B";
         public const string SchedulerAzureBasicPassword = "9IURl9t1";
 
@@ -31,6 +30,7 @@ namespace Fly01.Core
         public static string MashupPassword { get; set; }
         public static string MashupUser { get; set; }
 
+        public static string UrlNotificationSocket { get; set; }
         public static string UrlGateway { get; set; }
         public static string UrlGatewayNew { get; set; }
         public static string UrlManager { get; set; }
@@ -40,6 +40,18 @@ namespace Fly01.Core
         public static string UrlComprasApi { get; set; }
         public static string UrlEmissaoNfeApi { get; set; }
         public static string UrlEstoqueApi { get; set; }
+
+        public static string UrlFinanceiroWeb { get; set; }
+        public static string UrlFaturamentoWeb { get; set; }
+        public static string UrlComprasWeb { get; set; }
+        public static string UrlEstoqueWeb { get; set; }
+        public static string UrlOrdemServicoWeb { get; set; }
+
+        public static string FinanceiroClientId { get; set; }
+        public static string FaturamentoClientId { get; set; }
+        public static string EstoqueClientId { get; set; }
+        public static string ComprasClientId { get; set; }
+        public static string OrdemServicoClientId { get; set; }
 
         public static string GatewayUserName { get; set; }
         public static string GatewayPassword { get; set; }
@@ -61,7 +73,7 @@ namespace Fly01.Core
         public static string APIEnumResourceName { get; set; }
 
         public static string APIDomainResourceName { get; set; }
-
+        public static string JWTSocketAuth { get; set; }
         public static string UrlStone { get; set; }
 
         public static string GetRootPathApplication(string app) => string.Format(RootPathApplication, app);

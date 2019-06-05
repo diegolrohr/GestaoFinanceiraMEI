@@ -71,6 +71,7 @@
     <Compile Include="Controllers\AvaliacaoAppController.cs" />
     <Compile Include="Controllers\CartaCorrecaoController.cs" />
     <Compile Include="Controllers\CentroCustoController.cs" />
+    <Compile Include="Controllers\ConfiguracaoPersonalizacaoController.cs" />
     <Compile Include="Controllers\NFeImportacaoCobrancaController.cs" />
     <Compile Include="Controllers\NFeImportacaoProdutoController.cs" />
     <Compile Include="Controllers\NFeImportacaoController.cs" />
@@ -428,6 +429,9 @@
     <Content Include="Views\ParametroTributario\Functions\_fnChkIsentoInscricaoEstadual.cshtml" />
     <Content Include="Views\CertificadoDigital\Functions\_fnChkIsentoInscricaoEstadual.cshtml" />
     <Content Include="Views\AliquotaSimplesNacional\Functions\_fnChkIsentoInscricaoEstadual.cshtml" />
+    <Content Include="Views\ConfiguracaoPersonalizacao\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\ConfiguracaoPersonalizacao\Index.cshtml" />
+    <Content Include="Views\Pedido\Functions\_fnChangeCollapseExpand.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -442,8 +446,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Fly01.uiJS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Fly01.uiJS.2.0.5.2\lib\net452\Fly01.uiJS.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\Fly01.uiJS.2.0.5.5\lib\net452\Fly01.uiJS.dll</HintPath>
     </Reference>
     <Reference Include="HtmlRenderer, Version=1.5.0.5, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\HtmlRenderer.Core.1.5.0.5\lib\net45\HtmlRenderer.dll</HintPath>

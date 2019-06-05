@@ -40,6 +40,7 @@ namespace Fly01.OrdemServico.API
             builder.EntitySet<Kit>("kit");
             builder.EntitySet<KitItem>("kititem");
             builder.EntitySet<Pais>("pais");
+            builder.EntitySet<ConfiguracaoPersonalizacao>("configuracaopersonalizacao");
 
             builder.EnableLowerCamelCase();
             return builder.GetEdmModel();
@@ -54,18 +55,5 @@ namespace Fly01.OrdemServico.API
 
             new Consumer(Assembly.Load("Fly01.OrdemServico.BL").GetType("Fly01.OrdemServico.BL.UnitOfWork")).Consume();
         });
-
-        protected override void SetAppDefaults()
-        {
-            AppDefaults.UrlGateway = ConfigurationManager.AppSettings["UrlGateway"];
-            AppDefaults.UrlEmissaoNfeApi = ConfigurationManager.AppSettings["UrlEmissaoNfeApi"];
-            AppDefaults.UrlEstoqueApi = ConfigurationManager.AppSettings["UrlEstoqueApi"];
-            AppDefaults.UrlFinanceiroApi = ConfigurationManager.AppSettings["UrlFinanceiroApi"];
-            AppDefaults.UrlComprasApi = ConfigurationManager.AppSettings["UrlComprasApi"];
-            AppDefaults.UrlGatewayNew = $"{ConfigurationManager.AppSettings["UrlGatewayNew"]}api/";
-            AppDefaults.UrlManager = $"{AppDefaults.UrlGatewayNew}manager/";
-
-            base.SetAppDefaults();
-        }
     }
 }

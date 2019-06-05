@@ -22,8 +22,10 @@ namespace Fly01.Compras.BL
         public const int MaxLengthObservacao = 200;
         protected KitItemBL KitItemBL { get; set; }
         protected EstadoBL EstadoBL { get; set; }
-
         protected OrdemCompraBL OrdemCompraBL { get; set; }
+        protected ConfiguracaoPersonalizacao ConfiguracaoPersonalizacao { get; set; }
+        protected bool emiteNotaFiscal;
+        protected bool exibirTransportadora;
 
         private readonly string descricaoCompra = @"Compra nº: {0}";
         private readonly string observacaoCompra = @"Observação gerada pela compra nº {0} applicativo Bemacash Compras: {1}";
@@ -32,7 +34,7 @@ namespace Fly01.Compras.BL
         private readonly string routePrefixNameContaReceber = @"ContaReceber";
 
 
-        public PedidoBL(AppDataContextBase context, PedidoItemBL pedidoItemBL, OrdemCompraBL ordemCompraBL, NFeEntradaBL nFeEntradaBL, NFeProdutoEntradaBL nFeProdutoEntradaBL, NotaFiscalItemTributacaoEntradaBL notaFiscalItemTributacaoEntradaBL, TotalTributacaoBL totalTributacaoBL, KitItemBL kitItemBL, EstadoBL estadoBL) : base(context)
+        public PedidoBL(AppDataContextBase context, PedidoItemBL pedidoItemBL, OrdemCompraBL ordemCompraBL, NFeEntradaBL nFeEntradaBL, NFeProdutoEntradaBL nFeProdutoEntradaBL, NotaFiscalItemTributacaoEntradaBL notaFiscalItemTributacaoEntradaBL, TotalTributacaoBL totalTributacaoBL, KitItemBL kitItemBL, EstadoBL estadoBL, ConfiguracaoPersonalizacaoBL configuracaoPersonalizacaoBL) : base(context)
         {
             PedidoItemBL = pedidoItemBL;
             OrdemCompraBL = ordemCompraBL;
@@ -42,6 +44,9 @@ namespace Fly01.Compras.BL
             TotalTributacaoBL = totalTributacaoBL;
             KitItemBL = kitItemBL;
             EstadoBL = estadoBL;
+            ConfiguracaoPersonalizacao = configuracaoPersonalizacaoBL.All.AsNoTracking().FirstOrDefault();
+            emiteNotaFiscal = ConfiguracaoPersonalizacao != null ? ConfiguracaoPersonalizacao.EmiteNotaFiscal : true;
+            exibirTransportadora = ConfiguracaoPersonalizacao != null ? ConfiguracaoPersonalizacao.ExibirStepTransportadoraCompras : true;
         }
 
         public override void ValidaModel(Pedido entity)
@@ -64,11 +69,11 @@ namespace Fly01.Compras.BL
 
                 bool isNfeImportacao = (entity.NFeImportacaoId != null && entity.NFeImportacaoId != default(Guid));
                 bool freteEmpresa = (
-                    (entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario)
+                    (entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario) && exibirTransportadora
                 );
                 entity.Fail(freteEmpresa && !isNfeImportacao && (entity.TransportadoraId == null || entity.TransportadoraId == default(Guid)), new Error("Se configurou o frete por conta da sua empresa, informe a transportadora"));
 
-                if (entity.GeraNotaFiscal)
+                if (entity.GeraNotaFiscal && emiteNotaFiscal)
                 {
                     TotalTributacaoBL.DadosValidosCalculoTributario(entity, entity.FornecedorId);
                     entity.Fail(entity.FormaPagamentoId == null, new Error("Para finalizar o pedido que gera nota fiscal, informe a forma de pagamento"));
@@ -76,10 +81,10 @@ namespace Fly01.Compras.BL
                 }
 
                 entity.Fail(entity.MovimentaEstoque && hasEstoqueNegativo & !entity.AjusteEstoqueAutomatico, new Error("Para finalizar o pedido o estoque não poderá ficar negativo, realize os ajustes de entrada ou marque para gerar as movimentações de entrada automáticas"));
-                entity.Fail(entity.GeraNotaFiscal && string.IsNullOrEmpty(entity.NaturezaOperacao), new Error("Para finalizar o pedido que gera nota fiscal, informe a natureza de operação"));
+                entity.Fail((entity.GeraNotaFiscal && emiteNotaFiscal) && string.IsNullOrEmpty(entity.NaturezaOperacao), new Error("Para finalizar o pedido que gera nota fiscal, informe a natureza de operação"));
                 entity.Fail(entity.TipoOrdemCompra == TipoOrdemCompra.Orcamento, new Error("Orçamento não pode ser finalizado. Converta em pedido para finalizar"));
                 //entity.Fail(!produtos.Any(), new Error("Para finalizar a compra é necessário ao menos ter adicionado um produto."));
-                entity.Fail(produtos.Any(x => x.GrupoTributarioId == default(Guid)) && entity.GeraNotaFiscal == true, new Error("Para finalizar o pedido que gera nota fiscal, informe o grupo tributário nos produtos."));
+                entity.Fail(produtos.Any(x => x.GrupoTributarioId == default(Guid)) && (entity.GeraNotaFiscal && emiteNotaFiscal), new Error("Para finalizar o pedido que gera nota fiscal, informe o grupo tributário nos produtos."));
 
                 entity.Fail(
                     (entity.GeraFinanceiro && (entity.FormaPagamentoId == null || entity.CondicaoParcelamentoId == null || entity.CategoriaId == null || entity.DataVencimento == null)),
@@ -307,12 +312,12 @@ namespace Fly01.Compras.BL
 
             ValidaModel(entity);
 
-            if (entity.Status == StatusOrdemCompra.Aberto && entity.TipoOrdemCompra == TipoOrdemCompra.Pedido && entity.TipoCompra == TipoCompraVenda.Devolucao && !string.IsNullOrEmpty(entity.ChaveNFeReferenciada) && entity.IsValid())
+            if (entity.Status == StatusOrdemCompra.Aberto && entity.TipoOrdemCompra == TipoOrdemCompra.Pedido && entity.TipoCompra == TipoCompraVenda.Devolucao && !string.IsNullOrEmpty(entity.ChaveNFeReferenciada) && entity.IsValid() && emiteNotaFiscal)
             {
                 CopiaDadosNFeReferenciadaDevolucao(entity);
             }
 
-            if (entity.Status == StatusOrdemCompra.Finalizado && entity.TipoOrdemCompra == TipoOrdemCompra.Pedido && entity.GeraNotaFiscal && entity.IsValid())
+            if (entity.Status == StatusOrdemCompra.Finalizado && entity.TipoOrdemCompra == TipoOrdemCompra.Pedido && (entity.GeraNotaFiscal && emiteNotaFiscal) && entity.IsValid())
             {
                 GeraNotasFiscais(entity);
             }
@@ -342,7 +347,14 @@ namespace Fly01.Compras.BL
 
             GeraIdContaFinanceiraRecuperarDadosParcela(entity);
 
-            if (entity.Status == StatusOrdemCompra.Finalizado && entity.TipoOrdemCompra == TipoOrdemCompra.Pedido && entity.GeraNotaFiscal && entity.IsValid())
+            //se estava marcado, mas desabilitou depois via personalização, desmarcar
+            if (entity.Status == StatusOrdemCompra.Finalizado)
+            {
+                entity.GeraNotaFiscal = entity.GeraNotaFiscal ? (entity.GeraNotaFiscal && emiteNotaFiscal) : false;
+                entity.ValorFrete = exibirTransportadora ? entity.ValorFrete : 0.0;
+            }
+
+            if (entity.Status == StatusOrdemCompra.Finalizado && entity.TipoOrdemCompra == TipoOrdemCompra.Pedido && (entity.GeraNotaFiscal && emiteNotaFiscal) && entity.IsValid())
             {
                 GeraNotasFiscais(entity);
             }
@@ -386,12 +398,12 @@ namespace Fly01.Compras.BL
             if (entity.GeraFinanceiro)
             {
                 bool freteEmpresa = (
-                    (entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario)
+                    (entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario) && exibirTransportadora
                 );
 
                 double totalProdutos = produtos != null ? produtos.Select(e => (e.Quantidade * e.Valor) - e.Desconto).Sum() : 0;
                 double totalImpostosProdutos = produtos != null && entity.TotalImpostosProdutos.HasValue ? entity.TotalImpostosProdutos.Value : 0;
-                double valorPrevisto = totalProdutos + (entity.GeraNotaFiscal ? totalImpostosProdutos : 0);
+                double valorPrevisto = totalProdutos + ((entity.GeraNotaFiscal && emiteNotaFiscal) ? totalImpostosProdutos : 0);
 
                 if (freteEmpresa)
                 {
@@ -501,7 +513,7 @@ namespace Fly01.Compras.BL
             var tipoFreteEnum = (TipoFrete)Enum.Parse(typeof(TipoFrete), tipoFrete, true);
 
             var ordemCompra = All.Where(x => x.Id == ordemCompraId).FirstOrDefault();
-            if (geraNotaFiscal && ordemCompra.Status != StatusOrdemCompra.Finalizado)
+            if ((geraNotaFiscal && emiteNotaFiscal) && ordemCompra.Status != StatusOrdemCompra.Finalizado)
             {
                 TotalTributacaoBL.DadosValidosCalculoTributario(ordemCompra, fornecedorId, onList);
             }
@@ -510,10 +522,10 @@ namespace Fly01.Compras.BL
             var totalProdutos = produtos != null ? produtos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto)) : 0.0;
 
             var totalImpostosProdutos = (ordemCompra.Status == StatusOrdemCompra.Finalizado && ordemCompra.TotalImpostosProdutos.HasValue) ? ordemCompra.TotalImpostosProdutos.Value
-                : (produtos != null && geraNotaFiscal ? TotalTributacaoBL.TotalSomaOrdemCompraProdutos(produtos, fornecedorId, tipoVendaEnum, tipoFreteEnum, valorFrete) : 0.0);
+                : (produtos != null && (geraNotaFiscal && emiteNotaFiscal) ? TotalTributacaoBL.TotalSomaOrdemCompraProdutos(produtos, fornecedorId, tipoVendaEnum, tipoFreteEnum, valorFrete) : 0.0);
 
             var totalImpostosProdutosNaoAgrega = ordemCompra.Status == StatusOrdemCompra.Finalizado ? ordemCompra.TotalImpostosProdutosNaoAgrega
-                : (produtos != null && geraNotaFiscal ? TotalTributacaoBL.TotalSomaOrdemCompraProdutosNaoAgrega(produtos, fornecedorId, tipoVendaEnum, tipoFreteEnum, valorFrete) : 0.0);
+                : (produtos != null && (geraNotaFiscal && emiteNotaFiscal)? TotalTributacaoBL.TotalSomaOrdemCompraProdutosNaoAgrega(produtos, fornecedorId, tipoVendaEnum, tipoFreteEnum, valorFrete) : 0.0);
 
             var result = new TotalPedidoNotaFiscal()
             {

@@ -68,6 +68,7 @@
     <Compile Include="Controllers\Base\BoletoController.cs" />
     <Compile Include="Controllers\Base\ContaFinanceiraController.cs" />
     <Compile Include="Controllers\CentroCustoController.cs" />
+    <Compile Include="Controllers\ConfiguracaoPersonalizacaoController.cs" />
     <Compile Include="Controllers\RelatorioContaReceberController.cs" />
     <Compile Include="Controllers\RelatorioContaPagarController.cs" />
     <Compile Include="Controllers\RelatorioContaFinanceiraController.cs" />
@@ -440,6 +441,9 @@
     <Content Include="Views\Shared\Functions\_fnImprimirRelatorioCPCR.cshtml" />
     <Content Include="Views\ArquivoRemessa\Functions\_fnDownloadArquivo.cshtml" />
     <Content Include="Views\Relatorio\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\ConfiguracaoPersonalizacao\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\ConfiguracaoPersonalizacao\Index.cshtml" />
+    <Content Include="Views\Shared\Functions\_fnRowCallbackContasFinanceiras.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -491,8 +495,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Fly01.uiJS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Fly01.uiJS.2.0.5.2\lib\net452\Fly01.uiJS.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\Fly01.uiJS.2.0.5.5\lib\net452\Fly01.uiJS.dll</HintPath>
     </Reference>
     <Reference Include="HtmlRenderer, Version=1.5.0.5, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\HtmlRenderer.Core.1.5.0.5\lib\net45\HtmlRenderer.dll</HintPath>

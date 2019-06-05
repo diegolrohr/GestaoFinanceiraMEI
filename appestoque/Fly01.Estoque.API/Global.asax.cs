@@ -36,6 +36,7 @@ namespace Fly01.Estoque.API
             builder.EntitySet<MovimentoOrdemVenda>("movimentoordemvenda");
             builder.EntitySet<Arquivo>("arquivo");
             builder.EntitySet<MovimentoEstoque>("movimentoestoque");
+            builder.EntitySet<ConfiguracaoPersonalizacao>("configuracaopersonalizacao");
 
             builder.EnableLowerCamelCase();
             return builder.GetEdmModel();
@@ -50,13 +51,5 @@ namespace Fly01.Estoque.API
 
             new Consumer(Assembly.Load("Fly01.Estoque.BL").GetType("Fly01.Estoque.BL.UnitOfWork")).Consume();
         });
-        protected override void SetAppDefaults()
-        {
-            AppDefaults.UrlGateway = ConfigurationManager.AppSettings["UrlGateway"];
-            AppDefaults.UrlGatewayNew = $"{ConfigurationManager.AppSettings["UrlGatewayNew"]}api/";
-            AppDefaults.UrlManager = $"{AppDefaults.UrlGatewayNew}manager/";
-
-            base.SetAppDefaults();
-        }
     }
 }

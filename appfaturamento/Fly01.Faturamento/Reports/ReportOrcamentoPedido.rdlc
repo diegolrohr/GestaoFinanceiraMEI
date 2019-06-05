@@ -105,7 +105,9 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Produto / Serviço</Value>
+                              <Value>=IIF(Fields!ExibirProdutos.Value = "True" And Fields!ExibirServicos.Value = "True",
+"Produtos / Serviços",
+IIF(Fields!ExibirProdutos.Value = "True", "Produtos" ,"Serviços"))</Value>
                               <Style>
                                 <FontSize>12pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
@@ -762,6 +764,9 @@
         <Height>3.14666cm</Height>
         <Width>16.15228cm</Width>
         <ZIndex>4</ZIndex>
+        <Visibility>
+          <Hidden>=Fields!ExibirTransportadora.Value &lt;&gt; "True"</Hidden>
+        </Visibility>
         <Style>
           <Border>
             <Style>None</Style>
@@ -800,7 +805,9 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Produto / Serviço</Value>
+                              <Value>=IIF(Fields!ExibirProdutos.Value = "True" And Fields!ExibirServicos.Value = "True",
+"Produtos / Serviços",
+IIF(Fields!ExibirProdutos.Value = "True", "Produtos" ,"Serviços"))</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -1895,6 +1902,9 @@
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox124</rd:DefaultName>
+                      <Visibility>
+                        <Hidden>=Fields!ExibirProdutos.Value &lt;&gt; "True"</Hidden>
+                      </Visibility>
                       <Style>
                         <Border>
                           <Style>None</Style>
@@ -1935,6 +1945,9 @@
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox3</rd:DefaultName>
+                      <Visibility>
+                        <Hidden>=Fields!EmiteNotaFiscal.Value &lt;&gt; "True" And Fields!ExibirProdutos.Value &lt;&gt; "True"</Hidden>
+                      </Visibility>
                       <Style>
                         <Border>
                           <Style>None</Style>
@@ -1980,6 +1993,9 @@
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox139</rd:DefaultName>
+                      <Visibility>
+                        <Hidden>=Fields!ExibirServicos.Value &lt;&gt; "True"</Hidden>
+                      </Visibility>
                       <Style>
                         <Border>
                           <Style>None</Style>
@@ -2020,6 +2036,9 @@
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox141</rd:DefaultName>
+                      <Visibility>
+                        <Hidden>=Fields!EmiteNotaFiscal.Value &lt;&gt; "True" And Fields!ExibirServicos.Value &lt;&gt; "True"</Hidden>
+                      </Visibility>
                       <Style>
                         <Border>
                           <Style>None</Style>
@@ -2065,6 +2084,9 @@
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox11</rd:DefaultName>
+                      <Visibility>
+                        <Hidden>=Fields!ExibirTransportadora.Value &lt;&gt; "True"</Hidden>
+                      </Visibility>
                       <Style>
                         <Border>
                           <Style>None</Style>
@@ -2169,7 +2191,7 @@
                             <TextRun>
                               <Value>=IIf(Fields!TipoOrdemVenda.Value = "Orcamento"
 		,"Orçamento"
-		, "Pedido")</Value>
+		, "Pedido de Venda")</Value>
                               <Style>
                                 <FontSize>16pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
@@ -2392,10 +2414,26 @@
           <DataField>NumeracaoVolumesTrans</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="EmiteNotaFiscal">
+          <DataField>EmiteNotaFiscal</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ExibirProdutos">
+          <DataField>ExibirProdutos</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ExibirServicos">
+          <DataField>ExibirServicos</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ExibirTransportadora">
+          <DataField>ExibirTransportadora</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>DataSetReports</rd:DataSetName>
-        <rd:SchemaPath>D:\SaaS\Fly01.Apps\appfaturamento\Fly01.Faturamento\Reports\DataSetReports.xsd</rd:SchemaPath>
+        <rd:SchemaPath>C:\SaaS\Fly01.Apps\appfaturamento\Fly01.Faturamento\Reports\DataSetReports.xsd</rd:SchemaPath>
         <rd:TableName>OrcamentoPedido</rd:TableName>
         <rd:TableAdapterFillMethod />
         <rd:TableAdapterGetDataMethod />

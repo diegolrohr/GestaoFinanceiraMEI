@@ -1,8 +1,28 @@
 ﻿<script>
     function fnFormReadyOrdemVendaKit() {
+        var emiteNotaFiscal = $('#emiteNotaFiscal').val() == "True";
+        var exibeStepProdutos = $('#exibeStepProdutos').val() == "True";
+        var exibeStepServicos = $('#exibeStepServicos').val() == "True";
+
+        if (!emiteNotaFiscal) {
+            $('#lblGrupoTribuarioPadraoField').hide();
+            $('#grupoTributarioProdutoIdKitField').hide();
+            $('#grupoTributarioServicoIdKitField').hide();
+        }
+        if (exibeStepProdutos) {
+            $("form#fly01mdlfrmOrdemVendaKit input#adicionarProdutos").prop("checked", true);
+        }
+        else {
+            $('#adicionarProdutosField').hide();
+        }
+        if (exibeStepServicos) {
+            $("form#fly01mdlfrmOrdemVendaKit input#adicionarServicos").prop("checked", true);
+        }
+        else {
+            $('#adicionarServicosField').hide();
+        }
+
         $('form#fly01mdlfrmOrdemVendaKit input#orcamentoPedidoId').val($('form#fly01frm input#id').val());
-        $("form#fly01mdlfrmOrdemVendaKit input#adicionarProdutos").prop("checked", true);
-        $("form#fly01mdlfrmOrdemVendaKit input#adicionarServicos").prop("checked", true);
         $("form#fly01mdlfrmOrdemVendaKit input#somarExistentes").prop("checked", true);
 
         fnOverrideSubmit();

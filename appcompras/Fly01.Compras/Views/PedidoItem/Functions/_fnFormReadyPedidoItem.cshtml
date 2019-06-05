@@ -23,7 +23,11 @@
     }
 
     function fnFormReadyPedidoItem() {
-        setNFERequiredFields("fly01mdlfrmPedidoItem", ["grupoTributarioDescricaoProduto", "valor"]);
+
+        var emiteNotaFiscal = $('#emiteNotaFiscal').val() == "True";
+        if (emiteNotaFiscal) {
+            setNFERequiredFields("fly01mdlfrmPedidoItem", ["grupoTributarioDescricaoProduto", "valor"]);
+        }
 
         var id = $("form#fly01mdlfrmPedidoItem input#id").val();
 
@@ -34,6 +38,7 @@
             $('form#fly01mdlfrmPedidoItem #grupoTributarioTipoTributacaoICMS').val($('form#fly01frm #grupoTributarioPadraoTipoTributacaoICMS').val());
         }
         fnConfiguraTipoTributacaoICMSProduto();
+        if (!emiteNotaFiscal) { fnHideCamposEmissaoNotaProduto(); }
 
         $$$.fn.updateTextFields();
         fnOverrideSubmitPedidoItem();
@@ -49,10 +54,15 @@
         });
     }
 
+    function fnHideCamposEmissaoNotaProduto() {
+        $('form#fly01mdlfrmPedidoItem #grupoTributarioIdProdutoField').hide();
+    }
+
     function fnSetNaturezaOperacao(idItem) {
         //adicionando o primeiro ou editando o único adicionado
         if (($$$._.dtPedidoItens.ajax.json().recordsTotal == 0 && idItem.length == 0) || ($$$._.dtPedidoItens.ajax.json().recordsTotal == 1 && idItem.length != 0)) {
-            $('input#naturezaOperacao').val($('input#cfopDescricao').val());
+            var cfopDescricao = $('input#cfopDescricao').val();
+            $('input#naturezaOperacao').val(cfopDescricao.substring(0, (cfopDescricao.length > 60 ? 60 : cfopDescricao.length)));
             $$$.fn.updateTextFields();
         }
     }

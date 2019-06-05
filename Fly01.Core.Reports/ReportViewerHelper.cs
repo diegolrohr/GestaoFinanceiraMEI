@@ -28,7 +28,9 @@ namespace Fly01.Core.Reports
             var headerDefault = new StringBuilder();
             if (empresaVM != null)
             {
-                headerDefault.AppendFormat("{0} | CNPJ: {1}", empresaVM.RazaoSocial, empresaVM.CNPJ);
+                headerDefault.AppendFormat("{0}", empresaVM.RazaoSocial);
+                headerDefault.Append("<br/>");
+                headerDefault.AppendFormat("{0}: {1}", (empresaVM?.CNPJ?.Length == 11 ? "CPF" : "CNPJ"), empresaVM.CNPJ);
                 headerDefault.Append("<br/>");
                 headerDefault.AppendFormat("Endereço: {0}, {1}", empresaVM.Endereco, string.IsNullOrWhiteSpace(empresaVM.Numero) ? "S/N" : empresaVM.Numero);
                 headerDefault.Append("<br/>");

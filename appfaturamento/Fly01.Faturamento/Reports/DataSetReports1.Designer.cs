@@ -1097,6 +1097,14 @@ namespace Fly01.Faturamento.Reports {
             
             private global::System.Data.DataColumn columnNumeracaoVolumesTrans;
             
+            private global::System.Data.DataColumn columnEmiteNotaFiscal;
+            
+            private global::System.Data.DataColumn columnExibirProdutos;
+            
+            private global::System.Data.DataColumn columnExibirServicos;
+            
+            private global::System.Data.DataColumn columnExibirTransportadora;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public OrcamentoPedidoDataTable() {
@@ -1412,6 +1420,38 @@ namespace Fly01.Faturamento.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn EmiteNotaFiscalColumn {
+                get {
+                    return this.columnEmiteNotaFiscal;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ExibirProdutosColumn {
+                get {
+                    return this.columnExibirProdutos;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ExibirServicosColumn {
+                get {
+                    return this.columnExibirServicos;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ExibirTransportadoraColumn {
+                get {
+                    return this.columnExibirTransportadora;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -1482,7 +1522,11 @@ namespace Fly01.Faturamento.Reports {
                         string Marca, 
                         string Finalidade, 
                         string TipoEspecie, 
-                        string NumeracaoVolumesTrans) {
+                        string NumeracaoVolumesTrans, 
+                        string EmiteNotaFiscal, 
+                        string ExibirProdutos, 
+                        string ExibirServicos, 
+                        string ExibirTransportadora) {
                 OrcamentoPedidoRow rowOrcamentoPedidoRow = ((OrcamentoPedidoRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Id,
@@ -1519,7 +1563,11 @@ namespace Fly01.Faturamento.Reports {
                         Marca,
                         Finalidade,
                         TipoEspecie,
-                        NumeracaoVolumesTrans};
+                        NumeracaoVolumesTrans,
+                        EmiteNotaFiscal,
+                        ExibirProdutos,
+                        ExibirServicos,
+                        ExibirTransportadora};
                 rowOrcamentoPedidoRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowOrcamentoPedidoRow);
                 return rowOrcamentoPedidoRow;
@@ -1577,6 +1625,10 @@ namespace Fly01.Faturamento.Reports {
                 this.columnFinalidade = base.Columns["Finalidade"];
                 this.columnTipoEspecie = base.Columns["TipoEspecie"];
                 this.columnNumeracaoVolumesTrans = base.Columns["NumeracaoVolumesTrans"];
+                this.columnEmiteNotaFiscal = base.Columns["EmiteNotaFiscal"];
+                this.columnExibirProdutos = base.Columns["ExibirProdutos"];
+                this.columnExibirServicos = base.Columns["ExibirServicos"];
+                this.columnExibirTransportadora = base.Columns["ExibirTransportadora"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1652,6 +1704,14 @@ namespace Fly01.Faturamento.Reports {
                 base.Columns.Add(this.columnTipoEspecie);
                 this.columnNumeracaoVolumesTrans = new global::System.Data.DataColumn("NumeracaoVolumesTrans", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnNumeracaoVolumesTrans);
+                this.columnEmiteNotaFiscal = new global::System.Data.DataColumn("EmiteNotaFiscal", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnEmiteNotaFiscal);
+                this.columnExibirProdutos = new global::System.Data.DataColumn("ExibirProdutos", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnExibirProdutos);
+                this.columnExibirServicos = new global::System.Data.DataColumn("ExibirServicos", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnExibirServicos);
+                this.columnExibirTransportadora = new global::System.Data.DataColumn("ExibirTransportadora", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnExibirTransportadora);
                 this.columnPesoBruto.DefaultValue = ((double)(0D));
                 this.columnPesoLiquido.DefaultValue = ((double)(0D));
                 this.columnValorFrete.DefaultValue = ((double)(0D));
@@ -3283,6 +3343,71 @@ namespace Fly01.Faturamento.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string EmiteNotaFiscal {
+                get {
+                    try {
+                        return ((string)(this[this.tableOrcamentoPedido.EmiteNotaFiscalColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'EmiteNotaFiscal\' in table \'OrcamentoPedido\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOrcamentoPedido.EmiteNotaFiscalColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string ExibirProdutos {
+                get {
+                    try {
+                        return ((string)(this[this.tableOrcamentoPedido.ExibirProdutosColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ExibirProdutos\' in table \'OrcamentoPedido\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOrcamentoPedido.ExibirProdutosColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string ExibirServicos {
+                get {
+                    try {
+                        return ((string)(this[this.tableOrcamentoPedido.ExibirServicosColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ExibirServicos\' in table \'OrcamentoPedido\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOrcamentoPedido.ExibirServicosColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string ExibirTransportadora {
+                get {
+                    try {
+                        return ((string)(this[this.tableOrcamentoPedido.ExibirTransportadoraColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ExibirTransportadora\' in table \'OrcamentoPedido\' is DBNull." +
+                                "", e);
+                    }
+                }
+                set {
+                    this[this.tableOrcamentoPedido.ExibirTransportadoraColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsIdNull() {
                 return this.IsNull(this.tableOrcamentoPedido.IdColumn);
             }
@@ -3699,6 +3824,54 @@ namespace Fly01.Faturamento.Reports {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetNumeracaoVolumesTransNull() {
                 this[this.tableOrcamentoPedido.NumeracaoVolumesTransColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsEmiteNotaFiscalNull() {
+                return this.IsNull(this.tableOrcamentoPedido.EmiteNotaFiscalColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetEmiteNotaFiscalNull() {
+                this[this.tableOrcamentoPedido.EmiteNotaFiscalColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsExibirProdutosNull() {
+                return this.IsNull(this.tableOrcamentoPedido.ExibirProdutosColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetExibirProdutosNull() {
+                this[this.tableOrcamentoPedido.ExibirProdutosColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsExibirServicosNull() {
+                return this.IsNull(this.tableOrcamentoPedido.ExibirServicosColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetExibirServicosNull() {
+                this[this.tableOrcamentoPedido.ExibirServicosColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsExibirTransportadoraNull() {
+                return this.IsNull(this.tableOrcamentoPedido.ExibirTransportadoraColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetExibirTransportadoraNull() {
+                this[this.tableOrcamentoPedido.ExibirTransportadoraColumn] = global::System.Convert.DBNull;
             }
         }
         

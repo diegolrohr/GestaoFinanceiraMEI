@@ -8,6 +8,7 @@ using System.Web.Http;
 using System.Web.OData;
 using System.Web.OData.Routing;
 using Fly01.Core.Entities.Domains.Commons;
+using System.Data.Entity;
 
 namespace Fly01.Compras.API.Controllers.Api
 {
@@ -51,6 +52,9 @@ namespace Fly01.Compras.API.Controllers.Api
         {
             using (var unitOfWork = new UnitOfWork(ContextInitialize))
             {
+                var configuracaoPersonalizacao = unitOfWork.ConfiguracaoPersonalizacaoBL.All.AsNoTracking().FirstOrDefault();
+                var exibirTransportadora = configuracaoPersonalizacao != null ? configuracaoPersonalizacao.ExibirStepTransportadoraCompras : true;
+
                 var pedido = unitOfWork.PedidoBL.Find(entity.PedidoId);
                 var total = unitOfWork
                                 .PedidoItemBL
@@ -64,7 +68,7 @@ namespace Fly01.Compras.API.Controllers.Api
                                 })
                                 .Sum(x => x.Total) + entity.Total;
 
-                pedido.Total += total + CalculaFreteACobrar(pedido);
+                pedido.Total += total + (((pedido.TipoFrete == TipoFrete.FOB || pedido.TipoFrete == TipoFrete.Destinatario) && exibirTransportadora) ? (pedido.ValorFrete ?? 0.0) : 0.0);
                 unitOfWork.PedidoBL.Update(pedido);
                 await unitOfWork.Save();
             }
@@ -97,6 +101,9 @@ namespace Fly01.Compras.API.Controllers.Api
         {
             using (var unitOfWork = new UnitOfWork(ContextInitialize))
             {
+                var configuracaoPersonalizacao = unitOfWork.ConfiguracaoPersonalizacaoBL.All.AsNoTracking().FirstOrDefault();
+                var exibirTransportadora = configuracaoPersonalizacao != null ? configuracaoPersonalizacao.ExibirStepTransportadoraCompras : true;
+
                 var pedido = unitOfWork.PedidoBL.Find(entity.PedidoId);
                 var total = unitOfWork
                             .PedidoItemBL
@@ -110,20 +117,12 @@ namespace Fly01.Compras.API.Controllers.Api
                             })
                             .Sum(x => x.Total);
 
-                pedido.Total += total + CalculaFreteACobrar(pedido);
+                pedido.Total += total + (((pedido.TipoFrete == TipoFrete.FOB || pedido.TipoFrete == TipoFrete.Destinatario) && exibirTransportadora) ? (pedido.ValorFrete ?? 0.0) : 0.0);
                 unitOfWork.PedidoBL.Update(pedido);
                 await unitOfWork.Save();
             }
         }
 
         #endregion Excluir
-
-        public static double CalculaFreteACobrar(Pedido pedido)
-        {
-            if (pedido.TipoFrete == TipoFrete.FOB || pedido.TipoFrete == TipoFrete.Destinatario)
-                return pedido.ValorFrete ?? 0.0;
-
-            return 0.0;
-        }
     }
 }

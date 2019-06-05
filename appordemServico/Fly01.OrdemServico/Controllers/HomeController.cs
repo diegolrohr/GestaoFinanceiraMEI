@@ -373,12 +373,12 @@ namespace Fly01.OrdemServico.Controllers
         {
             var config = new SidebarUI() { Id = "nav-bar", AppName = "Ordem de Serviço", Parent = "header" };
 
-            config.Notification = new SidebarUINotification()
-            {
-                Channel = AppDefaults.AppId + "_" + SessionManager.Current.UserData.PlatformUrl,
-                JWT = @Url.Action("NotificationJwt"),
-                SocketServer = AppDefaults.UrlNotificationSocket
-            };
+            //config.Notification = new SidebarUINotification()
+            //{
+            //    Channel = AppDefaults.AppId + "_" + SessionManager.Current.UserData.PlatformUrl,
+            //    JWT = @Url.Action("NotificationJwt"),
+            //    SocketServer = AppDefaults.UrlNotificationSocket
+            //};
 
             #region MenuItems
             var menuItems = new List<SidebarUIMenu>()

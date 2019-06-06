@@ -30,12 +30,19 @@ namespace Fly01.Compras.BL
         private ManagerEmpresaVM empresa;
         private string empresaUF;
 
+        protected void GetOrUpdateEmpresa()
+        {
+            if (empresa == null || (empresa != null && empresa?.PlatformUrl?.Fly01Url != PlataformaUrl))
+            {
+                empresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
+                empresaUF = empresa.Cidade != null ? (empresa.Cidade.Estado != null ? empresa.Cidade.Estado.Sigla : string.Empty) : string.Empty;
+            }
+        }
+
         public CertificadoDigitalBL(AppDataContext context, EstadoBL estadoBL, ParametroTributarioBL parametroTributarioBL) : base(context)
         {
             EstadoBL = estadoBL;
             ParametroTributarioBL = parametroTributarioBL;
-            empresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
-            empresaUF = empresa.Cidade != null ? (empresa.Cidade.Estado != null ? empresa.Cidade.Estado.Sigla : string.Empty) : string.Empty;
             MustConsumeMessageServiceBus = true;
         }
 
@@ -61,7 +68,7 @@ namespace Fly01.Compras.BL
             var ambiente = GetEntidade(true);
 
             #region ResgataDadosEmpresa
-
+            GetOrUpdateEmpresa();
             entity.Cnpj = empresa.CNPJ;
             entity.UF = empresaUF;
             entity.InscricaoEstadual = empresa.InscricaoEstadual;
@@ -91,6 +98,7 @@ namespace Fly01.Compras.BL
 
         public EntidadeVM RetornaEntidade()
         {
+            GetOrUpdateEmpresa();
             string estadoSigla = empresa?.Cidade?.Estado?.Sigla;
 
             var entidade = new EmpresaVM
@@ -123,6 +131,7 @@ namespace Fly01.Compras.BL
 
         public EntidadeVM GetEntidade(bool postCertificado = false)
         {
+            GetOrUpdateEmpresa();
             var certificado = All.Where(x => x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).FirstOrDefault();
 
             if (certificado == null && !postCertificado)
@@ -219,12 +228,14 @@ namespace Fly01.Compras.BL
 
         public CertificadoDigital CertificadoAtualValido()
         {
+            GetOrUpdateEmpresa();
             //retorna conforme os dados atuais da empresa
             return All.FirstOrDefault(x => x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF);
         }
 
         public override void ValidaModel(CertificadoDigital entity)
         {
+            GetOrUpdateEmpresa();
             entity.Cnpj = empresa.CNPJ;
             entity.UF = empresaUF;
             entity.InscricaoEstadual = empresa.InscricaoEstadual;

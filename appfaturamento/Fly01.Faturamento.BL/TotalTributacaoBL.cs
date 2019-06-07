@@ -18,8 +18,8 @@ namespace Fly01.Faturamento.BL
 {
     public class TotalTributacaoBL : PlataformaBaseBL<TotalTributacao>
     {
-        public ManagerEmpresaVM empresa;
-        public string empresaUF;
+        protected ManagerEmpresaVM empresa;
+        protected string empresaUF;
         protected PessoaBL PessoaBL { get; set; }
         protected GrupoTributarioBL GrupoTributarioBL { get; set; }
         protected ProdutoBL ProdutoBL { get; set; }
@@ -30,6 +30,21 @@ namespace Fly01.Faturamento.BL
         protected OrdemVendaProdutoBL OrdemVendaProdutoBL { get; set; }
         protected OrdemVendaServicoBL OrdemVendaServicoBL { get; set; }
 
+        protected void GetOrUpdateEmpresa()
+        {
+            if (empresa == null || (empresa != null && empresa?.PlatformUrl?.Fly01Url != PlataformaUrl))
+            {
+                empresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
+                empresaUF = empresa.Cidade != null ? (empresa.Cidade.Estado != null ? empresa.Cidade.Estado.Sigla : string.Empty) : string.Empty;
+            }
+        }
+
+        public ManagerEmpresaVM GetEmpresa()
+        {
+            GetOrUpdateEmpresa();
+            return empresa;
+        }
+
         public TotalTributacaoBL(AppDataContextBase context, PessoaBL pessoaBL, GrupoTributarioBL grupoTributarioBL, ProdutoBL produtoBL, ServicoBL servicoBL, SubstituicaoTributariaBL substituicaoTributariaBL, ParametroTributarioBL parametroTributarioBL, CertificadoDigitalBL certificadoDigitalBL, OrdemVendaProdutoBL ordemVendaProdutoBL, OrdemVendaServicoBL ordemVendaServicoBL) : base(context)
         {
             PessoaBL = pessoaBL;
@@ -39,8 +54,6 @@ namespace Fly01.Faturamento.BL
             SubstituicaoTributariaBL = substituicaoTributariaBL;
             ParametroTributarioBL = parametroTributarioBL;
             CertificadoDigitalBL = certificadoDigitalBL;
-            empresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
-            empresaUF = empresa.Cidade != null ? (empresa.Cidade.Estado != null ? empresa.Cidade.Estado.Sigla : string.Empty) : string.Empty;
             OrdemVendaProdutoBL = ordemVendaProdutoBL;
             OrdemVendaServicoBL = ordemVendaServicoBL;
         }

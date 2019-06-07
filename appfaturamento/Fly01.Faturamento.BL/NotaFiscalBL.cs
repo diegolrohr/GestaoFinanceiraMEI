@@ -356,9 +356,9 @@ namespace Fly01.Faturamento.BL
                             EntidadeAmbiente = entidade.EntidadeAmbiente,
                             Serie = int.Parse(entity.Serie),
                             Numero = entity.NumNotaFiscal,
-                            EmpresaCnpj = TotalTributacaoBL.empresa.CNPJ,
+                            EmpresaCnpj = TotalTributacaoBL.GetEmpresa()?.CNPJ,
                             ModeloDocumentoFiscal = 55,
-                            EmpresaCodigoUF = TotalTributacaoBL.empresa.Cidade != null ? (TotalTributacaoBL.empresa.Cidade.Estado != null ? int.Parse(TotalTributacaoBL.empresa.Cidade.Estado.CodigoIbge) : 0) : 0
+                            EmpresaCodigoUF = TotalTributacaoBL.GetEmpresa().Cidade != null ? (TotalTributacaoBL.GetEmpresa()?.Cidade?.Estado != null ? int.Parse(TotalTributacaoBL.GetEmpresa()?.Cidade?.Estado?.CodigoIbge) : 0) : 0
                         };
 
                         var response = RestHelper.ExecutePostRequest<InutilizarNFRetornoVM>(AppDefaults.UrlEmissaoNfeApi, "InutilizarNF", JsonConvert.SerializeObject(inutilizarNF), null, header);

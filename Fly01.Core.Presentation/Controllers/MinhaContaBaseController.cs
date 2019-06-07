@@ -135,8 +135,8 @@ namespace Fly01.Core.Presentation.Controllers
                 return Json(new
                 {
                     success = true,
-                    recordsTotal = 0,
-                    recordsFiltered = 0,
+                    recordsTotal = minhasContas.Count,
+                    recordsFiltered = minhasContas.Count,
                     data = minhasContas.Select(GetDisplayData())
                 }, JsonRequestBehavior.AllowGet);
 

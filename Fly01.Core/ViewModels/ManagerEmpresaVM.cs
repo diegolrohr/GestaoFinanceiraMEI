@@ -3,6 +3,15 @@ using System;
 
 namespace Fly01.Core.ViewModels
 {
+    public class ManagerPlatformUrlVM
+    {
+        [JsonProperty("id")]
+        public int Id { get; set; }
+
+        [JsonProperty("fly01Url")]
+        public string Fly01Url { get; set; }
+    }
+
     public class ManagerEstadoVM
     {
         [JsonProperty("sigla")]
@@ -109,5 +118,8 @@ namespace Fly01.Core.ViewModels
 
         [JsonProperty("cidade")]
         public virtual ManagerCidadeVM Cidade { get; set; }
+
+        [JsonProperty("platformUrl")]
+        public virtual ManagerPlatformUrlVM PlatformUrl { get; set; }
     }
 }

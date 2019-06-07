@@ -51,13 +51,13 @@ namespace Fly01.Core.Helpers
                   ConfigurationManager.AppSettings["MongoPort"], dbName)
         { }
 
-        public LogMongoHelper(string host, string userName, string password, string databaseName, string port)
+        public LogMongoHelper(string host, string userName, string password, string port, string databaseName)
         {
             Host = host;
             UserName = userName;
             Password = password;
             DataBaseName = databaseName;
-            Port = port;
+            Port = string.IsNullOrEmpty(port) ? "10255" : port;
     }
 
         public void Dispose() => GC.SuppressFinalize(this);

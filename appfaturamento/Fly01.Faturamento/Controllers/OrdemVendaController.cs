@@ -80,7 +80,7 @@ namespace Fly01.Faturamento.Controllers
             if (exibirProdutos) { servicos = GetServicos(Guid.Parse(id)); };
 
             bool calculaFrete = (
-                (OrdemVenda.TipoFrete == "CIF" || OrdemVenda.TipoFrete == "Remetente") && exibirTransportadora
+                (OrdemVenda.TipoFrete == "FOB") && exibirTransportadora
             );
             var resource = string.Format("CalculaTotalOrdemVenda?&ordemVendaId={0}&clienteId={1}&geraNotaFiscal={2}&tipoNfeComplementar={3}&tipoFrete={4}&valorFrete={5}&onList={6}",
                 id.ToString(),

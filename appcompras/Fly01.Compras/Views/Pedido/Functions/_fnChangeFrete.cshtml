@@ -6,7 +6,7 @@
         var tipoFrete = $('select#tipoFrete').val();
         var tipoCompra = $('#tipoCompra').val();
         var freteEmpresa = (
-                (tipoFrete == "FOB" || tipoFrete == "Destinatario")
+                (tipoFrete == "FOB")
             );
         if (freteEmpresa) {
             $('input#transportadoraNome').rules("add", { required: true });

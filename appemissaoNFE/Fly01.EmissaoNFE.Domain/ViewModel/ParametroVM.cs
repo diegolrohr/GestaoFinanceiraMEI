@@ -74,6 +74,15 @@ namespace Fly01.EmissaoNFE.Domain.ViewModel
             set { TipoHorario = (TipoHorarioTSS)Enum.Parse(typeof(TipoHorarioTSS), value); }
         }
 
+        [JsonIgnore]
+        public TipoCRT TipoCRT { get; set; }
+        [JsonProperty("tipoCRT")]
+        public string TipoCRTRest
+        {
+            get { return ((int)TipoCRT).ToString(); }
+            set { TipoCRT = (TipoCRT)Enum.Parse(typeof(TipoCRT), value); }
+        }
+
         #endregion
 
         #region NFS-e

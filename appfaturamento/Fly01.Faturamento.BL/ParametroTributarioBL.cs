@@ -10,6 +10,7 @@ using Fly01.Core.Notifications;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.ViewModels;
 
+
 namespace Fly01.Faturamento.BL
 {
     public class ParametroTributarioBL : PlataformaBaseBL<ParametroTributario>
@@ -83,7 +84,8 @@ namespace Fly01.Faturamento.BL
                         Autorizacao = parametroTributario.Autorizacao,
                         TipoAmbienteNFS = parametroTributario.TipoAmbienteNFSRest,
                         IncentivoCultura = parametroTributario.IncentivoCultura,
-                        TipoTributacaoNFS = parametroTributario.TipoTributacaoNFS
+                        TipoTributacaoNFS = parametroTributario.TipoTributacaoNFS,
+                        TipoCRT = parametroTributario.TipoCRT,
                     };
 
                     var response = RestHelper.ExecutePostRequest<ParametroVM>(AppDefaults.UrlEmissaoNfeApi,

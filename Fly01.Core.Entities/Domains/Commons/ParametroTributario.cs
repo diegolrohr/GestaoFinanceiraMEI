@@ -3,6 +3,7 @@ using Fly01.Core.Entities.Domains.Enum;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
+
 namespace Fly01.Core.Entities.Domains.Commons
 {
     public class ParametroTributario : PlataformaBase
@@ -65,6 +66,18 @@ namespace Fly01.Core.Entities.Domains.Commons
             set { TipoModalidade = (TipoModalidade)System.Enum.Parse(typeof(TipoModalidade), value); }
         }
 
+    //     [JsonIgnore]
+     //    public CRT CRT { get; set; }
+
+  //      [NotMapped]
+   //     [JsonProperty("crt")]
+    //    public string CRTRest 
+     //    {
+       //      get { return ((int)CRT).ToString(); }
+        //     set { CRT = (CRT)System.Enum.Parse(typeof(CRT), value); }
+         //}
+
+
         [MaxLength(16)]
         public string Cnpj { get; set; }
 
@@ -73,6 +86,8 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         [MaxLength(2)]
         public string UF { get; set; }
+
+        public TipoCRT TipoCRT { get; set; }
 
         public TipoPresencaComprador TipoPresencaComprador { get; set; }
 

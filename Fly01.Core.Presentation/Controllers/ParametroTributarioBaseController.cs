@@ -68,7 +68,8 @@ namespace Fly01.Core.Presentation.Controllers
                     aliquotaImpostoRenda = "0",
                     incentivoCultura = false,
                     formatarCodigoISS = false,
-                    tipoRegimeEspecialTributacao = "MicroEmpresaMunicipal"
+                    tipoRegimeEspecialTributacao = "MicroEmpresaMunicipal",
+                    tipoCRT = "Simples Nacional"
                 }, JsonRequestBehavior.AllowGet);
 
             return Json(new
@@ -100,6 +101,7 @@ namespace Fly01.Core.Presentation.Controllers
                 incentivoCultura = parametroTributario.IncentivoCultura,
                 formatarCodigoISS = parametroTributario.FormatarCodigoISS,
                 tipoRegimeEspecialTributacao = parametroTributario.TipoRegimeEspecialTributacao,
+                tipoCRT = parametroTributario.TipoCRT,
             }, JsonRequestBehavior.AllowGet);
         }
 
@@ -329,6 +331,14 @@ namespace Fly01.Core.Presentation.Controllers
                 .ToList().FindAll(x => "Producao,Homologacao".Contains(x.Value)))
             });
 
+            form2.Elements.Add(new SelectUI
+            {
+                Id = "tipoCRT",
+                Class = "col s6 m6 l3",
+                Label = "CRT",
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoCRT)))               
+            });
+
             form2.Elements.Add(new TextAreaUI { Id = "mensagemPadraoNota", Class = "col s12", Label = "Informações Adicionais", MaxLength = 1000 });
 
             #region NFS
@@ -466,7 +476,7 @@ namespace Fly01.Core.Presentation.Controllers
         public JsonResult ImportaParametro(string id, string mensagem, double simplesNacional, double fcp, double iss, double pispasep, double cofins,
             string numeroRetorno, string modalidade, string versao, string ambiente, string tipoPresencaComprador, string horarioVerao,
             string tipoHorario, string versaoNFSe, string usuarioWebServer, string senhaWebServer, string chaveAutenticacao, string autorizacao,
-              string tipoTributacaoNFS, string tipoAmbienteNFS, double csll, double inss, double impostoRenda, bool incentivoCultura, bool formatarCodigoISS, string tipoRegimeEspecialTributacao)
+              string tipoTributacaoNFS, string tipoAmbienteNFS, double csll, double inss, double impostoRenda, bool incentivoCultura, bool formatarCodigoISS, string tipoRegimeEspecialTributacao, string tipoCRT)
         {
             try
             {
@@ -499,7 +509,8 @@ namespace Fly01.Core.Presentation.Controllers
                     aliquotaImpostoRenda = double.IsNaN(impostoRenda) ? 0 : impostoRenda,
                     incentivoCultura = incentivoCultura,
                     formatarCodigoISS = formatarCodigoISS,
-                    tipoRegimeEspecialTributacao = tipoRegimeEspecialTributacao
+                    tipoRegimeEspecialTributacao = tipoRegimeEspecialTributacao,
+                    tipoCRT = tipoCRT
                 };
 
                 if (dadosParametro.mensagemPadraoNota.Length > 4000)

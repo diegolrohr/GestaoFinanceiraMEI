@@ -14,6 +14,7 @@ namespace Fly01.Core.Helpers
         private string UserName { get; set; }
         private string Password { get; set; }
         private string DataBaseName { get; set; }
+        private string Port { get; set; }
 
         private MongoClient _mongoClient;
         private MongoClient MongoClient
@@ -24,7 +25,7 @@ namespace Fly01.Core.Helpers
                 {
                     MongoClientSettings settings = new MongoClientSettings()
                     {
-                        Server = new MongoServerAddress(Host, 10255),
+                        Server = new MongoServerAddress(Host, Convert.ToInt32(Port)),
                         UseSsl = true,
                         SslSettings = new SslSettings()
                         {
@@ -46,16 +47,18 @@ namespace Fly01.Core.Helpers
         public LogMongoHelper(string dbName)
             : this(ConfigurationManager.AppSettings["MongoHost"], 
                   ConfigurationManager.AppSettings["MongoUserName"], 
-                  ConfigurationManager.AppSettings["MongoPassword"], dbName)
+                  ConfigurationManager.AppSettings["MongoPassword"],
+                  ConfigurationManager.AppSettings["MongoPort"], dbName)
         { }
 
-        public LogMongoHelper(string host, string userName, string password, string databaseName)
+        public LogMongoHelper(string host, string userName, string password, string port, string databaseName)
         {
             Host = host;
             UserName = userName;
             Password = password;
             DataBaseName = databaseName;
-        }
+            Port = string.IsNullOrEmpty(port) ? "10255" : port;
+    }
 
         public void Dispose() => GC.SuppressFinalize(this);
 

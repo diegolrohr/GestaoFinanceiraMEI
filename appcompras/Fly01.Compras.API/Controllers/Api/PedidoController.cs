@@ -99,7 +99,7 @@ namespace Fly01.Compras.API.Controllers.Api
                                         MidpointRounding.AwayFromZero))
                                 })
                                 .Sum(x => x.Total) +
-                                (((pedido.TipoFrete == TipoFrete.FOB || pedido.TipoFrete == TipoFrete.Destinatario) && exibirTransportadora) ? (pedido.ValorFrete ?? 0.0) : 0.0);
+                                (((pedido.TipoFrete == TipoFrete.FOB) && exibirTransportadora) ? (pedido.ValorFrete ?? 0.0) : 0.0);
                 return total;
             }
         }

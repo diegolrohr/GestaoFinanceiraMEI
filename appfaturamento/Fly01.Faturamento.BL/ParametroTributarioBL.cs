@@ -23,10 +23,17 @@ namespace Fly01.Faturamento.BL
 
         //public override IQueryable<ParametroTributario> All => base.All.Where(x => x.PlataformaId == PlataformaUrl && x.Ativo);
 
+        protected void GetOrUpdateEmpresa()
+        {
+            if (empresa == null || (empresa != null && empresa?.PlatformUrl?.Fly01Url != PlataformaUrl))
+            {
+                empresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
+                empresaUF = empresa.Cidade != null ? (empresa.Cidade.Estado != null ? empresa.Cidade.Estado.Sigla : string.Empty) : string.Empty;
+            }
+        }
+
         public ParametroTributarioBL(AppDataContextBase context, EntidadeBL entidadeBL) : base(context)
         {
-            empresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
-            empresaUF = empresa.Cidade != null ? (empresa.Cidade.Estado != null ? empresa.Cidade.Estado.Sigla : string.Empty) : string.Empty;
             EntidadeBL = entidadeBL;
             MustConsumeMessageServiceBus = true;
             _queryString = AppDefaults.GetQueryStringDefault();
@@ -44,7 +51,7 @@ namespace Fly01.Faturamento.BL
         public void EnviaParametroTributario(ParametroTributario parametroTributario)
         {
             #region ResgataDadosEmpresa
-
+            GetOrUpdateEmpresa();
             parametroTributario.Cnpj = empresa.CNPJ;
             parametroTributario.UF = empresa.Cidade != null ? (empresa.Cidade.Estado != null ? empresa.Cidade.Estado.Sigla : string.Empty) : string.Empty;
             parametroTributario.InscricaoEstadual = empresa.InscricaoEstadual;
@@ -104,11 +111,13 @@ namespace Fly01.Faturamento.BL
         public ParametroTributario ParametroAtualValido()
         {
             //retorna conforme os dados atuais da empresa
+            GetOrUpdateEmpresa();
             return All.FirstOrDefault(x => x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF);
         }
 
         public override void ValidaModel(ParametroTributario entity)
         {
+            GetOrUpdateEmpresa();
             entity.Cnpj = empresa.CNPJ;
             entity.UF = empresa.Cidade != null ? (empresa.Cidade.Estado != null ? empresa.Cidade.Estado.Sigla : string.Empty) : string.Empty;
             entity.InscricaoEstadual = empresa.InscricaoEstadual;

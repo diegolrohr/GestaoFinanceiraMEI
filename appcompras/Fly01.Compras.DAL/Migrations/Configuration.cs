@@ -12,7 +12,7 @@ namespace Fly01.Compras.DAL.Migrations
         protected override void Seed(AppDataContext context)
         {
             //new NCMDataInitializer().Initialize(context);
-            //new UnidadeMedidaDataInitializer().Initialize(context);
+            new UnidadeMedidaDataInitializer().Initialize(context);
 
             //var estados = new EstadoDataInitializer();
             //estados.Initialize(context);

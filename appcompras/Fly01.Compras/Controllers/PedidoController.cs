@@ -190,6 +190,18 @@ namespace Fly01.Compras.Controllers
 
         public ContentUI FormPedidoJson(bool isEdit = false)
         {
+            ConfiguracaoPersonalizacaoVM personalizacao = null;
+            try
+            {
+                personalizacao = RestHelper.ExecuteGetRequest<ResultBase<ConfiguracaoPersonalizacaoVM>>("ConfiguracaoPersonalizacao", queryString: null)?.Data?.FirstOrDefault();
+            }
+            catch (Exception)
+            {
+
+            }
+            var emiteNotaFiscal = personalizacao != null ? personalizacao.EmiteNotaFiscal : true;
+            var exibirTransportadora = personalizacao != null ? personalizacao.ExibirStepTransportadoraCompras : true;
+
             var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
             {
                 History = new ContentUIHistory
@@ -217,7 +229,7 @@ namespace Fly01.Compras.Controllers
                 },
                 ReadyFn = "fnFormReadyPedido",
                 UrlFunctions = Url.Action("Functions") + "?fns=",
-                Functions = new List<string> { "fnChangeEstado" },
+                Functions = new List<string> { "fnChangeEstado", "fnChangeFinalidade" },
                 Steps = new List<FormWizardUIStep>()
                 {
                     new FormWizardUIStep()
@@ -230,7 +242,7 @@ namespace Fly01.Compras.Controllers
                     {
                         Title = "Cadastro",
                         Id = "stepCadastro",
-                        Quantity = 12,
+                        Quantity = 13,
                     },
                     new FormWizardUIStep()
                     {
@@ -262,19 +274,26 @@ namespace Fly01.Compras.Controllers
             };
 
             #region step Finalidade
-            config.Elements.Add(new ButtonGroupUI()
+            if (!emiteNotaFiscal)
             {
-                Id = "fly01btngrpFinalidade",
-                Class = "col s12 m6 offset-m3",
-                OnClickFn = "fnChangeFinalidade",
-                Label = "Tipo do pedido",
-                Options = new List<ButtonGroupOptionUI>
+                config?.Steps?.Remove(config?.Steps?.Find(x => x.Id == "stepFinalidade"));
+            }
+            else
+            {
+                config.Elements.Add(new ButtonGroupUI()
                 {
-                    new ButtonGroupOptionUI { Id = "btnNormal", Value = "Normal", Label = "Normal"},
-                    new ButtonGroupOptionUI { Id = "btnDevolucao", Value = "Devolucao", Label = "Devolução"},
-                }
-            });
-            config.Elements.Add(new InputNumbersUI { Id = "chaveNFeReferenciada", Class = "col s12 m8 offset-m2", Label = "Chave SEFAZ Nota Fiscal Referenciada", MinLength = 44, MaxLength = 44 });
+                    Id = "fly01btngrpFinalidade",
+                    Class = "col s12 m6 offset-m3",
+                    OnClickFn = "fnChangeFinalidade",
+                    Label = "Tipo do pedido",
+                    Options = new List<ButtonGroupOptionUI>
+                    {
+                        new ButtonGroupOptionUI { Id = "btnNormal", Value = "Normal", Label = "Normal"},
+                        new ButtonGroupOptionUI { Id = "btnDevolucao", Value = "Devolucao", Label = "Devolução"},
+                    }
+                });
+                config.Elements.Add(new InputNumbersUI { Id = "chaveNFeReferenciada", Class = "col s12 m8 offset-m2", Label = "Chave SEFAZ Nota Fiscal Referenciada", MinLength = 44, MaxLength = 44 });
+            }
             #endregion
 
             #region step Cadastro
@@ -287,20 +306,34 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "cfopDescricao" });
             config.Elements.Add(new InputNumbersUI { Id = "numero", Class = "col s12 m2", Label = "Número", Disabled = true });
 
+            config.Elements.Add(new InputHiddenUI { Id = "emiteNotaFiscal", Value = emiteNotaFiscal.ToString() });
+            config.Elements.Add(new InputHiddenUI { Id = "exibeStepTransportadora", Value = exibirTransportadora.ToString() });
+
+            if (!exibirTransportadora)
+            {
+                var stepCadastro = config?.Steps?.Find(x => x.Id == "stepCadastro");
+                stepCadastro.Quantity += 2;
+                config.Elements.Add(new InputHiddenUI { Id = "tipoFrete", Value = "SemFrete" });
+                config.Elements.Add(new InputHiddenUI { Id = "valorFrete", Value = "0" });
+            }
 
             config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m3", Label = "Data", Required = true });
-
-            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            if (emiteNotaFiscal)
             {
-                Id = "grupoTributarioPadraoId",
-                Class = "col s12 m7",
-                Label = "Grupo Tributário Padrão",
-                DataUrl = Url.Action("GrupoTributario", "AutoComplete"),
-                LabelId = "grupoTributarioPadraoDescricao",
-                DataUrlPostModal = Url.Action("FormModal", "GrupoTributario"),
-                DataPostField = "descricao",
-                DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeGrupoTribPadrao" } }
-            }, ResourceHashConst.ComprasCadastrosGrupoTributario));
+                var stepCadastro = config?.Steps?.Find(x => x.Id == "stepCadastro");
+                stepCadastro.Quantity += 1;
+                config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+                {
+                    Id = "grupoTributarioPadraoId",
+                    Class = "col s12 m7",
+                    Label = "Grupo Tributário Padrão",
+                    DataUrl = Url.Action("GrupoTributario", "AutoComplete"),
+                    LabelId = "grupoTributarioPadraoDescricao",
+                    DataUrlPostModal = Url.Action("FormModal", "GrupoTributario"),
+                    DataPostField = "descricao",
+                    DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeGrupoTribPadrao" } }
+                }, ResourceHashConst.ComprasCadastrosGrupoTributario));
+            }
 
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
@@ -400,68 +433,84 @@ namespace Fly01.Compras.Controllers
             #endregion
 
             #region step Transporte
-            config.Elements.Add(new SelectUI
+            if (!exibirTransportadora)
             {
-                Id = "tipoFrete",
-                Class = "col s12 m4",
-                Label = "Tipo Frete",
-                Required = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFrete))),
-                DomEvents = new List<DomEventUI>
+                config?.Steps?.Remove(config?.Steps?.Find(x => x.Id == "stepTransporte"));
+            }
+            else
+            {
+                config.Elements.Add(new SelectUI
+                {
+                    Id = "tipoFrete",
+                    Class = "col s12 m4",
+                    Label = "Tipo Frete",
+                    Required = true,
+                    Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFrete))),
+                    DomEvents = new List<DomEventUI>
                     {
                         new DomEventUI { DomEvent = "change", Function = "fnChangeFrete" }
                     }
-            });
-            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
-            {
-                Id = "transportadoraId",
-                Class = "col s12 m8",
-                Label = "Transportadora",
-                DataUrl = Url.Action("Transportadora", "AutoComplete"),
-                LabelId = "transportadoraNome",
-                DataUrlPost = Url.Action("PostTransportadora")
-            }, ResourceHashConst.ComprasCadastrosTransportadora));
+                });
+                config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+                {
+                    Id = "transportadoraId",
+                    Class = "col s12 m8",
+                    Label = "Transportadora",
+                    DataUrl = Url.Action("Transportadora", "AutoComplete"),
+                    LabelId = "transportadoraNome",
+                    DataUrlPost = Url.Action("PostTransportadora")
+                }, ResourceHashConst.ComprasCadastrosTransportadora));
 
-            config.Elements.Add(new InputCustommaskUI
-            {
-                Id = "placaVeiculo",
-                Class = "col s12 m4",
-                Label = "Placa Veículo",
-                Data = new { inputmask = "'mask':'AAA[-9999]|[9A99]', 'showMaskOnHover': false, 'autoUnmask':true, 'greedy':true" }
-            });
-            config.Elements.Add(new AutoCompleteUI
-            {
-                Id = "estadoPlacaVeiculoId",
-                Class = "col s12 m4",
-                Label = "UF Placa Veículo",
-                DataUrl = Url.Action("Estado", "AutoComplete"),
-                LabelId = "estadoPlacaVeiculoNome"
-            });
-            config.Elements.Add(new InputCurrencyUI
-            {
-                Id = "valorFrete",
-                Class = "col s12 m4",
-                Label = "Valor Frete",
-                Value = "0",
-                DomEvents = new List<DomEventUI>
+                config.Elements.Add(new InputCustommaskUI
+                {
+                    Id = "placaVeiculo",
+                    Class = "col s12 m4",
+                    Label = "Placa Veículo",
+                    Data = new { inputmask = "'mask':'AAA[-9999]|[9A99]', 'showMaskOnHover': false, 'autoUnmask':true, 'greedy':true" }
+                });
+                config.Elements.Add(new AutoCompleteUI
+                {
+                    Id = "estadoPlacaVeiculoId",
+                    Class = "col s12 m4",
+                    Label = "UF Placa Veículo",
+                    DataUrl = Url.Action("Estado", "AutoComplete"),
+                    LabelId = "estadoPlacaVeiculoNome"
+                });
+                config.Elements.Add(new InputCurrencyUI
+                {
+                    Id = "valorFrete",
+                    Class = "col s12 m4",
+                    Label = "Valor Frete",
+                    Value = "0",
+                    DomEvents = new List<DomEventUI>
                     {
                         new DomEventUI { DomEvent = "change", Function = "fnChangeFrete" }
                     }
-            });
-            config.Elements.Add(new InputTextUI { Id = "marca", Class = "col s12 m4", Label = "Marca", MaxLength = 60 });
-            config.Elements.Add(new InputFloatUI { Id = "pesoBruto", Class = "col s12 m4", Label = "Peso Bruto", Digits = 3, MaxLength = 8 });
-            config.Elements.Add(new InputFloatUI { Id = "pesoLiquido", Class = "col s12 m4", Label = "Peso Líquido", Digits = 3, MaxLength = 8 });
-            config.Elements.Add(new InputNumbersUI { Id = "quantidadeVolumes", Class = "col s12 m4", Label = "Quantidade Volumes", Value = "0" });
-            config.Elements.Add(new InputTextUI { Id = "tipoEspecie", Class = "col s12 m4", Label = "Tipo Espécie", MaxLength = 60 });
-            config.Elements.Add(new InputTextUI { Id = "numeracaoVolumesTrans", Class = "col s12 m4", Label = "Numeração", MaxLength = 60 });
+                });
+                config.Elements.Add(new InputTextUI { Id = "marca", Class = "col s12 m4", Label = "Marca", MaxLength = 60 });
+                config.Elements.Add(new InputFloatUI { Id = "pesoBruto", Class = "col s12 m4", Label = "Peso Bruto", Digits = 3, MaxLength = 8 });
+                config.Elements.Add(new InputFloatUI { Id = "pesoLiquido", Class = "col s12 m4", Label = "Peso Líquido", Digits = 3, MaxLength = 8 });
+                config.Elements.Add(new InputNumbersUI { Id = "quantidadeVolumes", Class = "col s12 m4", Label = "Quantidade Volumes", Value = "0" });
+                config.Elements.Add(new InputTextUI { Id = "tipoEspecie", Class = "col s12 m4", Label = "Tipo Espécie", MaxLength = 60 });
+                config.Elements.Add(new InputTextUI { Id = "numeracaoVolumesTrans", Class = "col s12 m4", Label = "Numeração", MaxLength = 60 });
+            }
             #endregion
 
             #region step Finalizar
+            var stepFinalizar = config?.Steps?.Find(x => x.Id == "stepFinalizar");
             config.Elements.Add(new InputCurrencyUI { Id = "totalProdutos", Class = "col s12 m4", Label = "Total produtos", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutos", Class = "col s12 m4", Label = "Total de impostos incidentes", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutosNaoAgrega", Class = "col s12 m4", Label = "Total de impostos não incidentes", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m6", Label = "Frete", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalOrdemCompra", Class = "col s12 m6", Label = "Total pedido (produtos + impostos + frete)", Readonly = true });
+            if (emiteNotaFiscal)
+            {
+                stepFinalizar.Quantity += 2;
+                config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutos", Class = "col s12 m4", Label = "Total de impostos incidentes", Readonly = true });
+                config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutosNaoAgrega", Class = "col s12 m4", Label = "Total de impostos não incidentes", Readonly = true });
+            }
+            if (exibirTransportadora)
+            {
+                stepFinalizar.Quantity += 1;
+                config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m4", Label = "Frete", Readonly = true });
+            }
+            config.Elements.Add(new InputCurrencyUI { Id = "totalOrdemCompra", Class = "col s12 m4", Label = "Total pedido", Readonly = true });
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "movimentaEstoque",
@@ -472,16 +521,20 @@ namespace Fly01.Compras.Controllers
                     new DomEventUI{DomEvent = "click", Function = "fnToggleMovimentaEstoque" }
                 }
             });
-            config.Elements.Add(new InputCheckboxUI
+            if (emiteNotaFiscal)
             {
-                Id = "geraNotaFiscal",
-                Class = "col s12 m4",
-                Label = "Faturar",
-                DomEvents = new List<DomEventUI>
+                stepFinalizar.Quantity += 1;
+                config.Elements.Add(new InputCheckboxUI
+                {
+                    Id = "geraNotaFiscal",
+                    Class = "col s12 m4",
+                    Label = "Faturar",
+                    DomEvents = new List<DomEventUI>
                 {
                     new DomEventUI { DomEvent = "click", Function = "fnClickGeraNotaFiscal" }
                 }
-            });
+                });
+            }
             config.Elements.Add(new InputCheckboxUI { Id = "finalizarPedido", Class = "col s12 m4", Label = "Salvar e Finalizar" });
             config.Elements.Add(new InputTextUI { Id = "naturezaOperacao", Class = "col s12", Label = "Natureza de Operação", MaxLength = 60 });
             config.Elements.Add(new TextAreaUI { Id = "mensagemPadraoNota", Class = "col s12", Label = "Informações Adicionais", MaxLength = 4000 });
@@ -580,6 +633,18 @@ namespace Fly01.Compras.Controllers
 
         public ContentResult Visualizar()
         {
+            ConfiguracaoPersonalizacaoVM personalizacao = null;
+            try
+            {
+                personalizacao = RestHelper.ExecuteGetRequest<ResultBase<ConfiguracaoPersonalizacaoVM>>("ConfiguracaoPersonalizacao", queryString: null)?.Data?.FirstOrDefault();
+            }
+            catch (Exception)
+            {
+
+            }
+            var emiteNotaFiscal = personalizacao != null ? personalizacao.EmiteNotaFiscal : true;
+            var exibirTransportadora = personalizacao != null ? personalizacao.ExibirStepTransportadoraCompras : true;            
+
             ModalUIForm config = new ModalUIForm()
             {
                 Title = "Visualizar",
@@ -593,41 +658,56 @@ namespace Fly01.Compras.Controllers
                     List = @Url.Action("List")
                 },
                 ReadyFn = "fnFormReadyVisualizarPedido",
-                Id = "fly01mdlfrmVisualizarPedido"
+                Id = "fly01mdlfrmVisualizarPedido",
+                Functions = new List<string>() { "fnChangeCollapseExpand" }
             };
 
+            config.Elements.Add(new ButtonGroupUI()
+            {
+                Id = "fly01btngrpExpandCollapse",
+                Class = "col s12 m12",
+                OnClickFn = "fnChangeCollapseExpand",
+                Label = "Tipo do fator de conversão",
+                Options = new List<ButtonGroupOptionUI>
+                {
+                    new ButtonGroupOptionUI { Id = "btnExpandAll", Value = "expandAll", Label = "Exibir todos"},
+                    new ButtonGroupOptionUI { Id = "btnCollapseAll", Value = "collapseAll", Label = "Recolher todos"},
+                }
+            });
+
             config.Elements.Add(new InputHiddenUI { Id = "id" });
-            config.Elements.Add(new InputNumbersUI { Id = "numero", Class = "col s12 m6 l2", Label = "Número", Disabled = true });
+            config.Elements.Add(new InputHiddenUI { Id = "emiteNotaFiscal", Value = emiteNotaFiscal.ToString() });
+            config.Elements.Add(new InputHiddenUI { Id = "exibeStepTransportadora", Value = exibirTransportadora.ToString() });
+
+            #region Cadastro
+            config.Elements.Add(new DivElementUI { Id = "collapseCadastro", Class = "col s12 visible" });
+
+            config.Elements.Add(new InputNumbersUI { Id = "numero", Class = "col s12 m4", Label = "Número", Disabled = true });
+            config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m4", Label = "Data", Disabled = true });
             config.Elements.Add(new SelectUI
             {
                 Id = "tipoCompra",
-                Class = "col s12 m6 l4",
+                Class = "col s12 m4",
                 Label = "Tipo Compra",
                 Disabled = true,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoCompraVenda))),
             });
-            config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m6 l2", Label = "Data", Disabled = true });
-            config.Elements.Add(new InputCheckboxUI { Id = "nFeRefComplementarIsDevolucao", Class = "col s12 m6 l4", Label = "NF Referenciada é de Devolução", Disabled = true });
 
+            if (emiteNotaFiscal)
+            {
+                config.Elements.Add(new InputCheckboxUI { Id = "nFeRefComplementarIsDevolucao", Class = "col s12 m4", Label = "NF Referenciada é de Devolução", Disabled = true });
+                config.Elements.Add(new InputNumbersUI { Id = "chaveNFeReferenciada", Class = "col s12 m4", Label = "Chave SEFAZ Nota Fiscal Referenciada", Disabled = true });
+            }
+            config.Elements.Add(new InputHiddenUI { Id = "tipoNfeComplementar" });
 
-            config.Elements.Add(new InputNumbersUI { Id = "chaveNFeReferenciada", Class = "col s12 m6", Label = "Chave SEFAZ Nota Fiscal Referenciada", Disabled = true });
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "fornecedorId",
-                Class = "col s12 m6",
+                Class = "col s12",
                 Label = "Fornecedor",
                 Disabled = true,
                 DataUrl = Url.Action("Fornecedor", "AutoComplete"),
                 LabelId = "fornecedorNome"
-            });
-            config.Elements.Add(new AutoCompleteUI
-            {
-                Id = "grupoTributarioPadraoId",
-                Class = "col s12 m6",
-                Label = "Grupo Tributário Padrão",
-                Disabled = true,
-                DataUrl = Url.Action("GrupoTributario", "AutoComplete"),
-                LabelId = "grupoTributarioPadraoDescricao"
             });
             config.Elements.Add(new TextAreaUI
             {
@@ -637,7 +717,30 @@ namespace Fly01.Compras.Controllers
                 MaxLength = 200,
                 Disabled = true
             });
+            #endregion
 
+            #region Produtos
+            config.Elements.Add(new DivElementUI { Id = "collapseProdutos", Class = "col s12 visible" });
+            config.Elements.Add(new TableUI
+            {
+                Id = "PedidoItemDataTable",
+                Class = "col s12",
+                Disabled = true,
+                Options = new List<OptionUI>
+                {
+                    new OptionUI { Label = "Produto", Value = "0"},
+                    new OptionUI { Label = "GrupoTributário", Value = "0"},
+                    new OptionUI { Label = "Quant.", Value = "1"},
+                    new OptionUI { Label = "Valor",Value = "2"},
+                    new OptionUI { Label = "Desconto",Value = "3"},
+                    new OptionUI { Label = "Total",Value = "4"},
+                }
+            });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalProdutosDt", Class = "col s12 m4 right", Label = "Total Produtos", Readonly = true });
+            #endregion
+
+            #region Financeiro
+            config.Elements.Add(new DivElementUI { Id = "collapseFinanceiro", Class = "col s12 visible" });
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "formaPagamentoId",
@@ -665,82 +768,96 @@ namespace Fly01.Compras.Controllers
                 DataUrl = @Url.Action("Categoria", "AutoComplete"),
                 LabelId = "categoriaDescricao",
             });
+            config.Elements.Add(new AutoCompleteUI
+            {
+                Id = "centroCustoId",
+                Class = "col s12 m6",
+                Label = "Centro de Custo",
+                Disabled = true,
+                DataUrl = @Url.Action("CentroCusto", "AutoComplete"),
+                LabelId = "centroCustoDescricao",
+            });
             config.Elements.Add(new InputDateUI { Id = "dataVencimento", Class = "col s12 m6", Label = "Data Vencimento", Disabled = true });
+            #endregion
 
-            config.Elements.Add(new SelectUI
+            #region Transporte
+            if (exibirTransportadora)
             {
-                Id = "tipoFrete",
-                Class = "col s12 m6",
-                Label = "Tipo Frete",
-                Value = "SemFrete",
-                Disabled = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFrete))),
-            });
-            config.Elements.Add(new AutoCompleteUI
+                config.Elements.Add(new DivElementUI { Id = "collapseTransporte", Class = "col s12 visible" });
+                config.Elements.Add(new SelectUI
+                {
+                    Id = "tipoFrete",
+                    Class = "col s12 m6",
+                    Label = "Tipo Frete",
+                    Value = "SemFrete",
+                    Disabled = true,
+                    Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFrete))),
+                });
+                config.Elements.Add(new AutoCompleteUI
+                {
+                    Id = "transportadoraId",
+                    Class = "col s12 m6",
+                    Label = "Transportadora",
+                    Disabled = true,
+                    DataUrl = Url.Action("Transportadora", "AutoComplete"),
+                    LabelId = "transportadoraNome"
+                });
+                config.Elements.Add(new InputCustommaskUI
+                {
+                    Id = "placaVeiculo",
+                    Class = "col s12 m4",
+                    Label = "Placa Veículo",
+                    Disabled = true,
+                    Data = new { inputmask = "'mask':'AAA[-9999]|[9A99]', 'showMaskOnHover': false, 'autoUnmask':true, 'greedy':true" }
+                });
+                config.Elements.Add(new AutoCompleteUI
+                {
+                    Id = "estadoPlacaVeiculoId",
+                    Class = "col s12 m4",
+                    Label = "UF Placa Veículo",
+                    Disabled = true,
+                    DataUrl = Url.Action("Estado", "AutoComplete"),
+                    LabelId = "estadoPlacaVeiculoNome"
+                });
+                config.Elements.Add(new InputCurrencyUI { Id = "valorFrete", Class = "col s12 m4", Label = "Valor Frete", Disabled = true });
+                config.Elements.Add(new InputFloatUI { Id = "pesoBruto", Class = "col s12 m4", Label = "Peso Bruto", Digits = 3, Disabled = true });
+                config.Elements.Add(new InputTextUI { Id = "marca", Class = "col s12 m4", Label = "Marca", Disabled = true, MaxLength = 60 });
+                config.Elements.Add(new InputFloatUI { Id = "pesoLiquido", Class = "col s12 m4", Label = "Peso Líquido", Digits = 3, Disabled = true });
+                config.Elements.Add(new InputNumbersUI { Id = "quantidadeVolumes", Class = "col s12 m4", Label = "Quantidade Volumes", Disabled = true });
+                config.Elements.Add(new InputTextUI { Id = "tipoEspecie", Class = "col s12 m4", Label = "Tipo Espécie", Disabled = true, MaxLength = 60 });
+                config.Elements.Add(new InputTextUI { Id = "numeracaoVolumesTrans", Class = "col s12 m4", Label = "Numeração", Disabled = true, MaxLength = 60 });
+            }
+            else
             {
-                Id = "transportadoraId",
-                Class = "col s12 m6",
-                Label = "Transportadora",
-                Disabled = true,
-                DataUrl = Url.Action("Transportadora", "AutoComplete"),
-                LabelId = "transportadoraNome"
-            });
-            config.Elements.Add(new InputCustommaskUI
-            {
-                Id = "placaVeiculo",
-                Class = "col s12 m4",
-                Label = "Placa Veículo",
-                Disabled = true,
-                Data = new { inputmask = "'mask':'AAA[-9999]|[9A99]', 'showMaskOnHover': false, 'autoUnmask':true, 'greedy':true" }
-            });
-            config.Elements.Add(new AutoCompleteUI
-            {
-                Id = "estadoPlacaVeiculoId",
-                Class = "col s12 m4",
-                Label = "UF Placa Veículo",
-                Disabled = true,
-                DataUrl = Url.Action("Estado", "AutoComplete"),
-                LabelId = "estadoPlacaVeiculoNome"
-            });
-            config.Elements.Add(new InputCurrencyUI { Id = "valorFrete", Class = "col s12 m4", Label = "Valor Frete", Disabled = true });
-            config.Elements.Add(new InputFloatUI { Id = "pesoBruto", Class = "col s12 m4", Label = "Peso Bruto", Digits = 3, Disabled = true });
-            config.Elements.Add(new InputTextUI { Id = "marca", Class = "col s12 m4", Label = "Marca", Disabled = true, MaxLength = 60 });
-            config.Elements.Add(new InputFloatUI { Id = "pesoLiquido", Class = "col s12 m4", Label = "Peso Líquido", Digits = 3, Disabled = true });
-            config.Elements.Add(new InputNumbersUI { Id = "quantidadeVolumes", Class = "col s12 m4", Label = "Quantidade Volumes", Disabled = true });
-            config.Elements.Add(new InputTextUI { Id = "tipoEspecie", Class = "col s12 m4", Label = "Tipo Espécie", Disabled = true, MaxLength = 60 });
-            config.Elements.Add(new InputTextUI { Id = "numeracaoVolumesTrans", Class = "col s12 m4", Label = "Numeração", Disabled = true, MaxLength = 60 });
+                config.Elements.Add(new InputHiddenUI() { Id = "tipoFrete" });
+                config.Elements.Add(new InputHiddenUI() { Id = "valorFrete" });
+            }
+            #endregion
 
-            config.Elements.Add(new InputTextUI { Id = "naturezaOperacao", Class = "col s12", Label = "Natureza de Operação", Disabled = true });
+            #region Totais
+            config.Elements.Add(new DivElementUI { Id = "collapseTotais", Class = "col s12 visible" });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalProdutos", Class = "col s12 m4", Label = "Total produtos", Readonly = true });
+            if (emiteNotaFiscal)
+            {
+                config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutos", Class = "col s12 m4", Label = "Total impostos produtos incidentes", Readonly = true });
+                config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutosNaoAgrega", Class = "col s12 m4", Label = "Total de impostos não incidentes", Readonly = true });
+            }
 
-            config.Elements.Add(new LabelSetUI { Id = "labelSetTotais", Class = "col s12", Label = "Totais" });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalProdutos", Class = "col s12 m6", Label = "Total produtos", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m6", Label = "Frete", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutos", Class = "col s12 m6", Label = "Total impostos produtos incidentes", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutosNaoAgrega", Class = "col s12 m6", Label = "Total de impostos não incidentes", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalOrdemCompra", Class = "col s12", Label = "Total (produtos + impostos + frete)", Readonly = true });
+            if (exibirTransportadora)
+            {
+                config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m4", Label = "Frete a pagar", Readonly = true });
+            }
+            config.Elements.Add(new InputCurrencyUI { Id = "totalOrdemCompra", Class = "col s12 m4", Label = "Total", Readonly = true });
+
+            if (emiteNotaFiscal)
+            {
+                config.Elements.Add(new InputTextUI { Id = "naturezaOperacao", Class = "col s12", Label = "Natureza de Operação", Disabled = true });
+            }
+
             config.Elements.Add(new InputCheckboxUI { Id = "movimentaEstoque", Class = "col s12 m4", Label = "Movimenta estoque", Disabled = true });
             config.Elements.Add(new InputCheckboxUI { Id = "geraNotaFiscal", Class = "col s12 m4", Label = "Faturar", Disabled = true });
             config.Elements.Add(new InputCheckboxUI { Id = "geraFinanceiro", Class = "col s12 m4", Label = "Gera financeiro", Disabled = true });
-
-            config.Elements.Add(new LabelSetUI { Id = "labelSetProdutos", Class = "col s12", Label = "Produtos" });
-            config.Elements.Add(new TableUI
-            {
-                Id = "PedidoItemDataTable",
-                Class = "col s12",
-                Disabled = true,
-                Options = new List<OptionUI>
-                {
-                    new OptionUI { Label = "Produto", Value = "0"},
-                    new OptionUI { Label = "GrupoTributário", Value = "0"},
-                    new OptionUI { Label = "Quant.", Value = "1"},
-                    new OptionUI { Label = "Valor",Value = "2"},
-                    new OptionUI { Label = "Desconto",Value = "3"},
-                    new OptionUI { Label = "Total",Value = "4"},
-                }
-            });
-
-            config.Elements.Add(new InputCurrencyUI { Id = "totalProdutosDt", Class = "col s12 m4 right", Label = "Total Produtos", Readonly = true });
-
+            #endregion
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
 
@@ -791,18 +908,29 @@ namespace Fly01.Compras.Controllers
             }
         }
 
-
         public virtual ActionResult ImprimirPedido(Guid id)
         {
+            ConfiguracaoPersonalizacaoVM personalizacao = null;
+            try
+            {
+                personalizacao = RestHelper.ExecuteGetRequest<ResultBase<ConfiguracaoPersonalizacaoVM>>("ConfiguracaoPersonalizacao", queryString: null)?.Data?.FirstOrDefault();
+            }
+            catch (Exception)
+            {
+
+            }
+            var emiteNotaFiscal = personalizacao != null ? personalizacao.EmiteNotaFiscal : true;
+            var exibirTransportadora = personalizacao != null ? personalizacao.ExibirStepTransportadoraCompras : true;
+
             PedidoVM Pedido = Get(id);
 
             var produtos = GetProdutos(id);
             List<ImprimirPedidoVM> reportItems = new List<ImprimirPedidoVM>();
 
             if (!produtos.Any())
-                AdicionarInformacoesPadrao(Pedido, reportItems);
+                AdicionarInformacoesPadrao(Pedido, reportItems, emiteNotaFiscal, exibirTransportadora);
             else
-                MontarItensParaPrint(Pedido, produtos, reportItems);
+                MontarItensParaPrint(Pedido, produtos, reportItems, emiteNotaFiscal, exibirTransportadora);
 
             var reportViewer = new WebReportViewer<ImprimirPedidoVM>(ReportImprimirPedido.Instance);
             return File(reportViewer.Print(reportItems, SessionManager.Current.UserData.PlatformUrl), "application/pdf");
@@ -940,19 +1068,31 @@ namespace Fly01.Compras.Controllers
 
         private byte[] GetPDFFile(PedidoVM pedido)
         {
+            ConfiguracaoPersonalizacaoVM personalizacao = null;
+            try
+            {
+                personalizacao = RestHelper.ExecuteGetRequest<ResultBase<ConfiguracaoPersonalizacaoVM>>("ConfiguracaoPersonalizacao", queryString: null)?.Data?.FirstOrDefault();
+            }
+            catch (Exception)
+            {
+
+            }
+            var emiteNotaFiscal = personalizacao != null ? personalizacao.EmiteNotaFiscal : true;
+            var exibirTransportadora = personalizacao != null ? personalizacao.ExibirStepTransportadoraCompras : true;
+
             var produtos = GetProdutos(pedido.Id);
             List<ImprimirPedidoVM> reportItems = new List<ImprimirPedidoVM>();
 
             if (!produtos.Any())
-                AdicionarInformacoesPadrao(pedido, reportItems);
+                AdicionarInformacoesPadrao(pedido, reportItems, emiteNotaFiscal, exibirTransportadora);
             else
-                MontarItensParaPrint(pedido, produtos, reportItems);
+                MontarItensParaPrint(pedido, produtos, reportItems, emiteNotaFiscal, exibirTransportadora);
 
             var reportViewer = new WebReportViewer<ImprimirPedidoVM>(ReportImprimirPedido.Instance);
             return reportViewer.Print(reportItems, SessionManager.Current.UserData.PlatformUrl);
         }
 
-        private static void MontarItensParaPrint(PedidoVM Pedido, List<PedidoItemVM> produtos, List<ImprimirPedidoVM> reportItems)
+        private static void MontarItensParaPrint(PedidoVM Pedido, List<PedidoItemVM> produtos, List<ImprimirPedidoVM> reportItems, bool emiteNotaFiscal, bool exibirTransportadora)
         {
             foreach (PedidoItemVM produtospedido in produtos)
             {
@@ -975,30 +1115,32 @@ namespace Fly01.Compras.Controllers
                     Observacao = Pedido.Observacao,
                     PesoBruto = Pedido.PesoBruto != null ? Pedido.PesoBruto : 0,
                     PesoLiquido = Pedido.PesoLiquido != null ? Pedido.PesoLiquido : 0,
-                    ValorFrete = Pedido.ValorFrete != null ? Pedido.ValorFrete : 0,
+                    ValorFrete = (exibirTransportadora && Pedido.ValorFrete.HasValue) ? Pedido.ValorFrete : 0,
                     TipoFrete = Pedido.TipoFrete,
                     QuantVolumes = Pedido.QuantidadeVolumes != null ? Pedido.QuantidadeVolumes : 0,
                     Data = Pedido.Data,
                     Finalidade = Pedido.TipoCompra,
                     PlacaVeiculo = Pedido.PlacaVeiculo != null ? Pedido.PlacaVeiculo : "",
-                    EstadoPlacaVeiculo = Pedido.EstadoPlacaVeiculo != null ? Pedido.EstadoPlacaVeiculo.ToString() : "",
-                    TipoEspecie = Pedido.TipoEspecie != null ? Pedido.TipoEspecie : "" ,
+                    EstadoPlacaVeiculo = Pedido.EstadoPlacaVeiculo != null ? Pedido.EstadoPlacaVeiculo.Sigla.ToString() : "",
+                    TipoEspecie = Pedido.TipoEspecie != null ? Pedido.TipoEspecie : "",
                     Marca = Pedido.Marca != null ? Pedido.Marca : "",
-                    NumeracaoVolumesTrans = Pedido.NumeracaoVolumesTrans != null ? Pedido.NumeracaoVolumesTrans : "" ,
-                    TotalImpostosProdutos = Pedido.TotalImpostosProdutos != null ? Pedido.TotalImpostosProdutos : 0,
-                    TotalGeral = Pedido.Total + Pedido.TotalImpostosProdutos,
+                    NumeracaoVolumesTrans = Pedido.NumeracaoVolumesTrans != null ? Pedido.NumeracaoVolumesTrans : "",
+                    TotalImpostosProdutos = Pedido?.TotalImpostosProdutos ?? 0.0,
+                    TotalGeral = Pedido.Total + (Pedido?.TotalImpostosProdutos ?? 0.0),
                     Status = Pedido.Status,
                     //PRODUTO
                     Id = produtospedido.Id.ToString(),
                     NomeProduto = produtospedido.Produto != null ? produtospedido.Produto.Descricao : string.Empty,
                     QtdProduto = produtospedido.Quantidade,
                     ValorUnitario = produtospedido.Valor,
-                    ValorTotal = produtospedido.Total
+                    ValorTotal = produtospedido.Total,
+                    ExibirTransportadora = exibirTransportadora.ToString(),
+                    EmiteNotaFiscal = emiteNotaFiscal.ToString()
                 });
             }
         }
 
-        private static void AdicionarInformacoesPadrao(PedidoVM Pedido, List<ImprimirPedidoVM> reportItems)
+        private static void AdicionarInformacoesPadrao(PedidoVM Pedido, List<ImprimirPedidoVM> reportItems, bool emiteNotaFiscal, bool exibirTransportadora)
         {
             reportItems.Add(new ImprimirPedidoVM
             {
@@ -1019,20 +1161,21 @@ namespace Fly01.Compras.Controllers
                 Observacao = Pedido.Observacao,
                 PesoBruto = Pedido.PesoBruto ?? 0,
                 PesoLiquido = Pedido.PesoLiquido ?? 0,
-                ValorFrete = Pedido.ValorFrete ?? 0,
+                ValorFrete = (exibirTransportadora && Pedido.ValorFrete.HasValue) ? Pedido.ValorFrete : 0,
                 TipoFrete = Pedido.TipoFrete,
-                TotalGeral = Pedido.Total ?? 0,
+                TotalGeral = Pedido.Total + (Pedido?.TotalImpostosProdutos ?? 0.0),
                 Data = Pedido.Data,
                 Finalidade = Pedido.TipoCompra,
                 PlacaVeiculo = Pedido.PlacaVeiculo,
-                EstadoPlacaVeiculo = Pedido.EstadoPlacaVeiculo.ToString(),
+                EstadoPlacaVeiculo = Pedido?.EstadoPlacaVeiculo?.Sigla?.ToString(),
                 TipoEspecie = Pedido.TipoEspecie,
                 Marca = Pedido.Marca,
                 NumeracaoVolumesTrans = Pedido.NumeracaoVolumesTrans,
                 TotalProdutos = Pedido.Total,
                 TotalImpostosProdutos = Pedido.TotalImpostosProdutos,
                 Status = Pedido.Status,
-
+                ExibirTransportadora = exibirTransportadora.ToString(),
+                EmiteNotaFiscal = emiteNotaFiscal.ToString()
             });
         }
 

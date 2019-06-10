@@ -20,7 +20,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         [XmlElement(ElementName = "dthremissao")]
         public string DataHoraEmissaoString
         {
-            get { return DataHoraEmissao.ToString("yyyy-MM-ddTHH:mm:sszzzz"); }
+            get { return DataHoraEmissao.ToString("yyyy-MM-ddTHH:mm:ss"); }
             set { DataHoraEmissao = DateTime.Parse(value); }
         }
 

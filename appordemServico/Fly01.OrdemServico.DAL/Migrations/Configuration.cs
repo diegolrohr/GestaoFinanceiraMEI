@@ -14,7 +14,7 @@ namespace Fly01.OrdemServico.DAL.Migrations
         {
             //new NCMDataInitializer().Initialize(context);
             //new NBSDataInitializer().Initialize(context);
-            //new UnidadeMedidaDataInitializer().Initialize(context);
+            new UnidadeMedidaDataInitializer().Initialize(context);
 
             //var estados = new EstadoDataInitializer();
             //estados.Initialize(context);

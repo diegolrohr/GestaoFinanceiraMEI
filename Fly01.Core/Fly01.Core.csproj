@@ -24,6 +24,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <LangVersion>6</LangVersion>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -63,6 +64,9 @@
     <Compile Include="ViewModels\Presentation\Commons\MinhaContaResponseVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\MinhaContaCodigoBarrasVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\MinhaContaVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\ConfiguracaoPersonalizacaoVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\SocketPlatformAppVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\SocketMessageVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\UtilizarKitVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\ProdutoServicoVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\ISSVM.cs" />

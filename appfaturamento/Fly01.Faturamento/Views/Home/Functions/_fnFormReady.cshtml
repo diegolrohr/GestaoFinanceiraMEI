@@ -1,29 +1,34 @@
 ﻿<script>
     function fnFormReady() {
-        $('#cardNotaFiscal').loading("start");
-        $.ajax({
-            type: "GET",
-            url: '@Url.Action("StatusCard", "Home")',
-            success: function (data) {
-                if (data.numeroNFNaoTransmitidas == "0") {
-                    $$$._.cardNotaFiscal.setColor("green");
-                    $$$._.cardNotaFiscal.info("<h4><strong>Não há Notas Fiscais não transmitidas</strong></h4>");
-                    $('#cardNotaFiscal').loading("stop");
+        if ($('#emiteNotaFiscal').val() == "True") {
+            $('#cardNotaFiscal').loading("start");
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("StatusCard", "Home")',
+                success: function (data) {
+                    if (data.numeroNFNaoTransmitidas == "0") {
+                        $$$._.cardNotaFiscal.setColor("green");
+                        $$$._.cardNotaFiscal.info("<h4><strong>Não há Notas Fiscais não transmitidas</strong></h4>");
+                        $('#cardNotaFiscal').loading("stop");
+                    }
+                    else if (data.numeroNFNaoTransmitidas == "1") {
+                        $$$._.cardNotaFiscal.info("<h4>Você tem <strong>" + data.numeroNFNaoTransmitidas + "</strong> Nota Fiscal não transmitida.</h4>");
+                        $('#cardNotaFiscal').loading("stop");
+                    }
+                    else {
+                        $$$._.cardNotaFiscal.info("<h4>Você tem <strong>" + data.numeroNFNaoTransmitidas + "</strong> Notas Fiscais não transmitidas.</h4>");
+                        $('#cardNotaFiscal').loading("stop");
+                    }
+                },
+                error: function (jXHR, textStatus, errorThrown) {
+                    $$$.toast(data.message, 'error');
                 }
-                else if (data.numeroNFNaoTransmitidas == "1") {
-                    $$$._.cardNotaFiscal.info("<h4>Você tem <strong>" + data.numeroNFNaoTransmitidas + "</strong> Nota Fiscal não transmitida.</h4>");
-                    $('#cardNotaFiscal').loading("stop");
-                }
-                else {
-                    $$$._.cardNotaFiscal.info("<h4>Você tem <strong>" + data.numeroNFNaoTransmitidas + "</strong> Notas Fiscais não transmitidas.</h4>");
-                    $('#cardNotaFiscal').loading("stop");
-                }
-            },
-            error: function (jXHR, textStatus, errorThrown) {
-                $$$.toast(data.message, 'error');
-            }
-        });
-        verificaParametrosTributarios();
+            });
+            verificaParametrosTributarios();
+        }
+        else {
+            $$$.go("@Url.Action("List", "OrdemVenda")");
+        }
     }
 
     function verificaParametrosTributarios() {

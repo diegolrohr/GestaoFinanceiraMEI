@@ -1,0 +1,25 @@
+﻿<script>
+    function fnRowCallbackContasFinanceiras(row, data) {
+        //comportamento padrão
+        $("#fly01dt tbody tr").each(function () {
+            $(this).find("td").attr("nowrap", "nowrap");
+        });
+        $("#fly01dt").DataTable().responsive.recalc();
+        if ($$$._.fly01dt.selected) {
+            if ($.inArray(data.id, $$$._.fly01dt.selected) !== -1) {
+                $(row).addClass("selected");
+            }
+        }
+        $$$.fn.maskFields();
+
+        //comportamento específico
+        //vencidas com saldo em aberto, ficar em vermelho
+        var dataVencimento = moment(data.dataVencimento, 'DD/MM/YYYY').format('YYYY-MM-DD');
+        var hoje = moment().format('YYYY-MM-DD');
+
+        if (((data.statusContaBancaria == 'BPAR') || (data.statusContaBancaria == 'ABER')) && (dataVencimento < hoje)) {
+            $(row).addClass("red-text");
+        }
+        return row;
+    };
+</script>

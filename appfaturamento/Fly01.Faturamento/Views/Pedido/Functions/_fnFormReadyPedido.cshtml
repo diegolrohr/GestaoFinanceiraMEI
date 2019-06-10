@@ -15,12 +15,12 @@
 
     function calculaTotalPedido() {
         var valorFrete = 0;
-        var tipoFrete = $('select#tipoFrete').val();
+        var tipoFrete = $('#tipoFrete').val();
         var tipoVenda = $('#tipoVenda').val();
         var tipoNfeComplementar = $('#tipoNfeComplementar').val();
 
         var somaFrete = (
-                (tipoFrete == "FOB")
+                (tipoFrete == "FOB") && $('input#exibeStepTransportadora').val() == "True"
             );
 
         if (somaFrete) {
@@ -30,7 +30,7 @@
         var idPedido = $("form#fly01frm input#id").val();
         var idCliente = $("form#fly01frm input#clienteId").val();
         var geraNotaFiscal = $('input#geraNotaFiscal:checked').val() == "true";
-        if (geraNotaFiscal && $$$._.dtOrdemVendaProdutos.data(0).length > 0) {
+        if (geraNotaFiscal && $('input#exibeStepProdutos').val() == "True" && $$$._.dtOrdemVendaProdutos.data(0).length > 0) {
             $("#naturezaOperacaoField").show();
             $("input#naturezaOperacao").rules("add", { required: true });
             $('#mensagemPadraoNotaField').show();
@@ -48,7 +48,7 @@
             $('#localDespachoField').hide();
         }
 
-        if (geraNotaFiscal && $$$._.dtOrdemVendaServicos.data(0).length > 0) {
+        if (geraNotaFiscal &&  $('input#exibeStepServicos').val() == "True" && $$$._.dtOrdemVendaServicos.data(0).length > 0) {
             $("#informacoesCompletamentaresNFSField").show();
             $("input#informacoesCompletamentaresNFS").rules("add", { required: true });
             $('#informacoesCompletamentaresNFSField').show();
@@ -186,11 +186,11 @@
 
         $('li#stepCadastro div.step-title').click(function () {
             disableStepFinalidade();
-            fnChangeFrete();
+            if ($('input#exibeStepTransportadora').val() == "True") { fnChangeFrete(); }
         });
         $('#stepFinalidade > div.step-content > div.step-actions > button.btn.next-step').click(function () {
             disableStepFinalidade();
-            fnChangeFrete();
+            if ($('input#exibeStepTransportadora').val() == "True") { fnChangeFrete(); }
         });
     }
 
@@ -245,8 +245,8 @@
                             $("form#fly01frm input#id").val(data.id);
                             $("form#fly01frm input#numero").val(data.numero);
 
-                            $$$._.dtOrdemVendaProdutos.refresh();
-                            $$$._.dtOrdemVendaServicos.refresh();
+                            if ($('input#exibeStepProdutos').val() == "True") { $$$._.dtOrdemVendaProdutos.refresh(); }
+                            if ($('input#exibeStepServicos').val() == "True") { $$$._.dtOrdemVendaServicos.refresh(); }
                             var url = window.location.href.replace('/Create', '/Edit/' + data.id);
                             window.history.pushState({}, document.title, url);
                             $("form#fly01frm").data("action", "@Url.Action("Edit", "Pedido")");
@@ -257,7 +257,9 @@
                                 $$$._.fly01frm.refresh(data.id);
                                 $('li#stepProdutos div.step-title').click();
                             }
-                            getInformacoesComplementares();
+                            if ($('#emiteNotaFiscal').val() == "True") {
+                                getInformacoesComplementares();
+                            }
 
                             return true;
                         }
@@ -305,7 +307,7 @@
     }
 
     function fnValidarCamposDeProdutos() {
-        if ($$$._.dtOrdemVendaProdutos.data(0).length == 0) {
+        if ((($('input#exibeStepProdutos').val() == "True") && $$$._.dtOrdemVendaProdutos.data(0).length == 0) || $('input#exibeStepProdutos').val() == "False") {
             $('#movimentaEstoque').prop('checked', false);
             $('#movimentaEstoqueField').hide();
         } else {
@@ -329,7 +331,6 @@
             var today = new Date();
             $("input#geraFinanceiro").prop("checked", true);
             $("input#movimentaEstoque").prop("checked", true);
-            $("input#geraNotaFiscal").prop("checked", true);
             $$$._.data.set(today);
             $$$._.dataVencimento.set(today);
             $$$.fn.updateTextFields();
@@ -342,13 +343,13 @@
 
             disableStepFinalidade();
             if (!onCancelMustDeletePedido) { $('li#stepCadastro div.step-title').click(); }
-            $$$._.dtOrdemVendaProdutos.refresh();
-            $$$._.dtOrdemVendaServicos.refresh();
+            if ($('input#exibeStepProdutos').val() == "True") { $$$._.dtOrdemVendaProdutos.refresh(); }
+            if ($('input#exibeStepProdutos').val() == "True") { $$$._.dtOrdemVendaServicos.refresh(); }
         }
 
         fnBindOverrideSubmit();
         fnValidaCamposGeraFinanceiro();
-        fnChangeFrete();
+        if ($('input#exibeStepTransportadora').val() == "True") { fnChangeFrete(); }
         fnSetInformacoes();
 
         $('li#stepFinalizar div.step-title').click(function () {
@@ -366,21 +367,21 @@
 
         $('#stepFinanceiro > div.step-content > div.step-actions > button.btn.next-step').click(function () {
             fnValidarCamposDeProdutos();
-            if (!isCreate() && $("form#fly01frm").valid() && $('input#tipoVenda').val() == "Complementar") {
+            if (!isCreate() && $("form#fly01frm").valid() && (($('input#tipoVenda').val() == "Complementar") || ($('input#exibeStepTransportadora').val() == "False"))) {
                 EstoqueNegativoETotal();
             }
         });
 
         $('#stepProdutos > div.step-content > div.step-actions > button.btn.next-step').click(function () {
             fnValidarCamposDeProdutos();
-            if (!isCreate() && $("form#fly01frm").valid() && $('input#tipoVenda').val() == "Complementar" && $('#tipoNfeComplementar').val() == "ComplIcms") {
+            if (!isCreate() && $("form#fly01frm").valid() && $('input#exibeStepProdutos').val() == "True" && $('input#tipoVenda').val() == "Complementar" && $('#tipoNfeComplementar').val() == "ComplIcms") {
                 EstoqueNegativoETotal();
             }
         });
     }
 
     $("#stepFinanceiro .step-actions button.next-step, #stepTransporte:not(.active) .step-title, #stepFinalizar .step-actions button.previous-step").on("click", () => {
-        if ($("#tipoFreteField .select-dropdown").val() == "Sem frete")
+        if ($("#tipoFreteField .select-dropdown").val() == "Sem frete" && $('input#exibeStepTransportadora').val() == "True")
             fnDisableInput();
     });
 

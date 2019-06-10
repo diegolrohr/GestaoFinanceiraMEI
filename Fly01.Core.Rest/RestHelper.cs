@@ -370,13 +370,18 @@ namespace Fly01.Core.Rest
 
         public static string ExecutePostRequest(string url, string resource, string requestJson, Dictionary<string, string> queryString = null, int timeout = 150)
         {
+            return ExecutePostRequest(url, resource, requestJson, queryString, DefaultHeader, timeout);
+        }
+
+        public static string ExecutePostRequest(string url, string resource, string requestJson, Dictionary<string, string> queryString = null, Dictionary<string, string> header = null, int timeout = 150)
+        {
             HttpStatusCode statusCode;
             string statusDescription = string.Empty;
             string returnObj = string.Empty;
             DateTime beginRequest = DateTime.Now;
             try
             {
-                returnObj = RestUtils.ExecutePostRequest(url, resource, out statusCode, out statusDescription, requestJson, DefaultHeader, queryString, timeout: timeout);
+                returnObj = RestUtils.ExecutePostRequest(url, resource, out statusCode, out statusDescription, requestJson, header, queryString, timeout: timeout);
                 return returnObj;
             }
             catch (ApiException ex)

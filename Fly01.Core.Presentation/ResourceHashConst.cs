@@ -89,6 +89,8 @@
         public const string EstoqueCadastrosGrupoProdutos = "3656F86A-696A-47EA-8614-1553FD764E89";
         public const string EstoqueCadastrosTiposMovimento = "234EEE73-FD76-4E7D-A265-F9853276D9DA";
 
+        public const string EstoqueConfiguracoes = "795D5A12-F825-4A9C-8E62-A891AA3E42F2";
+
         public const string EstoqueAjuda = "71474FB5-B0DA-451F-9FBB-A45AE000980F";
         public const string EstoqueAjudaAssistenciaRemota = "040AEF3C-F6C0-4FC9-8D60-9C35B832159E";
 
@@ -141,7 +143,6 @@
         public const string OrdemServicoCadastrosResponsaveis = "C748EFD3-5A45-4E05-BD4F-06F33B745A00";
         public const string OrdemServicoCadastrosKit = "C124C754-271F-4116-B219-5A65FAE94397";
  
-
         public const string OrdemServicoConfiguracoes = "0DA692E7-7DB2-4556-8D60-F58B24476646";
         public const string OrdemServicoConfiguracoesParametros = "B00703C3-34ED-44FF-B3EE-A13B9292F030";
 

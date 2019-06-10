@@ -57,6 +57,7 @@ namespace Fly01.Faturamento.API
             builder.EntitySet<CentroCusto>("centrocusto");
             builder.EntitySet<AliquotaSimplesNacional>("aliquotasimplesnacional");
             builder.EntitySet<Pais>("pais");
+            builder.EntitySet<ConfiguracaoPersonalizacao>("configuracaopersonalizacao");
 
             builder.EnableLowerCamelCase();
 
@@ -72,17 +73,5 @@ namespace Fly01.Faturamento.API
 
             new Consumer(Assembly.Load("Fly01.Faturamento.BL").GetType("Fly01.Faturamento.BL.UnitOfWork")).Consume();
         });
-
-        protected override void SetAppDefaults()
-        {
-            AppDefaults.UrlEmissaoNfeApi = ConfigurationManager.AppSettings["UrlEmissaoNfeApi"];
-            AppDefaults.UrlGateway = ConfigurationManager.AppSettings["UrlGateway"];
-            AppDefaults.UrlEstoqueApi = ConfigurationManager.AppSettings["UrlEstoqueApi"];
-            AppDefaults.UrlFinanceiroApi = ConfigurationManager.AppSettings["UrlFinanceiroApi"];
-            AppDefaults.UrlGatewayNew = $"{ConfigurationManager.AppSettings["UrlGatewayNew"]}api/";
-            AppDefaults.UrlManager = $"{AppDefaults.UrlGatewayNew}manager/";
-
-            base.SetAppDefaults();
-        }
     }
 }

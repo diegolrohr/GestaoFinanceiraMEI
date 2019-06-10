@@ -7,6 +7,8 @@ using System.Web.Http;
 using System.Web.OData;
 using System.Web.OData.Routing;
 using Fly01.Core.Entities.Domains.Commons;
+using Fly01.Core.Entities.Domains.Enum;
+using System.Data.Entity;
 
 namespace Fly01.Compras.API.Controllers.Api
 {
@@ -83,6 +85,9 @@ namespace Fly01.Compras.API.Controllers.Api
         {
             using (var unitOfWork = new UnitOfWork(ContextInitialize))
             {
+                var configuracaoPersonalizacao = unitOfWork.ConfiguracaoPersonalizacaoBL.All.AsNoTracking().FirstOrDefault();
+                var exibirTransportadora = configuracaoPersonalizacao != null ? configuracaoPersonalizacao.ExibirStepTransportadoraCompras : true;
+
                 var total = unitOfWork
                                 .PedidoItemBL
                                 .All
@@ -93,7 +98,8 @@ namespace Fly01.Compras.API.Controllers.Api
                                     Total = Convert.ToDouble(Math.Round(x.Quantidade * x.Valor - x.Desconto, 2,
                                         MidpointRounding.AwayFromZero))
                                 })
-                                .Sum(x => x.Total) + PedidoItemController.CalculaFreteACobrar(pedido);
+                                .Sum(x => x.Total) +
+                                (((pedido.TipoFrete == TipoFrete.FOB) && exibirTransportadora) ? (pedido.ValorFrete ?? 0.0) : 0.0);
                 return total;
             }
         }

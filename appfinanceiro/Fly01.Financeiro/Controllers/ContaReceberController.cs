@@ -211,7 +211,8 @@ namespace Fly01.Financeiro.Controllers
                         Id = "dataInicial",
                         Name = "dataInicial"
                     }
-                }
+                },
+                Functions = { "fnRowCallbackContasFinanceiras" }
             };
 
             if (gridLoad == "GridLoad")
@@ -250,6 +251,10 @@ namespace Fly01.Financeiro.Controllers
                 {
                     OrderColumn = 1,
                     OrderDir = "desc"
+                },
+                Callbacks = new DataTableUICallbacks()
+                {
+                    RowCallback = "fnRowCallbackContasFinanceiras"
                 }
             };
 
@@ -276,11 +281,11 @@ namespace Fly01.Financeiro.Controllers
             });
             config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Nº", Priority = 4, Type = "number" });
             config.Columns.Add(new DataTableUIColumn { DataField = "dataVencimento", DisplayName = "Vencimento", Priority = 6, Type = "date" });
-            config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 1 });
+            config.Columns.Add(new DataTableUIColumn { DataField = "pessoa_nome", DisplayName = "Cliente", Priority = 1 });
             config.Columns.Add(new DataTableUIColumn { DataField = "valorPrevisto", DisplayName = "Valor", Priority = 5, Type = "currency" });
             config.Columns.Add(new DataTableUIColumn { DataField = "saldo", DisplayName = "Saldo", Priority = 3, Orderable = false, Searchable = false });
             config.Columns.Add(new DataTableUIColumn { DataField = "descricaoParcela", DisplayName = "Parcela", Priority = 8 });
-            config.Columns.Add(new DataTableUIColumn { DataField = "pessoa_nome", DisplayName = "Cliente", Priority = 7 });
+            config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 7 });
 
             cfg.Content.Add(config);
 

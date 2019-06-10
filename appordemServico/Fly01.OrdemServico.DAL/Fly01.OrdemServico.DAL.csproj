@@ -168,6 +168,18 @@
     <Compile Include="Migrations\201904151310423_FunctionOs.Designer.cs">
       <DependentUpon>201904151310423_FunctionOs.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201905221451206_AddConfiguracaoPersonalizacao.cs" />
+    <Compile Include="Migrations\201905221451206_AddConfiguracaoPersonalizacao.Designer.cs">
+      <DependentUpon>201905221451206_AddConfiguracaoPersonalizacao.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905231848192_AlterConfiguracaoPersonalizacao.cs" />
+    <Compile Include="Migrations\201905231848192_AlterConfiguracaoPersonalizacao.Designer.cs">
+      <DependentUpon>201905231848192_AlterConfiguracaoPersonalizacao.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906051449487_AlterUnidadeMedida.cs" />
+    <Compile Include="Migrations\201906051449487_AlterUnidadeMedida.Designer.cs">
+      <DependentUpon>201906051449487_AlterUnidadeMedida.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
@@ -309,6 +321,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201904151310423_FunctionOs.resx">
       <DependentUpon>201904151310423_FunctionOs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905221451206_AddConfiguracaoPersonalizacao.resx">
+      <DependentUpon>201905221451206_AddConfiguracaoPersonalizacao.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905231848192_AlterConfiguracaoPersonalizacao.resx">
+      <DependentUpon>201905231848192_AlterConfiguracaoPersonalizacao.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906051449487_AlterUnidadeMedida.resx">
+      <DependentUpon>201906051449487_AlterUnidadeMedida.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

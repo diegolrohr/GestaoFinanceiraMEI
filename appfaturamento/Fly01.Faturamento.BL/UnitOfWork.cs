@@ -69,7 +69,7 @@ namespace Fly01.Faturamento.BL
         public GrupoTributarioBL GrupoTributarioBL => grupoTributarioBL ?? (grupoTributarioBL = new GrupoTributarioBL(Context, CfopBL));
 
         private OrdemVendaBL ordemVendaBL;
-        public OrdemVendaBL OrdemVendaBL => ordemVendaBL ?? (ordemVendaBL = new OrdemVendaBL(Context, OrdemVendaProdutoBL, OrdemVendaServicoBL, NFeBL, NFSeBL, NFeProdutoBL, NFSeServicoBL, TotalTributacaoBL, NotaFiscalItemTributacaoBL, KitItemBL, EstadoBL));
+        public OrdemVendaBL OrdemVendaBL => ordemVendaBL ?? (ordemVendaBL = new OrdemVendaBL(Context, OrdemVendaProdutoBL, OrdemVendaServicoBL, NFeBL, NFSeBL, NFeProdutoBL, NFSeServicoBL, TotalTributacaoBL, NotaFiscalItemTributacaoBL, KitItemBL, EstadoBL, ConfiguracaoPersonalizacaoBL));
 
         private OrdemVendaProdutoBL ordemVendaProdutoBL;
         public OrdemVendaProdutoBL OrdemVendaProdutoBL => ordemVendaProdutoBL ?? (ordemVendaProdutoBL = new OrdemVendaProdutoBL(Context));
@@ -160,6 +160,9 @@ namespace Fly01.Faturamento.BL
 
         private PaisBL paisBL;
         public PaisBL PaisBL => paisBL ?? (paisBL = new PaisBL(Context));
+
+        private ConfiguracaoPersonalizacaoBL configuracaoPersonalizacaoBL;
+        public ConfiguracaoPersonalizacaoBL ConfiguracaoPersonalizacaoBL => configuracaoPersonalizacaoBL ?? (configuracaoPersonalizacaoBL = new ConfiguracaoPersonalizacaoBL(Context));
 
         #endregion
     }

@@ -12,6 +12,8 @@ using Fly01.Core.Rest;
 using Fly01.Core.ViewModels;
 using Fly01.uiJS.Enums;
 using Fly01.Core.Presentation;
+using Fly01.Core;
+using Fly01.Core.Helpers;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -247,9 +249,35 @@ namespace Fly01.Financeiro.Controllers
             return cfg;
         }
 
+        private string GenerateJWT()
+        {
+            var payload = new Dictionary<string, string>()
+                {
+                    {  "platformUrl", SessionManager.Current.UserData.PlatformUrl },
+                    {  "clientId", AppDefaults.AppId },
+                };
+            var token = JWTHelper.Encode(payload, "https://meu.bemacash.com.br/", DateTime.Now.AddMinutes(60));
+            return token;
+        }
+
+        public JsonResult NotificationJwt()
+        {
+            return Json(new
+            {
+                token = GenerateJWT()
+            }, JsonRequestBehavior.AllowGet);
+        }
+
         public override ContentResult Sidebar()
         {
             var config = new SidebarUI() { Id = "nav-bar", AppName = "Financeiro", Parent = "header" };
+
+            config.Notification = new SidebarUINotification()
+            {
+                Channel = AppDefaults.AppId + "_" + SessionManager.Current.UserData.PlatformUrl,
+                JWT = @Url.Action("NotificationJwt"),
+                SocketServer = AppDefaults.UrlNotificationSocket
+            };
 
             var financeiroMenuItens = new SidebarUIMenu()
             {
@@ -327,7 +355,9 @@ namespace Fly01.Financeiro.Controllers
                     Items = new List<LinkUI>
                     {
                         new LinkUI() { Class = ResourceHashConst.FinanceiroConfiguracoesNotificacoes, Label = "Notificações", OnClick = @Url.Action("Form", "ConfiguracaoNotificacao")},
-                        new LinkUI() { Class = ResourceHashConst.FinanceiroConfiguracoesTemplateBoleto, Label = "Template de E-mail", OnClick = @Url.Action("Form", "TemplateBoleto")}
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroConfiguracoesTemplateBoleto, Label = "Template de E-mail", OnClick = @Url.Action("Form", "TemplateBoleto")},
+                        //Personalizar Sistema não vai ter hash especifico de permissão, segundo Fraga
+                        //new LinkUI() { Class = ResourceHashConst.FinanceiroConfiguracoes, Label = "Personalizar Sistema", OnClick = @Url.Action("Form", "ConfiguracaoPersonalizacao") }
                     }
                 },
                 new SidebarUIMenu()

@@ -154,6 +154,9 @@ namespace Fly01.Financeiro.BL
         private PaisBL paisBL;
         public PaisBL PaisBL => paisBL ?? (paisBL = new PaisBL(Context));
 
+        private ConfiguracaoPersonalizacaoBL configuracaoPersonalizacaoBL;
+        public ConfiguracaoPersonalizacaoBL ConfiguracaoPersonalizacaoBL => configuracaoPersonalizacaoBL ?? (configuracaoPersonalizacaoBL = new ConfiguracaoPersonalizacaoBL(Context));
+
         #endregion
     }
 }

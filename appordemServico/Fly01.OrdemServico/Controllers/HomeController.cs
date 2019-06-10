@@ -1,4 +1,5 @@
-﻿using Fly01.Core.Config;
+﻿using Fly01.Core;
+using Fly01.Core.Config;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
 using Fly01.Core.Presentation;
@@ -349,9 +350,35 @@ namespace Fly01.OrdemServico.Controllers
             return string.IsNullOrEmpty(result) ? "" : $"{char.ToUpper(result[0])}{result.Substring(1).ToLower()}";
         }
 
+        private string GenerateJWT()
+        {
+            var payload = new Dictionary<string, string>()
+                {
+                    {  "platformUrl", SessionManager.Current.UserData.PlatformUrl },
+                    {  "clientId", AppDefaults.AppId },
+                };
+            var token = JWTHelper.Encode(payload, "https://meu.bemacash.com.br/", DateTime.Now.AddMinutes(60));
+            return token;
+        }
+
+        public JsonResult NotificationJwt()
+        {
+            return Json(new
+            {
+                token = GenerateJWT()
+            }, JsonRequestBehavior.AllowGet);
+        }
+
         public override ContentResult Sidebar()
         {
             var config = new SidebarUI() { Id = "nav-bar", AppName = "Ordem de Serviço", Parent = "header" };
+
+            config.Notification = new SidebarUINotification()
+            {
+                Channel = AppDefaults.AppId + "_" + SessionManager.Current.UserData.PlatformUrl,
+                JWT = @Url.Action("NotificationJwt"),
+                SocketServer = AppDefaults.UrlNotificationSocket
+            };
 
             #region MenuItems
             var menuItems = new List<SidebarUIMenu>()
@@ -386,7 +413,9 @@ namespace Fly01.OrdemServico.Controllers
                     Label = "Configurações",
                     Items = new List<LinkUI>
                     {
-                        new LinkUI() { Class = ResourceHashConst.OrdemServicoConfiguracoesParametros, Label = "Parâmetros", OnClick = @Url.Action("List", "ParametroOrdemServico")}
+                        new LinkUI() { Class = ResourceHashConst.OrdemServicoConfiguracoesParametros, Label = "Parâmetros", OnClick = @Url.Action("List", "ParametroOrdemServico")},
+                        //Personalizar Sistema não vai ter hash especifico de permissão, segundo Fraga
+                        //new LinkUI() { Class = ResourceHashConst.OrdemServicoConfiguracoes, Label = "Personalizar Sistema", OnClick = @Url.Action("Form", "ConfiguracaoPersonalizacao") }
                     }
                 },
                 new SidebarUIMenu()

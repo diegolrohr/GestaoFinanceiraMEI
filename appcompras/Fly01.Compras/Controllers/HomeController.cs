@@ -67,6 +67,15 @@ namespace Fly01.Compras.Controllers
             if (!UserCanPerformOperation(ResourceHashConst.ComprasComprasDashboard))
                 return new ContentUI { SidebarUrl = @Url.Action("Sidebar") };
 
+            ConfiguracaoPersonalizacaoVM personalizacao = null;
+            try
+            {
+                personalizacao = RestHelper.ExecuteGetRequest<ResultBase<ConfiguracaoPersonalizacaoVM>>("ConfiguracaoPersonalizacao", queryString: null)?.Data?.FirstOrDefault();
+            }
+            catch (Exception) { }
+
+            var emiteNotaFiscal = personalizacao != null ? personalizacao.EmiteNotaFiscal : true;
+
             var date = DateTime.Now;
             var firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
             var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
@@ -90,6 +99,7 @@ namespace Fly01.Compras.Controllers
                 Class = "col s12",
                 Elements = new List<BaseUI>()
                 {
+                    new InputHiddenUI() { Id = "emiteNotaFiscal", Value = emiteNotaFiscal.ToString() },
                     new PeriodPickerUI()
                     {
                        Label= "Selecione o período",
@@ -266,9 +276,35 @@ namespace Fly01.Compras.Controllers
 
         }
 
+        private string GenerateJWT()
+        {
+            var payload = new Dictionary<string, string>()
+                {
+                    {  "platformUrl", SessionManager.Current.UserData.PlatformUrl },
+                    {  "clientId", AppDefaults.AppId },
+                };
+            var token = JWTHelper.Encode(payload, "https://meu.bemacash.com.br/", DateTime.Now.AddMinutes(60));
+            return token;
+        }
+
+        public JsonResult NotificationJwt()
+        {
+            return Json(new
+            {
+                token = GenerateJWT()
+            }, JsonRequestBehavior.AllowGet);
+        }
+
         public override ContentResult Sidebar()
         {
             var config = new SidebarUI() { Id = "nav-bar", AppName = "Compras", Parent = "header" };
+
+            config.Notification = new SidebarUINotification()
+            {
+                Channel = AppDefaults.AppId + "_" + SessionManager.Current.UserData.PlatformUrl,
+                JWT = @Url.Action("NotificationJwt"),
+                SocketServer = AppDefaults.UrlNotificationSocket
+            };
 
             #region MenuItems
             var menuItems = new List<SidebarUIMenu>()
@@ -313,6 +349,8 @@ namespace Fly01.Compras.Controllers
                         new LinkUI() { Class = ResourceHashConst.ComprasConfiguracoesCertificadoDigital, Label = "Certificado Digital", OnClick = @Url.Action("Form", "CertificadoDigital") },
                         new LinkUI() { Class = ResourceHashConst.ComprasConfiguracoesParametrosTributarios, Label = "Parâmetros Tributários", OnClick = @Url.Action("Form", "ParametroTributario") },
                         new LinkUI() { Class = ResourceHashConst.ComprasConfiguracoesSerieNotasFiscais, Label = "Série de Notas Fiscais", OnClick = @Url.Action("List", "SerieNotaFiscal")},
+                        //Personalizar Sistema não vai ter hash especifico de permissão, segundo Fraga
+                        new LinkUI() { Class = ResourceHashConst.ComprasConfiguracoes, Label = "Personalizar Sistema", OnClick = @Url.Action("Form", "ConfiguracaoPersonalizacao") },
                         new LinkUI() { Class = ResourceHashConst.ComprasConfiguracoesNotasFiscaisInutilizadas, Label = "Notas Fiscais Inutilizadas", OnClick = @Url.Action("List", "NotaFiscalInutilizada") }
                     }
                 },
@@ -330,6 +368,9 @@ namespace Fly01.Compras.Controllers
 
             config.MenuItems.AddRange(ProcessMenuRoles(menuItems));
             #endregion
+
+            
+
 
             #region User Menu Items
             if (!string.IsNullOrEmpty(SessionManager.Current.UserData.TokenData.CodigoMaxime))

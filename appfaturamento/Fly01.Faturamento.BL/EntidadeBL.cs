@@ -25,11 +25,18 @@ namespace Fly01.Faturamento.BL
         private ManagerEmpresaVM empresa;
         private string empresaUF;
 
+        protected void GetOrUpdateEmpresa()
+        {
+            if (empresa == null || (empresa != null && empresa?.PlatformUrl?.Fly01Url != PlataformaUrl))
+            {
+                empresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
+                empresaUF = empresa.Cidade != null ? (empresa.Cidade.Estado != null ? empresa.Cidade.Estado.Sigla : string.Empty) : string.Empty;
+            }
+        }
+
         public EntidadeBL(AppDataContext context, EstadoBL estadoBL) : base(context)
         {
             EstadoBL = estadoBL;
-            empresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
-            empresaUF = empresa.Cidade != null ? (empresa.Cidade.Estado != null ? empresa.Cidade.Estado.Sigla : string.Empty) : string.Empty;
         }
 
         public EntidadeVM RetornaEntidade()
@@ -69,6 +76,7 @@ namespace Fly01.Faturamento.BL
 
         public EntidadeVM GetEntidade()
         {
+            GetOrUpdateEmpresa();
             var certificado = All.Where(x => x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).FirstOrDefault();
             
             if (certificado != null && certificado.EntidadeHomologacao != null && certificado.EntidadeProducao != null)

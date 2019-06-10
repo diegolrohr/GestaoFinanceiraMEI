@@ -46,6 +46,15 @@ namespace Fly01.Estoque.BL
                         };
                         MovimentoEstoqueBL.Movimenta(movimentoEntrada);
                     }
+                    MovimentoEstoque movimentoSaida = new MovimentoEstoque()
+                    {
+                        QuantidadeMovimento = -entity.Quantidade,
+                        ProdutoId = entity.ProdutoId,
+                        Observacao = @"Observação gerada pela movimentação do estoque, referente ao pedido nº " + entity.PedidoNumero.ToString() + ", aplicativo Bemacash Compras",
+                        UsuarioInclusao = entity.UsuarioInclusao,
+                        PlataformaId = entity.PlataformaId
+                    };
+                    MovimentoEstoqueBL.Movimenta(movimentoSaida);
                 }
                 //compra normal é entrada
                 if (entity.TipoCompra == TipoCompraVenda.Normal || entity.TipoCompra == TipoCompraVenda.Complementar)
@@ -54,7 +63,7 @@ namespace Fly01.Estoque.BL
 
                     MovimentoEstoque movimentoEntrada = new MovimentoEstoque()
                     {
-                        QuantidadeMovimento = (entity.TipoCompra == TipoCompraVenda.Devolucao) ? -entity.Quantidade : entity.Quantidade,
+                        QuantidadeMovimento = entity.Quantidade,
                         ProdutoId = entity.ProdutoId,
                         Observacao = entity.IsNFeImportacao ? observacao : @"Observação gerada pela movimentação do estoque, referente ao pedido nº " + entity.PedidoNumero.ToString() + ", aplicativo Bemacash Compras",
                         UsuarioInclusao = entity.UsuarioInclusao,

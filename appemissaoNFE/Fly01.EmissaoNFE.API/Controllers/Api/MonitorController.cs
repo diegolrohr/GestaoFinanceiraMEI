@@ -5,6 +5,7 @@ using Fly01.Core.API;
 using System;
 using System.Collections.Generic;
 using System.Web.Http;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.EmissaoNFE.API.Controllers.Api
 {
@@ -76,6 +77,29 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                     nota.Data = nfe.ERRO[nfe.ERRO.Length - 1].DATALOTE;
                     nota.Hora = nfe.ERRO[nfe.ERRO.Length - 1].HORALOTE;
 
+                    if(nota.Status == StatusNotaFiscal.Autorizada)
+                    {
+                        nota.XML = DanfeXMLHelper.Producao(
+                            new DanfeVM()
+                            {
+                                Homologacao = entity.Homologacao,
+                                Producao = entity.Producao,
+                                EntidadeAmbiente = entity.EntidadeAmbiente,
+                                DanfeId = nfe?.ID
+                            }
+                        )?.XML;
+
+                        nota.PDF = DanfePDFHelper.Producao(
+                            new DanfeVM()
+                            {
+                                Homologacao = entity.Homologacao,
+                                Producao = entity.Producao,
+                                EntidadeAmbiente = entity.EntidadeAmbiente,
+                                DanfeId = nfe?.ID
+                            }
+                        )?.PDF;
+                    }
+
                     retorno.Retornos.Add(nota);
                 }
             }
@@ -110,6 +134,28 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                     nota.Data = nfe.ERRO[nfe.ERRO.Length - 1].DATALOTE;
                     nota.Hora = nfe.ERRO[nfe.ERRO.Length - 1].HORALOTE;
 
+                    if (nota.Status == StatusNotaFiscal.Autorizada)
+                    {
+                        nota.XML = DanfeXMLHelper.Homologacao(
+                            new DanfeVM()
+                            {
+                                Homologacao = entity.Homologacao,
+                                Producao = entity.Producao,
+                                EntidadeAmbiente = entity.EntidadeAmbiente,
+                                DanfeId = nfe?.ID
+                            }
+                        )?.XML;
+
+                        nota.PDF = DanfePDFHelper.Homologacao(
+                            new DanfeVM()
+                            {
+                                Homologacao = entity.Homologacao,
+                                Producao = entity.Producao,
+                                EntidadeAmbiente = entity.EntidadeAmbiente,
+                                DanfeId = nfe?.ID
+                            }
+                        )?.PDF;
+                    }
                     retorno.Retornos.Add(nota);
                 }
             }

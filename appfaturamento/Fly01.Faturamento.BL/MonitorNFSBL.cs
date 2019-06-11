@@ -77,13 +77,13 @@ namespace Fly01.Faturamento.BL
                         foreach (var retorno in responseMonitor.Retornos)
                         {
                             //Atualiza Status NF;
-                            var nfse = NFSeBL.Everything.Where(x => x.SefazId == retorno.NotaFiscalId).FirstOrDefault();
+                            var nfse = NFSeBL.Everything.Where(x => x.SefazId == retorno.NotaFiscalId && x.PlataformaId == dadosPlataforma.plataformaId).FirstOrDefault();
                             if (nfse != null)
                             {
                                 nfse.Mensagem = "";
                                 nfse.Recomendacao = null;
 
-                                nfse.Status = ValidaStatus(retorno.Protocolo, nfse.Status, retorno.Recomendacao);
+                                nfse.Status = ValidaStatus(retorno.Protocolo, nfse.Status, retorno.Recomendacao, retorno?.Status);
 
                                 if (nfse.Status == StatusNotaFiscal.Autorizada)
                                 {
@@ -115,24 +115,24 @@ namespace Fly01.Faturamento.BL
             }
         }
 
-        public StatusNotaFiscal ValidaStatus(string protocolo, StatusNotaFiscal statusAnterior, string recomendacao)
+        public StatusNotaFiscal ValidaStatus(string protocolo, StatusNotaFiscal statusAnterior, string recomendacao, string statusRetorno)
         {
             protocolo = protocolo.Trim();
             StatusNotaFiscal statusNFSe;
-            //1 processando, 5 não autorizou
+            StatusNFSTSS statusNFSTSS = (StatusNFSTSS)Enum.Parse(typeof(StatusNFSTSS), statusRetorno, true);
             var enviando = (
-                recomendacao.Contains("Aguardando")
+                recomendacao.Contains("Aguardando") || ((statusNFSTSS == StatusNFSTSS.AguardandoRetorno) || (statusNFSTSS == StatusNFSTSS.AguardandoAssinatura) || (statusNFSTSS == StatusNFSTSS.PendenteTransmissao))
             );
 
             if (string.IsNullOrEmpty(protocolo) && statusAnterior == StatusNotaFiscal.Transmitida && enviando)
             {
                 statusNFSe = StatusNotaFiscal.Transmitida;
             }
-            else if (string.IsNullOrEmpty(protocolo) && statusAnterior == StatusNotaFiscal.Transmitida && !enviando)
+            else if (string.IsNullOrEmpty(protocolo) && statusAnterior == StatusNotaFiscal.Transmitida)
             {
                 statusNFSe = StatusNotaFiscal.NaoAutorizada;
             }
-            else if (!string.IsNullOrEmpty(protocolo) && statusAnterior == StatusNotaFiscal.Transmitida)
+            else if (!string.IsNullOrEmpty(protocolo) && statusAnterior == StatusNotaFiscal.Transmitida && statusNFSTSS == StatusNFSTSS.Autorizada)
             {
                 statusNFSe = StatusNotaFiscal.Autorizada;
             }
@@ -144,7 +144,7 @@ namespace Fly01.Faturamento.BL
             {
                 statusNFSe = StatusNotaFiscal.FalhaNoCancelamento;
             }
-            else if (!string.IsNullOrEmpty(protocolo) && statusAnterior == StatusNotaFiscal.EmCancelamento)
+            else if (!string.IsNullOrEmpty(protocolo) && statusAnterior == StatusNotaFiscal.EmCancelamento && statusNFSTSS == StatusNFSTSS.CanceladaInutilizada)
             {
                 statusNFSe = StatusNotaFiscal.Cancelada;
             }

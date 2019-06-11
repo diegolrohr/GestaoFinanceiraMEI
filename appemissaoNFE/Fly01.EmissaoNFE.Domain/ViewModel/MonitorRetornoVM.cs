@@ -12,5 +12,7 @@ namespace Fly01.EmissaoNFE.Domain.ViewModel
         public string Recomendacao { get; set; }
         public DateTime Data { get; set; }
         public string Hora { get; set; }
+        public string XML { get; set; }
+        public string PDF { get; set; }
     }
 }

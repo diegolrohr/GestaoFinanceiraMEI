@@ -69,7 +69,7 @@ namespace Fly01.Core.Presentation.Controllers
                     incentivoCultura = false,
                     formatarCodigoISS = false,
                     tipoRegimeEspecialTributacao = "MicroEmpresaMunicipal",
-                    tipoCRT = "Simples Nacional"
+                    tipoCRT = "SimplesNacional"
                 }, JsonRequestBehavior.AllowGet);
 
             return Json(new
@@ -336,7 +336,8 @@ namespace Fly01.Core.Presentation.Controllers
                 Id = "tipoCRT",
                 Class = "col s6 m6 l3",
                 Label = "CRT",
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoCRT)))               
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoCRT)))
+                //.ToList().FindAll(x => "SimplesNacional,ExcessoSublimiteDeReceitaBruta".Contains(x.Value)))               
             });
 
             form2.Elements.Add(new TextAreaUI { Id = "mensagemPadraoNota", Class = "col s12", Label = "Informações Adicionais", MaxLength = 1000 });

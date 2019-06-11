@@ -3,6 +3,7 @@ using Fly01.EmissaoNFE.Domain.Entities.NFe;
 using Fly01.Core.API;
 using System.Web.Http;
 using Fly01.Core.Helpers;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.EmissaoNFE.API.Controllers.Api
 {
@@ -13,7 +14,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
         {
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                var base64 = Base64Helper.CodificaBase64(unitOfWork.NFeBL.ConvertToXML(entity, Domain.Enums.CRT.SimplesNacional));
+                var base64 = Base64Helper.CodificaBase64(unitOfWork.NFeBL.ConvertToXML(entity, TipoCRT.SimplesNacional));
                 return Ok(new { data = base64});
             }
         }

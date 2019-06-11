@@ -88,7 +88,8 @@ namespace Fly01.Compras.BL
                         Autorizacao = parametroTributario.Autorizacao,
                         TipoAmbienteNFS = parametroTributario.TipoAmbienteNFSRest,
                         IncentivoCultura = parametroTributario.IncentivoCultura,
-                        TipoTributacaoNFS = parametroTributario.TipoTributacaoNFS
+                        TipoTributacaoNFS = parametroTributario.TipoTributacaoNFS,
+                        TipoCRT = parametroTributario.TipoCRT,
                     };
 
                     var response = RestHelper.ExecutePostRequest<ParametroVM>(AppDefaults.UrlEmissaoNfeApi,

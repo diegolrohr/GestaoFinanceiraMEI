@@ -174,7 +174,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         }
         public bool ShouldSerializeBaseFCPSTString()
         {
-            return BaseFCPST.HasValue && BaseFCPST.Value > 0.0 && AliquotaFCPST.Value > 0.0 && ValorFCPST.Value > 0.0;
+            return (BaseFCPST.HasValue && BaseFCPST.Value > 0.0) && (AliquotaFCPST.HasValue && AliquotaFCPST.Value > 0.0) && (ValorFCPST.HasValue && ValorFCPST.Value > 0.0);
         }
 
         [XmlIgnore]
@@ -190,7 +190,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         }
         public bool ShouldSerializeAliquotaFCPSTString()
         {
-            return AliquotaFCPST.HasValue && AliquotaFCPST.Value > 0.0 && BaseFCPST.Value > 0.0 && ValorFCPST.Value > 0.0;
+            return (BaseFCPST.HasValue && BaseFCPST.Value > 0.0) && (AliquotaFCPST.HasValue && AliquotaFCPST.Value > 0.0) && (ValorFCPST.HasValue && ValorFCPST.Value > 0.0);
         }
 
         [XmlIgnore]
@@ -206,7 +206,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         }
         public bool ShouldSerializeValorFCPSTString()
         {
-            return ValorFCPST.HasValue && ValorFCPST.Value > 0.0 && AliquotaFCPST.Value > 0.0 && BaseFCPST.Value > 0.0;
+            return (BaseFCPST.HasValue && BaseFCPST.Value > 0.0) && (AliquotaFCPST.HasValue && AliquotaFCPST.Value > 0.0) && (ValorFCPST.HasValue && ValorFCPST.Value > 0.0);
         }
 
         [XmlIgnore]

@@ -88,16 +88,6 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                     NFSE,
                     entity.CodigoIBGE
                 );
-
-                //TODO: Diego
-                //if (cancelamento.ID.Length > 0)
-                //{
-                //    response.Nota = cancelamento.ID[0];
-                //}
-                //else
-                //{
-                //    throw new BusinessException(string.Format("Cancelamento solicitado sem retorno do TSS"));
-                //}
             }
             else
             {
@@ -139,16 +129,6 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                     NFSE,
                     entity.CodigoIBGE
                 );
-
-                //TODO: revisar
-                //if (cancelamento.ID.Length > 0)
-                //{
-                //    response.Nota = cancelamento.ID[0];
-                //}
-                //else
-                //{
-                //    throw new BusinessException(string.Format("Cancelamento solicitado sem retorno do TSS"));
-                //}
             }
             else
             {

@@ -39,7 +39,7 @@ namespace Fly01.Faturamento.BL
                                                 dataFinal = g.Max(x => x.Data),
                                                 tipoAmbiente = g.Key.TipoAmbiente,
                                                 certificadoDigitalId = g.Key.CertificadoDigitalId
-                                            }).ToList();
+                                            });
 
             var header = new Dictionary<string, string>()
             {

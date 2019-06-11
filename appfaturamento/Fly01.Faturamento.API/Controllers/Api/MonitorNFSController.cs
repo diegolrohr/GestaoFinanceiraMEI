@@ -14,8 +14,7 @@ namespace Fly01.Faturamento.API.Controllers.Api
         {
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                //TODO: 
-                unitOfWork.MonitorNFSBL.AtualizaStatusTSS("10657466000118.fly01.com.br");
+                unitOfWork.MonitorNFSBL.AtualizaStatusTSS(string.Empty);
                 await unitOfWork.Save();
             }
         }        
@@ -25,15 +24,15 @@ namespace Fly01.Faturamento.API.Controllers.Api
         {
             try
             {
-                //var validsPlataformaUrl = new List<string>()
-                //{
-                //    "schedulerAzure3D587913-4BB8-4135-B40B-8177DE7F99F8.fly01dev.com.br",
-                //    "schedulerAzure40D25BFC-D5CC-4F3B-8312-B40124E02565.fly01.com.br"
-                //};
+                var validsPlataformaUrl = new List<string>()
+                {
+                    "schedulerAzure3D587913-4BB8-4135-B40B-8177DE7F99F8.fly01dev.com.br",
+                    "schedulerAzure40D25BFC-D5CC-4F3B-8312-B40124E02565.fly01.com.br"
+                };
 
-                //if(!validsPlataformaUrl.Contains(PlataformaUrl))
-                //    return BadRequest("Chamada Inválida");
-                        
+                if (!validsPlataformaUrl.Contains(PlataformaUrl))
+                    return BadRequest("Chamada Inválida");
+
                 Task.Factory.StartNew(ProcessaStatusTSS);
                 return Ok(new { success = true });
             }

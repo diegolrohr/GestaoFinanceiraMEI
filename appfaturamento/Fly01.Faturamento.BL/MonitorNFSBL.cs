@@ -39,7 +39,7 @@ namespace Fly01.Faturamento.BL
                                                 dataFinal = g.Max(x => x.Data),
                                                 tipoAmbiente = g.Key.TipoAmbiente,
                                                 certificadoDigitalId = g.Key.CertificadoDigitalId
-                                            });
+                                            }).ToList();
 
             var header = new Dictionary<string, string>()
             {
@@ -77,7 +77,7 @@ namespace Fly01.Faturamento.BL
                         foreach (var retorno in responseMonitor.Retornos)
                         {
                             //Atualiza Status NF;
-                            var nfse = NFSeBL.Everything.Where(x => x.SefazId == retorno.NotaFiscalId).FirstOrDefault();
+                            var nfse = NFSeBL.Everything.Where(x => x.SefazId == retorno.NotaFiscalId && x.PlataformaId == dadosPlataforma.plataformaId).FirstOrDefault();
                             if (nfse != null)
                             {
                                 nfse.Mensagem = "";

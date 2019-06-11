@@ -248,7 +248,7 @@ namespace Fly01.Faturamento.BL
         {
             if (string.IsNullOrEmpty(plataformaId))
             {
-                var empresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
+                GetOrUpdateEmpresa();
                 var certificado = Everything.Where(x => x.PlataformaId == PlataformaUrl && x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).FirstOrDefault();
                 var ambiente = ParametroTributarioBL.Everything.Where(x => x.PlataformaId == PlataformaUrl && x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).FirstOrDefault();
                 var retorno = RetornaEntidade(certificado, ambiente, empresa);
@@ -258,6 +258,7 @@ namespace Fly01.Faturamento.BL
             else
             {
                 var empresa = ApiEmpresaManager.GetEmpresa(plataformaId);
+                var empresaUF = empresa.Cidade != null ? (empresa.Cidade.Estado != null ? empresa.Cidade.Estado.Sigla : string.Empty) : string.Empty;
                 var certificado = Everything.Where(x => x.PlataformaId == plataformaId && x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).FirstOrDefault();
                 var ambiente = ParametroTributarioBL.Everything.Where(x => x.PlataformaId == plataformaId && x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).FirstOrDefault();
 

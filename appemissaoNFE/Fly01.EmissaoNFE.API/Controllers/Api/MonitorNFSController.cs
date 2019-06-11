@@ -85,17 +85,16 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                     retorno.Recomendacao = nfse?.RECOMENDACAO;
                     retorno.Status = nfse?.STATUS;
                     retorno.Protocolo = nfse?.PROTOCOLO?.Trim();
-                    //TODO: Diego
                     if (statusNFSTSS == StatusNFSTSS.Autorizada)
                     {
-                        NFS5 nfsXMl = new NFSE001.NFSE001().RETORNANFSE(
+                        NFSE001Prod.NFS5 nfsXMl = new NFSE001Prod.NFSE001().RETORNANFSE(
                             AppDefault.Token,
                             entity.Producao,
-                            new NFSID()
+                            new NFSE001Prod.NFSID()
                             {
-                                NOTAS = new NFSESID1[1]
+                                NOTAS = new NFSE001Prod.NFSESID1[1]
                                 {
-                                    new NFSESID1()
+                                    new NFSE001Prod. NFSESID1()
                                     {
                                         ID = nfse.ID
                                     }
@@ -154,15 +153,39 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
             if (monitor.Length > 0)
             {
                 foreach (NFSE001.MONITORNFSE nfse in monitor)
-                { 
+                {
                     var retorno = new MonitorNFSRetornoVM();
-                    retorno.NotaFiscalId = nfse.ID;
-                    retorno.Modalidade = nfse.MODALIDADE;
-                    retorno.Recomendacao = nfse.RECOMENDACAO;
+                    StatusNFSTSS statusNFSTSS = (StatusNFSTSS)Enum.Parse(typeof(StatusNFSTSS), nfse.STATUS, true);
+
+                    retorno.NotaFiscalId = nfse?.ID;
+                    retorno.Modalidade = nfse?.MODALIDADE;
+                    retorno.Recomendacao = nfse?.RECOMENDACAO;
                     retorno.Status = nfse?.STATUS;
-                    retorno.Protocolo = nfse.PROTOCOLO.Trim();
-                    //TODO: Refatorar
-                    retorno.XML = nfse.XMLRETTSS;
+                    retorno.Protocolo = nfse?.PROTOCOLO?.Trim();
+                    if (statusNFSTSS == StatusNFSTSS.Autorizada)
+                    {
+                        NFSE001.NFS5 nfsXMl = new NFSE001.NFSE001().RETORNANFSE(
+                            AppDefault.Token,
+                            entity.Homologacao,
+                            new NFSE001.NFSID()
+                            {
+                                NOTAS = new NFSE001.NFSESID1[1]
+                                {
+                                    new NFSE001. NFSESID1()
+                                    {
+                                        ID = nfse.ID
+                                    }
+                                }
+                            },
+                            null
+                        );
+                        if (nfsXMl != null)
+                        {
+                            var xml = nfsXMl?.NOTAS[0]?.NFE?.XML;
+                            retorno.XML = xml != null ? xml.Replace("<![CDATA[", "").Replace("]]>", "") : "";
+                        }
+                    }
+
                     if (nfse.ERRO.Length != 0)
                     {
                         retorno.Erros = new List<ErroNFSVM>();

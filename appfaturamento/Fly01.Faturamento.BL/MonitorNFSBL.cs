@@ -85,7 +85,7 @@ namespace Fly01.Faturamento.BL
 
                                 nfse.Status = ValidaStatus(retorno.Protocolo, nfse.Status, retorno.Recomendacao, retorno?.Status);
 
-                                if (nfse.Status == StatusNotaFiscal.Autorizada || nfse.Status == StatusNotaFiscal.Cancelada)
+                                if (nfse.Status == StatusNotaFiscal.Autorizada)
                                 {
                                     nfse.XML = retorno.XML;
                                 }

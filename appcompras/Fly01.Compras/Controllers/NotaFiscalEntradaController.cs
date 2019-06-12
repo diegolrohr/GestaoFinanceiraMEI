@@ -78,6 +78,7 @@ namespace Fly01.Compras.Controllers
 
             if (UserCanWrite)
             {
+                target.Add(new HtmlUIButton { Id = "baixarXmls", Label = "Baixar Todos Xmls", OnClickFn = "fnBaixarTodosXMLNFeZip", Position = HtmlUIButtonPosition.Out });
                 target.Add(new HtmlUIButton { Id = "baixarTodosXmls", Label = "Baixar Xmls", OnClickFn = "fnBaixarXMLNFeZip", Position = HtmlUIButtonPosition.Out });
                 target.Add(new HtmlUIButton { Id = "atualizarStatus", Label = "Atualizar Status", OnClickFn = "fnAtualizarStatus",Position = HtmlUIButtonPosition.Main });
                 target.Add(new HtmlUIButton { Id = "new", Label = "Novo Pedido", OnClickFn = "fnNovoPedido" });

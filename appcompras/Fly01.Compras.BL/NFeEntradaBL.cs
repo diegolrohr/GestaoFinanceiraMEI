@@ -221,7 +221,7 @@ namespace Fly01.Compras.BL
                         Nome = empresa.RazaoSocial,
                         NomeFantasia = empresa.NomeFantasia,
                         InscricaoEstadual = empresa.InscricaoEstadual,
-                        CRT = CRT.SimplesNacional,
+                        CRT = parametros.TipoCRT,
                         Endereco = new Endereco()
                         {
                             Bairro = empresa.Bairro,

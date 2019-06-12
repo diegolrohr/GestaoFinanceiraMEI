@@ -1,4 +1,5 @@
 ﻿using Fly01.Core.BL;
+using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
 using Fly01.EmissaoNFE.Domain.Entities.NFe;
 using Fly01.EmissaoNFE.Domain.Entities.NFe.COFINS;
@@ -18,7 +19,7 @@ namespace Fly01.EmissaoNFE.BL
         {
         }
 
-        public string ConvertToXML(NFeVM entity, CRT CodigoRegimeTributario)
+        public string ConvertToXML(NFeVM entity, TipoCRT CodigoRegimeTributario)
         {
             string result = string.Empty;
 

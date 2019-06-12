@@ -152,7 +152,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 Nome = Cabecalho.Empresa.RazaoSocial,
                 NomeFantasia = Cabecalho.Empresa.NomeFantasia,
                 InscricaoEstadual = Cabecalho.Empresa.InscricaoEstadual,
-                CRT = CRT.SimplesNacional,
+                CRT = ParametrosTributarios.TipoCRT,
                 Endereco = new Endereco()
                 {
                     Bairro = Cabecalho.Empresa.Bairro,

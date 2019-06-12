@@ -90,8 +90,10 @@
     <Compile Include="Domains\Commons\StoneAntecipacaoRecebiveis.cs" />
     <Compile Include="Domains\Commons\TemplateBoleto.cs" />
     <Compile Include="Domains\Commons\TotalOrdemServico.cs" />
+    <Compile Include="Domains\Enum\TipoCRT.cs" />
     <Compile Include="Domains\Enum\ObjetoDeManutencao.cs" />
     <Compile Include="Domains\Enum\OrigemMercadoria.cs" />
+    <Compile Include="Domains\Enum\StatusCartaCorrecao.cs" />
     <Compile Include="Domains\Enum\TipoAtualizacaoValor.cs" />
     <Compile Include="Domains\Enum\TipoEnquadramentoEmpresa.cs" />
     <Compile Include="Domains\Enum\TipoFatorConversao.cs" />
@@ -207,7 +209,7 @@
     <Compile Include="Domains\Enum\StatusConciliado.cs" />
     <Compile Include="Domains\Enum\StatusBoletoBancaria.cs" />
     <Compile Include="Domains\Enum\StatusContaBancaria.cs" />
-    <Compile Include="Domains\Enum\StatusCartacorrecao.cs" />
+    <Compile Include="Domains\Enum\StatusNFSTSS.cs" />
     <Compile Include="Domains\Enum\StatusNotaFiscal.cs" />
     <Compile Include="Domains\Enum\StatusOrdemCompra.cs" />
     <Compile Include="Domains\Enum\Status.cs" />

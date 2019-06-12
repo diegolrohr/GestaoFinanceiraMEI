@@ -1,4 +1,5 @@
-﻿using Fly01.EmissaoNFE.Domain.Enums;
+﻿using Fly01.Core.Entities.Domains.Enum;
+using Fly01.EmissaoNFE.Domain.Enums;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Serialization;
@@ -68,6 +69,6 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// 
         [JsonProperty("CRT")]
         [XmlElement(ElementName = "CRT")]
-        public CRT CRT { get; set; }
+        public TipoCRT CRT { get; set; }
     }
 }

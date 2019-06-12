@@ -1,4 +1,5 @@
-﻿using Fly01.EmissaoNFE.Domain.Enums;
+﻿using Fly01.Core.Entities.Domains.Enum;
+using Fly01.EmissaoNFE.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,9 +16,9 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.COFINS
 
         public COFINSPai() { }
 
-        public void DoTheCofins(CRT crt)
+        public void DoTheCofins(TipoCRT crt)
         {
-            if (crt.Equals(CRT.SimplesNacional))
+            if (crt.Equals(TipoCRT.SimplesNacional))
             {
                 var adValorem = "01|02";
                 var AliqEspecifica = "03";

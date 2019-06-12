@@ -17,22 +17,22 @@ namespace Fly01.EmissaoNFE.DAL.Migrations
         {
             try
             {
-                //var estados = new EstadoDataInitializer();
-                //estados.Initialize(context);
-                //var ufs = estados.GetLstOfStates();
-                //new CidadeDataInitializer1().Initialize(context, ufs);
-                //new CidadeDataInitializer2().Initialize(context, ufs);
-                //new CidadeDataInitializer3().Initialize(context, ufs);
-                //new CidadeDataInitializer4().Initialize(context, ufs);
-                //new CidadeDataInitializer5().Initialize(context, ufs);
-                //new CidadeDataInitializer6().Initialize(context, ufs);
-                //new NcmDataInitializer().Initialize(context);
-                //new TabelaIcmsDataInitializer().Initialize(context);
-                //new CfopDataInitializer().Initialize(context);
-                //new NBSDataInitializer().Initialize(context);
-                //new SiafiDataInitializer().Initialize(context);
-                //new ResponsavelTecnicoDataInitializer().Initialize(context);
-                //new PaisDataInitializer().Initialize(context);
+            //    var estados = new EstadoDataInitializer();
+            //    estados.Initialize(context);
+            //    var ufs = estados.GetLstOfStates();
+            //    new CidadeDataInitializer1().Initialize(context, ufs);
+            //    new CidadeDataInitializer2().Initialize(context, ufs);
+            //    new CidadeDataInitializer3().Initialize(context, ufs);
+            //    new CidadeDataInitializer4().Initialize(context, ufs);
+            //    new CidadeDataInitializer5().Initialize(context, ufs);
+            //    new CidadeDataInitializer6().Initialize(context, ufs);
+            //    new NcmDataInitializer().Initialize(context);
+            //    new TabelaIcmsDataInitializer().Initialize(context);
+            //    new CfopDataInitializer().Initialize(context);
+            //    new NBSDataInitializer().Initialize(context);
+            //    new SiafiDataInitializer().Initialize(context);
+            //    new ResponsavelTecnicoDataInitializer().Initialize(context);
+            //    new PaisDataInitializer().Initialize(context);
             }
             catch (DbEntityValidationException ex)
             {

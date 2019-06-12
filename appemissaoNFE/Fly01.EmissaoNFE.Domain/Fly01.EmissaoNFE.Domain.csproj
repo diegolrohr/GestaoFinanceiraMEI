@@ -127,7 +127,6 @@
     <Compile Include="Enums\CompoemValorTotal.cs" />
     <Compile Include="Enums\CSTPISCOFINS.cs" />
     <Compile Include="Enums\CSTIPI.cs" />
-    <Compile Include="Enums\CRT.cs" />
     <Compile Include="Enums\ISSRetidoNFs.cs" />
     <Compile Include="Enums\ModalidadeDeterminacaoBCICMSST.cs" />
     <Compile Include="Enums\ModalidadeDeterminacaoBCICMS.cs" />

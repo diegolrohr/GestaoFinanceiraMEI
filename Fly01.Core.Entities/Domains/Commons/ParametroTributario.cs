@@ -3,6 +3,7 @@ using Fly01.Core.Entities.Domains.Enum;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
+
 namespace Fly01.Core.Entities.Domains.Commons
 {
     public class ParametroTributario : PlataformaBase
@@ -73,6 +74,8 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         [MaxLength(2)]
         public string UF { get; set; }
+
+        public TipoCRT TipoCRT { get; set; }
 
         public TipoPresencaComprador TipoPresencaComprador { get; set; }
 

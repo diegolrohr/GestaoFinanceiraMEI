@@ -90,6 +90,7 @@
     <Compile Include="Domains\Commons\StoneAntecipacaoRecebiveis.cs" />
     <Compile Include="Domains\Commons\TemplateBoleto.cs" />
     <Compile Include="Domains\Commons\TotalOrdemServico.cs" />
+    <Compile Include="Domains\Enum\TipoCRT.cs" />
     <Compile Include="Domains\Enum\ObjetoDeManutencao.cs" />
     <Compile Include="Domains\Enum\OrigemMercadoria.cs" />
     <Compile Include="Domains\Enum\StatusCartaCorrecao.cs" />

@@ -1,4 +1,5 @@
-﻿using Fly01.EmissaoNFE.Domain.Enums;
+﻿using Fly01.Core.Entities.Domains.Enum;
+using Fly01.EmissaoNFE.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,9 +16,9 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.PIS
 
         public PISPai() { }
 
-        public void DoThePIS(CRT crt)
+        public void DoThePIS(TipoCRT crt)
         {
-            if (crt.Equals(CRT.SimplesNacional))
+            if (crt.Equals(TipoCRT.SimplesNacional))
             {
                 var adValorem = "01|02";
                 var AliqEspecifica = "03";

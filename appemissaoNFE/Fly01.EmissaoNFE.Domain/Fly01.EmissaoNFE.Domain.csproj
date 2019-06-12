@@ -48,6 +48,7 @@
     <Compile Include="Entities\Eventos\Eventos.cs" />
     <Compile Include="Entities\Cofins.cs" />
     <Compile Include="Entities\NFe\Exportacao.cs" />
+    <Compile Include="Entities\NFe\ICMS\ICMS00.cs" />
     <Compile Include="Entities\NFe\ResponsavelTecnico.cs" />
     <Compile Include="Entities\NFS\Assinatura.cs" />
     <Compile Include="Entities\NFS\Construcao.cs" />

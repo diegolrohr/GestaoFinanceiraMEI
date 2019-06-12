@@ -196,8 +196,30 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                         AliquotaFCPST = AliquotaFCPST,
                         ValorFCPST = ValorFCPST
                     };
-
                     break;
+
+                case "00"://Integral
+
+                    ToValidate.Add(NewKeyValuePair("ModalidadeBC", (int?)ModalidadeBC));
+                    ToValidate.Add(NewKeyValuePair("ValorICMS", ValorICMS));
+                    ToValidate.Add(NewKeyValuePair("AliquotaICMS", AliquotaICMS));
+                    ToValidate.Add(NewKeyValuePair("ValorBC", ValorBC));
+
+
+                    DoTheValidation();
+
+                    ICMS = new ICMS00(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT)
+                    {          
+                                         
+                        ModalidadeBC = ModalidadeBC.Value,              
+                        ValorBC = ValorBC.Value,                      
+                        ValorICMS = ValorICMS.Value,
+                        AliquotaICMS = AliquotaICMS.Value
+
+                    };
+                    break;
+
+
                 default:
                     throw new NotImplementedException();
             }

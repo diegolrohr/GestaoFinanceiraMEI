@@ -12,7 +12,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
 
         }
 
-        public ICMSSN201(OrigemMercadoria origemMercadoria, TipoTributacaoICMS codigoSituacaoOperacao) : base(origemMercadoria, codigoSituacaoOperacao)
+        public ICMSSN201(OrigemMercadoria origemMercadoria, TipoTributacaoICMS codigoSituacaoOperacao, TipoCRT tipoCRT) : base(origemMercadoria, codigoSituacaoOperacao, tipoCRT)
         {
         }
 

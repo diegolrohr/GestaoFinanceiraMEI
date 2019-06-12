@@ -183,6 +183,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 //AliquotaAplicavelCalculoCreditoSN = Math.Round(((item.ValorCreditoICMS / (item.Quantidade * item.Valor)) * 100), 2),
                 //ValorCreditoICMS = Math.Round(item.ValorCreditoICMS, 2),
                 CodigoSituacaoOperacao = TipoTributacaoICMS.TributadaSemPermissaoDeCredito, //TODO: ver Wilson
+                TipoCRT = ParametrosTributarios.TipoCRT,
 
             };
             CalculaICMSPai(item, itemTributacao, ICMS);

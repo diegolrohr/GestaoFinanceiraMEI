@@ -135,7 +135,8 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
             return new ICMSPai()
             {
                 OrigemMercadoria = item.Produto.OrigemMercadoria,
-                CodigoSituacaoOperacao = TipoTributacaoICMS.Imune//TODO: Ver Wilson TipoTributacaoICMS.NaoTributadaPeloSN
+                CodigoSituacaoOperacao = TipoTributacaoICMS.Imune,//TODO: Ver Wilson TipoTributacaoICMS.NaoTributadaPeloSN
+                TipoCRT = ParametrosTributarios.TipoCRT
             };
         }
 

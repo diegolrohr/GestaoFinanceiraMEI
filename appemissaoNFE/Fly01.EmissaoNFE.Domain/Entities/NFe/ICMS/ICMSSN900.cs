@@ -14,7 +14,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         {
 
         }
-        public ICMSSN900(OrigemMercadoria origemMercadoria, TipoTributacaoICMS codigoSituacaoOperacao) : base(origemMercadoria, codigoSituacaoOperacao)
+        public ICMSSN900(OrigemMercadoria origemMercadoria, TipoTributacaoICMS codigoSituacaoOperacao, TipoCRT tipoCRT) : base(origemMercadoria, codigoSituacaoOperacao, tipoCRT)
         {
         }
 

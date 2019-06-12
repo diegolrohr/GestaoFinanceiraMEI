@@ -332,6 +332,7 @@ namespace Fly01.Compras.BL
                             CodigoSituacaoOperacao = item.GrupoTributario.TipoTributacaoICMS != null ? item.GrupoTributario.TipoTributacaoICMS.Value : TipoTributacaoICMS.TributadaSemPermissaoDeCredito,
                             AliquotaAplicavelCalculoCreditoSN = Math.Round(((item.ValorCreditoICMS / (item.Quantidade * item.Valor)) * 100), 2),
                             ValorCreditoICMS = Math.Round(item.ValorCreditoICMS, 2),
+                            TipoCRT = parametros.TipoCRT,
                         };
 
                         if (itemTributacao.CalculaICMS)

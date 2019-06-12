@@ -32,7 +32,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
 
                     DoTheValidation();
 
-                    ICMS = new ICMSSN101(OrigemMercadoria, CodigoSituacaoOperacao)
+                    ICMS = new ICMSSN101(OrigemMercadoria, CodigoSituacaoOperacao,TipoCRT)
                     {
                         AliquotaAplicavelCalculoCreditoSN = AliquotaAplicavelCalculoCreditoSN.Value,
                         ValorCreditoICMS = ValorCreditoICMS.Value
@@ -40,18 +40,18 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                     break;
 
                 case "102"://Tributada pelo Simples Nacional sem permissão de crédito.
-                    ICMS = new ICMSSN102(OrigemMercadoria, CodigoSituacaoOperacao);
+                    ICMS = new ICMSSN102(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT);
                     break;
 
                 case "103"://Isenção do ICMS no Simples Nacional para faixa de receita bruta.
-                    ICMS = new ICMSSN102(OrigemMercadoria, CodigoSituacaoOperacao);
+                    ICMS = new ICMSSN102(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT);
                     break;
 
                 case "300"://Imune.
-                    ICMS = new ICMSSN102(OrigemMercadoria, CodigoSituacaoOperacao);
+                    ICMS = new ICMSSN102(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT);
                     break;
                 case "400"://Não tributada pelo Simples Nacional. 
-                    ICMS = new ICMSSN102(OrigemMercadoria, CodigoSituacaoOperacao);
+                    ICMS = new ICMSSN102(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT);
                     break;
 
                 case "201"://Tributada pelo Simples Nacional com permissão de crédito e com cobrança do ICMS por substituição tributária.
@@ -71,7 +71,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
 
                     DoTheValidation();
 
-                    ICMS = new ICMSSN201(OrigemMercadoria, CodigoSituacaoOperacao)
+                    ICMS = new ICMSSN201(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT)
                     {
                         ModalidadeBCST = ModalidadeBCST.Value,
                         PercentualMargemValorAdicionadoST = PercentualMargemValorAdicionadoST.Value,
@@ -103,7 +103,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
 
                     DoTheValidation();
 
-                    ICMS = new ICMSSN202(OrigemMercadoria, CodigoSituacaoOperacao)
+                    ICMS = new ICMSSN202(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT)
                     {
                         ModalidadeBCST = ModalidadeBCST.Value,
                         PercentualMargemValorAdicionadoST = PercentualMargemValorAdicionadoST.Value,
@@ -132,7 +132,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
 
                     DoTheValidation();
 
-                    ICMS = new ICMSSN202(OrigemMercadoria, CodigoSituacaoOperacao)
+                    ICMS = new ICMSSN202(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT)
                     {
                         ModalidadeBCST = ModalidadeBCST.Value,
                         PercentualMargemValorAdicionadoST = PercentualMargemValorAdicionadoST.Value,
@@ -158,7 +158,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
 
                     DoTheValidation();
 
-                    ICMS = new ICMSSN500(OrigemMercadoria, CodigoSituacaoOperacao)
+                    ICMS = new ICMSSN500(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT)
                     {
                         ValorBCSTRetido = ValorBCSTRetido.Value,
                         ValorICMSSTRetido = ValorICMSSTRetido.Value,
@@ -171,7 +171,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                 case "900"://Outros
                     DoTheValidation();
 
-                    ICMS = new ICMSSN900(OrigemMercadoria, CodigoSituacaoOperacao)
+                    ICMS = new ICMSSN900(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT)
                     {
                         AliquotaAplicavelCalculoCreditoSN = AliquotaAplicavelCalculoCreditoSN,
                         AliquotaICMS = AliquotaICMS,
@@ -207,6 +207,9 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
 
         [XmlIgnore]
         public OrigemMercadoria OrigemMercadoria { get; set; }
+
+        [XmlIgnore]
+        public TipoCRT TipoCRT { get; set; }
 
         [XmlIgnore]
         public TipoTributacaoICMS CodigoSituacaoOperacao { get; set; }

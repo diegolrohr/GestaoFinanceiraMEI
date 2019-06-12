@@ -17,7 +17,7 @@ namespace Fly01.Faturamento.API.Controllers.Api
                 unitOfWork.MonitorNFSBL.AtualizaStatusTSS(string.Empty);
                 await unitOfWork.Save();
             }
-        }
+        }        
 
         [HttpPost]
         public IHttpActionResult AtualizaStatus()
@@ -30,9 +30,9 @@ namespace Fly01.Faturamento.API.Controllers.Api
                     "schedulerAzure40D25BFC-D5CC-4F3B-8312-B40124E02565.fly01.com.br"
                 };
 
-                if(!validsPlataformaUrl.Contains(PlataformaUrl))
+                if (!validsPlataformaUrl.Contains(PlataformaUrl))
                     return BadRequest("Chamada Inválida");
-                        
+
                 Task.Factory.StartNew(ProcessaStatusTSS);
                 return Ok(new { success = true });
             }

@@ -260,7 +260,7 @@ namespace Fly01.Faturamento.BL
                 XMLUnicoTSSString = notaFiscal.XMLUnicoTSS
             };
 
-            RestHelper.ExecutePostRequest<List<CancelarNFSRetornoVM>>(AppDefaults.UrlEmissaoNfeApi, "cancelarNFS", JsonConvert.SerializeObject(cancelar), null, header);
+            RestHelper.ExecutePostRequest<CancelarNFSRetornoVM>(AppDefaults.UrlEmissaoNfeApi, "cancelarNFS", JsonConvert.SerializeObject(cancelar), null, header);
 
             var NFSe = NFSeBL.All.Where(x => x.Id == id).FirstOrDefault();
             NFSe.Mensagem = null;

@@ -17,15 +17,15 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
                 unitOfWork.DanfeBL.ValidaModel(entity);
-                
+
                 try
                 {
-                    var pdf = entity.EntidadeAmbiente == TipoAmbiente.Homologacao ? Homologacao(entity) : Producao(entity);
+                    var pdf = entity.EntidadeAmbiente == TipoAmbiente.Homologacao ? DanfePDFHelper.Homologacao(entity) : DanfePDFHelper.Producao(entity);
                     //tenta recuperar invertendo o ambiente, pode ser que foi emitido em outro ambiente do atual configurado
                     //posteriormente começou a se salvar as configuração de cada transmissão
                     if (pdf == null || (pdf != null && string.IsNullOrEmpty(pdf?.PDF)))
                     {
-                        pdf = entity.EntidadeAmbiente == TipoAmbiente.Homologacao ? Producao(entity) : Homologacao(entity);
+                        pdf = entity.EntidadeAmbiente == TipoAmbiente.Homologacao ? DanfePDFHelper.Producao(entity) : DanfePDFHelper.Homologacao(entity);
                     }
 
                     return Ok(pdf);
@@ -38,11 +38,15 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                     }
 
                     return InternalServerError(ex);
-                }            
+                }
             }
         }
 
-        public PDFVM Producao(DanfeVM entity)
+    }
+
+    public static class DanfePDFHelper
+    {
+        public static PDFVM Producao(DanfeVM entity)
         {
             var danfeId = new NFESBRAProd.IDDANFE
             {
@@ -65,7 +69,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
             return pdf;
         }
 
-        public PDFVM Homologacao(DanfeVM entity)
+        public static PDFVM Homologacao(DanfeVM entity)
         {
             var danfeId = new NFESBRA.IDDANFE
             {

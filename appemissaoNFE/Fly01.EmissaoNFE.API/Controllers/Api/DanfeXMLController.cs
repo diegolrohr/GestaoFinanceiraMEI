@@ -18,12 +18,12 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
             {
                 try
                 {
-                    var xml = entity.EntidadeAmbiente == TipoAmbiente.Homologacao ? Homologacao(entity) : Producao(entity);
+                    var xml = entity.EntidadeAmbiente == TipoAmbiente.Homologacao ? DanfeXMLHelper.Homologacao(entity) : DanfeXMLHelper.Producao(entity);
                     //tenta recuperar invertendo o ambiente, pode ser que foi emitido em outro ambiente do atual configurado
                     //posteriormente começou a se salvar as configuração de cada transmissão
                     if (xml == null || (xml != null && string.IsNullOrEmpty(xml?.XML)))
                     {
-                        xml = entity.EntidadeAmbiente == TipoAmbiente.Homologacao ? Producao(entity) : Homologacao(entity);
+                        xml = entity.EntidadeAmbiente == TipoAmbiente.Homologacao ? DanfeXMLHelper.Producao(entity) : DanfeXMLHelper.Homologacao(entity);
                     }
 
                     return Ok(xml);
@@ -39,8 +39,11 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 }
             }
         }
+    }
 
-        public XMLVM Producao(DanfeVM entity)
+    public static class DanfeXMLHelper
+    {
+        public static XMLVM Producao(DanfeVM entity)
         {
             var response = new NFESBRAProd.NFESBRA().RETORNAFAIXA(AppDefault.Token, entity.Producao, entity.DanfeId, entity.DanfeId, "");
 
@@ -52,7 +55,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
             return xml;
         }
 
-        public XMLVM Homologacao(DanfeVM entity)
+        public static XMLVM Homologacao(DanfeVM entity)
         {
             var response = new NFESBRA.NFESBRA().RETORNAFAIXA(AppDefault.Token, entity.Homologacao, entity.DanfeId, entity.DanfeId, "");
 

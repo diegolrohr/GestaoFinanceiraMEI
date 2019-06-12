@@ -2,6 +2,7 @@
 using System.Linq;
 using Fly01.Core.Notifications;
 using Fly01.EmissaoNFE.Domain.ViewModelNFS;
+using Fly01.Core.Helpers;
 
 namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
 {
@@ -15,12 +16,19 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
             }
             else
             {
+                ValidaMunicipioHomologado(entity);
                 ValidarDataHoraEmissao(entity);
                 ValidarSerieRPC(entity);
                 ValidarNumeroRPC(entity);
                 ValidarTipoTributacao(entity);
                 ValidarCompetenciaRPS(entity);
             }
+        }
+
+        private static void ValidaMunicipioHomologado(TransmissaoNFSVM entity)
+        {
+            var cidadeHomologadaTss = (NFSeTssHelper.IbgesCidadesHomologadasTssNFSe.Contains(entity.ItemTransmissaoNFSVM.Prestador.CodigoMunicipioIBGE));
+            entity.Fail(!cidadeHomologadaTss, new Error("A cidade informada nos dados da sua empresa, não está homologada pelo TSS para transmissão de NFS-e"));
         }
         
         private static void ValidarCompetenciaRPS(TransmissaoNFSVM entity)

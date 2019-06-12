@@ -60,6 +60,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AssistenciaRemotaController.cs" />
     <Compile Include="Controllers\AutoCompleteController.cs" />
     <Compile Include="Controllers\AvaliacaoAppController.cs" />
     <Compile Include="Controllers\ConfiguracaoPersonalizacaoController.cs" />
@@ -227,6 +228,8 @@
     <Content Include="Views\ConfiguracaoPersonalizacao\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\ConfiguracaoPersonalizacao\Index.cshtml" />
     <Content Include="Views\RelatorioProduto\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\AssistenciaRemota\index.cshtml" />
+    <Content Include="Views\AssistenciaRemota\Functions\_fnAssistenciaRemotaFormReady.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

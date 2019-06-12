@@ -2,18 +2,22 @@
     @Html.Partial("Functions/_fnImprimir");
 
     function fnImprimirOrcamentoPedido(idRecord) {
-        $$$.loading.start();
+        var url = '@Url.Action("ImprimirOrcamentoPedido", "OrdemVenda")?id=' + idRecord;
+        fnImprimir(url);
+
+        @*$$$.loading.start();
 
         $.ajax({
             url: '@Url.Action("ImprimirOrcamentoPedido", "OrdemVenda")',
             data: { id: idRecord },
 			type: "GET",
-			success : function(data) {
+			success: function (data) {
+			    debugger;
 			    $$$.loading.stop();
 			    if (data.message) {
 			        $$$.fn.submitErrorHandler(null, data.message);
 			    } else {
-			        fnImprimir(data.fileName);
+			        fnImprimir(data);
 			    }
 			},
             error: function (jqxhr, textStatus, error) {
@@ -21,6 +25,6 @@
 				$$$.toast(err, "error");
 				$$$.loading.stop();
 			}
-        });
+        });*@
     }
 </script>

@@ -201,7 +201,8 @@ namespace Fly01.Faturamento.Controllers
                     Label = "Ajuda",
                     Items = new List<LinkUI>
                     {
-                        new LinkUI() { Class = ResourceHashConst.FaturamentoAjudaAssistenciaRemota, Label = "Assistência Remota", Link = "https://secure.logmeinrescue.com/customer/code.aspx" }
+                        //new LinkUI() { Class = ResourceHashConst.FaturamentoAjudaAssistenciaRemota, Label = "Assistência Remota", Link = "https://secure.logmeinrescue.com/customer/code.aspx" }
+                        new LinkUI() { Class = ResourceHashConst.ComprasAjudaAssistenciaRemota, Label =  "Assistência Remota", OnClick = @Url.Action("Form", "AssistenciaRemota") }
                     }
                 },
                 new SidebarUIMenu() { Class = ResourceHashConst.FaturamentoAvalieAplicativo, Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp") }

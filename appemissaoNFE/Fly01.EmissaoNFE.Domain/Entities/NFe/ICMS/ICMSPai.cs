@@ -209,16 +209,17 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                     DoTheValidation();
 
                     ICMS = new ICMS00(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT)
-                    {          
-                                         
-                        ModalidadeBC = ModalidadeBC.Value,              
-                        ValorBC = ValorBC.Value,                      
+                    {
+
+                        ModalidadeBC = ModalidadeBC.Value,
+                        ValorBC = ValorBC.Value,
                         ValorICMS = ValorICMS.Value,
-                        AliquotaICMS = AliquotaICMS.Value
+                        AliquotaICMS = AliquotaICMS.Value,
                         ValorBCFCP = ValorBCFCP.Value,
                         PercentualFCP = PercentualFCP.Value,
                         ValorFCP = ValorFCP.Value,
-
+                        ValorICMSSTUFDestino = ValorICMSSTUFDestino,
+                        ValorBCSTDestino = ValorBCSTDestino,
 
                     };
                     break;
@@ -384,11 +385,33 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                     };
                     break;
 
+                case "90"://Outros
+                    DoTheValidation();
 
-
-
-
-
+                    ICMS = new ICMS90(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT)
+                    {                        
+                        AliquotaICMS = AliquotaICMS,
+                        AliquotaICMSST = AliquotaICMSST,
+                        ModalidadeBC = ModalidadeBC,
+                        ModalidadeBCST = ModalidadeBCST,
+                        PercentualBCop = PercentualBCop,
+                        PercentualReducaoBCST = PercentualReducaoBCST,
+                        MotivoDesoneracaoICMS = MotivoDesoneracaoICMS,
+                        ValorBC = ValorBC,
+                        ValorBCST = ValorBCST,
+                        ValorBCSTDestino = ValorBCSTDestino,
+                        ValorBCSTRetido = ValorBCSTRetido,
+                        PercentualMargemValorAdicionadoST = PercentualMargemValorAdicionadoST,
+                        ValorICMSSTRetido = ValorICMSSTRetido,
+                        ValorICMS = ValorICMS,
+                        ValorICMSST = ValorICMSST,                        
+                        ValorICMSSTUFDestino = ValorICMSSTUFDestino,
+                        PercentualReducaoBC = PercentualReducaoBC,
+                        BaseFCPST = BaseFCPST,
+                        AliquotaFCPST = AliquotaFCPST,
+                        ValorFCPST = ValorFCPST
+                    };
+                    break;
 
 
                 default:

@@ -58,6 +58,7 @@
     <Compile Include="Entities\NFe\ICMS\ICMS41.cs" />
     <Compile Include="Entities\NFe\ICMS\ICMS40.cs" />
     <Compile Include="Entities\NFe\ICMS\ICMS60.cs" />
+    <Compile Include="Entities\NFe\ICMS\ICMS90.cs" />
     <Compile Include="Entities\NFe\ResponsavelTecnico.cs" />
     <Compile Include="Entities\NFS\Assinatura.cs" />
     <Compile Include="Entities\NFS\Construcao.cs" />

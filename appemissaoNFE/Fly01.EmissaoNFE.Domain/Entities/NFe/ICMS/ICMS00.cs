@@ -59,6 +59,43 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         }
 
         [XmlIgnore]
+        public double? ValorBCSTDestino { get; set; }
+
+        [XmlElement(ElementName = "vBCSTDest", IsNullable = true)]
+        public string ValorBCSTDestinoString
+        {
+            get
+            {
+                return ValorBCSTDestino.HasValue && ValorBCSTDestino > 0 ? ValorBCSTDestino.Value.ToString("0.00").Replace(",", ".") : "0.00";
+            }
+            set { ValorBCSTDestino = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
+        }
+
+        public bool ShouldSerializeValorBCSTDestinoString()
+        {
+            return ValorBCSTDestino.HasValue && ValorBCSTDestino.Value > 0;
+        }
+
+        [XmlIgnore]
+        public double? ValorICMSSTUFDestino { get; set; }
+
+        [XmlElement(ElementName = "vICMSSTDest", IsNullable = true)]
+        public string ValorICMSSTUFDestinoString
+        {
+            get
+            {
+                return ValorICMSSTUFDestino.HasValue && ValorICMSSTUFDestino > 0 ? ValorICMSSTUFDestino.Value.ToString("0.00").Replace(",", ".") : "0.00";
+            }
+            set { ValorICMSSTUFDestino = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
+        }
+
+        public bool ShouldSerializeValorICMSSTUFDestinoString()
+        {
+            return ValorICMSSTUFDestino.HasValue && ValorICMSSTUFDestino.Value > 0;
+        }
+
+
+        [XmlIgnore]
         public double ValorBCFCP { get; set; }
 
         [XmlElement("vBCFCP")]
@@ -96,8 +133,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
             }
             set { ValorFCP = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
-
-
+        
 
 
     }

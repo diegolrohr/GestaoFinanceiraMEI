@@ -8,7 +8,16 @@
         $('#baixarXmls').hide();
         setupGridSelectEvents();
         fnSelectRow();
+        fnChangeDate();
     });
+
+    function fnChangeDate() {
+        $('#data').change(function () {
+            if ($('#data').val() !== "") {
+                $('#baixarXmls').show();
+            }
+        });
+    }
 
     function setupGridSelectEvents() {
 

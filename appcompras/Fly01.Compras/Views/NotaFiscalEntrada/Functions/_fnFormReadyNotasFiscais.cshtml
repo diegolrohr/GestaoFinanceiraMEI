@@ -5,9 +5,19 @@
 
     $().ready(function () {
         $('#baixarTodosXmls').hide();
+        $('#baixarXmls').hide();
         setupGridSelectEvents();
         fnSelectRow();
     });
+
+    function fnChangeDate() {
+        $('#data').change(function () {
+            if ($('#data').val() !== "") {
+                $('#baixarXmls').show();
+            }
+        });
+    }
+
 
     function setupGridSelectEvents() {
         $$$._.fly01dt.on("select", function (e, dt, type, indexes) {

@@ -52,7 +52,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Class = "col s12",
                 Color = "blue",
                 Id = "instaladorTeamViewer",
-                Placeholder = "Instalador do TeamViewer 13",
+                Title = "Instalador do TeamViewer v.13",
                 Action = new LinkUI()
                 {
                     Label = "Clique Aqui para Baixar o Instalador"

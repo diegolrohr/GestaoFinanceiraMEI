@@ -5,17 +5,61 @@ using Fly01.EmissaoNFE.Domain.Enums;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
 {
-    [XmlRoot("ICMS30")]
-    public class ICMS30 : ICMS
+    [XmlRoot("ICMS70")]
+    public class ICMS70 : ICMS
     {
-        public ICMS30()
+        public ICMS70()
         {
 
         }
 
-        public ICMS30(OrigemMercadoria origemMercadoria, TipoTributacaoICMS codigoSituacaoOperacao, TipoCRT tipoCRT) : base(origemMercadoria, codigoSituacaoOperacao, tipoCRT)
+        public ICMS70(OrigemMercadoria origemMercadoria, TipoTributacaoICMS codigoSituacaoOperacao, TipoCRT tipoCRT) : base(origemMercadoria, codigoSituacaoOperacao, tipoCRT)
         {
-        }       
+        }
+
+        [XmlElement(ElementName = "modBC")]
+        public ModalidadeDeterminacaoBCICMS ModalidadeBC { get; set; }
+
+        [XmlIgnore]
+        public double ValorBC { get; set; }
+
+        [XmlElement("vBC")]
+        public string ValorBCString
+        {
+            get
+            {
+                return ValorBC.ToString("0.00").Replace(",", ".");
+            }
+            set { ValorBC = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
+        }
+
+
+        [XmlIgnore]
+        public double AliquotaICMS { get; set; }
+
+        [XmlElement("pICMS")]
+        public string AliquotaICMSString
+        {
+            get
+            {
+                return AliquotaICMS.ToString("0.0000").Replace(",", ".");
+            }
+            set { AliquotaICMS = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
+        }
+
+        [XmlIgnore]
+        public double ValorICMS { get; set; }
+
+        [XmlElement("vICMS")]
+        public string ValorICMSString
+        {
+            get
+            {
+                return ValorICMS.ToString("0.00").Replace(",", ".");
+            }
+            set { ValorICMS = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
+        }
+
 
         [XmlElement(ElementName = "modBCST")]
         public ModalidadeDeterminacaoBCICMSST ModalidadeBCST { get; set; }
@@ -72,22 +116,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
             }
             set { PercentualMargemValorAdicionadoST = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
-
-
-        [XmlIgnore]
-        public double PercentualReducaoBCST { get; set; }
-
-        [XmlElement("pRedBCST")]
-        public string PercentualReducaoBCSTString
-        {
-            get
-            {
-                return PercentualReducaoBCST.ToString("0.0000").Replace(",", ".");
-            }
-            set { PercentualReducaoBCST = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
-        }
-
-
+                           
 
         [XmlIgnore]
         public double? BaseFCPST { get; set; }
@@ -137,13 +166,33 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
             return (BaseFCPST.HasValue && BaseFCPST.Value > 0.0) && (AliquotaFCPST.HasValue && AliquotaFCPST.Value > 0.0) && (ValorFCPST.HasValue && ValorFCPST.Value > 0.0);
         }
 
-        [XmlElement(ElementName = "motDesICMS", IsNullable = true)]
-        public int? MotivoDesoneracaoICMS { get; set; }
+        [XmlIgnore]
+        public double PercentualReducaoBC { get; set; }
 
-        public bool ShouldSerializeMotivoDesoneracaoICMS()
+        [XmlElement("pRedBC")]
+        public string PercentualReducaoBCString
         {
-            return MotivoDesoneracaoICMS.HasValue;
+            get
+            {
+                return PercentualReducaoBC.ToString("0.0000").Replace(",", ".");
+            }
+            set { PercentualReducaoBC = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
+
+        [XmlIgnore]
+        public double PercentualReducaoBCST { get; set; }
+
+        [XmlElement("pRedBCST")]
+        public string PercentualReducaoBCSTString
+        {
+            get
+            {
+                return PercentualReducaoBCST.ToString("0.0000").Replace(",", ".");
+            }
+            set { PercentualReducaoBCST = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
+        }
+
+
 
 
 

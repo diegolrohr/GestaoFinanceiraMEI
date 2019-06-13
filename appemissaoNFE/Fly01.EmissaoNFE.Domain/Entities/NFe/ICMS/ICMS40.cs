@@ -14,5 +14,15 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         public ICMS40(OrigemMercadoria origemMercadoria, TipoTributacaoICMS codigoSituacaoOperacao, TipoCRT tipoCRT) : base(origemMercadoria, codigoSituacaoOperacao, tipoCRT)
         {
         }
+
+        [XmlElement(ElementName = "motDesICMS", IsNullable = true)]
+        public int? MotivoDesoneracaoICMS { get; set; }
+
+        public bool ShouldSerializeMotivoDesoneracaoICMS()
+        {
+            return MotivoDesoneracaoICMS.HasValue;
+        }
+
+
     }
 }

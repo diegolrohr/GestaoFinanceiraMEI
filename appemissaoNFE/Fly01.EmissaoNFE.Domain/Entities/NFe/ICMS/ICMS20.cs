@@ -70,6 +70,55 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
             }
             set { PercentualReducaoBC = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
-               
+
+        [XmlElement(ElementName = "motDesICMS", IsNullable = true)]
+        public int? MotivoDesoneracaoICMS { get; set; }
+
+        public bool ShouldSerializeMotivoDesoneracaoICMS()
+        {
+            return MotivoDesoneracaoICMS.HasValue;
+        }
+
+        [XmlIgnore]
+        public double ValorBCFCP { get; set; }
+
+        [XmlElement("vBCFCP")]
+        public string ValorBCFCPString
+        {
+            get
+            {
+                return ValorBCFCP.ToString("0.00").Replace(",", ".");
+            }
+            set { ValorBCFCP = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
+        }
+
+        [XmlIgnore]
+        public double PercentualFCP { get; set; }
+
+        [XmlElement("pFCP")]
+        public string PercentualFCPString
+        {
+            get
+            {
+                return PercentualFCP.ToString("0.0000").Replace(",", ".");
+            }
+            set { PercentualFCP = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
+        }
+
+        [XmlIgnore]
+        public double ValorFCP { get; set; }
+
+        [XmlElement("vFCP")]
+        public string ValorFCPString
+        {
+            get
+            {
+                return ValorFCP.ToString("0.00").Replace(",", ".");
+            }
+            set { ValorFCP = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
+        }
+
+
+
     }
 }

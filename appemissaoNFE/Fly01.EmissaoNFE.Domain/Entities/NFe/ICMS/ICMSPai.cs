@@ -283,8 +283,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                     ToValidate.Add(NewKeyValuePair("AliquotaICMSST", AliquotaICMSST));
                     ToValidate.Add(NewKeyValuePair("ValorICMSST", ValorICMSST));
                     ToValidate.Add(NewKeyValuePair("PercentualMargemValorAdicionadoST", PercentualMargemValorAdicionadoST));
-                    ToValidate.Add(NewKeyValuePair("PercentualReducaoBCST", PercentualReducaoBCST));      
-
+             
                     DoTheValidation();
 
                     ICMS = new ICMS30(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT)
@@ -302,6 +301,14 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
 
                     };
                     break;
+
+                case "40"://Isento.
+                    ICMS = new ICMS40(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT);
+                    break;
+                case "41"://Não tributado. 
+                    ICMS = new ICMS41(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT);
+                    break;
+
 
 
 

@@ -308,6 +308,34 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                 case "41"://Não tributado. 
                     ICMS = new ICMS41(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT);
                     break;
+                case "50"://Com suspensao.
+                    ICMS = new ICMS50(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT);
+                    break;
+                case "51"://Diferimento. 
+                    ICMS = new ICMS51(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT);
+                    break;
+
+                case "60"://ICMS ST Retido anteriormente
+                    ToValidate.Add(NewKeyValuePair("ValorBCSTRetido", ValorBCSTRetido));
+                    ToValidate.Add(NewKeyValuePair("ValorICMSSTRetido", ValorICMSSTRetido));
+
+                    ToValidate.Add(NewKeyValuePair("BaseFCPSTRetido", BaseFCPSTRetido));
+                    ToValidate.Add(NewKeyValuePair("AliquotaFCPSTRetido", AliquotaFCPSTRetido));
+                    ToValidate.Add(NewKeyValuePair("ValorFCPSTRetido", ValorFCPSTRetido));
+                    ToValidate.Add(NewKeyValuePair("AliquotaConsumidorFinal", AliquotaConsumidorFinal));
+
+                    DoTheValidation();
+
+                    ICMS = new ICMS60(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT)
+                    {
+                        ValorBCSTRetido = ValorBCSTRetido.Value,
+                        ValorICMSSTRetido = ValorICMSSTRetido.Value,
+                        BaseFCPSTRetido = BaseFCPSTRetido,
+                        AliquotaFCPSTRetido = AliquotaFCPSTRetido,
+                        ValorFCPSTRetido = ValorFCPSTRetido,
+                        AliquotaConsumidorFinal = AliquotaConsumidorFinal.Value
+                    };
+                    break;
 
 
 

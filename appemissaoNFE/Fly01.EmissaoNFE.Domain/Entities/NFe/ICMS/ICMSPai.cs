@@ -219,6 +219,38 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                     };
                     break;
 
+                case "10"://Com substituiçao
+
+                    ToValidate.Add(NewKeyValuePair("ModalidadeBC", (int?)ModalidadeBC));
+                    ToValidate.Add(NewKeyValuePair("ModalidadeBCST", (int?)ModalidadeBCST));
+                    ToValidate.Add(NewKeyValuePair("ValorICMS", ValorICMS));
+                    ToValidate.Add(NewKeyValuePair("AliquotaICMS", AliquotaICMS));
+                    ToValidate.Add(NewKeyValuePair("AliquotaICMSST", AliquotaICMSST));
+                    ToValidate.Add(NewKeyValuePair("ValorBC", ValorBC));
+                    ToValidate.Add(NewKeyValuePair("PercentualMargemValorAdicionadoST", PercentualMargemValorAdicionadoST));
+                 
+
+
+                    DoTheValidation();
+
+                    ICMS = new ICMS10(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT)
+                    {
+                        ModalidadeBC = ModalidadeBC.Value,
+                        ModalidadeBCST = ModalidadeBCST.Value,
+                        ValorBC = ValorBC.Value,
+                        ValorBCST = ValorBCST.Value,
+                        ValorICMS = ValorICMS.Value,
+                        ValorICMSST = ValorICMSST.Value,
+                        AliquotaICMS = AliquotaICMS.Value,
+                        AliquotaICMSST = AliquotaICMSST.Value,
+                        BaseFCPST = BaseFCPST.Value,
+                        AliquotaFCPST = AliquotaFCPST.Value,
+                        ValorFCPST = ValorFCPST.Value,
+                        PercentualMargemValorAdicionadoST = PercentualMargemValorAdicionadoST.Value,          
+                      
+                    };
+                    break;
+
 
                 default:
                     throw new NotImplementedException();

@@ -68,6 +68,10 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [APIEnum("TipoHorario")]
         public string TipoHorario { get; set; }
 
+        [JsonProperty("tipoCRT")]
+        [APIEnum("TipoCRT")]
+        public string TipoCRT { get; set; }
+
         #region NFS
         [JsonProperty("versaoNFSe")]
         public string VersaoNFSe { get; set; }

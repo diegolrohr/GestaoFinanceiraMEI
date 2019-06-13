@@ -433,6 +433,7 @@
     <Content Include="Views\ConfiguracaoPersonalizacao\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\ConfiguracaoPersonalizacao\Index.cshtml" />
     <Content Include="Views\Pedido\Functions\_fnChangeCollapseExpand.cshtml" />
+    <Content Include="Views\NotaFiscalEntrada\Functions\_fnBaixarTodosXMLNFeZip.cshtml" />
     <Content Include="Views\AssistenciaRemota\Functions\_fnAssistenciaRemotaFormReady.cshtml" />
     <Content Include="Views\AssistenciaRemota\index.cshtml" />
     <None Include="Web.Homologacao.config">

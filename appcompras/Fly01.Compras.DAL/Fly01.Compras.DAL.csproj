@@ -380,6 +380,10 @@
     <Compile Include="Migrations\201906051447431_AlterUnidadeMedida.Designer.cs">
       <DependentUpon>201906051447431_AlterUnidadeMedida.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201906111725349_MigrationTipoCRTEntrada.cs" />
+    <Compile Include="Migrations\201906111725349_MigrationTipoCRTEntrada.Designer.cs">
+      <DependentUpon>201906111725349_MigrationTipoCRTEntrada.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer7.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer6.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer5.cs" />
@@ -677,6 +681,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201906051447431_AlterUnidadeMedida.resx">
       <DependentUpon>201906051447431_AlterUnidadeMedida.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906111725349_MigrationTipoCRTEntrada.resx">
+      <DependentUpon>201906111725349_MigrationTipoCRTEntrada.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

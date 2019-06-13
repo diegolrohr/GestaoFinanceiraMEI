@@ -86,9 +86,11 @@ namespace Fly01.Faturamento.BL
                                 nfe.Recomendacao = null;
                                 nfe.XML = null;
 
+                                nfe.XML = itemNF?.XML;
+                                nfe.PDF = itemNF?.PDF;
                                 nfe.Status = itemNF.Status;
-                                nfe.Mensagem = itemNF.Mensagem;
-                                nfe.Recomendacao = itemNF.Recomendacao;
+                                nfe.Mensagem = itemNF?.Mensagem;
+                                nfe.Recomendacao = itemNF?.Recomendacao;
                             }
                         }
                     }

@@ -64,7 +64,7 @@ namespace Fly01.Compras.BL
                         if (responseMonitor == null)
                             continue;
 
-                        AtualizarStausNF(responseMonitor);
+                        AtualizarStatusNF(responseMonitor);
                     }
                 }
                 catch
@@ -190,7 +190,7 @@ namespace Fly01.Compras.BL
             };
         }
 
-        private void AtualizarStausNF(ListMonitorRetornoVM responseMonitor)
+        private void AtualizarStatusNF(ListMonitorRetornoVM responseMonitor)
         {
             foreach (var itemNF in responseMonitor.Retornos)
             {

@@ -43,6 +43,8 @@
                 $("input#formatarCodigoISS").prop("checked", data.formatarCodigoISS);
                 $('#tipoRegimeEspecialTributacao').val(data.tipoRegimeEspecialTributacao);
                 $('select#tipoRegimeEspecialTributacao').material_select();
+                $('#tipoCRT').val(data.tipoCRT);
+                $('select#tipoCRT').material_select();
                 $$$.fn.updateTextFields();
                 $$$.loading.stop();
             },

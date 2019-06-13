@@ -532,6 +532,10 @@
     <Compile Include="Migrations\201906051449161_AlterUnidadeMedida.Designer.cs">
       <DependentUpon>201906051449161_AlterUnidadeMedida.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201906111321411_MigrationTipoCRT.cs" />
+    <Compile Include="Migrations\201906111321411_MigrationTipoCRT.Designer.cs">
+      <DependentUpon>201906111321411_MigrationTipoCRT.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\AliquotaSimplesNacionalDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
@@ -927,6 +931,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201906051449161_AlterUnidadeMedida.resx">
       <DependentUpon>201906051449161_AlterUnidadeMedida.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906111321411_MigrationTipoCRT.resx">
+      <DependentUpon>201906111321411_MigrationTipoCRT.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -252,6 +252,30 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                     break;
 
 
+                case "20"://Com reduçao na base 
+
+                    ToValidate.Add(NewKeyValuePair("ModalidadeBC", (int?)ModalidadeBC));
+                    ToValidate.Add(NewKeyValuePair("ValorICMS", ValorICMS));
+                    ToValidate.Add(NewKeyValuePair("AliquotaICMS", AliquotaICMS));
+                    ToValidate.Add(NewKeyValuePair("ValorBC", ValorBC));
+                    ToValidate.Add(NewKeyValuePair("PercentualReducaoBC", PercentualReducaoBC));                   
+
+
+                    DoTheValidation();
+
+                    ICMS = new ICMS20(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT)
+                    {
+
+                        ModalidadeBC = ModalidadeBC.Value,
+                        ValorBC = ValorBC.Value,
+                        ValorICMS = ValorICMS.Value,
+                        AliquotaICMS = AliquotaICMS.Value,
+                        PercentualReducaoBC = PercentualReducaoBC.Value,
+
+                    };
+                    break;
+
+
                 default:
                     throw new NotImplementedException();
             }

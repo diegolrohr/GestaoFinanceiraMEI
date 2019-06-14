@@ -333,7 +333,6 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                 case "60"://ICMS ST Retido anteriormente
                     ToValidate.Add(NewKeyValuePair("ValorBCSTRetido", ValorBCSTRetido));
                     ToValidate.Add(NewKeyValuePair("ValorICMSSTRetido", ValorICMSSTRetido));
-
                     ToValidate.Add(NewKeyValuePair("BaseFCPSTRetido", BaseFCPSTRetido));
                     ToValidate.Add(NewKeyValuePair("AliquotaFCPSTRetido", AliquotaFCPSTRetido));
                     ToValidate.Add(NewKeyValuePair("ValorFCPSTRetido", ValorFCPSTRetido));

@@ -37,7 +37,7 @@ namespace Fly01.EmissaoNFE.BL
         public string SerializeNota(ItemTransmissaoVM nfe)
         {
             var nota = ConvertToNFe(nfe);
-            var xmlString = NFeBL.ConvertToXML(nota, TipoCRT.SimplesNacional);
+            var xmlString = NFeBL.ConvertToXML(nota, nfe.Emitente.CRT);
 
             return xmlString;
         }

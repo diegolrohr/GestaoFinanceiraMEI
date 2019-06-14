@@ -424,8 +424,8 @@ namespace Fly01.OrdemServico.Controllers
                     Label = "Ajuda",
                     Items = new List<LinkUI>
                     {
-                        new LinkUI() { Class = ResourceHashConst.OrdemServicoAjuda,Label = "Manual do Usuário", Link = "https://centraldeatendimento.totvs.com/hc/pt-br/categories/360000364572" },
-                        new LinkUI() { Class = ResourceHashConst.OrdemServicoAjudaAssistenciaRemota, Label =  "Assistência Remota", OnClick = @Url.Action("Form", "AssistenciaRemota") }
+                        new LinkUI() { Class = ResourceHashConst.OrdemServicoAjudaAssistenciaRemota, Label =  "Assistência Remota", OnClick = @Url.Action("Form", "AssistenciaRemota") },
+                        new LinkUI() { Class = ResourceHashConst.OrdemServicoAjuda,Label = "Manual do Usuário", Link = "https://centraldeatendimento.totvs.com/hc/pt-br/categories/360000364572" }
                     }
                 },
                 new SidebarUIMenu() { Class = ResourceHashConst.OrdemServicoAvalieAplicativo, Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp") }

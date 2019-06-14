@@ -360,8 +360,8 @@ namespace Fly01.Compras.Controllers
                     Label = "Ajuda",
                     Items = new List<LinkUI>
                     {
-                        new LinkUI() { Class = ResourceHashConst.ComprasAjuda, Label = "Manual do Usuário", Link = "https://centraldeatendimento.totvs.com/hc/pt-br/categories/360000364572" },
                         new LinkUI() { Class = ResourceHashConst.ComprasAjudaAssistenciaRemota, Label =  "Assistência Remota", OnClick = @Url.Action("Form", "AssistenciaRemota") },
+                        new LinkUI() { Class = ResourceHashConst.ComprasAjuda, Label = "Manual do Usuário", Link = "https://centraldeatendimento.totvs.com/hc/pt-br/categories/360000364572" }
                     }
                 },
                 new SidebarUIMenu() { Class = ResourceHashConst.ComprasAvalieAplicativo, Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp") }

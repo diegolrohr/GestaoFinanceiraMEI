@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AssistenciaRemotaController.cs" />
     <Compile Include="Controllers\ConfiguracaoPersonalizacaoController.cs" />
     <Compile Include="Controllers\AutoCompleteController.cs" />
     <Compile Include="Controllers\AvaliacaoAppController.cs" />
@@ -394,6 +395,8 @@
     <Content Include="Views\ConfiguracaoPersonalizacao\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\OrdemVenda\Functions\_fnChangeCollapseExpand.cshtml" />
     <Content Include="Views\NotaFiscal\Functions\_fnBaixarTodosXMLNFeZip.cshtml" />
+    <Content Include="Views\AssistenciaRemota\index.cshtml" />
+    <Content Include="Views\AssistenciaRemota\Functions\_fnAssistenciaRemotaFormReady.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AssistenciaRemotaController.cs" />
     <Compile Include="Controllers\AutoCompleteController.cs" />
     <Compile Include="Controllers\AvaliacaoAppController.cs" />
     <Compile Include="Controllers\ConfiguracaoPersonalizacaoController.cs" />
@@ -251,6 +252,8 @@
     <Content Include="Views\Kit\Functions\_fnDrawCallbackCalcProdutos.cshtml" />
     <Content Include="Views\ConfiguracaoPersonalizacao\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\ConfiguracaoPersonalizacao\Index.cshtml" />
+    <Content Include="Views\AssistenciaRemota\index.cshtml" />
+    <Content Include="Views\AssistenciaRemota\Functions\_fnAssistenciaRemotaFormReady.cshtml" />
     <None Include="Views\OrdemServico\Functions\_fnModalOrdemServicoManutencao.cshtml" />
     <Content Include="Views\ParametroOrdemServico\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\Responsavel\ImportaCadastro.cshtml" />

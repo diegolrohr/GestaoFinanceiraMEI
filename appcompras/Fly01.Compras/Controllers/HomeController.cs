@@ -137,7 +137,7 @@ namespace Fly01.Compras.Controllers
                         {
                             new ButtonGroupOptionUI { Id = "btnPedido", Value = "Pedido", Label = "Pedido", Class = "col s6" },
                             new ButtonGroupOptionUI { Id = "btnOrcamento", Value = "Orcamento", Label = "Orçamento", Class = "col s6" }
-                            
+
                         }
                     }
                 }
@@ -216,7 +216,7 @@ namespace Fly01.Compras.Controllers
                         Priority = 2,
                         Orderable = false,
                         Searchable = false
-                    },                  
+                    },
                     new DataTableUIColumn
                     {
                         DataField = "quantidade",
@@ -360,7 +360,8 @@ namespace Fly01.Compras.Controllers
                     Label = "Ajuda",
                     Items = new List<LinkUI>
                     {
-                        new LinkUI() { Class = ResourceHashConst.ComprasAjudaAssistenciaRemota, Label =  "Assistência Remota", Link = "https://secure.logmeinrescue.com/customer/code.aspx"}
+                        new LinkUI() { Class = ResourceHashConst.ComprasAjudaAssistenciaRemota, Label =  "Assistência Remota", OnClick = @Url.Action("Form", "AssistenciaRemota") },
+                        new LinkUI() { Class = ResourceHashConst.ComprasAjuda, Label = "Manual do Usuário", Link = "https://centraldeatendimento.totvs.com/hc/pt-br/categories/360000364572" }
                     }
                 },
                 new SidebarUIMenu() { Class = ResourceHashConst.ComprasAvalieAplicativo, Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp") }
@@ -369,7 +370,7 @@ namespace Fly01.Compras.Controllers
             config.MenuItems.AddRange(ProcessMenuRoles(menuItems));
             #endregion
 
-            
+
 
 
             #region User Menu Items
@@ -389,7 +390,7 @@ namespace Fly01.Compras.Controllers
             {
                 Conpass = new ConpassUI(),
                 Droz = new DrozUI(),
-                Zendesk = new ZendeskUI() 
+                Zendesk = new ZendeskUI()
                 {
                     AppName = "Bemacash Gestão",
                     AppTag = "chat_fly01_gestao",

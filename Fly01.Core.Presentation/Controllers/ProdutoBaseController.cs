@@ -431,8 +431,9 @@ namespace Fly01.Core.Presentation.Controllers
                 Class = "col s12 m3",
                 Label = "Tipo",
                 Required = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoProduto))),
-                DomEvents = new List<DomEventUI>() { new DomEventUI() { DomEvent = "change", Function = "fnChangeTipoProduto" } }
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoProduto)).ToList().FindAll(x => "ProdutoFinal,Insumo,Outros".Contains(x.Value)).OrderByDescending(x => x.Label)),
+                DomEvents = new List<DomEventUI>() { new DomEventUI() { DomEvent = "change", Function = "fnChangeTipoProduto" } },
+
             });
 
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
@@ -464,6 +465,16 @@ namespace Fly01.Core.Presentation.Controllers
                 Required = true,
                 DataUrl = @Url.Action("UnidadeMedida", "AutoComplete"),
                 LabelId = "unidadeMedidaDescricao"
+            });
+
+            config.Elements.Add(new AutoCompleteUI
+            {
+                Id = "ncmId",
+                Class = "col s12",
+                Label = "NCM",
+                DataUrl = @Url.Action("Ncm", "AutoComplete"),
+                LabelId = "ncmDescricao",
+                DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeNCM" } }
             });
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");

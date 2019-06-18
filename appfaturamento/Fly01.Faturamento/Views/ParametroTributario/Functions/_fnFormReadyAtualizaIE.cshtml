@@ -12,6 +12,7 @@
                     inscricaoEstadual: $('#inscricaoEstadualId').val()
                 },
                 success: function (response) {
+                    debugger;
                     if (response.success) {
                         $$$._.fly01mdlfrmAtualizaIE.close();
                         fnAtualizaParametro();

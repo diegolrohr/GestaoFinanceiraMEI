@@ -1,20 +1,20 @@
-﻿using Fly01.uiJS.Classes;
-using Fly01.uiJS.Defaults;
+﻿using Fly01.Core.Config;
 using Fly01.Core.Helpers;
+using Fly01.Core.Presentation.Commons;
+using Fly01.Core.Rest;
+using Fly01.Core.ValueObjects;
+using Fly01.Core.ViewModels;
+using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.uiJS.Classes;
+using Fly01.uiJS.Classes.Elements;
+using Fly01.uiJS.Classes.Helpers;
+using Fly01.uiJS.Defaults;
+using Fly01.uiJS.Enums;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using Fly01.uiJS.Classes.Elements;
-using Fly01.Core.Rest;
-using Fly01.Core.Presentation.Commons;
-using Fly01.uiJS.Enums;
-using Fly01.Core.ViewModels;
-using Fly01.Core.ViewModels.Presentation.Commons;
-using Fly01.uiJS.Classes.Helpers;
-using Fly01.Core.Config;
-using Fly01.Core.ValueObjects;
 
 namespace Fly01.Core.Presentation.Controllers
 {
@@ -255,7 +255,7 @@ namespace Fly01.Core.Presentation.Controllers
             try
             {
                 ManagerEmpresaVM empresa = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
-                if (!string.IsNullOrEmpty(empresa.InscricaoEstadual))
+                if (!string.IsNullOrWhiteSpace(empresa.InscricaoEstadual))
                 {
                     return Json(new
                     {
@@ -333,7 +333,8 @@ namespace Fly01.Core.Presentation.Controllers
                 {
                     empresa.InscricaoEstadual = inscricaoEstadual;
 
-                    var response = RestHelper.ExecutePutRequest<ManagerEmpresaVM>($"{AppDefaults.UrlManager}company/{SessionManager.Current.UserData.PlatformUrl}", empresa, AppDefaults.GetQueryStringDefault());
+                    ApiEmpresaManager.AtualizaDadosEmpresa(empresa, SessionManager.Current.UserData.PlatformUrl);
+                    //var response = RestHelper.ExecutePutRequest<ManagerEmpresaVM>(AppDefaults.UrlManager, $"company/{SessionManager.Current.UserData.PlatformUrl}", empresa, AppDefaults.GetQueryStringDefault());
 
                     return Json(new
                     {

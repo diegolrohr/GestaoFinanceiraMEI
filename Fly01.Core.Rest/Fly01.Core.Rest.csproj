@@ -79,6 +79,10 @@
       <Project>{D3EE1325-9A1D-4620-853B-822D88105147}</Project>
       <Name>Fly01.Core.Helpers</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Fly01.Core.Notifications\Fly01.Core.Notifications.csproj">
+      <Project>{89C80F58-C490-4C34-B04E-7C43F5F09951}</Project>
+      <Name>Fly01.Core.Notifications</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Fly01.Core\Fly01.Core.csproj">
       <Project>{d848bbbd-61a9-4843-a16d-14a2b6ebec85}</Project>
       <Name>Fly01.Core</Name>

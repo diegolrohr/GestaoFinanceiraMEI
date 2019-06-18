@@ -102,6 +102,7 @@
                     data: {
                     },
                     success: function (response) {
+                        debugger;
                         if (response.success) {
                             enableFields();
                             var jsonData = $("form#fly01mdlfrmAliquotaSimplesNacional").serializeObject();
@@ -137,6 +138,7 @@
                             });
                         }
                         else {
+                            debugger;
                             $$$.loading.stop();
                             var url = "@Url.Action("ModalAtualizaIE", "AliquotaSimplesNacional")";
                             $$$.modal(url);

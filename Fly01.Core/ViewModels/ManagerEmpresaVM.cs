@@ -116,10 +116,10 @@ namespace Fly01.Core.ViewModels
         [JsonProperty("stoneEmail")]
         public string StoneEmail { get; set; }
 
-        [JsonProperty("cidade")]
+        [JsonProperty("Cidade")]
         public virtual ManagerCidadeVM Cidade { get; set; }
 
-        [JsonProperty("platformUrl")]
+        [JsonProperty("PlatformUrl")]
         public virtual ManagerPlatformUrlVM PlatformUrl { get; set; }
     }
 }

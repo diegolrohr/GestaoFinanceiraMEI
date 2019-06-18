@@ -318,6 +318,12 @@ namespace Fly01.Faturamento.BL
             return All.FirstOrDefault(x => x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF);
         }
 
+        public List<CertificadoDigital> TodosCertificados()
+        {
+            List<CertificadoDigital> certificados = All.ToList();
+            return certificados;
+        }
+
         public override void ValidaModel(CertificadoDigital entity)
         {
             GetOrUpdateEmpresa();

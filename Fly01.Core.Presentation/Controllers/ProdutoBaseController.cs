@@ -436,10 +436,20 @@ namespace Fly01.Core.Presentation.Controllers
 
             });
 
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "codigoBarras",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Informe códigos GTIN (8, 12, 13, 14), de acordo com o NCM e CEST. Para produtos que não possuem código de barras, informe o literal “SEM GTIN”, se utilizar este produto para emitir notas fiscais."
+                }
+            });
+            config.Elements.Add(new InputTextUI { Id = "codigoBarras", Class = "col s12 m3", Label = "Código de barras", Value = "SEM GTIN" });
+
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "grupoProdutoId",
-                Class = "col s12 m7",
+                Class = "col s12 m3",
                 Label = "Grupo",
                 DataUrl = @Url.Action("GrupoProduto", "AutoComplete"),
                 DataUrlPost = @Url.Action("NovoGrupoProduto"),
@@ -447,15 +457,6 @@ namespace Fly01.Core.Presentation.Controllers
                 PreFilter = "tipoProduto",
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeGrupoProduto" } }
             }, GrupoProdutoResourceHash));
-
-            config.Elements.Add(new InputFloatUI
-            {
-                Id = "saldoProduto",
-                Class = "col s12 m2",
-                Label = "Saldo atual",
-                Value = "0",
-                Digits = 3
-            });
 
             config.Elements.Add(new AutoCompleteUI
             {
@@ -467,6 +468,15 @@ namespace Fly01.Core.Presentation.Controllers
                 LabelId = "unidadeMedidaDescricao"
             });
 
+            config.Elements.Add(new InputCustommaskUI
+            {
+                Id = "aliquotaIpi",
+                Class = "col s12 m3",
+                Label = "Alíquota IPI",
+                MaxLength = 5,
+                Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'numeric', 'suffix': ' %', 'autoUnmask': true, 'radixPoint': ',' " }
+            });
+
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "ncmId",
@@ -475,6 +485,63 @@ namespace Fly01.Core.Presentation.Controllers
                 DataUrl = @Url.Action("Ncm", "AutoComplete"),
                 LabelId = "ncmDescricao",
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeNCM" } }
+            });
+
+            config.Elements.Add(new AutoCompleteUI
+            {
+                Id = "cestId",
+                Class = "col s12 m10",
+                Label = "CEST (Escolha um NCM antes)",
+                DataUrl = @Url.Action("Cest", "AutoComplete"),
+                LabelId = "cestDescricao",
+                PreFilter = "ncmId"
+            });
+
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "extipi",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Informe se for necessário para nota fiscal de exportação. Informar de acordo com o código EX da TIPI se houver para o NCM do produto."
+                }
+            });
+
+            config.Elements.Add(new InputTextUI { Id = "extipi", Class = "col s12 m2", Label = "EX TIPI", MaxLength = 3 });
+
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "enquadramentoLegalIPIId",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Informe o enquadramento legal do IPI, se utilizar este produto com um grupo tributário que calcula IPI ao emitir notas fiscais."
+                }
+            });
+
+            config.Elements.Add(new AutoCompleteUI()
+            {
+                Id = "enquadramentoLegalIPIId",
+                Class = "col s12",
+                Label = "Enquadramento Legal do IPI",
+                DataUrl = @Url.Action("EnquadramentoLegalIPI", "AutoComplete"),
+                LabelId = "enquadramentoLegalIPIDescricao"
+            });
+
+            config.Elements.Add(new SelectUI
+            {
+                Id = "origemMercadoria",
+                Class = "col s12 m9",
+                Label = "Origem Mercadoria",
+                Required = true,
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(OrigemMercadoria)))
+            });
+
+            config.Elements.Add(new InputFloatUI
+            {
+                Id = "saldoProduto",
+                Class = "col s12 m3",
+                Label = "Saldo atual",
+                Value = "0",
+                Digits = 3
             });
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");

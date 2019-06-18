@@ -3,6 +3,7 @@ using Fly01.Core.Entities.Domains.Commons;
 using System.Web.Http;
 using System;
 using Fly01.Core.API;
+using System.Threading.Tasks;
 
 namespace Fly01.Faturamento.API.Controllers.Api
 {
@@ -10,7 +11,7 @@ namespace Fly01.Faturamento.API.Controllers.Api
     public class RemoveCertificadoController : ApiBaseController
     {
         [HttpPost]
-        public IHttpActionResult RemoveCertificados()
+        public async Task<IHttpActionResult> Post()
         {
             try
             {
@@ -18,10 +19,13 @@ namespace Fly01.Faturamento.API.Controllers.Api
                 {
                     var certificados = unitOfWork.CertificadoDigitalBL.TodosCertificados();
 
+                    if (certificados.Count == 0)
+                        throw new Exception("Não há nenhum certificado cadastrado!");
+
                     foreach (CertificadoDigital item in certificados)
                     {
                         unitOfWork.CertificadoDigitalBL.Delete(item);
-                        //await unitOfWork.Save();
+                        await unitOfWork.Save();
                     }
                 }
 

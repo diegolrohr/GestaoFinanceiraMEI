@@ -20,7 +20,7 @@ namespace Fly01.Core.Presentation.Controllers
 {
     public class CertificadoDigitalBaseController<T> : BaseController<T> where T : CertificadoDigitalVM
     {
-        ConfiguracaoPersonalizacaoVM personalizacao = null;
+        
         public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
         {
             Dictionary<string, string> queryStringDefault = AppDefaults.GetQueryStringDefault();
@@ -126,25 +126,14 @@ namespace Fly01.Core.Presentation.Controllers
 
         public override List<HtmlUIButton> GetFormButtonsOnHeader()
         {            
-            try
-            {
-                personalizacao = RestHelper.ExecuteGetRequest<ResultBase<ConfiguracaoPersonalizacaoVM>>("ConfiguracaoPersonalizacao", queryString: null)?.Data?.FirstOrDefault();
-            }
-            catch (Exception)
-            {
-
-            }
-            var emiteNotaFiscal = personalizacao != null ? personalizacao.EmiteNotaFiscal : true;
-            
+                   
             var target = new List<HtmlUIButton>();
 
             if (UserCanWrite)
             {
                 target.Add(new HtmlUIButton() { Id = "save", Label = "Atualizar Certificado", OnClickFn = "fnAtualizaCertificado", Type = "submit", Position = HtmlUIButtonPosition.Main });
-                if (emiteNotaFiscal)
-                {
-                    target.Add(new HtmlUIButton() { Id = "delete", Label = "Remover Certificado", OnClickFn = "fnRemoveCertificado", Type = "submit", Position = HtmlUIButtonPosition.Out });
-                }
+                target.Add(new HtmlUIButton() { Id = "delete", Label = "Remover Certificado", OnClickFn = "fnRemoveCertificado", Type = "submit", Position = HtmlUIButtonPosition.Out });
+
             }
 
             return target;

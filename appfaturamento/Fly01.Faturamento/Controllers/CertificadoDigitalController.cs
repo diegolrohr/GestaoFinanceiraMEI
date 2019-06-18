@@ -6,6 +6,8 @@ using Fly01.Core.Rest;
 using System.Web.Mvc;
 using System;
 using Fly01.Core;
+using Fly01.Core.Helpers;
+using Newtonsoft.Json;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -19,8 +21,9 @@ namespace Fly01.Faturamento.Controllers
         {
             try
             {
-                var response = RestHelper.ExecutePostRequest($"{AppDefaults.UrlGateway}CertificadoDigital/","removecertificados", "", null, 150);
-                //ExecutePutRequest<ManagerEmpresaVM>($"{AppDefaults.UrlManager}company/{SessionManager.Current.UserData.PlatformUrl}", empresa, AppDefaults.GetQueryStringDefault());
+
+                var response = RestHelper.ExecutePostRequest("removeCertificado", "", null, 150);
+                
                 return Json(new
                 {
                     success = true,
@@ -28,7 +31,16 @@ namespace Fly01.Faturamento.Controllers
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorInfo error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                var result = new
+                {
+                    success = false,
+                    message = error.Message
+                };
+
+                return Json(result, JsonRequestBehavior.AllowGet); ;
+
+                //throw new Exception(ex.Message);
             }
         }
 

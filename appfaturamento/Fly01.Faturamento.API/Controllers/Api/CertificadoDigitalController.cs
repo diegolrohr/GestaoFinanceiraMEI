@@ -112,29 +112,5 @@ namespace Fly01.Faturamento.API.Controllers.Api
                 throw new BusinessException(ex.Message);
             }
         }
-
-        [HttpPost]
-        public IHttpActionResult RemoveCertificados()
-        {
-            try
-            {
-                using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
-                {
-                    var certificados = unitOfWork.CertificadoDigitalBL.TodosCertificados();
-
-                    foreach (CertificadoDigital item in certificados)
-                    {
-                        unitOfWork.CertificadoDigitalBL.Delete(item);
-                        //await unitOfWork.Save();
-                    }
-                }
-
-                return Ok(new { success = true });
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
     }
 }

@@ -1,20 +1,20 @@
-﻿using System.Linq;
-using System.Collections.Generic;
-using System.Web.Mvc;
-using Newtonsoft.Json;
-using Fly01.uiJS.Classes;
+﻿using Fly01.Core;
 using Fly01.Core.Config;
-using Fly01.Core;
-using Fly01.uiJS.Defaults;
-using Fly01.Faturamento.ViewModel;
-using Fly01.Core.Rest;
-using System.Configuration;
-using Fly01.uiJS.Classes.Widgets;
-using Fly01.Core.Presentation;
 using Fly01.Core.Helpers;
+using Fly01.Core.Presentation;
+using Fly01.Core.Rest;
 using Fly01.Core.ViewModels.Presentation.Commons;
-using System;
+using Fly01.Faturamento.ViewModel;
+using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
+using Fly01.uiJS.Classes.Widgets;
+using Fly01.uiJS.Defaults;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace Fly01.Faturamento.Controllers
 {

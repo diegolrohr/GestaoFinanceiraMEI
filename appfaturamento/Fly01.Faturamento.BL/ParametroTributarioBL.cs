@@ -1,14 +1,14 @@
-﻿using Fly01.EmissaoNFE.Domain.ViewModel;
-using Fly01.Core.Entities.Domains.Commons;
+﻿using Fly01.Core;
 using Fly01.Core.BL;
+using Fly01.Core.Entities.Domains.Commons;
+using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Notifications;
+using Fly01.Core.Rest;
+using Fly01.Core.ViewModels;
+using Fly01.EmissaoNFE.Domain.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Fly01.Core;
-using Fly01.Core.Rest;
-using Fly01.Core.Notifications;
-using Fly01.Core.Entities.Domains.Enum;
-using Fly01.Core.ViewModels;
 
 
 namespace Fly01.Faturamento.BL
@@ -47,10 +47,11 @@ namespace Fly01.Faturamento.BL
         }
 
         public IQueryable<ParametroTributario> Everything => repository.All.Where(x => x.Ativo);
-        
+
         public void EnviaParametroTributario(ParametroTributario parametroTributario)
         {
             #region ResgataDadosEmpresa
+
             GetOrUpdateEmpresa();
             parametroTributario.Cnpj = empresa.CNPJ;
             parametroTributario.UF = empresa.Cidade != null ? (empresa.Cidade.Estado != null ? empresa.Cidade.Estado.Sigla : string.Empty) : string.Empty;
@@ -61,7 +62,7 @@ namespace Fly01.Faturamento.BL
             #endregion
 
             var consultaEntidade = EntidadeBL.GetEntidade();
-            
+
             var entidade = consultaEntidade.Homologacao == null || consultaEntidade.Producao == null ? EntidadeBL.RetornaEntidade() : consultaEntidade;
             if (entidade != null)
             {
@@ -95,11 +96,7 @@ namespace Fly01.Faturamento.BL
                         TipoCRT = parametroTributario.TipoCRT,
                     };
 
-                    var response = RestHelper.ExecutePostRequest<ParametroVM>(AppDefaults.UrlEmissaoNfeApi,
-                                                                       "parametronf",
-                                                                       parametro,
-                                                                       _queryString,
-                                                                       _header);
+                    var response = RestHelper.ExecutePostRequest<ParametroVM>(AppDefaults.UrlEmissaoNfeApi, "parametronf", parametro, _queryString, _header);
                 }
                 catch (Exception e)
                 {
@@ -107,7 +104,7 @@ namespace Fly01.Faturamento.BL
                 }
             }
         }
-        
+
         public ParametroTributario ParametroAtualValido()
         {
             //retorna conforme os dados atuais da empresa

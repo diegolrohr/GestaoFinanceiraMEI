@@ -186,8 +186,6 @@ namespace Fly01.Core.Presentation.Controllers
                 ShowStepNumbers = true
             };
 
-
-
             config.Elements.Add(new InputHiddenUI { Id = "isOnCadastroParametros", Value = isOnCadastroParametros.ToString() });
             config.Elements.Add(new DivElementUI { Id = "infoAliquotas", Class = "col s12 text-justify visible", Label = "Informação" });
             config.Elements.Add(new SelectUI

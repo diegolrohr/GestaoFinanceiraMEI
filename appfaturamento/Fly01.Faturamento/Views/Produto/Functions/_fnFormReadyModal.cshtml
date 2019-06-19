@@ -1,5 +1,16 @@
 ﻿<script>
-	function fnFormReadyModal() {
-		fnChangeTipoProduto();
+    function fnFormReadyModal() {
+        $('input#cestId').attr('disabled', 'disabled');;
+        $('input#cestDescricao').attr('disabled', 'disabled');
+        fnChangeTipoProduto();
+
+        $("#ncmDescricao").keyup(function () {
+            $('input#cestId').attr('disabled', 'disabled');;
+            $('input#cestDescricao').attr('disabled', 'disabled');
+        })
+        $("#ncmDescricao").keyup(function () {
+            $('input#aliquotaIpi').val("");
+        })
+        setNFERequiredFields("fly01mdlfrmProduto", ["descricao", "codigoProduto", "codigoBarras", "tipoProduto", "unidadeMedidaDescricao", "aliquotaIpi", "ncmDescricao", "cestDescricao", "valorVenda", "enquadramentoLegalIPIDescricao", "origemMercadoria", "extipi"]);
     }
 </script>

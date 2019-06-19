@@ -12,7 +12,18 @@
         if ($('input#ncmId').val() == "") {
             $('input#cestId').attr('disabled', 'disabled');;
             $('input#cestDescricao').attr('disabled', 'disabled');
-        }  
+        }
+        $("#ncmDescricao").keyup(function () {
+            $('input#cestId').attr('disabled', 'disabled');;
+            $('input#cestDescricao').attr('disabled', 'disabled');
+        })
+        $("#ncmDescricao").keyup(function () {
+            $('input#aliquotaIpi').attr('disabled', 'disabled');;
+            $('input#aliquotaIpi').attr('disabled', 'disabled');
+        })
+        $("#ncmDescricao").keyup(function () {
+            $('input#aliquotaIpi').val("");
+        })
 
     }
 

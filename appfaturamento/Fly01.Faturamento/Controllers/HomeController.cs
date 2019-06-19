@@ -208,6 +208,23 @@ namespace Fly01.Faturamento.Controllers
                 new SidebarUIMenu() { Class = ResourceHashConst.FaturamentoAvalieAplicativo, Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp") }
             };
 
+            ConfiguracaoPersonalizacaoVM personalizacao = null;
+            try
+            {
+                personalizacao = RestHelper.ExecuteGetRequest<ResultBase<ConfiguracaoPersonalizacaoVM>>("ConfiguracaoPersonalizacao", queryString: null)?.Data?.FirstOrDefault();
+            }
+            catch (Exception) { }
+
+            var emiteNotaFiscal = personalizacao != null ? personalizacao.EmiteNotaFiscal : true;
+
+            if (!emiteNotaFiscal)
+            {
+                var itemToHide = menuItems.Find(x => x.Label == "Configurações");
+
+                menuItems[menuItems.FindIndex(x => x.Label == "Configurações")].Items.RemoveAt(itemToHide.Items.FindIndex(x => x.Label == "Certificado Digital"));
+
+            }
+
             config.MenuItems.AddRange(ProcessMenuRoles(menuItems));
             #endregion
 

@@ -12,7 +12,6 @@
             data: { id: idRecord },
 			type: "GET",
 			success: function (data) {
-			    debugger;
 			    $$$.loading.stop();
 			    if (data.message) {
 			        $$$.fn.submitErrorHandler(null, data.message);

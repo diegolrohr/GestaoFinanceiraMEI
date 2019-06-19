@@ -33,6 +33,7 @@
         if ($("#aliquotaImpostoRenda").val() == "" || $("#aliquotaImpostoRenda").val() == null) {
             $("#aliquotaImpostoRenda").val("0");
         }
+
         $.ajax({
             url: '@Url.Action("ValidaDadosEmpresa", "ParametroTributario")',
             type: "POST",

@@ -67,6 +67,10 @@ namespace Fly01.Compras.Controllers
             if (!UserCanPerformOperation(ResourceHashConst.ComprasComprasDashboard))
                 return new ContentUI { SidebarUrl = @Url.Action("Sidebar") };
 
+            var date = DateTime.Now;
+            var firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
+            var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
+
             ConfiguracaoPersonalizacaoVM personalizacao = null;
             try
             {
@@ -75,10 +79,6 @@ namespace Fly01.Compras.Controllers
             catch (Exception) { }
 
             var emiteNotaFiscal = personalizacao != null ? personalizacao.EmiteNotaFiscal : true;
-
-            var date = DateTime.Now;
-            var firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
-            var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
 
             var cfg = new ContentUI
             {
@@ -366,6 +366,23 @@ namespace Fly01.Compras.Controllers
                 },
                 new SidebarUIMenu() { Class = ResourceHashConst.ComprasAvalieAplicativo, Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp") }
             };
+
+            ConfiguracaoPersonalizacaoVM personalizacao = null;
+            try
+            {
+                personalizacao = RestHelper.ExecuteGetRequest<ResultBase<ConfiguracaoPersonalizacaoVM>>("ConfiguracaoPersonalizacao", queryString: null)?.Data?.FirstOrDefault();
+            }
+            catch (Exception) { }
+
+            var emiteNotaFiscal = personalizacao != null ? personalizacao.EmiteNotaFiscal : true;
+
+            if (!emiteNotaFiscal)
+            {
+                var itemToHide = menuItems.Find(x => x.Label == "Configurações");
+
+                menuItems[menuItems.FindIndex(x => x.Label == "Configurações")].Items.RemoveAt(itemToHide.Items.FindIndex(x => x.Label == "Certificado Digital"));
+
+            }
 
             config.MenuItems.AddRange(ProcessMenuRoles(menuItems));
             #endregion

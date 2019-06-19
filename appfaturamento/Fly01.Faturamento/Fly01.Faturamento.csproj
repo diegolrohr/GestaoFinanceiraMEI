@@ -397,6 +397,7 @@
     <Content Include="Views\NotaFiscal\Functions\_fnBaixarTodosXMLNFeZip.cshtml" />
     <Content Include="Views\AssistenciaRemota\index.cshtml" />
     <Content Include="Views\AssistenciaRemota\Functions\_fnAssistenciaRemotaFormReady.cshtml" />
+    <Content Include="Views\CertificadoDigital\Functions\_fnRemoveCertificado.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

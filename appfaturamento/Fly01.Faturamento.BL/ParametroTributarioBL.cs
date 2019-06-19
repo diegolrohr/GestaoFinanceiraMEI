@@ -51,6 +51,7 @@ namespace Fly01.Faturamento.BL
         public void EnviaParametroTributario(ParametroTributario parametroTributario)
         {
             #region ResgataDadosEmpresa
+
             GetOrUpdateEmpresa();
             parametroTributario.Cnpj = empresa.CNPJ;
             parametroTributario.UF = empresa.Cidade != null ? (empresa.Cidade.Estado != null ? empresa.Cidade.Estado.Sigla : string.Empty) : string.Empty;

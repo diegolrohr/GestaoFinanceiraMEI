@@ -430,6 +430,7 @@ namespace Fly01.Core.Presentation.Controllers
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
+            config.Elements.Add(new InputHiddenUI { Id = "emiteNotaFiscal", Value = emiteNotaFiscal.ToString() });
             config.Elements.Add(new InputHiddenUI { Id = "valorCusto", Value = "0" });
             config.Elements.Add(new InputHiddenUI { Id = "valorVenda", Value = "0" });
 
@@ -557,7 +558,6 @@ namespace Fly01.Core.Presentation.Controllers
                     LabelId = "enquadramentoLegalIPIDescricao"
                 });
 
-                
 
             }
 

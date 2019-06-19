@@ -305,7 +305,7 @@ namespace Fly01.Compras.Controllers
                 JWT = @Url.Action("NotificationJwt"),
                 SocketServer = AppDefaults.UrlNotificationSocket
             };
-
+            
             #region MenuItems
             var menuItems = new List<SidebarUIMenu>()
             {

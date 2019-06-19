@@ -18,7 +18,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.PIS
 
         public void DoThePIS(TipoCRT crt)
         {
-            if (crt.Equals(TipoCRT.SimplesNacional))
+            if (crt.Equals(TipoCRT.SimplesNacional| TipoCRT.RegimeNormal|TipoCRT.ExcessoSublimiteDeReceitaBruta)) 
             {
                 var adValorem = "01|02";
                 var AliqEspecifica = "03";
@@ -26,7 +26,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.PIS
 
                 if (adValorem.Contains(((int)CodigoSituacaoTributaria).ToString()))
                 {
-                    PIS = new PISAliq("0" + ((int)CodigoSituacaoTributaria).ToString())
+                    PIS = new PISAliq("0" + ((int)CodigoSituacaoTributaria).ToString(), TipoCRT)
                     {
                         ValorBCDoPIS = ValorBCDoPIS,
                         PercentualPIS = PercentualPIS,
@@ -35,7 +35,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.PIS
                 }
                 else if (AliqEspecifica.Contains(((int)CodigoSituacaoTributaria).ToString()))
                 {
-                    PIS = new PISQtde("0" + ((int)CodigoSituacaoTributaria).ToString())
+                    PIS = new PISQtde("0" + ((int)CodigoSituacaoTributaria).ToString(), TipoCRT)
                     {
                         AliquotaPISST = AliquotaPISST,
                         QuantidadeVendida = QuantidadeVendida,
@@ -44,7 +44,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.PIS
                 }
                 else if(NT.Contains(((int)CodigoSituacaoTributaria).ToString()))
                 {
-                    PIS = new PISNT("0" + ((int)CodigoSituacaoTributaria).ToString())
+                    PIS = new PISNT("0" + ((int)CodigoSituacaoTributaria).ToString(), TipoCRT)
                     {
                     };
                 }
@@ -52,7 +52,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.PIS
                 {
                     if(AliquotaPISST != null)
                     {
-                        PIS = new PISOutr(((int)CodigoSituacaoTributaria).ToString())
+                        PIS = new PISOutr(((int)CodigoSituacaoTributaria).ToString(), TipoCRT)
                         {
                             AliquotaPISST = AliquotaPISST,
                             QuantidadeVendida = QuantidadeVendida,
@@ -61,7 +61,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.PIS
                     }
                     else
                     {                        
-                        PIS = new PISOutr(((int)CodigoSituacaoTributaria).ToString())
+                        PIS = new PISOutr(((int)CodigoSituacaoTributaria).ToString(), TipoCRT)
                         {
                             ValorBCDoPIS = ValorBCDoPIS,
                             PercentualPIS = PercentualPIS,
@@ -94,6 +94,8 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.PIS
         [XmlIgnore]
         public double? AliquotaPISST { get; set; }
 
+        [XmlIgnore]
+        public TipoCRT TipoCRT { get; set; }
 
 
         private void DoTheValidation()

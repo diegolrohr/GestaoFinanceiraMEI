@@ -18,7 +18,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.COFINS
 
         public void DoTheCofins(TipoCRT crt)
         {
-            if (crt.Equals(TipoCRT.SimplesNacional))
+            if (crt.Equals(TipoCRT.SimplesNacional | TipoCRT.RegimeNormal | TipoCRT.ExcessoSublimiteDeReceitaBruta))
             {
                 var adValorem = "01|02";
                 var AliqEspecifica = "03";
@@ -26,7 +26,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.COFINS
 
                 if (adValorem.Contains(((int)CodigoSituacaoTributaria).ToString()))
                 {
-                    COFINS = new COFINSAliq("0" + ((int)CodigoSituacaoTributaria).ToString())
+                    COFINS = new COFINSAliq("0" + ((int)CodigoSituacaoTributaria).ToString(), TipoCRT)
                     {
                         ValorBC = ValorBC,
                         AliquotaPercentual = AliquotaPercentual,
@@ -35,7 +35,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.COFINS
                 }
                 else if (AliqEspecifica.Contains(((int)CodigoSituacaoTributaria).ToString()))
                 {
-                    COFINS = new COFINSQtde("0" + ((int)CodigoSituacaoTributaria).ToString())
+                    COFINS = new COFINSQtde("0" + ((int)CodigoSituacaoTributaria).ToString(), TipoCRT)
                     {
                         QuantidadeVendida = QuantidadeVendida,
                         ValorAliquota = ValorAliquota,
@@ -44,7 +44,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.COFINS
                 }
                 else if (NT.Contains(((int)CodigoSituacaoTributaria).ToString()))
                 {
-                    COFINS = new COFINSNT("0" + ((int)CodigoSituacaoTributaria).ToString()) { };
+                    COFINS = new COFINSNT("0" + ((int)CodigoSituacaoTributaria).ToString(), TipoCRT) { };
                 }
                 else
                 {
@@ -53,7 +53,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.COFINS
 
                     DoTheValidation();
 
-                    COFINS = new COFINSOutr(((int)CodigoSituacaoTributaria).ToString())
+                    COFINS = new COFINSOutr(((int)CodigoSituacaoTributaria).ToString(), TipoCRT)
                     {
                         QuantidadeVendida = QuantidadeVendida,
                         ValorAliquota = ValorAliquota,
@@ -84,6 +84,9 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.COFINS
 
         [XmlIgnore]
         public double ValorAliquota { get; set; }
+
+        [XmlIgnore]
+        public TipoCRT TipoCRT { get; set; }
 
 
         private void DoTheValidation()

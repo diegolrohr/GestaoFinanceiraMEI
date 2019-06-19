@@ -20,40 +20,40 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         public ModalidadeDeterminacaoBCICMS ModalidadeBC { get; set; }
 
         [XmlIgnore]
-        public double ValorBC { get; set; }
+        public double? ValorBC { get; set; }
 
         [XmlElement("vBC")]
         public string ValorBCString
         {
             get
             {
-                return ValorBC.ToString("0.00").Replace(",", ".");
+                return ValorBC.HasValue && ValorBC > 0 ? ValorBC.Value.ToString("0.00").Replace(",", ".") : "0.00";
             }
             set { ValorBC = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]
-        public double AliquotaICMS { get; set; }
+        public double? AliquotaICMS { get; set; }
 
         [XmlElement("pICMS")]
         public string AliquotaICMSString
         {
             get
             {
-                return AliquotaICMS.ToString("0.0000").Replace(",", ".");
+                return AliquotaICMS.HasValue && AliquotaICMS > 0 ? AliquotaICMS.Value.ToString("0.00").Replace(",", ".") : "0.00";
             }
             set { AliquotaICMS = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]
-        public double ValorICMS { get; set; }
+        public double? ValorICMS { get; set; }
 
         [XmlElement("vICMS")]
         public string ValorICMSString
         {
             get
             {
-                return ValorICMS.ToString("0.00").Replace(",", ".");
+                return ValorICMS.HasValue && ValorICMS > 0 ? ValorICMS.Value.ToString("0.00").Replace(",", ".") : "0.00";
             }
             set { ValorICMS = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
@@ -95,45 +95,45 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         }
 
 
-        [XmlIgnore]
-        public double ValorBCFCP { get; set; }
+     /*   [XmlIgnore]
+        public double? ValorBCFCP { get; set; }
 
         [XmlElement("vBCFCP")]
         public string ValorBCFCPString
         {
             get
-            {
-                return ValorBCFCP.ToString("0.00").Replace(",", ".");
+            {               
+                return  ValorBCFCP.HasValue && ValorBCFCP > 0 ? ValorBCFCP.Value.ToString("0.00").Replace(",", "."):"0.00";
             }
             set { ValorBCFCP = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
-
+        
         [XmlIgnore]
-        public double PercentualFCP { get; set; }
+        public double? PercentualFCP { get; set; }
 
         [XmlElement("pFCP")]
         public string PercentualFCPString
         {
             get
             {
-                return PercentualFCP.ToString("0.0000").Replace(",", ".");
+                return PercentualFCP.HasValue && PercentualFCP > 0 ? PercentualFCP.Value.ToString("0.00").Replace(",", ".") : "0.00";
             }
             set { PercentualFCP = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
-
+      
         [XmlIgnore]
-        public double ValorFCP { get; set; }
+        public double? ValorFCP { get; set; }
 
         [XmlElement("vFCP")]
         public string ValorFCPString
         {
             get
             {
-                return ValorFCP.ToString("0.00").Replace(",", ".");
+                return ValorFCP.HasValue && ValorFCP > 0 ? ValorFCP.Value.ToString("0.00").Replace(",", ".") : "0.00";
             }
             set { ValorFCP = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
-        
+       */ 
 
 
     }

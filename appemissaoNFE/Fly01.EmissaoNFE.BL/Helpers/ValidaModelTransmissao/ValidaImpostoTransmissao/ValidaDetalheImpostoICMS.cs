@@ -72,6 +72,42 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao.ValidaImpostoTransm
                     ValidarSubstituicaoTributariaOutros_900(detalhe, entity, nItemDetalhe, item, Modalidade, ModalidadeST);
                     break;
 
+                case "00":
+                    break;
+
+                case "0":
+                    break;
+
+                case "10":
+                    break;
+
+                case "20":
+                    break;
+
+                case "30":
+                    break;
+
+                case "40":
+                    break;
+
+                case "41":
+                    break;
+
+                case "50":
+                    break;
+
+                case "51":
+                    break;
+
+                case "60":
+                    break;
+
+                case "70":
+                    break;
+
+                case "90":
+                    break;
+
                 default:
                     entity.Fail(true, new Error("CSOSN inválido. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.CodigoSituacaoOperacao"));
                     break;

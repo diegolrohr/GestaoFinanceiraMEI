@@ -198,7 +198,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                     };
                     break;
 
-                case "00"://Integral
+              /*  case "00"://Integral
 
                     ToValidate.Add(NewKeyValuePair("ModalidadeBC", (int?)ModalidadeBC));
                     ToValidate.Add(NewKeyValuePair("ValorICMS", ValorICMS));
@@ -218,6 +218,32 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                         ValorBCFCP = ValorBCFCP.Value,
                         PercentualFCP = PercentualFCP.Value,
                         ValorFCP = ValorFCP.Value,
+                        ValorICMSSTUFDestino = ValorICMSSTUFDestino,
+                        ValorBCSTDestino = ValorBCSTDestino,
+
+                    };
+                    break;
+              */
+                case "0"://Integral
+
+                 //   ToValidate.Add(NewKeyValuePair("ModalidadeBC", (int?)ModalidadeBC));
+                 //   ToValidate.Add(NewKeyValuePair("ValorICMS", ValorICMS));
+                 //   ToValidate.Add(NewKeyValuePair("AliquotaICMS", AliquotaICMS));
+                 //   ToValidate.Add(NewKeyValuePair("ValorBC", ValorBC));
+
+
+                    DoTheValidation();
+
+                    ICMS = new ICMS00(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT)
+                    {
+
+                      //  ModalidadeBC = ModalidadeBC,
+                        ValorBC = ValorBC,
+                        ValorICMS = ValorICMS,
+                        AliquotaICMS = AliquotaICMS,
+                     // ValorBCFCP = ValorBCFCP.Value,
+                    //  PercentualFCP = PercentualFCP.Value,
+                    //    ValorFCP = ValorFCP,
                         ValorICMSSTUFDestino = ValorICMSSTUFDestino,
                         ValorBCSTDestino = ValorBCSTDestino,
 

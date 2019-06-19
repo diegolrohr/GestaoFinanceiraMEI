@@ -96,11 +96,7 @@ namespace Fly01.Faturamento.BL
                         TipoCRT = parametroTributario.TipoCRT,
                     };
 
-                    var response = RestHelper.ExecutePostRequest<ParametroVM>(AppDefaults.UrlEmissaoNfeApi,
-                                                                       "parametronf",
-                                                                       parametro,
-                                                                       _queryString,
-                                                                       _header);
+                    var response = RestHelper.ExecutePostRequest<ParametroVM>(AppDefaults.UrlEmissaoNfeApi, "parametronf", parametro, _queryString, _header);
                 }
                 catch (Exception e)
                 {

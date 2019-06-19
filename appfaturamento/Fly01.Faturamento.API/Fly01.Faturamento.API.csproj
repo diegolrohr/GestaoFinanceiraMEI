@@ -54,6 +54,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\Api\RemoveCertificadoController.cs" />
     <Compile Include="Controllers\Api\ApiDomainController.cs" />
     <Compile Include="Controllers\Api\ApiPlataformaController.cs" />
     <Compile Include="Controllers\Api\ArquivoController.cs" />
@@ -171,6 +172,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\..\appemissaoNFE\Fly01.EmissaoNFE.Domain\Fly01.EmissaoNFE.Domain.csproj">
+      <Project>{279B3A0C-4549-4B8C-9EF9-90E35A5255D6}</Project>
+      <Name>Fly01.EmissaoNFE.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Fly01.Core.API\Fly01.Core.API.csproj">
       <Project>{24148D87-4211-43B6-9C02-CD6E0D03EE0A}</Project>
       <Name>Fly01.Core.API</Name>

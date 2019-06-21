@@ -28,17 +28,23 @@ namespace Fly01.EmissaoNFE.BL
         {
             entity.Fail(string.IsNullOrEmpty(entity.CodigoIBGECidade), CodigoIBGERequerido);
             entity.Fail(string.IsNullOrEmpty(entity.Endereco), EnderecoRequerido);
-            entity.Fail(string.IsNullOrEmpty(entity.NIRE), NIRERequerido);
+
+            if (!string.IsNullOrEmpty(entity.Cnpj))
+            {
+                entity.Fail(string.IsNullOrEmpty(entity.NIRE), NIRERequerido);
+                entity.Fail((!ValidaCNPJ(entity.Cnpj) | entity.Cnpj.Length != 14), CnpjInvalido);
+                entity.Fail(string.IsNullOrEmpty(entity.UF), UFRequerida);
+            }
+
             entity.Fail(string.IsNullOrEmpty(entity.Nome), NomeRequerido);
-            entity.Fail(string.IsNullOrEmpty(entity.UF), UFRequerida);
             entity.Fail(string.IsNullOrEmpty(entity.Cpf) && string.IsNullOrEmpty(entity.Cnpj), CpfOuCnpjRequeridos);
             entity.Fail(!string.IsNullOrEmpty(entity.Cpf) && (!ValidaCPF(entity.Cpf) | entity.Cpf.Length != 11), CpfInvalido);
-            entity.Fail(!string.IsNullOrEmpty(entity.Cnpj) && (!ValidaCNPJ(entity.Cnpj) | entity.Cnpj.Length != 14), CnpjInvalido);
             entity.Fail(string.IsNullOrEmpty(entity.Cep), CEPRequerido);
             entity.Fail(entity.Cep != null && !ValidaCEP(entity.Cep), CEPInvalido);
             entity.Fail(entity.Email != null && !ValidaEmail(entity.Email), EmailInvalido);
-            if(entity.InscricaoEstadual != null)
-                if(!InscricaoEstadualHelper.IsValid(entity.UF, entity.InscricaoEstadual, out msgError))
+
+            if (entity.InscricaoEstadual != null)
+                if (!InscricaoEstadualHelper.IsValid(entity.UF, entity.InscricaoEstadual, out msgError))
                 {
                     switch (msgError)
                     {

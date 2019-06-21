@@ -2,7 +2,7 @@
     @Html.Partial("Functions/_fnMain");
 
     function fnFormReady() {
-        setNFERequiredFields("fly01frm", ["descricao", "codigoProduto", "codigoBarras", "tipoProduto", "unidadeMedidaDescricao", "aliquotaIpi", "ncmDescricao", "cestDescricao", "valorVenda", "enquadramentoLegalIPIDescricao", "origemMercadoria", "extipi"]);
+        setNFERequiredFields("fly01frm", ["descricao", "codigoBarras", "tipoProduto", "unidadeMedidaDescricao", "aliquotaIpi", "ncmDescricao", "cestDescricao", "valorVenda", "enquadramentoLegalIPIDescricao", "origemMercadoria", "extipi"]);
 
         if ($("#grupoProdutoDescricao").data("url-post"))
     		$("#grupoProdutoDescricao").data("url-post", "@Url.Action("NovoGrupoProduto")?tipo=" + $("#tipoProduto").val());
@@ -24,7 +24,16 @@
         if ($('input#ncmId').val() == "") {
             $('input#cestId').attr('disabled', 'disabled');
             $('input#cestDescricao').attr('disabled', 'disabled');
-        }  
+        }
+
+        $("#ncmDescricao").keyup(function () {
+            $('input#cestId').attr('disabled', 'disabled');;
+            $('input#cestDescricao').attr('disabled', 'disabled');
+            $('input#cestDescricao').val("");
+        })
+        $("#ncmDescricao").keyup(function () {
+            $('input#aliquotaIpi').val("");
+        })
 
     }
 

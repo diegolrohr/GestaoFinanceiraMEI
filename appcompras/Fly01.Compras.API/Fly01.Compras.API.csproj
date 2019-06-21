@@ -101,6 +101,7 @@
     <Compile Include="Controllers\Api\ParametroTributarioController.cs" />
     <Compile Include="Controllers\Api\PedidoEstoqueNegativoController.cs" />
     <Compile Include="Controllers\Api\RelatorioLicenciamentoComprasController.cs" />
+    <Compile Include="Controllers\Api\RemoveCertificadoController.cs" />
     <Compile Include="Controllers\Api\ServicoController.cs" />
     <Compile Include="Controllers\Api\ProdutoServicoController.cs" />
     <Compile Include="Controllers\Api\SerieNotaFiscalController.cs" />

@@ -1,24 +1,23 @@
-﻿using Fly01.Core.Helpers;
+﻿using Fly01.Core.Config;
+using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Helpers;
+using Fly01.Core.Mensageria;
+using Fly01.Core.Presentation.Commons;
+using Fly01.Core.Rest;
+using Fly01.Core.ValueObjects;
+using Fly01.Core.ViewModels;
+using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.uiJS.Classes;
+using Fly01.uiJS.Classes.Elements;
+using Fly01.uiJS.Classes.Helpers;
+using Fly01.uiJS.Defaults;
+using Fly01.uiJS.Enums;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Web.Mvc;
-using Fly01.uiJS.Classes.Elements;
-using Fly01.uiJS.Defaults;
 using System.Linq;
-using Fly01.Core.Presentation.Commons;
-using Fly01.Core.Rest;
-using Fly01.Core.Entities.Domains.Enum;
-using Fly01.uiJS.Classes.Helpers;
-using Fly01.Core.ViewModels;
-using Fly01.Core.ViewModels.Presentation.Commons;
-using Fly01.Core.Mensageria;
-using System.IO;
 using System.Text.RegularExpressions;
-using Fly01.uiJS.Enums;
-using Fly01.Core.ValueObjects;
-using Fly01.Core.Config;
+using System.Web.Mvc;
 
 namespace Fly01.Core.Presentation.Controllers
 {
@@ -116,7 +115,7 @@ namespace Fly01.Core.Presentation.Controllers
             {
                 Title = "Enviar por e-mail para seu Contador",
                 UrlFunctions = @Url.Action("Functions") + "?fns=",
-                ConfirmAction = new ModalUIAction() { Label = "Enviar" , OnClickFn = "fnFormClickEnvioEmailContador" },
+                ConfirmAction = new ModalUIAction() { Label = "Enviar", OnClickFn = "fnFormClickEnvioEmailContador" },
                 CancelAction = new ModalUIAction() { Label = "Cancelar" },
                 Action = new FormUIAction
                 {
@@ -145,7 +144,7 @@ namespace Fly01.Core.Presentation.Controllers
             if (UserCanWrite)
             {
                 target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnAtualizaParametro", Type = "submit", Position = HtmlUIButtonPosition.Main });
-                target.Add(new HtmlUIButton { Id = "envioEmail", Label = "Envie para seu contador", OnClickFn = "fnEnviarParametrosEmail", Type = "click", Position = HtmlUIButtonPosition.Out });         
+                target.Add(new HtmlUIButton { Id = "envioEmail", Label = "Envie para seu contador", OnClickFn = "fnEnviarParametrosEmail", Type = "click", Position = HtmlUIButtonPosition.Out });
                 target.Add(new HtmlUIButton { Id = "atualizaAliquota", Label = "Atualizar alíquotas", OnClickFn = "fnAtualizarAliquotas", Type = "click" });
             }
             return target;
@@ -456,7 +455,7 @@ namespace Fly01.Core.Presentation.Controllers
         private JsonResult ValidarDadosEmail(ManagerEmpresaVM empresa, string email)
         {
             const string pattern = @"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$";
-            if (string.IsNullOrEmpty(email)) return JsonResponseStatus.GetFailure("E-mail do seu contador inválido.");       
+            if (string.IsNullOrEmpty(email)) return JsonResponseStatus.GetFailure("E-mail do seu contador inválido.");
             if (!Regex.IsMatch(email ?? "", pattern)) return JsonResponseStatus.GetFailure("E-mail do seu contador inválido.");
             if (string.IsNullOrEmpty(empresa.Email)) return JsonResponseStatus.GetFailure("Você ainda não configurou um email válido para sua empresa.");
 
@@ -468,7 +467,7 @@ namespace Fly01.Core.Presentation.Controllers
             var mensagemPrincipal = $"Razão Social: {empresa.RazaoSocial}".ToUpper();
             var tituloEmail = $"Este e-mail é referente aos impostos da empresa: {empresa.NomeFantasia}".ToUpper();
             var mensagemComplemento = $"CNPJ: {empresa.CNPJ}".ToUpper();
-            var conteudoEmail = Mail.FormataMensagem(EmailFilesHelper.GetTemplate("Templates.ParametroTributario.html").Value, tituloEmail, mensagemPrincipal, mensagemComplemento,empresa.Email, simplesNacional, impostoRenda, csll, cofins, pisPasep, iss, fcp, inss);
+            var conteudoEmail = Mail.FormataMensagem(EmailFilesHelper.GetTemplate("Templates.ParametroTributario.html").Value, tituloEmail, mensagemPrincipal, mensagemComplemento, empresa.Email, simplesNacional, impostoRenda, csll, cofins, pisPasep, iss, fcp, inss);
 
             Mail.SendNoAttachment(empresa.NomeFantasia, email, tituloEmail, conteudoEmail);
         }
@@ -595,7 +594,7 @@ namespace Fly01.Core.Presentation.Controllers
             try
             {
                 ManagerEmpresaVM empresa = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
-                if (!string.IsNullOrEmpty(empresa.InscricaoEstadual))
+                if (!string.IsNullOrWhiteSpace(empresa.InscricaoEstadual))
                 {
                     return Json(new
                     {
@@ -627,8 +626,7 @@ namespace Fly01.Core.Presentation.Controllers
                 if (InscricaoEstadualHelper.IsValid(empresa.Cidade?.Estado?.Sigla, inscricaoEstadual, out msgErrorInscricaoEstadual))
                 {
                     empresa.InscricaoEstadual = inscricaoEstadual;
-
-                    var response = RestHelper.ExecutePutRequest<ManagerEmpresaVM>($"{AppDefaults.UrlManager}company/{SessionManager.Current.UserData.PlatformUrl}", empresa, AppDefaults.GetQueryStringDefault());
+                    ApiEmpresaManager.AtualizaDadosEmpresa(empresa, SessionManager.Current.UserData.PlatformUrl);
 
                     return Json(new
                     {

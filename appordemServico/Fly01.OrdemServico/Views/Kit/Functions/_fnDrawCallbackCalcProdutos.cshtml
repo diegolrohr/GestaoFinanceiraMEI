@@ -23,9 +23,11 @@
         let valorVenda = 0;
 
         $$$._.dtKitItens.data().each(function (value, index) {
-            valorVenda = parseFloat(valorVenda.toString().replace(",", ".")) + (value.valorVenda == null ? 0 : parseFloat(value.valorVenda.replace(",", ".")));
-            valorServico = parseFloat(valorServico.toString().replace(",", ".")) + (value.valorServico == null ? 0 : parseFloat(value.valorServico.replace(",", ".")));
-            valorCusto = parseFloat(valorCusto.toString().replace(",", ".")) + (value.valorCusto == null ? 0 : parseFloat(value.valorCusto.replace(",", ".")));
+            valorVenda = parseFloat(valorVenda.toString().replace(".", "")) + (value.valorVenda == null ? 0 : parseFloat(value.valorVenda.replace(".", "")));
+            valorVenda = valorVenda * (value.valorVenda != null ? parseFloat(value.quantidade.toString().replace(".", "")) : 1);
+            valorServico = parseFloat(valorServico.toString().replace(".", "")) + (value.valorServico == null ? 0 : parseFloat(value.valorServico.replace(".", "")));
+            valorServico = valorServico * (value.valorServico != null ? parseFloat(value.quantidade.toString().replace(".", "")) : 1);
+            valorCusto = parseFloat(valorCusto.toString().replace(".", "")) + (value.valorCusto == null ? 0 : parseFloat(value.valorCusto.replace(".", "")));
         });
 
         $('#valorVendaTotal').val(valorVenda);

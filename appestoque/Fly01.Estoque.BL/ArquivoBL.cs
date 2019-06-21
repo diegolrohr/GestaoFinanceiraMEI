@@ -165,7 +165,7 @@ namespace Fly01.Estoque.BL
         {
             try
             {
-                ProdutoBL.Insert(produto, true);
+                ProdutoBL.Insert(produto);
                 insertedProdutos.Add(produto);
                 arquivo.Retorno += "Linha " + (i + 1).ToString().PadLeft(5, '0') + ";" + produto.Descricao + " cadastrado com sucesso.\n";
             }

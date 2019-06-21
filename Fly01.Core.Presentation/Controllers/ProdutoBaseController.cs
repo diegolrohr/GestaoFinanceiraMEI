@@ -410,7 +410,6 @@ namespace Fly01.Core.Presentation.Controllers
             }
             catch (Exception)
             {
-
             }
             var emiteNotaFiscal = personalizacao != null ? personalizacao.EmiteNotaFiscal : true;
             ModalUIForm config = new ModalUIForm()
@@ -444,7 +443,6 @@ namespace Fly01.Core.Presentation.Controllers
                 Required = true,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoProduto)).ToList().FindAll(x => "ProdutoFinal,Insumo,Outros".Contains(x.Value)).OrderByDescending(x => x.Label)),
                 DomEvents = new List<DomEventUI>() { new DomEventUI() { DomEvent = "change", Function = "fnChangeTipoProduto" } },
-
             });
 
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
@@ -478,7 +476,6 @@ namespace Fly01.Core.Presentation.Controllers
                 Digits = 3
             });
 
-
             if (emiteNotaFiscal)
             {
                 config.Helpers.Add(new TooltipUI
@@ -508,7 +505,6 @@ namespace Fly01.Core.Presentation.Controllers
                     MaxLength = 5,
                     Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'numeric', 'suffix': ' %', 'autoUnmask': true, 'radixPoint': ',' " }
                 });
-
 
                 config.Elements.Add(new AutoCompleteUI
                 {
@@ -557,13 +553,9 @@ namespace Fly01.Core.Presentation.Controllers
                     DataUrl = @Url.Action("EnquadramentoLegalIPI", "AutoComplete"),
                     LabelId = "enquadramentoLegalIPIDescricao"
                 });
-
-
             }
-
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
-
         #endregion
     }
 }

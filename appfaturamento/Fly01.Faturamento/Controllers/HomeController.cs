@@ -143,7 +143,7 @@ namespace Fly01.Faturamento.Controllers
 
         public override ContentResult Sidebar()
         {
-            var config = new SidebarUI() { Id = "nav-bar", AppName = "Faturamento", Parent = "header" };
+            var config = new SidebarUI() { Id = "nav-bar", AppName = "Faturamento", Parent = "header", PlatformsUrl = @Url.Action("Platforms", "Account") };
 
             #region MenuItems
 
@@ -241,7 +241,7 @@ namespace Fly01.Faturamento.Controllers
 
             #endregion
 
-            config.Name = SessionManager.Current.UserData.TokenData.Username;
+            config.Name = SessionManager.Current.UserData.TokenData.UserName;
             config.Email = SessionManager.Current.UserData.PlatformUser;
             config.Notification = new SidebarUINotification()
             {

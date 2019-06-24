@@ -32,13 +32,13 @@ namespace Fly01.Estoque.Models.Reports
 
         public byte[] Print(List<T> data, string reportFilter = "", ReportParameter[] customParameters = null)
         {
-            var report = ReportViewerHelper<T>.GetReport(data, SessionManager.Current.UserData.TokenData.Username, reportFilter, SessionManager.Current.UserData.PlatformUrl, customParameters);
+            var report = ReportViewerHelper<T>.GetReport(data, SessionManager.Current.UserData.TokenData.UserName, reportFilter, SessionManager.Current.UserData.PlatformUrl, customParameters);
             return ReportViewerHelper<T>.PrepareReportToPrint(report);
         }
 
         public byte[] Print(T data, string reportFilter = "", ReportParameter[] customParameters = null)
         {
-            var report = ReportViewerHelper<T>.GetReport(data, SessionManager.Current.UserData.TokenData.Username, reportFilter, SessionManager.Current.UserData.PlatformUrl, customParameters);
+            var report = ReportViewerHelper<T>.GetReport(data, SessionManager.Current.UserData.TokenData.UserName, reportFilter, SessionManager.Current.UserData.PlatformUrl, customParameters);
             return ReportViewerHelper<T>.PrepareReportToPrint(report);
         }
     }

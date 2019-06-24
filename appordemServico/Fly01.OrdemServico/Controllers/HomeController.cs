@@ -371,7 +371,7 @@ namespace Fly01.OrdemServico.Controllers
 
         public override ContentResult Sidebar()
         {
-            var config = new SidebarUI() { Id = "nav-bar", AppName = "Ordem de Serviço", Parent = "header" };
+            var config = new SidebarUI() { Id = "nav-bar", AppName = "Ordem de Serviço", Parent = "header", PlatformsUrl = @Url.Action("Platforms", "Account") };
 
             config.Notification = new SidebarUINotification()
             {
@@ -444,7 +444,7 @@ namespace Fly01.OrdemServico.Controllers
             config.MenuApps.AddRange(AppsList());
             #endregion
 
-            config.Name = SessionManager.Current.UserData.TokenData.Username;
+            config.Name = SessionManager.Current.UserData.TokenData.UserName;
             config.Email = SessionManager.Current.UserData.PlatformUser;
 
             config.Widgets = new WidgetsUI

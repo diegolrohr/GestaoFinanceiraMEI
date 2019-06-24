@@ -38,7 +38,7 @@ namespace Fly01.OrdemServico.Models.Reports
             
             var report = ReportViewerHelper<T>
                             .GetReport(data,
-                                       SessionManager.Current.UserData.TokenData.Username,
+                                       SessionManager.Current.UserData.TokenData.UserName,
                                        reportFilter,
                                        platformUrl,
                                        customParameters);
@@ -53,7 +53,7 @@ namespace Fly01.OrdemServico.Models.Reports
         {
             var report = ReportViewerHelper<T>
                             .GetReport(data,
-                                       SessionManager.Current.UserData.TokenData.Username,
+                                       SessionManager.Current.UserData.TokenData.UserName,
                                        reportFilter,
                                        platformUrl,
                                        customParameters);

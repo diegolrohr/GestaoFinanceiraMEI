@@ -55,7 +55,7 @@ namespace Fly01.Core.Presentation.Application
                         AppDefaults.UrlGateway, AppDefaults.GatewayUserName,
                         AppDefaults.GatewayPassword, platformUrl, platformUser);
                     userData.TokenData = tokenData;
-                    userData.TokenData.Username = cookieUserData.Name;
+                    userData.TokenData.UserName = cookieUserData.Name;
                     userData.Permissions = GetPermissionsByUser(platformUrl, platformUser);
 
                     SessionManager.Current.UserData = userData;
@@ -64,44 +64,6 @@ namespace Fly01.Core.Presentation.Application
             }
             return false;
         }
-
-        //protected void Application_PreRequestHandlerExecute(object sender, EventArgs e)
-        //{
-        //    if (FormsAuthentication.CookiesSupported && Request.Cookies[FormsAuthentication.FormsCookieName] != null)
-        //    {
-        //        var clientToken = SessionManager.Current.UserData.ClientToken;
-
-        //        try
-        //        {
-        //            RestHelper.ExecuteGetRequest<object>(AppDefaults.UrlGatewayNew.Replace("api/", ""), "token/validate/" + clientToken);
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            if (HttpContext.Current.Session != null)
-        //            {
-        //                HttpContext.Current.Session.Clear();
-        //                HttpContext.Current.Session.Abandon();
-        //                HttpContext.Current.Session.RemoveAll();
-        //                FormsAuthentication.SignOut();
-        //            }
-
-        //            if (Request.Headers["Accept"] != null && Request.Headers["Accept"].Contains("application/json"))
-        //            {
-        //                Response.Write(JsonConvert.SerializeObject(new { urlToRedirect = $"{AppDefaults.UrlLogoutSSO}/{clientToken}" }));
-        //                Response.End();
-        //            }
-        //            else if (Request.Headers["X-Requested-With"] != null && Request.Headers["X-Requested-With"].ToUpper().Equals("XMLHTTPREQUEST"))
-        //            {
-        //                FormsAuthentication.RedirectToLoginPage();
-        //            }
-        //            else
-        //            {
-        //                Response.Write($"<script type=\"text/javascript\">top.location.href='{AppDefaults.UrlLogoutSSO}/{clientToken}';</script>");
-        //                Response.End();
-        //            }
-        //        }
-        //    }
-        //}
 
         protected void Application_PreRequestHandlerExecute(object sender, EventArgs e)
         {
@@ -134,7 +96,7 @@ namespace Fly01.Core.Presentation.Application
                 {
                     HttpCookie mpnData = new HttpCookie("mpndata") { Expires = DateTime.UtcNow.AddDays(2), Path = "/" };
                     mpnData.Values["UserEmail"] = SessionManager.Current.UserData.PlatformUser;
-                    mpnData.Values["UserName"] = SessionManager.Current.UserData.TokenData.Username;
+                    mpnData.Values["UserName"] = SessionManager.Current.UserData.TokenData.UserName;
                     mpnData.Values["TrialUntil"] = SessionManager.Current.UserData.TokenData.Trial
                         ? SessionManager.Current.UserData.TokenData.LicenseExpirationString : "";
                     Response.Cookies.Add(mpnData);
@@ -189,7 +151,7 @@ namespace Fly01.Core.Presentation.Application
                 {
                     HttpCookie mpnData = new HttpCookie("mpndata") { Expires = DateTime.UtcNow.AddDays(2), Path = "/" };
                     mpnData.Values["UserEmail"] = SessionManager.Current.UserData.PlatformUser;
-                    mpnData.Values["UserName"] = SessionManager.Current.UserData.TokenData.Username;
+                    mpnData.Values["UserName"] = SessionManager.Current.UserData.TokenData.UserName;
                     mpnData.Values["TrialUntil"] = SessionManager.Current.UserData.TokenData.Trial
                         ? SessionManager.Current.UserData.TokenData.LicenseExpirationString : "";
                     Response.Cookies.Add(mpnData);

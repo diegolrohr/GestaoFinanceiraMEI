@@ -1,24 +1,28 @@
-﻿using System;
-using System.Web;
+﻿using System.Web;
 using System.Web.Mvc;
 using Fly01.Core.Rest;
 using Fly01.Core.Config;
-using Fly01.Core.Helpers;
 using System.Web.Security;
-using System.Collections.Generic;
 using Newtonsoft.Json;
 using Fly01.Core.Defaults;
 using Fly01.uiJS.Responses;
+using System.Linq;
 
 namespace Fly01.Core.Presentation.Controllers
 {
     [AllowAnonymous]
     public abstract class AccountController : Controller
     {
+
         public ContentResult Platforms()
         {
-            ResponseDataVM<LoginResponse> result = RestUtils.ExecuteGetRequest<ResponseDataVM<LoginResponse>>(AppDefaults.UrlManager, "account/platforms", new Dictionary<string, string>(){}, null);
-            return Content(JsonConvert.SerializeObject(result, JsonSerializerSetting.Default), "application/json");
+            LoginResponse response = RestHelper.ExecutePostRequest<LoginResponse>(
+                AppDefaults.UrlGateway, 
+                "v1/Platforms", 
+                JsonConvert.SerializeObject(new { platformUser = SessionManager.Current.UserData.PlatformUser })
+            );
+
+            return Content(JsonConvert.SerializeObject(response, JsonSerializerSetting.Front), "application/json");
         }
 
         public ActionResult Login(string returnUrl, string email = "")

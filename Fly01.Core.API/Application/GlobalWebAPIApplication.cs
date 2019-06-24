@@ -27,7 +27,7 @@ namespace Fly01.Core.API.Application
             AppDefaults.UrlComprasApi = ConfigurationManager.AppSettings["UrlComprasApi"];
             AppDefaults.UrlGateway = ConfigurationManager.AppSettings["UrlGateway"];
             AppDefaults.UrlGatewayNew = $"{ConfigurationManager.AppSettings["UrlGatewayNew"]}api/";
-            AppDefaults.UrlManager = $"{AppDefaults.UrlGatewayNew}manager/";
+            AppDefaults.UrlManagerNew = $"{AppDefaults.UrlGatewayNew}manager/";
             AppDefaults.UrlNotificationSocket = ConfigurationManager.AppSettings["UrlNotificationSocket"];
 
             AppDefaults.UrlFinanceiroWeb = ConfigurationManager.AppSettings["UrlFinanceiroWeb"];

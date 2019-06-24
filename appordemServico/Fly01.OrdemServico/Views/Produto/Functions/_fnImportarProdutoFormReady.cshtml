@@ -18,8 +18,8 @@
 
     function fnBaixarModelo() {
         var documentoHelper = '\"Descricao","CodigoProduto","CodigoBarras","AbreviacaoUnidadeMedida","SaldoMinimo","ValorCusto","ValorVenda","Observacao"\n';
-        documentoHelper += '\"Produto A","123","SEM GTIM","UN","10","50","10","Observação Produto A"\n';
-        documentoHelper += '\"Produto B","321","SEM GTIM","UN","10","50","10","Observação Produto B"\n';
+        documentoHelper += '\"Produto A","123","SEM GTIN","UN","10","50","10","Observação Produto A"\n';
+        documentoHelper += '\"Produto B","321","SEM GTIN","UN","10","50","10","Observação Produto B"\n';
 
 
         var blob = new Blob([documentoHelper], { type: 'text/csv;charset=utf-8;' });

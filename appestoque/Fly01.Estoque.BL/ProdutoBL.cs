@@ -86,7 +86,7 @@ namespace Fly01.Estoque.BL
             base.ValidaModel(entity);
         }
 
-        public void Insert(Produto entity, bool MustProduceMessageServiceBus)
+        public override void Insert(Produto entity)
         {
             GetIdNCM(entity);
             GetIdCest(entity);
@@ -94,7 +94,13 @@ namespace Fly01.Estoque.BL
             GetIdEnquadramentoLegalIPIBL(entity);
 
             base.Insert(entity);
-            if(entity.IsValid() && MustProduceMessageServiceBus)
+        }
+
+        public void Insert(Produto entity, bool MustProduceMessageServiceBus)
+        {
+            Insert(entity);
+
+            if (entity.IsValid() && MustProduceMessageServiceBus)
                Producer<Produto>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity, RabbitConfig.EnHttpVerb.POST);
         }
 

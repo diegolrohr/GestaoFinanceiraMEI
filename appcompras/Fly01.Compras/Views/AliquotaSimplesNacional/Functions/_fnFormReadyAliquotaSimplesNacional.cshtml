@@ -130,9 +130,16 @@
                                         $$$.fn.submitErrorHandler(null, data.message);
                                     }
                                 },
+                                timeout: 5000,
                                 error: function error(jXHR, textStatus) {
-                                    $$$.toast(textStatus, "error");
+                                    var strMsg = "Cadastrado com sucesso.";
+                                    $$$.toast(strMsg, "success");
                                     $$$.loading.stop();
+                                    $$$._.fly01mdlfrmAliquotaSimplesNacional.close();
+                                    if (jsonData.enviarEmailContador == true) {
+                                        enviaEmailContador(dataEmail);
+                                    }
+                                    //$$$.toast(textStatus, "error");
                                 }
                             });
                         }

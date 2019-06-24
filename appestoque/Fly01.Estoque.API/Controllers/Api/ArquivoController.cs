@@ -20,7 +20,7 @@ namespace Fly01.Estoque.API.Controllers.Api
                 return BadRequest(ModelState);
 
             ModelState.Clear();
-
+                        
             Insert(entity);
 
             Validate(entity);

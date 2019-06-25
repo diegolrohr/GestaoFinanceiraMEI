@@ -89,8 +89,12 @@
                                 { data: "pessoa_nome", orderable: false },
                             ]
                         });
-                        $('select#tipoRenegociacaoValorDiferenca').val(response.renegociacao.TipoRenegociacaoValorDiferenca);
-                        $('select#tipoRenegociacaoCalculo').val(response.renegociacao.TipoRenegociacaoValorDiferenca);
+                        $('#tipoRenegociacaoValorDiferencaField select#tipoRenegociacaoValorDiferenca').val(response.renegociacao.TipoRenegociacaoValorDiferenca == 1 ? "Acrescimo" : "Desconto");
+                        $('#tipoRenegociacaoValorDiferencaField .select-dropdown').val(response.renegociacao.TipoRenegociacaoValorDiferenca == 1 ? "Acréscimo" : "Desconto");
+                        $('#tipoRenegociacaoCalculoField select#tipoRenegociacaoCalculo').val(response.renegociacao.TipoRenegociacaoCalculo == 1 ? "Valor" : "Percentual");
+                        $('#tipoRenegociacaoCalculoField .select-dropdown').val(response.renegociacao.TipoRenegociacaoCalculo == 1 ? "Valor" : "Percentual");
+                        //$('select#tipoRenegociacaoValorDiferenca').val(response.renegociacao.TipoRenegociacaoValorDiferenca);
+                        //$('select#tipoRenegociacaoCalculo').val(response.renegociacao.TipoRenegociacaoValorDiferenca);
                         $('#fly01mdlfrm #valorDiferenca').val(response.renegociacao.ValorDiferenca);
                         $('#fly01mdlfrm #valorFinal').val(response.renegociacao.ValorFinal);
 

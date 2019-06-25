@@ -19,7 +19,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
                 entity.Fail(true, new Error("Os dados de imposto são obrigatórios. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto"));
             else
             {
-                const string CSTsICMSST = "201||202||203||900";
+                const string CSTsICMSST = "201||202||203||900||0||00||10||20||00||70||90||51";
                 var totalAprox = Math.Round((detalhe.Imposto.COFINS != null ? detalhe.Imposto.COFINS.ValorCOFINS : 0) +
                                  (detalhe.Imposto.ICMS.ValorICMS ?? 0) +
                                  (CSTsICMSST.Contains(((int)detalhe.Imposto.ICMS.CodigoSituacaoOperacao).ToString()) ? (detalhe.Imposto.ICMS.ValorICMSST ?? 0) : 0) +

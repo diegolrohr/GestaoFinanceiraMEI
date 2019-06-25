@@ -102,21 +102,25 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
             }
             set { ValorICMSST = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
-
-
+                     
         [XmlIgnore]
-        public double PercentualMargemValorAdicionadoST { get; set; }
+        public double? PercentualMargemValorAdicionadoST { get; set; }
 
-        [XmlElement("pMVAST")]
+        [XmlElement(ElementName = "pMVAST", IsNullable = true)]
         public string PercentualMargemValorAdicionadoSTString
         {
             get
             {
-                return PercentualMargemValorAdicionadoST.ToString("0.0000").Replace(",", ".");
+                return PercentualMargemValorAdicionadoST.HasValue ? PercentualMargemValorAdicionadoST.Value.ToString("0.00").Replace(",", ".") : "0.00";
             }
             set { PercentualMargemValorAdicionadoST = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
-                           
+
+        public bool ShouldSerializePercentualMargemValorAdicionadoSTString()
+        {
+            return PercentualMargemValorAdicionadoST.HasValue & PercentualMargemValorAdicionadoST > 0;
+        }
+
 
         [XmlIgnore]
         public double? BaseFCPST { get; set; }
@@ -125,7 +129,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         {
             get
             {
-                return BaseFCPST.HasValue && BaseFCPST > 0.0 ? BaseFCPST.Value.ToString("0.00").Replace(",", ".") : "0.00";
+                return BaseFCPST.HasValue ? BaseFCPST.Value.ToString("0.00").Replace(",", ".") : "0.00";
             }
             set { BaseFCPST = double.Parse(value); }
         }
@@ -141,7 +145,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         {
             get
             {
-                return AliquotaFCPST.HasValue && AliquotaFCPST > 0.0 ? AliquotaFCPST.Value.ToString("0.00").Replace(",", ".") : "0.00";
+                return (AliquotaFCPST.HasValue && AliquotaFCPST > 0.0) ? AliquotaFCPST.Value.ToString("0.00").Replace(",", ".") : "0.00";
             }
             set { AliquotaFCPST = double.Parse(value); }
         }
@@ -157,7 +161,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         {
             get
             {
-                return ValorFCPST.HasValue && ValorFCPST > 0.0 ? ValorFCPST.Value.ToString("0.00").Replace(",", ".") : "0.00";
+                return (ValorFCPST.HasValue && ValorFCPST > 0.0) ? ValorFCPST.Value.ToString("0.00").Replace(",", ".") : "0.00";
             }
             set { ValorFCPST = double.Parse(value); }
         }
@@ -165,7 +169,6 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         {
             return (BaseFCPST.HasValue && BaseFCPST.Value > 0.0) && (AliquotaFCPST.HasValue && AliquotaFCPST.Value > 0.0) && (ValorFCPST.HasValue && ValorFCPST.Value > 0.0);
         }
-
 
 
     }

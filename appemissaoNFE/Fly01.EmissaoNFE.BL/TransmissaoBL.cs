@@ -113,7 +113,14 @@ namespace Fly01.EmissaoNFE.BL
                         (x.Imposto.ICMS != null) &&
                         (x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaComPermissaoDeCredito ||
                         x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaComPermissaoDeCreditoST ||
-                        x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.Outros) &&
+                        x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.Outros ||
+                        x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.Outros90 ||
+                        x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaComCobrancaDeSubstituicao ||
+                        x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.ComReducaoDeBaseDeCalculo ||
+                        x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaComCobrancaDeSubstituicao ||
+                        x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.ComRedDeBaseDeST ||
+                        x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.Diferimento ||
+                        x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaIntegralmente) &&
                         (x.Imposto.ICMS.ValorCreditoICMS.HasValue));
 
                     var totalCredito = creditosDeICMS.Sum(x => x.Imposto.ICMS.ValorCreditoICMS.Value);

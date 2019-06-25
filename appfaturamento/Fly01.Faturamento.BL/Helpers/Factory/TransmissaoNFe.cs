@@ -20,7 +20,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
 {
     public abstract class TransmissaoNFe
     {
-        const string CSTsICMSST = "201||202||203||900";
+        const string CSTsICMSST = "201||202||203||900||10||30||51||70||90";
         protected NFe NFe { get; set; }
         protected TransmissaoBLs TransmissaoBLs { get; set; }
         protected ParametroTributario ParametrosTributarios { get; set; }
@@ -314,14 +314,26 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                         x.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaSemPermissaoDeCreditoST ||
                         x.CodigoSituacaoOperacao == TipoTributacaoICMS.Outros ||
                         x.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaComPermissaoDeCreditoST ||
-                        x.CodigoSituacaoOperacao == TipoTributacaoICMS.IsencaoParaFaixaDeReceitaBrutaST
+                        x.CodigoSituacaoOperacao == TipoTributacaoICMS.IsencaoParaFaixaDeReceitaBrutaST ||
+                        x.CodigoSituacaoOperacao == TipoTributacaoICMS.ComRedDeBaseDeST ||
+                        x.CodigoSituacaoOperacao == TipoTributacaoICMS.ComReducaoDeBaseDeCalculo ||
+                        x.CodigoSituacaoOperacao == TipoTributacaoICMS.Outros90 ||
+                        x.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaComCobrancaDeSubstituicao ||
+                        x.CodigoSituacaoOperacao == TipoTributacaoICMS.Diferimento ||
+                        x.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaIntegralmente
                     )) ? 
                     Math.Round(detalhes.Where(x => x.Imposto.ICMS != null && x.Imposto.ICMS.ValorBCST.HasValue && 
                     (
                         x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaSemPermissaoDeCreditoST ||
                         x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.Outros ||
                         x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaComPermissaoDeCreditoST ||
-                        x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.IsencaoParaFaixaDeReceitaBrutaST
+                        x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.IsencaoParaFaixaDeReceitaBrutaST ||
+                        x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.ComRedDeBaseDeST ||
+                        x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.ComReducaoDeBaseDeCalculo ||
+                        x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.Outros90 ||
+                        x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaComCobrancaDeSubstituicao ||
+                        x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.Diferimento ||
+                        x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaIntegralmente
                     )).Sum(x => x.Imposto.ICMS.ValorBCST.Value), 2) : 0,
                     SomatorioCofins = detalhes.Select(x => x.Imposto.COFINS).Any(x => x != null) ? Math.Round(detalhes.Sum(x => x.Imposto.COFINS.ValorCOFINS), 2) : 0,
                     SomatorioDesconto = detalhes.Select(x => x.Produto).Any(x => x != null) ? Math.Round(detalhes.Sum(x => x.Produto.ValorDesconto ?? 0), 2) : 0,

@@ -10,11 +10,11 @@
         $('form#fly01mdlfrmPedidoItem #valorFCPSTRetidoAnteriorField').hide();
         
         //101 e 201 e 900
-        if (tipoTribICMS == "TributadaComPermissaoDeCredito" || tipoTribICMS == "TributadaComPermissaoDeCreditoST" || tipoTribICMS == "Outros") {
+        if (tipoTribICMS == "TributadaComPermissaoDeCredito" || tipoTribICMS == "TributadaComPermissaoDeCreditoST" || tipoTribICMS == "Outros" || tipoTribICMS == "TributadaIntegralmente" || tipoTribICMS == "TributadaComCobrancaDeSubstituicao" || tipoTribICMS == "ComReducaoDeBaseDeCalculo" || tipoTribICMS == "ComRedDeBaseDeST" || tipoTribICMS == "Outros90" || tipoTribICMS == "Diferimento") {
             $('form#fly01mdlfrmPedidoItem #valorCreditoICMSField').show();
         }
         //500
-        if (tipoTribICMS == "ICMSSubstituidoOuAntecipado") {
+        if (tipoTribICMS == "ICMSSubstituidoOuAntecipado" || tipoTribICMS == "ICMSCobradoAnteriormentePorST") {
             $('form#fly01mdlfrmPedidoItem #valorICMSSTRetidoField').show();
             $('form#fly01mdlfrmPedidoItem #valorBCSTRetidoField').show();
             $('form#fly01mdlfrmPedidoItem #valorBCFCPSTRetidoAnteriorField').show();

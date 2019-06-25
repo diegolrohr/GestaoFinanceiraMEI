@@ -27,7 +27,7 @@ namespace Fly01.Compras.BL
 {
     public class NFeEntradaBL : PlataformaBaseBL<NFeEntrada>
     {
-        const string CSTsICMSST = "201||202||203||900";
+        const string CSTsICMSST = "201||202||203||900||10||30||70||90";
         protected SerieNotaFiscalBL SerieNotaFiscalBL { get; set; }
         protected NFeProdutoEntradaBL NFeProdutoEntradaBL { get; set; }
         protected TotalTributacaoBL TotalTributacaoBL { get; set; }

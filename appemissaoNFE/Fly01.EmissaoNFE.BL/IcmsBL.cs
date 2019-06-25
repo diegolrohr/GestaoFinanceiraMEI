@@ -23,7 +23,7 @@ namespace Fly01.EmissaoNFE.BL
                                     select e.IcmsAliquota).FirstOrDefault();
             }
 
-            if(entity.Icms.CSOSN == TipoTributacaoICMS.Outros)
+            if(entity.Icms.CSOSN == TipoTributacaoICMS.Outros || entity.Icms.CSOSN == TipoTributacaoICMS.TributadaIntegralmente || entity.Icms.CSOSN == TipoTributacaoICMS.ComRedDeBaseDeST || entity.Icms.CSOSN == TipoTributacaoICMS.ComReducaoDeBaseDeCalculo || entity.Icms.CSOSN == TipoTributacaoICMS.Diferimento || entity.Icms.CSOSN == TipoTributacaoICMS.Outros90 || entity.Icms.CSOSN == TipoTributacaoICMS.TributadaComCobrancaDeSubstituicao)
             {
                 entity.Icms.Base = entity.Icms.IpiNaBase ? entity.ValorBase + entity.Ipi.Valor : entity.ValorBase;
                 entity.Icms.Base += entity.Icms.DespesaNaBase ? entity.ValorDespesa : 0;

@@ -73,15 +73,19 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao.ValidaImpostoTransm
                     break;
 
                 case "00":
+                    ValidarLP(detalhe, entity, nItemDetalhe, item, Modalidade);
                     break;
 
                 case "0":
+                    ValidarLP(detalhe, entity, nItemDetalhe, item, Modalidade);
                     break;
 
                 case "10":
+                    ValidarSubstituicaoTributaria_202(detalhe, entity, nItemDetalhe, item, ModalidadeST);
                     break;
 
                 case "20":
+                    ValidarLP(detalhe, entity, nItemDetalhe, item, Modalidade);
                     break;
 
                 case "30":
@@ -97,6 +101,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao.ValidaImpostoTransm
                     break;
 
                 case "51":
+                    ValidarLP(detalhe, entity, nItemDetalhe, item, Modalidade);
                     break;
 
                 case "60":
@@ -424,5 +429,15 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao.ValidaImpostoTransm
             entity.Fail(detalhe.Imposto.ICMS.OrigemMercadoria < 0 || (int)detalhe.Imposto.ICMS.OrigemMercadoria > 8,
                                 new Error("Origem da mercadoria inválida. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.OrigemMercadoria"));
         }
+
+
+        private static void ValidarLP(Detalhe detalhe, TransmissaoVM entity, int nItemDetalhe, ItemTransmissaoVM item, List<SubtitleAttribute> Modalidade)
+        {            
+
+            var ICMSProprio = ValidarInformacoesCSOSNeICMSProprio(detalhe, entity, nItemDetalhe, Modalidade);
+                    
+        }                   
+              
+
     }
 }

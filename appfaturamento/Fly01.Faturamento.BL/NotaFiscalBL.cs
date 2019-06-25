@@ -90,6 +90,22 @@ namespace Fly01.Faturamento.BL
             }
         }
 
+        public List<NotaFiscal> NotasFiscaisPeriodo(DateTime dataInicial, DateTime dataFinal)
+        {
+            try
+            {
+
+                List<NotaFiscal> notasFiscais = AllIncluding(x => x.SerieNotaFiscal).AsNoTracking().Where(x => x.DataInclusao >= dataInicial && x.DataInclusao <= dataFinal && x.Status == StatusNotaFiscal.Autorizada).ToList();
+
+                return notasFiscais;
+
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException("Não foi possível buscar as Notas para este período. " + ex.Message);
+            }
+        }
+
         private bool EhNotaFiscalMigradaDoFlyAntigo(NotaFiscal notaFiscal)
         {
             return (notaFiscal?.OrdemVendaOrigemId == null && notaFiscal?.UsuarioInclusao.ToLower() == "fly01@totvs.com.br");

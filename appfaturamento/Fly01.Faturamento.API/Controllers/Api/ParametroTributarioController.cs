@@ -68,6 +68,14 @@ namespace Fly01.Faturamento.API.Controllers.Api
             }
         }
 
+        private async Task EnviaParametrosTSSSync(ParametroTributario entity)
+        {
+            using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
+            {
+                unitOfWork.ParametroTributarioBL.EnviaParametroTributario(entity);
+                await unitOfWork.Save();
+            }
+        }
         private void EnviaParametrosTSSAsync(ParametroTributario entity)
         {
             Task.Factory.StartNew(async () =>
@@ -90,8 +98,11 @@ namespace Fly01.Faturamento.API.Controllers.Api
                         return BadRequest("Ja existe Parametro Tributario cadastrado para esta plataforma.");
 
                     entity.ParametroValidoNFS = true;
+                    var certificado = unitOfWork.CertificadoDigitalBL.GetEntidade(entity.PlataformaId);
 
-                    EnviaParametrosTSSAsync(entity);
+                    if (certificado != null && certificado.Producao != null && certificado.Homologacao != null)
+                        await EnviaParametrosTSSSync(entity);
+                    //EnviaParametrosTSSAsync(entity);
 
                     return await base.Post(entity);
                 }

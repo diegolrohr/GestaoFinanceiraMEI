@@ -48,6 +48,23 @@ namespace Fly01.Compras.BL
             entity.Fail(true, new Error("Não é possível deletar, somente em NFe ou NFSe"));
         }
 
+        public List<NotaFiscalEntrada> NotasFiscaisPeriodo(DateTime dataInicial, DateTime dataFinal)
+        {
+            try
+            {
+
+                List<NotaFiscalEntrada> notasFiscais = AllIncluding(x => x.SerieNotaFiscal).AsNoTracking().Where(x => x.DataInclusao >= dataInicial && x.DataInclusao <= dataFinal && x.Status == StatusNotaFiscal.Autorizada).ToList();
+
+                return notasFiscais;
+
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException("Não foi possível buscar as Notas para este período. " + ex.Message);
+            }
+        }
+
+
         public TotalPedidoNotaFiscal CalculaTotalNotaFiscal(Guid notaFiscalId)
         {
             if (All.Where(x => x.Id == notaFiscalId).FirstOrDefault().TipoNotaFiscal == TipoNotaFiscal.NFe)

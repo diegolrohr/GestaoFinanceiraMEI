@@ -10,7 +10,7 @@
         $('.collapsible').collapsible();
         fnBindOverrideSubmit();
     }
-    
+
     function fnSetInformacoes() {
         var negrito = [createElem("h5", { "class": "col s12 center orange-text light" }, "Bemacash Gestão Financeira")];
         var textAliquotas = [
@@ -27,7 +27,7 @@
                 ]),
             createElem("br"),
             createElem("h5", { "class": "col s12 center orange-text light" }, "Fique tranquilo, caso sua empresa não emita notas fiscais, essas configurações apenas ficarão salvas."),
-            createElem("br"), 
+            createElem("br"),
         ];
 
         var textFinal = [
@@ -99,8 +99,7 @@
                 $.ajax({
                     url: '@Url.Action("ValidaDadosEmpresa", "ParametroTributario")',
                     type: "POST",
-                    data: {
-                    },
+                    data: {},
                     success: function (response) {
                         if (response.success) {
                             enableFields();
@@ -130,9 +129,16 @@
                                         $$$.fn.submitErrorHandler(null, data.message);
                                     }
                                 },
+                                timeout: 5000,
                                 error: function error(jXHR, textStatus) {
-                                    $$$.toast(textStatus, "error");
+                                    var strMsg = "Cadastrado com sucesso.";
+                                    $$$.toast(strMsg, "success");
                                     $$$.loading.stop();
+                                    $$$._.fly01mdlfrmAliquotaSimplesNacional.close();
+                                    if (jsonData.enviarEmailContador == true) {
+                                        enviaEmailContador(dataEmail);
+                                    }
+                                    //$$$.toast(textStatus, "error");
                                 }
                             });
                         }

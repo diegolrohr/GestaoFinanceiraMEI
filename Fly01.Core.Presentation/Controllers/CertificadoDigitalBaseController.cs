@@ -1,25 +1,26 @@
-﻿using Fly01.uiJS.Classes;
-using Fly01.uiJS.Defaults;
+﻿using Fly01.Core.Config;
 using Fly01.Core.Helpers;
+using Fly01.Core.Presentation.Commons;
+using Fly01.Core.Rest;
+using Fly01.Core.ValueObjects;
+using Fly01.Core.ViewModels;
+using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.uiJS.Classes;
+using Fly01.uiJS.Classes.Elements;
+using Fly01.uiJS.Classes.Helpers;
+using Fly01.uiJS.Defaults;
+using Fly01.uiJS.Enums;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using Fly01.uiJS.Classes.Elements;
-using Fly01.Core.Rest;
-using Fly01.Core.Presentation.Commons;
-using Fly01.uiJS.Enums;
-using Fly01.Core.ViewModels;
-using Fly01.Core.ViewModels.Presentation.Commons;
-using Fly01.uiJS.Classes.Helpers;
-using Fly01.Core.Config;
-using Fly01.Core.ValueObjects;
 
 namespace Fly01.Core.Presentation.Controllers
 {
     public class CertificadoDigitalBaseController<T> : BaseController<T> where T : CertificadoDigitalVM
     {
+        
         public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
         {
             Dictionary<string, string> queryStringDefault = AppDefaults.GetQueryStringDefault();
@@ -124,14 +125,36 @@ namespace Fly01.Core.Presentation.Controllers
             => Form();
 
         public override List<HtmlUIButton> GetFormButtonsOnHeader()
-        {
+        {            
+                   
             var target = new List<HtmlUIButton>();
 
             if (UserCanWrite)
+            {
                 target.Add(new HtmlUIButton() { Id = "save", Label = "Atualizar Certificado", OnClickFn = "fnAtualizaCertificado", Type = "submit", Position = HtmlUIButtonPosition.Main });
+                target.Add(new HtmlUIButton() { Id = "delete", Label = "Remover Certificado", OnClickFn = "fnRemoveCertificado", Type = "submit", Position = HtmlUIButtonPosition.Out });
+
+            }
 
             return target;
         }
+
+        //public JsonResult RemoveCertificados()
+        //{
+        //    try
+        //    {
+        //        var response = RestHelper.ExecutePostRequest("removecertificados", "", null, 150);
+        //        //ExecutePutRequest<ManagerEmpresaVM>($"{AppDefaults.UrlManager}company/{SessionManager.Current.UserData.PlatformUrl}", empresa, AppDefaults.GetQueryStringDefault());
+        //        return Json(new
+        //        {
+        //            success = true,
+        //        }, JsonRequestBehavior.AllowGet);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception(ex.Message);
+        //    }
+        //}
 
         [OperationRole(PermissionValue = EPermissionValue.Read)]
         public override ContentResult Form() => base.Form();
@@ -255,7 +278,7 @@ namespace Fly01.Core.Presentation.Controllers
             try
             {
                 ManagerEmpresaVM empresa = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
-                if (!string.IsNullOrEmpty(empresa.InscricaoEstadual))
+                if (!string.IsNullOrWhiteSpace(empresa.InscricaoEstadual))
                 {
                     return Json(new
                     {
@@ -333,7 +356,8 @@ namespace Fly01.Core.Presentation.Controllers
                 {
                     empresa.InscricaoEstadual = inscricaoEstadual;
 
-                    var response = RestHelper.ExecutePutRequest<ManagerEmpresaVM>($"{AppDefaults.UrlManager}company/{SessionManager.Current.UserData.PlatformUrl}", empresa, AppDefaults.GetQueryStringDefault());
+                    ApiEmpresaManager.AtualizaDadosEmpresa(empresa, SessionManager.Current.UserData.PlatformUrl);
+                    //var response = RestHelper.ExecutePutRequest<ManagerEmpresaVM>(AppDefaults.UrlManager, $"company/{SessionManager.Current.UserData.PlatformUrl}", empresa, AppDefaults.GetQueryStringDefault());
 
                     return Json(new
                     {

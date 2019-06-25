@@ -229,23 +229,13 @@ namespace Fly01.Faturamento.Controllers
         }
 
         [OperationRole(PermissionValue = EPermissionValue.Read)]
-        public virtual JsonResult ImprimirOrcamentoPedido(string id)
+        public virtual ActionResult ImprimirOrcamentoPedido(string id)
         {
             try
             {
                 var ordemVenda = Get(Guid.Parse(id));
-                var fileName = "OrdemVenda" + ordemVenda.Numero.ToString() + ".pdf";
-                var fileBase64 = Convert.ToBase64String(GetPDFFile(ordemVenda));
-
-                Session.Add(fileName, fileBase64);
-
-                return Json(new
-                {
-                    success = true,
-                    fileName = fileName,
-                    recordsFiltered = 1,
-                    recordsTotal = 1
-                }, JsonRequestBehavior.AllowGet);
+                var reportViewer = new WebReportViewer<ImprimirOrcamentoPedidoVM>(ReportOrcamentoPedido.Instance);
+                return File(GetPDFFile(ordemVenda), "application/pdf");
             }
             catch (Exception ex)
             {

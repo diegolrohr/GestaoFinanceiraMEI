@@ -35,7 +35,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Fly01.uiJS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Fly01.uiJS.2.0.5.5\lib\net452\Fly01.uiJS.dll</HintPath>
+      <HintPath>..\packages\Fly01.uiJS.2.0.5.7\lib\net452\Fly01.uiJS.dll</HintPath>
     </Reference>
     <Reference Include="itextsharp, Version=5.5.13.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
       <HintPath>..\packages\iTextSharp.5.5.13\lib\itextsharp.dll</HintPath>
@@ -144,6 +144,7 @@
     <Compile Include="Controllers\ParametroTributarioBaseController.cs" />
     <Compile Include="Controllers\KitBaseController.cs" />
     <Compile Include="Controllers\MinhaContaBaseController.cs" />
+    <Compile Include="Controllers\AssistenciaRemotaBaseController.cs" />
     <Compile Include="Controllers\SerieNotaFiscalBaseController.cs" />
     <Compile Include="OperationRoleAttribute.cs" />
     <Compile Include="Commons\ImportacaoArquivoHelper.cs" />

@@ -27,7 +27,7 @@ namespace Fly01.Core.Config
         public string CodigoMaxime { get; set; }
 
         [JsonProperty("userName")]
-        public string Username { get; set; }
+        public string UserName { get; set; }
 
         [JsonProperty(".issued")]
         public string IssuedAt { get; set; }

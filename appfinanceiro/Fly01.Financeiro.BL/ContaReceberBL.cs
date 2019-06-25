@@ -53,7 +53,7 @@ namespace Fly01.Financeiro.BL
 
                 rpc = new RpcClient();
                 numero = int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaReceber}"));
-
+                //numero = All.Max(x => x.Numero) + 1;
                 entity.Numero = numero;
 
                 base.Insert(entity);
@@ -91,7 +91,7 @@ namespace Fly01.Financeiro.BL
 
                     rpc = new RpcClient();
                     numero = int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaReceber}"));
-
+                    //numero = All.Max(x => x.Numero) + 1;
                     itemContaReceber.Numero = numero;
 
                     base.Insert(itemContaReceber);
@@ -125,7 +125,7 @@ namespace Fly01.Financeiro.BL
 
                             rpc = new RpcClient();
                             numero = int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaReceber}"));
-
+                            //numero = All.Max(x => x.Numero) + 1;
                             itemContaReceberRepeticao.Numero = numero;
 
                             base.Insert(itemContaReceberRepeticao);

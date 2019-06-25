@@ -74,7 +74,6 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                         Homologacao = new SPEDADM.SPEDADM().ADMEMPRESAS(AppDefault.Token, homolog, new SPEDADM.SPED_ENTIDADEREFERENCIAL()),
                         Producao = new SPEDADMProd.SPEDADM().ADMEMPRESAS(AppDefault.Token, prod, new SPEDADMProd.SPED_ENTIDADEREFERENCIAL())
                     });
-
                 }
                 catch (Exception ex)
                 {

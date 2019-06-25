@@ -23,7 +23,20 @@
             $('input#cestId').attr('disabled', 'disabled');;
             $('input#cestDescricao').attr('disabled', 'disabled');
         }
-        setNFERequiredFields("fly01frm", ["descricao", "codigoProduto", "codigoBarras", "tipoProduto", "unidadeMedidaDescricao", "aliquotaIpi", "ncmDescricao", "cestDescricao", "valorVenda", "enquadramentoLegalIPIDescricao", "origemMercadoria", "extipi"]);
+        setNFERequiredFields("fly01frm", ["descricao", "codigoBarras", "tipoProduto", "unidadeMedidaDescricao", "aliquotaIpi", "ncmDescricao", "cestDescricao", "valorVenda", "enquadramentoLegalIPIDescricao", "origemMercadoria", "extipi"]);
+
+        $("#ncmDescricao").keyup(function () {
+            $('input#cestId').attr('disabled', 'disabled');;
+            $('input#cestDescricao').attr('disabled', 'disabled');
+            $('input#cestDescricao').val("");
+        })
+        $("#ncmDescricao").keyup(function () {
+            $('input#aliquotaIpi').attr('disabled', 'disabled');;
+            $('input#aliquotaIpi').attr('disabled', 'disabled');
+        })
+        $("#ncmDescricao").keyup(function () {
+            $('input#aliquotaIpi').val("");
+        })
     }
 
     function isCreate() {

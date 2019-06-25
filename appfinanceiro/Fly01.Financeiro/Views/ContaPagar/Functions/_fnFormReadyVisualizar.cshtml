@@ -89,7 +89,6 @@
                                 { data: "pessoa_nome", orderable: false },
                             ]
                         });
-                        debugger;
                         $('#tipoRenegociacaoValorDiferencaField select#tipoRenegociacaoValorDiferenca').val(response.renegociacao.TipoRenegociacaoValorDiferenca == 1 ? "Acrescimo" : "Desconto");
                         $('#tipoRenegociacaoValorDiferencaField .select-dropdown').val(response.renegociacao.TipoRenegociacaoValorDiferenca == 1 ? "Acréscimo" : "Desconto");
                         $('#tipoRenegociacaoCalculoField select#tipoRenegociacaoCalculo').val(response.renegociacao.TipoRenegociacaoCalculo == 1 ? "Valor" : "Percentual");

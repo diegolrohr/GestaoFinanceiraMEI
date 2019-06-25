@@ -52,9 +52,9 @@ namespace Fly01.Financeiro.BL
                 //post bemacash ignorando condicao parcelamento
                 if (entity.Id == default(Guid)) entity.Id = Guid.NewGuid();
 
-                //rpc = new RpcClient();
-                // numero = int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaPagar}"));
-                numero = All.Max(x => x.Numero) + 1;
+                rpc = new RpcClient();
+                numero = int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaPagar}"));
+                //numero = All.Max(x => x.Numero) + 1;
                 entity.Numero = numero;
 
                 base.Insert(entity);
@@ -89,9 +89,9 @@ namespace Fly01.Financeiro.BL
                             itemContaPagar.ContaFinanceiraRepeticaoPaiId = contaFinanceiraPrincipal;
                     }
 
-                    //rpc = new RpcClient();
-                    //numero = int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaPagar}"));
-                    numero = All.Max(x => x.Numero) + 1;
+                    rpc = new RpcClient();
+                    numero = int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaPagar}"));
+                    //numero = All.Max(x => x.Numero) + 1;
                     itemContaPagar.Numero = numero;
 
                     base.Insert(itemContaPagar);

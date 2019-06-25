@@ -276,25 +276,6 @@ namespace Fly01.Compras.Controllers
 
         }
 
-        private string GenerateJWT()
-        {
-            var payload = new Dictionary<string, string>()
-                {
-                    {  "platformUrl", SessionManager.Current.UserData.PlatformUrl },
-                    {  "clientId", AppDefaults.AppId },
-                };
-            var token = JWTHelper.Encode(payload, "https://meu.bemacash.com.br/", DateTime.Now.AddMinutes(60));
-            return token;
-        }
-
-        public JsonResult NotificationJwt()
-        {
-            return Json(new
-            {
-                token = GenerateJWT()
-            }, JsonRequestBehavior.AllowGet);
-        }
-
         public override ContentResult Sidebar()
         {
             var config = new SidebarUI() { Id = "nav-bar", AppName = "Compras", Parent = "header", PlatformsUrl = @Url.Action("Platforms", "Account") };

@@ -64,6 +64,8 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         [XmlElement(ElementName = "modBCST")]
         public ModalidadeDeterminacaoBCICMSST ModalidadeBCST { get; set; }
 
+
+
         [XmlIgnore]
         public double ValorBCST { get; set; }
 
@@ -75,6 +77,24 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                 return ValorBCST.ToString("0.00").Replace(",", ".");
             }
             set { ValorBCST = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
+        }
+
+        [XmlIgnore]
+        public double? PercentualMargemValorAdicionadoST { get; set; }
+
+        [XmlElement(ElementName = "pMVAST", IsNullable = true)]
+        public string PercentualMargemValorAdicionadoSTString
+        {
+            get
+            {
+                return PercentualMargemValorAdicionadoST.HasValue ? PercentualMargemValorAdicionadoST.Value.ToString("0.0000").Replace(",", ".") : "0.0000";
+            }
+            set { PercentualMargemValorAdicionadoST = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
+        }
+
+        public bool ShouldSerializePercentualMargemValorAdicionadoSTString()
+        {
+            return PercentualMargemValorAdicionadoST.HasValue & PercentualMargemValorAdicionadoST > 0;
         }
 
         [XmlIgnore]
@@ -101,24 +121,6 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                 return ValorICMSST.ToString("0.00").Replace(",", ".");
             }
             set { ValorICMSST = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
-        }
-                     
-        [XmlIgnore]
-        public double? PercentualMargemValorAdicionadoST { get; set; }
-
-        [XmlElement(ElementName = "pMVAST", IsNullable = true)]
-        public string PercentualMargemValorAdicionadoSTString
-        {
-            get
-            {
-                return PercentualMargemValorAdicionadoST.HasValue ? PercentualMargemValorAdicionadoST.Value.ToString("0.00").Replace(",", ".") : "0.00";
-            }
-            set { PercentualMargemValorAdicionadoST = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
-        }
-
-        public bool ShouldSerializePercentualMargemValorAdicionadoSTString()
-        {
-            return PercentualMargemValorAdicionadoST.HasValue & PercentualMargemValorAdicionadoST > 0;
         }
 
 

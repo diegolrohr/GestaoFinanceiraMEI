@@ -275,9 +275,9 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                         ValorICMSST = ValorICMSST.Value,
                         AliquotaICMS = AliquotaICMS.Value,
                         AliquotaICMSST = AliquotaICMSST.Value,
-                      //  BaseFCPST = BaseFCPST.Value,
-                        AliquotaFCPST = AliquotaFCPST.Value,
-                        ValorFCPST = ValorFCPST.Value,
+                        BaseFCPST = BaseFCPST,
+                        AliquotaFCPST = AliquotaFCPST,
+                        ValorFCPST = ValorFCPST,
                         PercentualMargemValorAdicionadoST = PercentualMargemValorAdicionadoST.Value,                       
                     };
                     break;

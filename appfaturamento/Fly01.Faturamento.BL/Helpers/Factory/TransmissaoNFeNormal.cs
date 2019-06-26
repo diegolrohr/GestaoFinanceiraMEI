@@ -193,7 +193,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 {
                     ICMS.ModalidadeBC = ModalidadeDeterminacaoBCICMS.ValorDaOperacao;
                     ICMS.AliquotaICMS = Math.Round(itemTributacao.ICMSAliquota, 2);
-                    ICMS.ModalidadeBCST = ModalidadeDeterminacaoBCICMSST.MargemValorAgregado;
+                    ICMS.ModalidadeBCST = ModalidadeDeterminacaoBCICMSST.ListaPositiva;
                     ICMS.ValorBC = Math.Round(itemTributacao.ICMSBase, 2);
                     ICMS.ValorICMS = Math.Round(itemTributacao.ICMSValor, 2);
                 }
@@ -202,7 +202,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                     || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaSemPermissaoDeCreditoST
                     || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.IsencaoParaFaixaDeReceitaBrutaST)
                 {
-                    ICMS.ModalidadeBCST = ModalidadeDeterminacaoBCICMSST.MargemValorAgregado;
+                    ICMS.ModalidadeBCST = ModalidadeDeterminacaoBCICMSST.ListaPositiva;
                     ICMS.PercentualReducaoBCST = 0;
                 }
             }

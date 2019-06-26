@@ -43,5 +43,13 @@ namespace Fly01.Faturamento.Models.ViewModel
         public string ExibirTransportadora { get; internal set; }
         public string ExibirProdutos { get; internal set; }
         public string ExibirServicos { get; internal set; }
+        public string Endereco { get; internal set; }
+        public string NumeroCliente { get; internal set; }
+        public string Bairro { get; internal set; }
+        public string Cidade { get; internal set; }
+        public string Cep { get; internal set; }
+        public string Complemento { get; internal set; }
+        public string Estado { get; internal set; }
+        public string Pais { get; internal set; }
     }
 }

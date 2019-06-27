@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Web;
@@ -17,17 +17,30 @@ using System.Web.SessionState;
 
 namespace Fly01.Core.Presentation.Application
 {
-    public class UserDataCookieVM
+    public static class HttpResponseBaseExtensions
     {
-        public string Fly01Url { get; set; }
-        public string UserName { get; set; }
-        public string PlatformId { get; set; }
-        public string Name { get; set; }
-        public string Company { get; set; }
-        public string Branch { get; set; }
-        public bool RememberMe { get; set; }
-        public string PlatformName { get; set; }
+        public static int SetAuthCookie<T>(this HttpResponseBase responseBase, string name, bool rememberMe, T userData)
+        {
+            var cookie = FormsAuthentication.GetAuthCookie(name, rememberMe);
+            var ticket = FormsAuthentication.Decrypt(cookie.Value);
+
+            var newTicket = new FormsAuthenticationTicket(ticket.Version, ticket.Name, ticket.IssueDate, ticket.Expiration,
+                ticket.IsPersistent, JsonConvert.SerializeObject(userData), ticket.CookiePath);
+            var encTicket = FormsAuthentication.Encrypt(newTicket);
+
+            cookie.Domain = AppDefaults.UrlGateway.Contains("fly01local")
+                ? ".bemacashlocal.com.br"
+                : AppDefaults.UrlGateway.Contains("fly01dev")
+                    ? ".bemacashstage.com.br"
+                    : ".bemacash.com.br";
+
+            cookie.Value = encTicket;
+            responseBase.Cookies.Add(cookie);
+
+            return encTicket.Length;
+        }
     }
+
     public class GlobalHttpApplication : HttpApplication
     {
         protected virtual string GetInstrumentationKeyAppInsights() => string.Empty;

@@ -135,6 +135,7 @@
     <Compile Include="ViewModels\Presentation\FileVM.cs" />
     <Compile Include="ViewModels\Presentation\KeyValueVM.cs" />
     <Compile Include="ViewModels\Presentation\SystemValueVM.cs" />
+    <Compile Include="ViewModels\UserDataCookieVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

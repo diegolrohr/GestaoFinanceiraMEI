@@ -67,6 +67,10 @@ namespace Fly01.Compras.Controllers
             if (!UserCanPerformOperation(ResourceHashConst.ComprasComprasDashboard))
                 return new ContentUI { SidebarUrl = @Url.Action("Sidebar") };
 
+            var date = DateTime.Now;
+            var firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
+            var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
+
             ConfiguracaoPersonalizacaoVM personalizacao = null;
             try
             {
@@ -75,10 +79,6 @@ namespace Fly01.Compras.Controllers
             catch (Exception) { }
 
             var emiteNotaFiscal = personalizacao != null ? personalizacao.EmiteNotaFiscal : true;
-
-            var date = DateTime.Now;
-            var firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
-            var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
 
             var cfg = new ContentUI
             {
@@ -137,7 +137,7 @@ namespace Fly01.Compras.Controllers
                         {
                             new ButtonGroupOptionUI { Id = "btnPedido", Value = "Pedido", Label = "Pedido", Class = "col s6" },
                             new ButtonGroupOptionUI { Id = "btnOrcamento", Value = "Orcamento", Label = "Orçamento", Class = "col s6" }
-                            
+
                         }
                     }
                 }
@@ -216,7 +216,7 @@ namespace Fly01.Compras.Controllers
                         Priority = 2,
                         Orderable = false,
                         Searchable = false
-                    },                  
+                    },
                     new DataTableUIColumn
                     {
                         DataField = "quantidade",
@@ -276,28 +276,9 @@ namespace Fly01.Compras.Controllers
 
         }
 
-        private string GenerateJWT()
-        {
-            var payload = new Dictionary<string, string>()
-                {
-                    {  "platformUrl", SessionManager.Current.UserData.PlatformUrl },
-                    {  "clientId", AppDefaults.AppId },
-                };
-            var token = JWTHelper.Encode(payload, "https://meu.bemacash.com.br/", DateTime.Now.AddMinutes(60));
-            return token;
-        }
-
-        public JsonResult NotificationJwt()
-        {
-            return Json(new
-            {
-                token = GenerateJWT()
-            }, JsonRequestBehavior.AllowGet);
-        }
-
         public override ContentResult Sidebar()
         {
-            var config = new SidebarUI() { Id = "nav-bar", AppName = "Compras", Parent = "header" };
+            var config = new SidebarUI() { Id = "nav-bar", AppName = "Compras", Parent = "header", PlatformsUrl = @Url.Action("Platforms", "Account") };
 
             config.Notification = new SidebarUINotification()
             {
@@ -305,7 +286,7 @@ namespace Fly01.Compras.Controllers
                 JWT = @Url.Action("NotificationJwt"),
                 SocketServer = AppDefaults.UrlNotificationSocket
             };
-
+            
             #region MenuItems
             var menuItems = new List<SidebarUIMenu>()
             {
@@ -360,16 +341,34 @@ namespace Fly01.Compras.Controllers
                     Label = "Ajuda",
                     Items = new List<LinkUI>
                     {
-                        new LinkUI() { Class = ResourceHashConst.ComprasAjudaAssistenciaRemota, Label =  "Assistência Remota", Link = "https://secure.logmeinrescue.com/customer/code.aspx"}
+                        new LinkUI() { Class = ResourceHashConst.ComprasAjudaAssistenciaRemota, Label =  "Assistência Remota", OnClick = @Url.Action("Form", "AssistenciaRemota") },
+                        new LinkUI() { Class = ResourceHashConst.ComprasAjuda, Label = "Manual do Usuário", Link = "https://centraldeatendimento.totvs.com/hc/pt-br/categories/360000364572" }
                     }
                 },
                 new SidebarUIMenu() { Class = ResourceHashConst.ComprasAvalieAplicativo, Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp") }
             };
 
+            ConfiguracaoPersonalizacaoVM personalizacao = null;
+            try
+            {
+                personalizacao = RestHelper.ExecuteGetRequest<ResultBase<ConfiguracaoPersonalizacaoVM>>("ConfiguracaoPersonalizacao", queryString: null)?.Data?.FirstOrDefault();
+            }
+            catch (Exception) { }
+
+            var emiteNotaFiscal = personalizacao != null ? personalizacao.EmiteNotaFiscal : true;
+
+            if (!emiteNotaFiscal)
+            {
+                var itemToHide = menuItems.Find(x => x.Label == "Configurações");
+
+                menuItems[menuItems.FindIndex(x => x.Label == "Configurações")].Items.RemoveAt(itemToHide.Items.FindIndex(x => x.Label == "Certificado Digital"));
+
+            }
+
             config.MenuItems.AddRange(ProcessMenuRoles(menuItems));
             #endregion
 
-            
+
 
 
             #region User Menu Items
@@ -382,14 +381,14 @@ namespace Fly01.Compras.Controllers
             config.MenuApps.AddRange(AppsList());
             #endregion
 
-            config.Name = SessionManager.Current.UserData.TokenData.Username;
+            config.Name = SessionManager.Current.UserData.TokenData.UserName;
             config.Email = SessionManager.Current.UserData.PlatformUser;
 
             config.Widgets = new WidgetsUI
             {
                 Conpass = new ConpassUI(),
                 Droz = new DrozUI(),
-                Zendesk = new ZendeskUI() 
+                Zendesk = new ZendeskUI()
                 {
                     AppName = "Bemacash Gestão",
                     AppTag = "chat_fly01_gestao",

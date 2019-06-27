@@ -1,20 +1,20 @@
-﻿using System.Linq;
-using System.Collections.Generic;
-using System.Web.Mvc;
-using Newtonsoft.Json;
-using Fly01.uiJS.Classes;
+﻿using Fly01.Core;
 using Fly01.Core.Config;
-using Fly01.Core;
-using Fly01.uiJS.Defaults;
-using Fly01.Faturamento.ViewModel;
-using Fly01.Core.Rest;
-using System.Configuration;
-using Fly01.uiJS.Classes.Widgets;
-using Fly01.Core.Presentation;
 using Fly01.Core.Helpers;
+using Fly01.Core.Presentation;
+using Fly01.Core.Rest;
 using Fly01.Core.ViewModels.Presentation.Commons;
-using System;
+using Fly01.Faturamento.ViewModel;
+using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
+using Fly01.uiJS.Classes.Widgets;
+using Fly01.uiJS.Defaults;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -30,7 +30,7 @@ namespace Fly01.Faturamento.Controllers
             {
                 personalizacao = RestHelper.ExecuteGetRequest<ResultBase<ConfiguracaoPersonalizacaoVM>>("ConfiguracaoPersonalizacao", queryString: null)?.Data?.FirstOrDefault();
             }
-            catch (Exception){}
+            catch (Exception) { }
 
             var emiteNotaFiscal = personalizacao != null ? personalizacao.EmiteNotaFiscal : true;
 
@@ -143,7 +143,7 @@ namespace Fly01.Faturamento.Controllers
 
         public override ContentResult Sidebar()
         {
-            var config = new SidebarUI() { Id = "nav-bar", AppName = "Faturamento", Parent = "header" };
+            var config = new SidebarUI() { Id = "nav-bar", AppName = "Faturamento", Parent = "header", PlatformsUrl = @Url.Action("Platforms", "Account") };
 
             #region MenuItems
 
@@ -201,11 +201,29 @@ namespace Fly01.Faturamento.Controllers
                     Label = "Ajuda",
                     Items = new List<LinkUI>
                     {
-                        new LinkUI() { Class = ResourceHashConst.FaturamentoAjudaAssistenciaRemota, Label = "Assistência Remota", Link = "https://secure.logmeinrescue.com/customer/code.aspx" }
+                        new LinkUI() { Class = ResourceHashConst.FaturamentoAjudaAssistenciaRemota, Label =  "Assistência Remota", OnClick = @Url.Action("Form", "AssistenciaRemota") },
+                        new LinkUI() { Class = ResourceHashConst.FaturamentoAjuda,Label = "Manual do Usuário", Link = "https://centraldeatendimento.totvs.com/hc/pt-br/categories/360000364572" }
                     }
                 },
                 new SidebarUIMenu() { Class = ResourceHashConst.FaturamentoAvalieAplicativo, Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp") }
             };
+
+            ConfiguracaoPersonalizacaoVM personalizacao = null;
+            try
+            {
+                personalizacao = RestHelper.ExecuteGetRequest<ResultBase<ConfiguracaoPersonalizacaoVM>>("ConfiguracaoPersonalizacao", queryString: null)?.Data?.FirstOrDefault();
+            }
+            catch (Exception) { }
+
+            var emiteNotaFiscal = personalizacao != null ? personalizacao.EmiteNotaFiscal : true;
+
+            if (!emiteNotaFiscal)
+            {
+                var itemToHide = menuItems.Find(x => x.Label == "Configurações");
+
+                menuItems[menuItems.FindIndex(x => x.Label == "Configurações")].Items.RemoveAt(itemToHide.Items.FindIndex(x => x.Label == "Certificado Digital"));
+
+            }
 
             config.MenuItems.AddRange(ProcessMenuRoles(menuItems));
             #endregion
@@ -223,7 +241,7 @@ namespace Fly01.Faturamento.Controllers
 
             #endregion
 
-            config.Name = SessionManager.Current.UserData.TokenData.Username;
+            config.Name = SessionManager.Current.UserData.TokenData.UserName;
             config.Email = SessionManager.Current.UserData.PlatformUser;
             config.Notification = new SidebarUINotification()
             {
@@ -249,25 +267,6 @@ namespace Fly01.Faturamento.Controllers
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
 
-        private string GenerateJWT()
-        {
-            var payload = new Dictionary<string, string>()
-                {
-                    {  "platformUrl", SessionManager.Current.UserData.PlatformUrl },
-                    {  "clientId", AppDefaults.AppId },
-                };
-            var token = JWTHelper.Encode(payload,"https://meu.bemacash.com.br/", DateTime.Now.AddMinutes(60));
-            return token;
-        }
-
-        public JsonResult NotificationJwt()
-        {
-            return Json(new
-            {
-                token = GenerateJWT()
-            }, JsonRequestBehavior.AllowGet);
-        }
-
         private int GetNotasNaoTransmitidas()
         {
             Dictionary<string, string> queryString = AppDefaults.GetQueryStringDefault();
@@ -281,7 +280,7 @@ namespace Fly01.Faturamento.Controllers
                 ? response.Data.Count()
                 : 0;
         }
-                
+
         public JsonResult StatusCard()
         {
             var numeroNFNaoTransmitida = GetNotasNaoTransmitidas();

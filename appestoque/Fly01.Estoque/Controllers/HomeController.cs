@@ -204,28 +204,9 @@ namespace Fly01.Estoque.Controllers
             return cfg;
         }
 
-        private string GenerateJWT()
-        {
-            var payload = new Dictionary<string, string>()
-                {
-                    {  "platformUrl", SessionManager.Current.UserData.PlatformUrl },
-                    {  "clientId", AppDefaults.AppId },
-                };
-            var token = JWTHelper.Encode(payload, "https://meu.bemacash.com.br/", DateTime.Now.AddMinutes(60));
-            return token;
-        }
-
-        public JsonResult NotificationJwt()
-        {
-            return Json(new
-            {
-                token = GenerateJWT()
-            }, JsonRequestBehavior.AllowGet);
-        }
-
         public override ContentResult Sidebar()
         {
-            var config = new SidebarUI() { Id = "nav-bar", AppName = "Estoque", Parent = "header" };
+            var config = new SidebarUI() { Id = "nav-bar", AppName = "Estoque", Parent = "header", PlatformsUrl = @Url.Action("Platforms", "Account") };
 
             #region MenuItems
             var menuItems = new List<SidebarUIMenu>()
@@ -270,7 +251,8 @@ namespace Fly01.Estoque.Controllers
                     Label = "Ajuda",
                     Items = new List<LinkUI>
                     {
-                        new LinkUI() { Class = ResourceHashConst.EstoqueAjudaAssistenciaRemota, Label =  "Assistência Remota", Link = "https://secure.logmeinrescue.com/customer/code.aspx"}
+                        new LinkUI() { Class = ResourceHashConst.EstoqueAjudaAssistenciaRemota, Label =  "Assistência Remota", OnClick = @Url.Action("Form", "AssistenciaRemota") },
+                        new LinkUI() { Class = ResourceHashConst.EstoqueAjuda, Label = "Manual do Usuário", Link = "https://centraldeatendimento.totvs.com/hc/pt-br/categories/360000364572" }
                     }
                 },
                 new SidebarUIMenu() { Class = ResourceHashConst.EstoqueAvalieAplicativo, Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp") }
@@ -289,7 +271,7 @@ namespace Fly01.Estoque.Controllers
             config.MenuApps.AddRange(AppsList());
             #endregion
 
-            config.Name = SessionManager.Current.UserData.TokenData.Username;
+            config.Name = SessionManager.Current.UserData.TokenData.UserName;
             config.Email = SessionManager.Current.UserData.PlatformUser;
             config.Notification = new SidebarUINotification()
             {

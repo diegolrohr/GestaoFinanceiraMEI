@@ -7,8 +7,12 @@ namespace Fly01.Core.Rest
     {
         public static ManagerEmpresaVM GetEmpresa(string plataformaUrl)
         {
-            return RestHelper.ExecuteGetRequest<ResponseDataVM<ManagerEmpresaVM>>($"{AppDefaults.UrlManager}", $"company/{plataformaUrl}")?.Data;
-            //return RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{plataformaUrl}");
+            return RestHelper.ExecuteGetRequest<ResponseDataVM<ManagerEmpresaVM>>($"{AppDefaults.UrlManagerNew}", $"company/{plataformaUrl}")?.Data;
+        }
+
+        public static void AtualizaDadosEmpresa(ManagerEmpresaVM empresa, string platformUrl)
+        {
+            RestHelper.ExecutePutRequest<ManagerEmpresaVM>(AppDefaults.UrlManagerNew, $"company/{platformUrl}", empresa, AppDefaults.GetQueryStringDefault());
         }
     }
 }

@@ -1,0 +1,23 @@
+<script>
+    function fnRemoveCertificado() {
+        debugger;
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("RemoveCertificados", "CertificadoDigital")",
+            data: {},
+            success: function (response) {
+                if (response.success) {
+                    $$$.toast("Certificado removido com sucesso!", "success");
+                }
+                else {
+                    $$$.toast(response.message, "error");
+                }
+            },
+            error: function (jqxhr, textStatus, errorThrown) {
+                $$$.toast(errorThrown, "error");
+            }
+        });
+
+        $$$._.fly01frm.refresh();
+    }
+</script>

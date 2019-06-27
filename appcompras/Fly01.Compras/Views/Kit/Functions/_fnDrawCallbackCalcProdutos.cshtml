@@ -24,9 +24,11 @@
         let valorVenda = 0;
 
         $$$._.dtKitItens.data().each(function (value, index) {
-            valorVenda = parseFloat(valorVenda.toString().replace(",", ".")) + (value.valorVenda == null ? 0 : parseFloat(value.valorVenda.replace(",", ".")));
-            valorServico = parseFloat(valorServico.toString().replace(",", ".")) + (value.valorServico == null ? 0 : parseFloat(value.valorServico.replace(",", ".")));
-            valorCusto = parseFloat(valorCusto.toString().replace(",", ".")) + (value.valorCusto == null ? 0 : parseFloat(value.valorCusto.replace(",", ".")));
+            quantidade = value.quantidade != null ? parseFloat(value.quantidade.toString().replace(",", ".")) : 1;
+
+            valorVenda = valorVenda + (value.valorVenda == null ? 0 : parseFloat(value.valorVenda.replace(".", "").replace(",", "."))) * quantidade;
+            valorServico = valorServico + (value.valorServico == null ? 0 : parseFloat(value.valorServico.replace(".", "").replace(",", "."))) * quantidade;
+            valorCusto = parseFloat(valorCusto.toString().replace(".", "").replace(",", ".")) + (value.valorCusto == null ? 0 : parseFloat(value.valorCusto.replace(".", "").replace(",", ".")));
         });
 
         $('#valorVendaTotal').val(valorVenda);

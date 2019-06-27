@@ -50,7 +50,7 @@ namespace Fly01.Financeiro.Controllers
             StringBuilder assinatura = new StringBuilder();
             assinatura.Append("_________________________________________________________");
             assinatura.Append("<br/>");
-            assinatura.Append(SessionManager.Current.UserData.TokenData.Username);
+            assinatura.Append(SessionManager.Current.UserData.TokenData.UserName);
 
             ReciboContaFinanceiraVM itemRecibo = new ReciboContaFinanceiraVM
             {

@@ -17,6 +17,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
             CodigoSituacaoOperacao = codigoSituacaoOperacao;
             CodigoSituacaoTributaria = codigoSituacaoOperacao;
             TipoCRT = tipoCRT;
+            CodigoSituacaoTributaria = codigoSituacaoOperacao;
         }
 
         [XmlElement("orig")]

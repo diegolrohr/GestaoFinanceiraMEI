@@ -86,14 +86,18 @@ namespace Fly01.OrdemServico.BL
             base.ValidaModel(entity);
         }
 
-        public void Insert(Produto entity, bool MustProduceMessageServiceBus)
+        public override void Insert(Produto entity)
         {
             GetIdNCM(entity);
             GetIdCest(entity);
             GetIdUnidadeMedida(entity);
             GetIdEnquadramentoLegalIPIBL(entity);
-
             base.Insert(entity);
+        }
+
+        public void Insert(Produto entity, bool MustProduceMessageServiceBus)
+        {
+            Insert(entity);
             if (entity.IsValid() && MustProduceMessageServiceBus)
                 Producer<Produto>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity, RabbitConfig.EnHttpVerb.POST);
         }

@@ -18,42 +18,55 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         }
 
         [XmlIgnore]
-        public double ValorBCSTRetido { get; set; }
+        public double? ValorBCSTRetido { get; set; }
 
         [XmlElement("vBCSTRet")]
         public string ValorBCSTRetidoString
         {
             get
-            {
-                return ValorBCSTRetido.ToString("0.00").Replace(",", ".");
+            {           
+                return ValorBCSTRetido.HasValue && ValorBCSTRetido > 0 ? ValorBCSTRetido.Value.ToString("0.00").Replace(",", ".") : "0.00";
             }
             set { ValorBCSTRetido = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]
-        public double AliquotaConsumidorFinal { get; set; }
+        public double? AliquotaConsumidorFinal { get; set; }
         //Ele é composto pela soma das tags pFCPSTRet e pICMSST
-        [XmlElement(ElementName = "pST")]
+        [XmlElement(ElementName = "pST", IsNullable = true)]
         public string AliquotaConsumidorFinalString
         {
             get
-            {
-                return AliquotaConsumidorFinal.ToString("0.00").Replace(",", ".");
+            {               
+                return AliquotaConsumidorFinal.HasValue && AliquotaConsumidorFinal > 0 ? AliquotaConsumidorFinal.Value.ToString("0.0000").Replace(",", ".") : "0.0000";
             }
             set { AliquotaConsumidorFinal = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]
-        public double ValorICMSSTRetido { get; set; }
+        public double? ValorICMSSTRetido { get; set; }
 
         [XmlElement("vICMSSTRet")]
         public string ValorICMSSTRetidoString
         {
             get
-            {
-                return ValorICMSSTRetido.ToString("0.00").Replace(",", ".");
+            {                
+                return ValorICMSSTRetido.HasValue && ValorICMSSTRetido > 0 ? ValorICMSSTRetido.Value.ToString("0.00").Replace(",", ".") : "0.00";
             }
             set { ValorICMSSTRetido = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
+        }
+        
+        [XmlIgnore]
+        public double? ValorICMSSubstituto { get; set; }
+
+        [XmlElement("vBCSTRet")]
+        public string ValorICMSSubstitutoString
+        {
+            get
+            {
+                return ValorICMSSubstituto.HasValue && ValorICMSSubstituto > 0 ? ValorICMSSubstituto.Value.ToString("0.00").Replace(",", ".") : "0.00";
+            }
+            set { ValorICMSSubstituto = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]

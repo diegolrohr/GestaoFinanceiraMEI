@@ -198,9 +198,9 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                     };
                     break;
 
-                case "00"://Integral
+                case "0"://Integral
 
-                 //   ToValidate.Add(NewKeyValuePair("ModalidadeBC", (int?)ModalidadeBC));
+                    ToValidate.Add(NewKeyValuePair("ModalidadeBC", (int?)ModalidadeBC));
                  //   ToValidate.Add(NewKeyValuePair("ValorICMS", ValorICMS));
                  //   ToValidate.Add(NewKeyValuePair("AliquotaICMS", AliquotaICMS));
                   //  ToValidate.Add(NewKeyValuePair("ValorBC", ValorBC));
@@ -214,42 +214,16 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                         ModalidadeBC = ModalidadeBC.Value,
                         ValorBC = ValorBC.Value,
                         ValorICMS = ValorICMS.Value,
-                        AliquotaICMS = AliquotaICMS.Value,
-                     //   ValorBCFCP = ValorBCFCP.Value,
-                      //  PercentualFCP = PercentualFCP.Value,
-                      //  ValorFCP = ValorFCP.Value,
+                        AliquotaICMS = AliquotaICMS.Value,                       
+                        AliquotaFCP = AliquotaFCP,
+                        ValorFCP = ValorFCP,
                         ValorICMSSTUFDestino = ValorICMSSTUFDestino,
                         ValorBCSTDestino = ValorBCSTDestino,
 
                     };
                     break;
               
-                case "0"://Integral
-
-             //       ToValidate.Add(NewKeyValuePair("ModalidadeBC", (int?)ModalidadeBC));
-             //       ToValidate.Add(NewKeyValuePair("ValorICMS", ValorICMS));
-             //       ToValidate.Add(NewKeyValuePair("AliquotaICMS", AliquotaICMS));
-             //       ToValidate.Add(NewKeyValuePair("ValorBC", ValorBC));
-
-
-                    DoTheValidation();
-
-                    ICMS = new ICMS00(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT)
-                    {
-
-                      //  ModalidadeBC = ModalidadeBC,
-                        ValorBC = ValorBC,
-                        ValorICMS = ValorICMS,
-                        AliquotaICMS = AliquotaICMS,
-                     // ValorBCFCP = ValorBCFCP.Value,
-                    //  PercentualFCP = PercentualFCP.Value,
-                    //    ValorFCP = ValorFCP,
-                        ValorICMSSTUFDestino = ValorICMSSTUFDestino,
-                        ValorBCSTDestino = ValorBCSTDestino,
-
-                    };
-                    break;
-
+               
                 case "10"://Com substituiçao
 
                     ToValidate.Add(NewKeyValuePair("ModalidadeBC", (int?)ModalidadeBC));
@@ -260,8 +234,14 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                     ToValidate.Add(NewKeyValuePair("AliquotaICMSST", AliquotaICMSST));
                     ToValidate.Add(NewKeyValuePair("ValorBC", ValorBC));
                     ToValidate.Add(NewKeyValuePair("ValorBCST", ValorBCST));
-                   // ToValidate.Add(NewKeyValuePair("PercentualMargemValorAdicionadoST", PercentualMargemValorAdicionadoST));
-                                                       
+                    ToValidate.Add(NewKeyValuePair("PercentualMargemValorAdicionadoST", PercentualMargemValorAdicionadoST));
+
+                    //FCP
+                 /  ToValidate.Add(NewKeyValuePair("BaseFCPST", BaseFCPST));
+                    ToValidate.Add(NewKeyValuePair("AliquotaFCPST", AliquotaFCPST));
+                    ToValidate.Add(NewKeyValuePair("ValorFCPST", ValorFCPST));
+
+
 
                     DoTheValidation();
 
@@ -275,9 +255,9 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                         ValorICMSST = ValorICMSST.Value,
                         AliquotaICMS = AliquotaICMS.Value,
                         AliquotaICMSST = AliquotaICMSST.Value,
-                      //  BaseFCPST = BaseFCPST.Value,
-                        AliquotaFCPST = AliquotaFCPST.Value,
-                        ValorFCPST = ValorFCPST.Value,
+                        BaseFCPST = BaseFCPST,
+                        AliquotaFCPST = AliquotaFCPST,
+                        ValorFCPST = ValorFCPST,
                         PercentualMargemValorAdicionadoST = PercentualMargemValorAdicionadoST.Value,                       
                     };
                     break;
@@ -303,8 +283,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                         AliquotaICMS = AliquotaICMS.Value,
                         PercentualReducaoBC = PercentualReducaoBC.Value,
                         MotivoDesoneracaoICMS = MotivoDesoneracaoICMS.Value,
-                        ValorBCFCP = ValorBCFCP.Value,
-                        PercentualFCP = PercentualFCP.Value,
+                        AliquotaFCP = AliquotaFCP.Value,
                         ValorFCP = ValorFCP.Value,
 
                     };
@@ -358,13 +337,13 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                     break;
 
                 case "60"://ICMS ST Retido anteriormente
-                    ToValidate.Add(NewKeyValuePair("ValorBCSTRetido", ValorBCSTRetido));
+                /*    ToValidate.Add(NewKeyValuePair("ValorBCSTRetido", ValorBCSTRetido));
                     ToValidate.Add(NewKeyValuePair("ValorICMSSTRetido", ValorICMSSTRetido));
                     ToValidate.Add(NewKeyValuePair("BaseFCPSTRetido", BaseFCPSTRetido));
                     ToValidate.Add(NewKeyValuePair("AliquotaFCPSTRetido", AliquotaFCPSTRetido));
                     ToValidate.Add(NewKeyValuePair("ValorFCPSTRetido", ValorFCPSTRetido));
                     ToValidate.Add(NewKeyValuePair("AliquotaConsumidorFinal", AliquotaConsumidorFinal));
-
+                    */
                     DoTheValidation();
 
                     ICMS = new ICMS60(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT)
@@ -372,6 +351,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                         ValorBCSTRetido = ValorBCSTRetido.Value,
                         ValorICMSSTRetido = ValorICMSSTRetido.Value,
                         BaseFCPSTRetido = BaseFCPSTRetido,
+                        ValorICMSSubstituto = ValorICMSSubstituto.Value,
                         AliquotaFCPSTRetido = AliquotaFCPSTRetido,
                         ValorFCPSTRetido = ValorFCPSTRetido,
                         AliquotaConsumidorFinal = AliquotaConsumidorFinal.Value,
@@ -508,15 +488,6 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         public double? PercentualBCop { get; set; }
 
         [XmlIgnore]
-        public double? ValorBCFCP { get; set; }
-
-        [XmlIgnore]
-        public double? PercentualFCP { get; set; }
-
-        [XmlIgnore]
-        public double? ValorFCP { get; set; }
-
-        [XmlIgnore]
         public string UF { get; set; }
 
         [XmlIgnore]
@@ -525,7 +496,19 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         [XmlIgnore]
         public double? ValorCreditoICMS { get; set; }
 
+        [XmlIgnore] 
+        public double? ValorICMSSubstituto{ get; set; }
+        
         #region FCP
+
+        [XmlIgnore]
+        public double? BaseFCP { get; set; }
+
+        [XmlIgnore]
+        public double? AliquotaFCP { get; set; }
+
+        [XmlIgnore]
+        public double? ValorFCP { get; set; }
 
         [XmlIgnore]
         public double? BaseFCPST { get; set; }

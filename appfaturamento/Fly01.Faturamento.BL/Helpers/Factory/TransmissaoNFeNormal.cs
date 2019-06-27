@@ -204,7 +204,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 {
                     ICMS.ModalidadeBCST = ModalidadeDeterminacaoBCICMSST.MargemValorAgregado;
                     ICMS.PercentualReducaoBCST = 0;
-                }
+                }                
             }
         }
 

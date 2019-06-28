@@ -1134,7 +1134,7 @@ IIF(Fields!ExibirProdutos.Value = "True", "Produtos" ,"Serviços"))</Value>
         <Top>13.92112cm</Top>
         <Left>0.01872cm</Left>
         <Height>1.12944cm</Height>
-        <Width>16.11473cm</Width>
+        <Width>16.11475cm</Width>
         <ZIndex>4</ZIndex>
         <Style>
           <Border>
@@ -1752,14 +1752,13 @@ IIF(Fields!ExibirProdutos.Value = "True", "Produtos" ,"Serviços"))</Value>
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
-                    <ColSpan>3</ColSpan>
+                    <ColSpan>2</ColSpan>
                   </CellContents>
                 </TablixCell>
                 <TablixCell />
-                <TablixCell />
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox15">
+                    <Textbox Name="Textbox12">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
@@ -1781,7 +1780,7 @@ IIF(Fields!ExibirProdutos.Value = "True", "Produtos" ,"Serviços"))</Value>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox15</rd:DefaultName>
+                      <rd:DefaultName>Textbox12</rd:DefaultName>
                       <Style>
                         <Border>
                           <Style>None</Style>
@@ -1792,9 +1791,10 @@ IIF(Fields!ExibirProdutos.Value = "True", "Produtos" ,"Serviços"))</Value>
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
-                    <ColSpan>3</ColSpan>
+                    <ColSpan>4</ColSpan>
                   </CellContents>
                 </TablixCell>
+                <TablixCell />
                 <TablixCell />
                 <TablixCell />
               </TablixCells>
@@ -1874,7 +1874,7 @@ IIF(Fields!ExibirProdutos.Value = "True", "Produtos" ,"Serviços"))</Value>
         <DataSetName>ds</DataSetName>
         <Top>3.4575cm</Top>
         <Left>0.00716cm</Left>
-        <Height>4.53216cm</Height>
+        <Height>4.53218cm</Height>
         <Width>16.18644cm</Width>
         <ZIndex>5</ZIndex>
         <Style>
@@ -2199,6 +2199,7 @@ IIF(Fields!ExibirProdutos.Value = "True", "Produtos" ,"Serviços"))</Value>
                             <TextRun>
                               <Value>=Fields!TotalProdutos.Value</Value>
                               <Style>
+                                <FontWeight>Normal</FontWeight>
                                 <Format>#,0.00</Format>
                               </Style>
                             </TextRun>
@@ -2290,6 +2291,7 @@ IIF(Fields!ExibirProdutos.Value = "True", "Produtos" ,"Serviços"))</Value>
                             <TextRun>
                               <Value>=Fields!TotalServicos.Value</Value>
                               <Style>
+                                <FontWeight>Normal</FontWeight>
                                 <Format>#,0.00</Format>
                               </Style>
                             </TextRun>
@@ -2361,7 +2363,7 @@ IIF(Fields!ExibirProdutos.Value = "True", "Produtos" ,"Serviços"))</Value>
               </TablixCells>
             </TablixRow>
             <TablixRow>
-              <Height>0.54708cm</Height>
+              <Height>0.6cm</Height>
               <TablixCells>
                 <TablixCell>
                   <CellContents>
@@ -2467,7 +2469,7 @@ IIF(Fields!ExibirProdutos.Value = "True", "Produtos" ,"Serviços"))</Value>
         <DataSetName>ds</DataSetName>
         <Top>15.12112cm</Top>
         <Left>0.01872cm</Left>
-        <Height>2.22198cm</Height>
+        <Height>2.27489cm</Height>
         <Width>16.11473cm</Width>
         <ZIndex>7</ZIndex>
         <Style>
@@ -2550,13 +2552,13 @@ IIF(Fields!ExibirProdutos.Value = "True", "Produtos" ,"Serviços"))</Value>
         </Style>
       </Tablix>
     </ReportItems>
-    <Height>6.87778in</Height>
+    <Height>7.18334in</Height>
     <Style />
   </Body>
   <Width>6.51013in</Width>
   <Page>
     <PageFooter>
-      <Height>0.87312cm</Height>
+      <Height>1.94909cm</Height>
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
       <ReportItems>

@@ -29,7 +29,7 @@ namespace Fly01.Faturamento.Controllers
     {
         public OrdemVendaController()
         {
-            ExpandProperties = "cliente($select=id,nome,email,endereco,bairro,numero,cep,complemento;$expand=cidade($select=nome),estado($select=nome),pais($select=nome)),grupoTributarioPadrao($select=id,descricao,tipoTributacaoICMS),transportadora($select=id,nome),estadoPlacaVeiculo,condicaoParcelamento,formaPagamento,categoria,centroCusto,ufSaidaPais($select=id,nome)";
+            ExpandProperties = "cliente($select=id,nome,email,endereco,bairro,numero,cep,complemento;$expand=cidade($select=nome),estado($select=sigla),pais($select=nome)),grupoTributarioPadrao($select=id,descricao,tipoTributacaoICMS),transportadora($select=id,nome),estadoPlacaVeiculo,condicaoParcelamento,formaPagamento,categoria,centroCusto,ufSaidaPais($select=id,nome)";
         }
 
         private JsonResult GetJson(object data)
@@ -106,7 +106,7 @@ namespace Fly01.Faturamento.Controllers
                     Cidade = OrdemVenda.Cliente != null && OrdemVenda.Cliente.Cidade != null ? OrdemVenda.Cliente.Cidade.Nome : string.Empty,
                     Cep = OrdemVenda.Cliente != null ? OrdemVenda.Cliente.CEP : string.Empty,
                     Complemento = OrdemVenda.Cliente != null ? OrdemVenda.Cliente.Complemento : string.Empty,
-                    Estado = OrdemVenda.Cliente != null && OrdemVenda.Cliente.Estado != null ? OrdemVenda.Cliente.Estado.Nome : string.Empty,
+                    Estado = OrdemVenda.Cliente != null && OrdemVenda.Cliente.Estado != null ? OrdemVenda.Cliente.Estado.Sigla : string.Empty,
                     Pais = OrdemVenda.Cliente != null && OrdemVenda.Cliente.Pais != null ? OrdemVenda.Cliente.Pais.Nome : string.Empty,
                     Data = OrdemVenda.Data.ToString(),
                     CondicaoParcelamentoDescricao = OrdemVenda.CondicaoParcelamento != null ? OrdemVenda.CondicaoParcelamento.Descricao : string.Empty,
@@ -160,7 +160,7 @@ namespace Fly01.Faturamento.Controllers
                     Cidade = OrdemVenda.Cliente != null && OrdemVenda.Cliente.Cidade != null ? OrdemVenda.Cliente.Cidade.Nome : string.Empty,
                     Cep = OrdemVenda.Cliente != null ? OrdemVenda.Cliente.CEP : string.Empty,
                     Complemento = OrdemVenda.Cliente != null ? OrdemVenda.Cliente.Complemento : string.Empty,
-                    Estado = OrdemVenda.Cliente != null && OrdemVenda.Cliente.Estado != null ? OrdemVenda.Cliente.Estado.Nome : string.Empty,
+                    Estado = OrdemVenda.Cliente != null && OrdemVenda.Cliente.Estado != null ? OrdemVenda.Cliente.Estado.Sigla : string.Empty,
                     Pais = OrdemVenda.Cliente != null && OrdemVenda.Cliente.Pais != null ? OrdemVenda.Cliente.Pais.Nome : string.Empty,
                     Data = OrdemVenda.Data.ToString(),
                     CondicaoParcelamentoDescricao = OrdemVenda.CondicaoParcelamento != null ? OrdemVenda.CondicaoParcelamento.Descricao : string.Empty,
@@ -214,7 +214,7 @@ namespace Fly01.Faturamento.Controllers
                     Cidade = OrdemVenda.Cliente != null && OrdemVenda.Cliente.Cidade != null ? OrdemVenda.Cliente.Cidade.Nome : string.Empty,
                     Cep = OrdemVenda.Cliente != null ? OrdemVenda.Cliente.CEP : string.Empty,
                     Complemento = OrdemVenda.Cliente != null ? OrdemVenda.Cliente.Complemento : string.Empty,
-                    Estado = OrdemVenda.Cliente != null && OrdemVenda.Cliente.Estado != null ? OrdemVenda.Cliente.Estado.Nome : string.Empty,
+                    Estado = OrdemVenda.Cliente != null && OrdemVenda.Cliente.Estado != null ? OrdemVenda.Cliente.Estado.Sigla : string.Empty,
                     Pais = OrdemVenda.Cliente != null && OrdemVenda.Cliente.Pais != null ? OrdemVenda.Cliente.Pais.Nome : string.Empty,
                     Data = OrdemVenda.Data.ToString(),
                     CondicaoParcelamentoDescricao = OrdemVenda.CondicaoParcelamento != null ? OrdemVenda.CondicaoParcelamento.Descricao : string.Empty,

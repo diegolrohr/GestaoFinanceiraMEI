@@ -83,8 +83,8 @@ namespace Fly01.Core.Presentation.Application
                     userData.Permissions = GetPermissionsByUser(cookieUserData.Fly01Url, cookieUserData.UserName);
 
                     SessionManager.Current.UserData = userData;
-                    return true;
                 }
+                return true;
             }
             return false;
         }
@@ -116,14 +116,24 @@ namespace Fly01.Core.Presentation.Application
             }
             else if (FormsAuthentication.CookiesSupported && Request.Cookies[FormsAuthentication.FormsCookieName] != null)
             {
-                if (ReadCookieAndSetSession(Request.Cookies[FormsAuthentication.FormsCookieName].Value))
+                try
                 {
-                    //HttpCookie mpnData = new HttpCookie("mpndata") { Expires = DateTime.UtcNow.AddDays(2), Path = "/" };
-                    //mpnData.Values["UserEmail"] = SessionManager.Current.UserData.PlatformUser;
-                    //mpnData.Values["UserName"] = SessionManager.Current.UserData.TokenData.UserName;
-                    //mpnData.Values["TrialUntil"] = SessionManager.Current.UserData.TokenData.Trial
-                    //    ? SessionManager.Current.UserData.TokenData.LicenseExpirationString : "";
-                    //Response.Cookies.Add(mpnData);
+                    if (!ReadCookieAndSetSession(Request.Cookies[FormsAuthentication.FormsCookieName].Value))
+                    {
+                        Response.Write($"<script type=\"text/javascript\">top.location.href='{AppDefaults.UrlLoginSSO}';</script>");
+                        Response.End();
+                        //HttpCookie mpnData = new HttpCookie("mpndata") { Expires = DateTime.UtcNow.AddDays(2), Path = "/" };
+                        //mpnData.Values["UserEmail"] = SessionManager.Current.UserData.PlatformUser;
+                        //mpnData.Values["UserName"] = SessionManager.Current.UserData.TokenData.UserName;
+                        //mpnData.Values["TrialUntil"] = SessionManager.Current.UserData.TokenData.Trial
+                        //    ? SessionManager.Current.UserData.TokenData.LicenseExpirationString : "";
+                        //Response.Cookies.Add(mpnData);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Response.Write($"<script type=\"text/javascript\">top.location.href='{AppDefaults.UrlLoginSSO}';</script>");
+                    Response.End();
                 }
             }
         }
@@ -171,7 +181,7 @@ namespace Fly01.Core.Presentation.Application
             if (FormsAuthentication.CookiesSupported &&
                 Request.Cookies[FormsAuthentication.FormsCookieName] != null)
             {
-                if (ReadCookieAndSetSession(Request.Cookies[FormsAuthentication.FormsCookieName].Value))
+                if (!ReadCookieAndSetSession(Request.Cookies[FormsAuthentication.FormsCookieName].Value))
                 {
                     //HttpCookie mpnData = new HttpCookie("mpndata") { Expires = DateTime.UtcNow.AddDays(2), Path = "/" };
                     //mpnData.Values["UserEmail"] = SessionManager.Current.UserData.PlatformUser;

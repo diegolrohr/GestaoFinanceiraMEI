@@ -59,7 +59,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         [XmlIgnore]
         public double? ValorICMSSubstituto { get; set; }
 
-        [XmlElement("vBCSTRet")]
+        [XmlElement("vICMSSubstituto")]
         public string ValorICMSSubstitutoString
         {
             get
@@ -68,7 +68,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
             }
             set { ValorICMSSubstituto = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
-
+       
         [XmlIgnore]
         public double? BaseFCPSTRetido { get; set; }
         [XmlElement(ElementName = "vBCFCPSTRet", IsNullable = true)]

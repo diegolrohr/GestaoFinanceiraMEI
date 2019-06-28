@@ -171,7 +171,9 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                     ICMS.BaseFCPSTRetido = Math.Round(item.ValorBCFCPSTRetidoAnterior, 2);
                     ICMS.AliquotaFCPSTRetido = AliquotaFCPSTRetido;
                     ICMS.ValorFCPSTRetido = Math.Round(item.ValorFCPSTRetidoAnterior, 2);
+                    ICMS.ValorICMSSubstituto = Math.Round(itemTributacao.ICMSValor, 2);
                     ICMS.AliquotaConsumidorFinal = itemTributacao.STAliquota > 0 ? Math.Round(itemTributacao.STAliquota, 2) + AliquotaFCPSTRetido : 0;
+
                 }
             }
         }

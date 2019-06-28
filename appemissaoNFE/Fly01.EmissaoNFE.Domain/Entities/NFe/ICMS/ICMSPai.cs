@@ -237,7 +237,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                     ToValidate.Add(NewKeyValuePair("PercentualMargemValorAdicionadoST", PercentualMargemValorAdicionadoST));
 
                     //FCP
-                 /  ToValidate.Add(NewKeyValuePair("BaseFCPST", BaseFCPST));
+                    ToValidate.Add(NewKeyValuePair("BaseFCPST", BaseFCPST));
                     ToValidate.Add(NewKeyValuePair("AliquotaFCPST", AliquotaFCPST));
                     ToValidate.Add(NewKeyValuePair("ValorFCPST", ValorFCPST));
 
@@ -351,10 +351,10 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                         ValorBCSTRetido = ValorBCSTRetido.Value,
                         ValorICMSSTRetido = ValorICMSSTRetido.Value,
                         BaseFCPSTRetido = BaseFCPSTRetido,
-                        ValorICMSSubstituto = ValorICMSSubstituto.Value,
+                        ValorICMSSubstituto = ValorICMSSubstituto,
                         AliquotaFCPSTRetido = AliquotaFCPSTRetido,
                         ValorFCPSTRetido = ValorFCPSTRetido,
-                        AliquotaConsumidorFinal = AliquotaConsumidorFinal.Value,
+                        AliquotaConsumidorFinal = AliquotaConsumidorFinal,
                     };
                     break;
 

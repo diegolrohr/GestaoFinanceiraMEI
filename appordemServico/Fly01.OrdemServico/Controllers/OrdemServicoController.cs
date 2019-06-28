@@ -745,7 +745,7 @@ namespace Fly01.OrdemServico.Controllers
         private static string GetEndereco(PessoaVM cliente) =>
                 cliente == null || string.IsNullOrEmpty(cliente.Endereco) ?
                 "" :
-                $"{cliente.Endereco}, {cliente.Cidade?.Nome} - {cliente.Estado?.Sigla}. CEP: {cliente.CEP}";
+                $"{cliente.Endereco}";
 
         [OperationRole(PermissionValue = EPermissionValue.Read)]
         public virtual ActionResult ImprimirOrdemServico(Guid id)

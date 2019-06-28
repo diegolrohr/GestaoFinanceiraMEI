@@ -20,7 +20,7 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox1</rd:DefaultName>
-        <Left>3.35658cm</Left>
+        <Left>3.35664cm</Left>
         <Height>2.50472cm</Height>
         <Width>9.58268cm</Width>
         <Style>
@@ -39,7 +39,7 @@
         <Value>=System.Convert.FromBase64String(Parameters!ReportLogo.Value)</Value>
         <MIMEType>image/png</MIMEType>
         <Sizing>FitProportional</Sizing>
-        <Left>0.1318cm</Left>
+        <Left>0.13186cm</Left>
         <Height>2.50472cm</Height>
         <Width>3.15422cm</Width>
         <ZIndex>1</ZIndex>
@@ -115,7 +115,8 @@ IIF(Fields!ExibirProdutos.Value = "True", "Produtos" ,"Serviços"))</Value>
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>ds</DataSetName>
-        <Top>13.25057cm</Top>
+        <Top>13.35642cm</Top>
+        <Left>0.00006cm</Left>
         <Height>0.6cm</Height>
         <Width>16.1936cm</Width>
         <ZIndex>2</ZIndex>
@@ -722,8 +723,8 @@ IIF(Fields!ExibirProdutos.Value = "True", "Produtos" ,"Serviços"))</Value>
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>ds</DataSetName>
-        <Top>8.06022cm</Top>
-        <Left>0.08297cm</Left>
+        <Top>8.16607cm</Top>
+        <Left>0.06015cm</Left>
         <Height>3.14666cm</Height>
         <Width>16.15228cm</Width>
         <ZIndex>3</ZIndex>
@@ -1131,8 +1132,8 @@ IIF(Fields!ExibirProdutos.Value = "True", "Produtos" ,"Serviços"))</Value>
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>ds</DataSetName>
-        <Top>13.92112cm</Top>
-        <Left>0.01872cm</Left>
+        <Top>14.02697cm</Top>
+        <Left>0.06015cm</Left>
         <Height>1.12944cm</Height>
         <Width>16.11475cm</Width>
         <ZIndex>4</ZIndex>
@@ -1873,7 +1874,7 @@ IIF(Fields!ExibirProdutos.Value = "True", "Produtos" ,"Serviços"))</Value>
         </TablixRowHierarchy>
         <DataSetName>ds</DataSetName>
         <Top>3.4575cm</Top>
-        <Left>0.00716cm</Left>
+        <Left>0.00722cm</Left>
         <Height>4.53218cm</Height>
         <Width>16.18644cm</Width>
         <ZIndex>5</ZIndex>
@@ -2112,8 +2113,7 @@ IIF(Fields!ExibirProdutos.Value = "True", "Produtos" ,"Serviços"))</Value>
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>ds</DataSetName>
-        <Top>11.38327cm</Top>
-        <Left>0.08297cm</Left>
+        <Top>11.41856cm</Top>
         <Height>1.8673cm</Height>
         <Width>16.13351cm</Width>
         <ZIndex>6</ZIndex>
@@ -2467,8 +2467,7 @@ IIF(Fields!ExibirProdutos.Value = "True", "Produtos" ,"Serviços"))</Value>
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>ds</DataSetName>
-        <Top>15.12112cm</Top>
-        <Left>0.01872cm</Left>
+        <Top>15.29752cm</Top>
         <Height>2.27489cm</Height>
         <Width>16.11473cm</Width>
         <ZIndex>7</ZIndex>
@@ -2541,7 +2540,7 @@ IIF(Fields!ExibirProdutos.Value = "True", "Produtos" ,"Serviços"))</Value>
         </TablixRowHierarchy>
         <DataSetName>ds</DataSetName>
         <Top>2.57528cm</Top>
-        <Left>0.06009cm</Left>
+        <Left>0.06015cm</Left>
         <Height>0.81167cm</Height>
         <Width>16.13351cm</Width>
         <ZIndex>8</ZIndex>
@@ -2552,10 +2551,10 @@ IIF(Fields!ExibirProdutos.Value = "True", "Produtos" ,"Serviços"))</Value>
         </Style>
       </Tablix>
     </ReportItems>
-    <Height>7.18334in</Height>
+    <Height>7.62084in</Height>
     <Style />
   </Body>
-  <Width>6.51013in</Width>
+  <Width>6.51015in</Width>
   <Page>
     <PageFooter>
       <Height>1.94909cm</Height>
@@ -2581,7 +2580,7 @@ IIF(Fields!ExibirProdutos.Value = "True", "Produtos" ,"Serviços"))</Value>
           </Paragraphs>
           <rd:DefaultName>Textbox2</rd:DefaultName>
           <Top>0.14111cm</Top>
-          <Left>0.23648cm</Left>
+          <Left>0.23654cm</Left>
           <Height>0.73201cm</Height>
           <Width>12.70278cm</Width>
           <Style>
@@ -2606,7 +2605,7 @@ IIF(Fields!ExibirProdutos.Value = "True", "Produtos" ,"Serviços"))</Value>
           </Paragraphs>
           <rd:DefaultName>Textbox21</rd:DefaultName>
           <Top>0.14111cm</Top>
-          <Left>13.43552cm</Left>
+          <Left>13.43558cm</Left>
           <Height>0.73201cm</Height>
           <Width>2.54808cm</Width>
           <ZIndex>1</ZIndex>

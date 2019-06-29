@@ -171,7 +171,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                     ICMS.BaseFCPSTRetido = Math.Round(item.ValorBCFCPSTRetidoAnterior, 2);
                     ICMS.AliquotaFCPSTRetido = AliquotaFCPSTRetido;
                     ICMS.ValorFCPSTRetido = Math.Round(item.ValorFCPSTRetidoAnterior, 2);
-                    ICMS.ValorICMSSubstituto = Math.Round(itemTributacao.ICMSValor, 2);
+                    ICMS.ValorICMSSubstituto = Math.Round(itemTributacao.STBase, 2);
                     ICMS.AliquotaConsumidorFinal = itemTributacao.STAliquota > 0 ? Math.Round(itemTributacao.STAliquota, 2) + AliquotaFCPSTRetido : 0;
 
                 }
@@ -184,13 +184,13 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
             {
                 ICMS.ValorICMSSTRetido = Math.Round(item.ValorICMSSTRetido, 2);
 
-                if (item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.Outros 
+                if (item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.Outros
                     || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.ComRedDeBaseDeST
                     || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.ComReducaoDeBaseDeCalculo
                     || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.Diferimento
                     || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaComCobrancaDeSubstituicao
                     || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.Outros90
-                    || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaIntegralmente                  
+                    || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaIntegralmente
                     )
                 {
                     ICMS.ModalidadeBC = ModalidadeDeterminacaoBCICMS.ValorDaOperacao;
@@ -198,6 +198,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                     ICMS.ModalidadeBCST = ModalidadeDeterminacaoBCICMSST.MargemValorAgregado;
                     ICMS.ValorBC = Math.Round(itemTributacao.ICMSBase, 2);
                     ICMS.ValorICMS = Math.Round(itemTributacao.ICMSValor, 2);
+                                       
                 }
 
                 if (item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaComPermissaoDeCreditoST
@@ -206,7 +207,23 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 {
                     ICMS.ModalidadeBCST = ModalidadeDeterminacaoBCICMSST.MargemValorAgregado;
                     ICMS.PercentualReducaoBCST = 0;
-                }                
+                }
+
+                if (Cabecalho.Versao == "4.00")
+                 {
+                   if(                      
+                        item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.ComReducaoDeBaseDeCalculo
+                        || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.Diferimento
+                        || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaComCobrancaDeSubstituicao
+                        || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.Outros90
+                        || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaIntegralmente)
+                   {   
+                        ICMS.BaseFCP = Math.Round(itemTributacao.FCPBase, 2);
+                        ICMS.AliquotaFCP = Math.Round(itemTributacao.FCPAliquota, 2);
+                        ICMS.ValorFCP = Math.Round(itemTributacao.FCPValor, 2);
+                   }
+                 }
+
             }
         }
 
@@ -254,7 +271,8 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
             {
                 CodigoSituacaoTributaria = item.GrupoTributario.TipoTributacaoPIS.HasValue && itemTributacao.CalculaPIS ?
                 (CSTPISCOFINS)((int)item.GrupoTributario.TipoTributacaoPIS) :
-                CSTPISCOFINS.IsentaDaContribuicao
+                CSTPISCOFINS.IsentaDaContribuicao,
+                TipoCRT = ParametrosTributarios.TipoCRT
             };
 
             if (itemTributacao.CalculaPIS)
@@ -276,7 +294,8 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
             {
                 CodigoSituacaoTributaria = item.GrupoTributario.TipoTributacaoCOFINS != null && itemTributacao.CalculaCOFINS ?
                 ((CSTPISCOFINS)(int)item.GrupoTributario.TipoTributacaoCOFINS.Value) :
-                CSTPISCOFINS.OutrasOperacoes
+                CSTPISCOFINS.OutrasOperacoes,
+                TipoCRT = ParametrosTributarios.TipoCRT
             };
 
             if (itemTributacao.CalculaCOFINS)

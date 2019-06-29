@@ -339,7 +339,15 @@ namespace Fly01.Compras.BL
                         {
                             detalhe.Imposto.ICMS.ValorICMSSTRetido = Math.Round(item.ValorICMSSTRetido, 2);
 
-                            if (item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.Outros)
+                            if (item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.Outros
+                                || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.Outros90
+                                || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaIntegralmente
+                                || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.ComReducaoDeBaseDeCalculo
+                                || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.ICMSCobradoAnteriormentePorST
+                                || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.ComRedDeBaseDeST
+                                || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaComCobrancaDeSubstituicao
+                                || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.Diferimento
+                                )
                             {
                                 detalhe.Imposto.ICMS.ModalidadeBC = ModalidadeDeterminacaoBCICMS.ValorDaOperacao;
                                 detalhe.Imposto.ICMS.AliquotaICMS = Math.Round(itemTributacao.ICMSAliquota, 2);

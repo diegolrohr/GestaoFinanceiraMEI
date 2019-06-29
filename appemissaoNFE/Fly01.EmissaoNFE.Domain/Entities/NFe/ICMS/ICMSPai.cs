@@ -324,7 +324,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                     };
                     break;
                 case "41"://Não tributado. 
-                    ICMS = new ICMS41(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT);
+                    ICMS = new ICMS40(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT);
                     break;
                 case "50"://Com suspensao.
                     ICMS = new ICMS50(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT);

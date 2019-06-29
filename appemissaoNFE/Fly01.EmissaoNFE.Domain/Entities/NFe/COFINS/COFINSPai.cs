@@ -18,8 +18,8 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.COFINS
 
         public void DoTheCofins(TipoCRT crt)
         {
-            if (crt.Equals(TipoCRT.SimplesNacional | TipoCRT.RegimeNormal | TipoCRT.ExcessoSublimiteDeReceitaBruta))
-            {
+           // if (crt.Equals(TipoCRT.SimplesNacional | TipoCRT.RegimeNormal | TipoCRT.ExcessoSublimiteDeReceitaBruta))
+            //{
                 var adValorem = "01|02";
                 var AliqEspecifica = "03";
                 var NT = "04|05|06|07|08|09";
@@ -60,9 +60,9 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.COFINS
                         ValorCOFINS = ValorCOFINS
                     };
                 }
-            }
-            else
-                throw new NotImplementedException();
+           // }
+            //else
+            //    throw new NotImplementedException();
         }
         
         public COFINS COFINS { get; set; }

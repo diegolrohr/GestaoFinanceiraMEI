@@ -2551,13 +2551,13 @@ IIF(Fields!ExibirProdutos.Value = "True", "Produtos" ,"Serviços"))</Value>
         </Style>
       </Tablix>
     </ReportItems>
-    <Height>7.62084in</Height>
+    <Height>7.43334in</Height>
     <Style />
   </Body>
   <Width>6.51015in</Width>
   <Page>
     <PageFooter>
-      <Height>1.94909cm</Height>
+      <Height>1.24353cm</Height>
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
       <ReportItems>

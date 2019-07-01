@@ -12,14 +12,12 @@ namespace Fly01.Compras.Models.ViewModel
         public string Finalidade { get; internal set; }
         public string FormaPagamento { get; internal set; }
         public string Fornecedor { get; internal set; }
-
         public string EnderecoFornecedor { get; internal set; }
         public string NumeroEndereco { get; internal set; }
         public string Bairro { get; internal set; }
         public string Cidade { get; internal set; }
         public string CEP { get; internal set; }
         public string ComplementoEndereco { get; internal set; }
-
         public string Id { get; set; }
         public string Marca { get; internal set; }
         public string NomeProduto { get; internal set; }
@@ -41,8 +39,10 @@ namespace Fly01.Compras.Models.ViewModel
         public double? ValorFrete { get; internal set; }
         public double? ValorTotal { get; internal set; }
         public double? ValorUnitario { get; internal set; }
-
         public string EmiteNotaFiscal { get; set; }
         public string ExibirTransportadora { get; set; }
+        public string Estado { get; set; }
+        public string Pais { get; set; }
+        public double? ItemDesconto { get; internal set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Presentation.Commons;
+using Fly01.Core.Rest;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
@@ -10,6 +11,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using System.Linq;
 
 namespace Fly01.Core.Presentation.Controllers
 {
@@ -214,7 +216,7 @@ namespace Fly01.Core.Presentation.Controllers
             {
                 Id = "tipoTributacaoICMS",
                 Class = "col s12 l12",
-                Label = "Situação da Operação no Simples Nacional",
+                Label = "Situação da Operação",
                 ConstrainWidth = true,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoTributacaoICMS)))
             });
@@ -351,6 +353,6 @@ namespace Fly01.Core.Presentation.Controllers
             cfg.Content.Add(config);
 
             return cfg;
-        }
+        }                
     }
 }

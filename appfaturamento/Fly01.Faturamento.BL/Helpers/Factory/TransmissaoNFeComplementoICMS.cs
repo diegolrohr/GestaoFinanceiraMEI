@@ -116,7 +116,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
         {
             ICMS.ValorICMSSTRetido = Math.Round(item.ValorICMSSTRetido, 2);
 
-            if (item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.Outros)
+            if (item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.Outros|| item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.Outros90)
             {
                 ICMS.ModalidadeBC = ModalidadeDeterminacaoBCICMS.ValorDaOperacao;
                 ICMS.AliquotaICMS = Math.Round(itemTributacao.ICMSAliquota, 2);
@@ -127,7 +127,12 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
 
             if (item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaComPermissaoDeCreditoST
                 || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaSemPermissaoDeCreditoST
-                || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.IsencaoParaFaixaDeReceitaBrutaST)
+                || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.IsencaoParaFaixaDeReceitaBrutaST
+                || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.ComRedDeBaseDeST
+                || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaComCobrancaDeSubstituicao
+                || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaIntegralmente
+                || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.ComReducaoDeBaseDeCalculo
+                )
             {
                 ICMS.ModalidadeBCST = ModalidadeDeterminacaoBCICMSST.MargemValorAgregado;
                 ICMS.PercentualReducaoBCST = 0;

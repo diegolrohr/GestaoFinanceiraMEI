@@ -14,7 +14,7 @@
             $('form#fly01mdlfrmOrdemVendaProduto #valorCreditoICMSField').show();
         }
         //500
-        if (tipoTribICMS == "ICMSSubstituidoOuAntecipado") {
+        if (tipoTribICMS == "ICMSSubstituidoOuAntecipado" || tipoTribICMS == "ICMSCobradoAnteriormentePorST") {
             $('form#fly01mdlfrmOrdemVendaProduto #valorICMSSTRetidoField').show();
             $('form#fly01mdlfrmOrdemVendaProduto #valorBCSTRetidoField').show();
             $('form#fly01mdlfrmOrdemVendaProduto #valorBCFCPSTRetidoAnteriorField').show();

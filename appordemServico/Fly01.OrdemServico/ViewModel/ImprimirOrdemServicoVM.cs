@@ -33,5 +33,13 @@ namespace Fly01.OrdemServico.ViewModel
         public double ObjManutDesconto { get; internal set; }
         public double ObjManutTotal { get; internal set; }
         public string ObjManutTipo { get; internal set; }
+        public string Pais { get; internal set; }
+        public string ClienteNumero { get; internal set; }
+        public string Bairro { get; internal set; }
+        public string Cidade { get; internal set; }
+        public string CEP { get; internal set; }
+        public string Estado { get; internal set; }
+        public string Complemento { get; internal set; }
+        public TimeSpan? Duracao { get; internal set; }
     }
 }

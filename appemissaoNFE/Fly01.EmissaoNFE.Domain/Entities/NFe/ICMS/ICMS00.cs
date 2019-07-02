@@ -94,46 +94,53 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
             return ValorICMSSTUFDestino.HasValue && ValorICMSSTUFDestino.Value > 0;
         }
 
-
-     /*   [XmlIgnore]
-        public double? ValorBCFCP { get; set; }
-
-        [XmlElement("vBCFCP")]
-        public string ValorBCFCPString
-        {
-            get
-            {               
-                return  ValorBCFCP.HasValue && ValorBCFCP > 0 ? ValorBCFCP.Value.ToString("0.00").Replace(",", "."):"0.00";
-            }
-            set { ValorBCFCP = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
-        }
-        
-        [XmlIgnore]
-        public double? PercentualFCP { get; set; }
-
-        [XmlElement("pFCP")]
-        public string PercentualFCPString
+         [XmlIgnore]
+         public double? BaseFCP { get; set; }
+        [XmlElement(ElementName = "vBCFCP", IsNullable = true)]
+        public string BaseFCPString
         {
             get
             {
-                return PercentualFCP.HasValue && PercentualFCP > 0 ? PercentualFCP.Value.ToString("0.00").Replace(",", ".") : "0.00";
+                return BaseFCP.HasValue ? BaseFCP.Value.ToString("0.00").Replace(",", ".") : "0.00";
             }
-            set { PercentualFCP = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
+            set { BaseFCP = double.Parse(value); }
         }
-      
+        public bool ShouldSerializeBaseFCPString()
+        {
+            return (BaseFCP.HasValue && BaseFCP.Value > 0.0) && (AliquotaFCP.HasValue && AliquotaFCP.Value >= 0.0) && (ValorFCP.HasValue && ValorFCP.Value >= 0.0);
+        }
+
+        [XmlIgnore]
+        public double? AliquotaFCP { get; set; }
+        [XmlElement(ElementName = "pFCP", IsNullable = true)]
+        public string AliquotaFCPString
+        {
+            get
+            {
+                return (AliquotaFCP.HasValue && AliquotaFCP > 0.0) ? AliquotaFCP.Value.ToString("0.0000").Replace(",", ".") : "0.0000";
+            }
+            set { AliquotaFCP = double.Parse(value); }
+        }
+        public bool ShouldSerializeAliquotaFCPString()
+        {
+            return (BaseFCP.HasValue && BaseFCP.Value >= 0.0) && (AliquotaFCP.HasValue && AliquotaFCP.Value >= 0.0) && (ValorFCP.HasValue && ValorFCP.Value >= 0.0);
+        }
+
         [XmlIgnore]
         public double? ValorFCP { get; set; }
-
-        [XmlElement("vFCP")]
+        [XmlElement(ElementName = "vFCP", IsNullable = true)]
         public string ValorFCPString
         {
             get
             {
-                return ValorFCP.HasValue && ValorFCP > 0 ? ValorFCP.Value.ToString("0.00").Replace(",", ".") : "0.00";
+                return (ValorFCP.HasValue && ValorFCP > 0.0) ? ValorFCP.Value.ToString("0.00").Replace(",", ".") : "0.00";
             }
-            set { ValorFCP = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
+            set { ValorFCP = double.Parse(value); }
         }
-       */ 
+        public bool ShouldSerializeValorFCPString()
+        {
+            return (BaseFCP.HasValue && BaseFCP.Value >= 0.0) && (AliquotaFCP.HasValue && AliquotaFCP.Value >= 0.0) && (ValorFCP.HasValue && ValorFCP.Value >= 0.0);
+        }
 
 
     }

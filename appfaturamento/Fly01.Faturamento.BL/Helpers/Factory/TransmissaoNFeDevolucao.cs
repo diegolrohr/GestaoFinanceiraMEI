@@ -23,6 +23,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
 
         public override TipoNota ObterTipoDocumentoFiscal()
         {
+            //Alterar para saida abertura de Issue
             return TipoNota.Entrada;
         }
 

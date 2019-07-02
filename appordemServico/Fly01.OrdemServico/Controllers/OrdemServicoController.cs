@@ -33,7 +33,7 @@ namespace Fly01.OrdemServico.Controllers
 
         public OrdemServicoController()
         {
-            ExpandProperties = "cliente($select=id,nome,email,cpfcnpj,endereco,celular,telefone;$expand=cidade($select=nome),estado($select=sigla))";
+            ExpandProperties = "cliente($select=id,nome,email,cpfcnpj,endereco,bairro,numero,cep,bairro,celular,telefone;$expand=cidade($select=nome),estado($select=sigla),pais($select=nome))";
         }
 
         private JsonResult GetJson(object data)
@@ -323,7 +323,7 @@ namespace Fly01.OrdemServico.Controllers
             });
             config.Columns.Add(new DataTableUIColumn { DataField = "cliente_nome", DisplayName = "Cliente", Priority = 3 });
             config.Columns.Add(new DataTableUIColumn { DataField = "dataEmissao", DisplayName = "Data de Emissão", Priority = 4, Type = "date", Visible = false });
-            config.Columns.Add(new DataTableUIColumn { DataField = "dataEntrega", DisplayName = "Data de Entrega", Priority = 5, Type = "date"});
+            config.Columns.Add(new DataTableUIColumn { DataField = "dataEntrega", DisplayName = "Data de Entrega", Priority = 5, Type = "date" });
 
             cfg.Content.Add(cfgForm);
             cfg.Content.Add(config);
@@ -745,7 +745,7 @@ namespace Fly01.OrdemServico.Controllers
         private static string GetEndereco(PessoaVM cliente) =>
                 cliente == null || string.IsNullOrEmpty(cliente.Endereco) ?
                 "" :
-                $"{cliente.Endereco}, {cliente.Cidade?.Nome} - {cliente.Estado?.Sigla}. CEP: {cliente.CEP}";
+                $"{cliente.Endereco}";
 
         [OperationRole(PermissionValue = EPermissionValue.Read)]
         public virtual ActionResult ImprimirOrdemServico(Guid id)
@@ -782,18 +782,26 @@ namespace Fly01.OrdemServico.Controllers
             reportItems.Add(new ImprimirOrdemServicoVM
             {
                 Id = OrdemServico.Id.ToString(),
+                HoraEntrega = OrdemServico.HoraEntrega,
+                Duracao = OrdemServico.Duracao,
                 ClienteNome = OrdemServico.Cliente?.Nome,
                 ClienteCPF = OrdemServico.Cliente?.CPFCNPJ,
                 ClienteCelular = OrdemServico.Cliente?.Celular,
                 ClienteTelefone = OrdemServico.Cliente?.Telefone,
                 ClienteEndereco = GetEndereco(OrdemServico.Cliente),
+                Bairro = OrdemServico.Cliente != null ? OrdemServico.Cliente.Bairro : string.Empty,
+                ClienteNumero = OrdemServico.Cliente != null ? OrdemServico.Cliente.Numero : string.Empty,
+                CEP = OrdemServico.Cliente != null ? OrdemServico.Cliente.CEP : string.Empty,
+                Estado = OrdemServico.Cliente != null && OrdemServico.Cliente.Estado != null ? OrdemServico.Cliente.Estado.Sigla : string.Empty,
+                Complemento = OrdemServico.Cliente != null ? OrdemServico.Cliente.Complemento : string.Empty,
+                Cidade = OrdemServico.Cliente != null && OrdemServico.Cliente.Cidade != null ? OrdemServico.Cliente.Cidade.Nome : string.Empty,
+                Pais = OrdemServico.Cliente != null && OrdemServico.Cliente.Pais != null ? OrdemServico.Cliente.Pais.Nome : string.Empty,
                 ClienteEmail = OrdemServico.Cliente?.Email,
                 DataEmissao = OrdemServico.DataEmissao,
                 DataEntrega = OrdemServico.DataEntrega,
-                Status = OrdemServico.Status.ToString(),
+                Status = EnumHelper.GetDescription(typeof(StatusOrdemServico), OrdemServico.Status.ToString()),
                 Numero = OrdemServico.Numero.ToString(),
                 Descricao = OrdemServico.Descricao,
-                Total = 100
             });
         }
 
@@ -805,16 +813,24 @@ namespace Fly01.OrdemServico.Controllers
                 {
                     //ORDEM SERVICO
                     Id = OrdemServico.Id.ToString(),
+                    HoraEntrega = OrdemServico.HoraEntrega,
+                    Duracao = OrdemServico.Duracao,
                     ClienteNome = OrdemServico.Cliente?.Nome,
                     ClienteCPF = OrdemServico.Cliente?.CPFCNPJ,
                     ClienteCelular = OrdemServico.Cliente?.Celular,
                     ClienteTelefone = OrdemServico.Cliente?.Telefone,
                     ClienteEndereco = GetEndereco(OrdemServico.Cliente),
+                    Bairro = OrdemServico.Cliente != null ? OrdemServico.Cliente.Bairro : string.Empty,
+                    ClienteNumero = OrdemServico.Cliente != null ? OrdemServico.Cliente.Numero : string.Empty,
+                    CEP = OrdemServico.Cliente != null ? OrdemServico.Cliente.CEP : string.Empty,
+                    Estado = OrdemServico.Cliente != null && OrdemServico.Cliente.Estado != null ? OrdemServico.Cliente.Estado.Sigla : string.Empty,
+                    Complemento = OrdemServico.Cliente != null ? OrdemServico.Cliente.Complemento : string.Empty,
+                    Cidade = OrdemServico.Cliente != null && OrdemServico.Cliente.Cidade != null ? OrdemServico.Cliente.Cidade.Nome : string.Empty,
+                    Pais = OrdemServico.Cliente != null && OrdemServico.Cliente.Pais != null ? OrdemServico.Cliente.Pais.Nome : string.Empty,
                     ClienteEmail = OrdemServico.Cliente?.Email,
                     DataEmissao = OrdemServico.DataEmissao,
                     DataEntrega = OrdemServico.DataEntrega,
-                    HoraEntrega = OrdemServico.HoraEntrega,
-                    Status = OrdemServico.Status.ToString(),
+                    Status = EnumHelper.GetDescription(typeof(StatusOrdemServico), OrdemServico.Status.ToString()),
                     Numero = OrdemServico.Numero.ToString(),
                     Descricao = OrdemServico.Descricao,
                     ItemTipo = "Serviço",
@@ -837,15 +853,24 @@ namespace Fly01.OrdemServico.Controllers
                 {
                     //ORDEM SERVICO
                     Id = OrdemServico.Id.ToString(),
+                    HoraEntrega = OrdemServico.HoraEntrega,
+                    Duracao = OrdemServico.Duracao,
                     ClienteNome = OrdemServico.Cliente?.Nome,
                     ClienteCPF = OrdemServico.Cliente?.CPFCNPJ,
                     ClienteCelular = OrdemServico.Cliente?.Celular,
                     ClienteTelefone = OrdemServico.Cliente?.Telefone,
                     ClienteEndereco = GetEndereco(OrdemServico.Cliente),
+                    Bairro = OrdemServico.Cliente != null ? OrdemServico.Cliente.Bairro : string.Empty,
+                    ClienteNumero = OrdemServico.Cliente != null ? OrdemServico.Cliente.Numero : string.Empty,
+                    CEP = OrdemServico.Cliente != null ? OrdemServico.Cliente.CEP : string.Empty,
+                    Estado = OrdemServico.Cliente != null && OrdemServico.Cliente.Estado != null ? OrdemServico.Cliente.Estado.Sigla : string.Empty,
+                    Complemento = OrdemServico.Cliente != null ? OrdemServico.Cliente.Complemento : string.Empty,
+                    Cidade = OrdemServico.Cliente != null && OrdemServico.Cliente.Cidade != null ? OrdemServico.Cliente.Cidade.Nome : string.Empty,
+                    Pais = OrdemServico.Cliente != null && OrdemServico.Cliente.Pais != null ? OrdemServico.Cliente.Pais.Nome : string.Empty,
                     ClienteEmail = OrdemServico.Cliente?.Email,
                     DataEmissao = OrdemServico.DataEmissao,
                     DataEntrega = OrdemServico.DataEntrega,
-                    Status = OrdemServico.Status.ToString(),
+                    Status = EnumHelper.GetDescription(typeof(StatusOrdemServico), OrdemServico.Status.ToString()),
                     Numero = OrdemServico.Numero.ToString(),
                     Descricao = OrdemServico.Descricao,
                     ItemTipo = "Produto",
@@ -868,15 +893,24 @@ namespace Fly01.OrdemServico.Controllers
                 {
                     //ORDEM SERVICO
                     Id = OrdemServico.Id.ToString(),
+                    HoraEntrega = OrdemServico.HoraEntrega,
+                    Duracao = OrdemServico.Duracao,
                     ClienteNome = OrdemServico.Cliente?.Nome,
                     ClienteCPF = OrdemServico.Cliente?.CPFCNPJ,
                     ClienteCelular = OrdemServico.Cliente?.Celular,
                     ClienteTelefone = OrdemServico.Cliente?.Telefone,
                     ClienteEndereco = GetEndereco(OrdemServico.Cliente),
+                    Bairro = OrdemServico.Cliente != null ? OrdemServico.Cliente.Bairro : string.Empty,
+                    ClienteNumero = OrdemServico.Cliente != null ? OrdemServico.Cliente.Numero : string.Empty,
+                    CEP = OrdemServico.Cliente != null ? OrdemServico.Cliente.CEP : string.Empty,
+                    Estado = OrdemServico.Cliente != null && OrdemServico.Cliente.Estado != null ? OrdemServico.Cliente.Estado.Sigla : string.Empty,
+                    Complemento = OrdemServico.Cliente != null ? OrdemServico.Cliente.Complemento : string.Empty,
+                    Cidade = OrdemServico.Cliente != null && OrdemServico.Cliente.Cidade != null ? OrdemServico.Cliente.Cidade.Nome : string.Empty,
+                    Pais = OrdemServico.Cliente != null && OrdemServico.Cliente.Pais != null ? OrdemServico.Cliente.Pais.Nome : string.Empty,
                     ClienteEmail = OrdemServico.Cliente?.Email,
                     DataEmissao = OrdemServico.DataEmissao,
                     DataEntrega = OrdemServico.DataEntrega,
-                    Status = OrdemServico.Status.ToString(),
+                    Status = EnumHelper.GetDescription(typeof(StatusOrdemServico), OrdemServico.Status.ToString()),
                     Numero = OrdemServico.Numero.ToString(),
                     Descricao = OrdemServico.Descricao,
                     ObjManutTipo = "Objeto de Manutençao",

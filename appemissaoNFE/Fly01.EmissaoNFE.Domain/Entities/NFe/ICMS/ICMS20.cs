@@ -93,16 +93,16 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         }
 
         [XmlIgnore]
-        public double PercentualFCP { get; set; }
+        public double AliquotaFCP { get; set; }
 
         [XmlElement("pFCP")]
-        public string PercentualFCPString
+        public string AliquotaFCPString
         {
             get
             {
-                return PercentualFCP.ToString("0.0000").Replace(",", ".");
+                return AliquotaFCP.ToString("0.0000").Replace(",", ".");
             }
-            set { PercentualFCP = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
+            set { AliquotaFCP = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]

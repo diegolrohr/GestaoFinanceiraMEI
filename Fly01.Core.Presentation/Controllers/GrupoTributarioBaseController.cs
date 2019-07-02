@@ -218,7 +218,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Class = "col s12 l12",
                 Label = "Situação da Operação",
                 ConstrainWidth = true,
-                Options = Parametroslista()
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoTributacaoICMS)))
             });
             config.Elements.Add(new InputCheckboxUI { Id = "calculaIcmsDifal", Class = "col s12 m6 l6", Label = "Calcula ICMS DIFAL", Disabled = true });
             config.Elements.Add(new InputCheckboxUI { Id = "aplicaIpiBaseIcms", Class = "col s12 m6 l6", Label = "Aplica valor do IPI na base de cálculo", Disabled = true });
@@ -353,17 +353,6 @@ namespace Fly01.Core.Presentation.Controllers
             cfg.Content.Add(config);
 
             return cfg;
-        }
-
-        private static List<SelectOptionUI> Parametroslista()
-        {
-            var queryString = new Dictionary<string, string>();
-            var returnObj = RestHelper.ExecuteGetRequest<ParametroTributarioVM>("parametrotributario", queryString);
-
-            if (returnObj.TipoCRT != "SimplesNacional")               
-                return new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoTributacaoICMS)).ToList().FindAll(x => "TributadaIntegralmente, TributadaComCobrancaDeSubstituicao, ComReducaoDeBaseDeCalculo, IsentaOuNaoTributadaPorST, Isenta, NaoTributada, ComSuspensao, Diferimento, ICMSCobradoAnteriormentePorST, ComRedDeBaseDeST, Outros90".Contains(x.Value)).OrderBy(x => x.Label));
-            else
-                return new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoTributacaoICMS)).ToList().FindAll( x=> "TributadaComPermissaoDeCredito, TributadaSemPermissaoDeCredito, IsencaoParaFaixaDeReceitaBruta, TributadaComPermissaoDeCreditoSTTributadaSemPermissaoDeCreditoST, IsencaoParaFaixaDeReceitaBrutaST, Imune, NaoTributadaPeloSNICMSSubstituidoOuAntecipado, Outros".Contains(x.Value)).OrderBy(x => x.Label));           
-        }
+        }                
     }
 }

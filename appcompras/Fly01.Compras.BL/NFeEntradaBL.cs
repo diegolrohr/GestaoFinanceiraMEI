@@ -475,14 +475,21 @@ namespace Fly01.Compras.BL
                                 x.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaSemPermissaoDeCreditoST ||
                                 x.CodigoSituacaoOperacao == TipoTributacaoICMS.Outros ||
                                 x.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaComPermissaoDeCreditoST ||
-                                x.CodigoSituacaoOperacao == TipoTributacaoICMS.IsencaoParaFaixaDeReceitaBrutaST
+                                x.CodigoSituacaoOperacao == TipoTributacaoICMS.IsencaoParaFaixaDeReceitaBrutaST ||
+                                x.CodigoSituacaoOperacao == TipoTributacaoICMS.Outros90 ||
+                                x.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaComCobrancaDeSubstituicao ||
+                                x.CodigoSituacaoOperacao == TipoTributacaoICMS.ComRedDeBaseDeST                      
+
                             )) ?
                             Math.Round(itemTransmissao.Detalhes.Where(x => x.Imposto.ICMS != null && x.Imposto.ICMS.ValorBCST.HasValue &&
                             (
                                 x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaSemPermissaoDeCreditoST ||
                                 x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.Outros ||
                                 x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaComPermissaoDeCreditoST ||
-                                x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.IsencaoParaFaixaDeReceitaBrutaST
+                                x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.IsencaoParaFaixaDeReceitaBrutaST ||
+                                x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.Outros90 ||
+                                x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.ComRedDeBaseDeST ||
+                                x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaComCobrancaDeSubstituicao                                 
                             )).Sum(x => x.Imposto.ICMS.ValorBCST.Value), 2) : 0,
                             SomatorioCofins = itemTransmissao.Detalhes.Select(x => x.Imposto.COFINS).Any(x => x != null) ? Math.Round(itemTransmissao.Detalhes.Sum(x => x.Imposto.COFINS.ValorCOFINS), 2) : 0,
                             SomatorioDesconto = NFeProdutos.Sum(x => x.Desconto),

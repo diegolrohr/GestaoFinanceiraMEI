@@ -33,7 +33,7 @@ namespace Fly01.OrdemServico.Controllers
 
         public OrdemServicoController()
         {
-            ExpandProperties = "cliente($select=id,nome,email,cpfcnpj,endereco,bairro,numero,cep,bairro,celular,telefone;$expand=cidade($select=nome),estado($select=sigla),pais($select=nome))";
+            ExpandProperties = "cliente($select=id,nome,email,cpfcnpj,endereco,bairro,numero,cep,bairro,complemento,celular,telefone;$expand=cidade($select=nome),estado($select=sigla),pais($select=nome))";
         }
 
         private JsonResult GetJson(object data)

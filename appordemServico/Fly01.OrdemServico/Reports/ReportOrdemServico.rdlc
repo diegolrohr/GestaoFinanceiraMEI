@@ -9,32 +9,6 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value />
-                <MarkupType>HTML</MarkupType>
-                <Style>
-                  <FontWeight>Bold</FontWeight>
-                </Style>
-              </TextRun>
-            </TextRuns>
-            <Style>
-              <TextAlign>Right</TextAlign>
-            </Style>
-          </Paragraph>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value />
-                <MarkupType>HTML</MarkupType>
-                <Style />
-              </TextRun>
-            </TextRuns>
-            <Style>
-              <TextAlign>Left</TextAlign>
-            </Style>
-          </Paragraph>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
                 <Value>=Parameters!ReportHeader.Value</Value>
                 <MarkupType>HTML</MarkupType>
                 <Style />
@@ -48,13 +22,13 @@
         <rd:DefaultName>Textbox1</rd:DefaultName>
         <Top>0.03841cm</Top>
         <Left>3.30449cm</Left>
-        <Height>2.50472cm</Height>
-        <Width>9.93342cm</Width>
+        <Height>2.43416cm</Height>
+        <Width>11.23112cm</Width>
         <Style>
           <Border>
             <Style>None</Style>
           </Border>
-          <VerticalAlign>Top</VerticalAlign>
+          <VerticalAlign>Middle</VerticalAlign>
           <PaddingLeft>2pt</PaddingLeft>
           <PaddingRight>2pt</PaddingRight>
           <PaddingTop>2pt</PaddingTop>
@@ -83,10 +57,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Nome</rd:DefaultName>
-        <Top>8.70498cm</Top>
-        <Left>0.24972cm</Left>
+        <Top>10.36304cm</Top>
+        <Left>0.25417cm</Left>
         <Height>0.6cm</Height>
-        <Width>16.20833cm</Width>
+        <Width>16.27166cm</Width>
         <ZIndex>1</ZIndex>
         <Style>
           <Border>
@@ -134,8 +108,8 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox3</rd:DefaultName>
-        <Top>10.68137cm</Top>
-        <Left>0.25417cm</Left>
+        <Top>12.33943cm</Top>
+        <Left>0.3175cm</Left>
         <Height>0.6cm</Height>
         <Width>16.18644cm</Width>
         <ZIndex>2</ZIndex>
@@ -152,7 +126,7 @@
       <Rectangle Name="Rectangle26">
         <ReportItems>
           <Line Name="Line2">
-            <Top>1.65778cm</Top>
+            <Top>1.26972cm</Top>
             <Left>4.13256cm</Left>
             <Height>0cm</Height>
             <Width>8.62545cm</Width>
@@ -177,7 +151,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox255</rd:DefaultName>
-            <Top>1.79889cm</Top>
+            <Top>1.41083cm</Top>
             <Left>6.83933cm</Left>
             <Height>0.6cm</Height>
             <Width>2.99746cm</Width>
@@ -194,9 +168,9 @@
           </Textbox>
         </ReportItems>
         <KeepTogether>true</KeepTogether>
-        <Top>14.20985cm</Top>
+        <Top>15.86791cm</Top>
         <Left>0.07593cm</Left>
-        <Height>2.56557cm</Height>
+        <Height>2.17751cm</Height>
         <Width>16.53674cm</Width>
         <ZIndex>3</ZIndex>
         <Style>
@@ -232,7 +206,7 @@
               <Width>5.68658cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>6.021cm</Width>
+              <Width>5.76261cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -476,10 +450,10 @@
             </FilterValues>
           </Filter>
         </Filters>
-        <Top>12.79887cm</Top>
-        <Left>0.14595cm</Left>
+        <Top>14.45693cm</Top>
+        <Left>0.3175cm</Left>
         <Height>1.2cm</Height>
-        <Width>16.46672cm</Width>
+        <Width>16.20833cm</Width>
         <ZIndex>5</ZIndex>
         <Style>
           <Border>
@@ -508,8 +482,8 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox19</rd:DefaultName>
-        <Top>11.35192cm</Top>
-        <Left>0.25417cm</Left>
+        <Top>13.00998cm</Top>
+        <Left>0.3175cm</Left>
         <Height>0.6cm</Height>
         <Width>16.24858cm</Width>
         <ZIndex>6</ZIndex>
@@ -903,7 +877,9 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!ItemDesconto.Value</Value>
-                              <Style />
+                              <Style>
+                                <Format>#,0.00;- #,0.00</Format>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
@@ -995,10 +971,10 @@
             </FilterValues>
           </Filter>
         </Filters>
-        <Top>9.41081cm</Top>
-        <Left>0.25417cm</Left>
+        <Top>11.06887cm</Top>
+        <Left>0.3175cm</Left>
         <Height>1.2cm</Height>
-        <Width>16.18644cm</Width>
+        <Width>16.18646cm</Width>
         <ZIndex>7</ZIndex>
         <Style>
           <Border>
@@ -1021,8 +997,8 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox255</rd:DefaultName>
-        <Top>12.09303cm</Top>
-        <Left>0.24972cm</Left>
+        <Top>13.75109cm</Top>
+        <Left>0.3175cm</Left>
         <Height>0.6cm</Height>
         <Width>16.25303cm</Width>
         <ZIndex>8</ZIndex>
@@ -1806,7 +1782,7 @@
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>ds</DataSetName>
-        <Top>2.64896cm</Top>
+        <Top>2.96646cm</Top>
         <Left>0.25417cm</Left>
         <Height>4.57407cm</Height>
         <Width>16.18644cm</Width>
@@ -1843,9 +1819,9 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox3</rd:DefaultName>
-        <Top>7.36414cm</Top>
+        <Top>7.68164cm</Top>
         <Left>0.25417cm</Left>
-        <Height>1.27028cm</Height>
+        <Height>2.57556cm</Height>
         <Width>16.20388cm</Width>
         <ZIndex>10</ZIndex>
         <Style>
@@ -1860,7 +1836,7 @@
         </Style>
       </Textbox>
     </ReportItems>
-    <Height>6.74328in</Height>
+    <Height>7.25717in</Height>
     <Style>
       <Border>
         <Style>None</Style>
@@ -1870,7 +1846,7 @@
   <Width>6.6373in</Width>
   <Page>
     <PageFooter>
-      <Height>0.78449cm</Height>
+      <Height>1.91338cm</Height>
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
       <ReportItems>

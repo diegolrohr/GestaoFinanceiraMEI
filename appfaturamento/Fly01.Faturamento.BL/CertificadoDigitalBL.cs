@@ -62,7 +62,7 @@ namespace Fly01.Faturamento.BL
         public void VerificaValidade()
         {
             var dataExpiracaoFinal = DateTime.Now.AddDays(PeriodosVerificacao.Max()).Date;
-            var certificadosVencidos = Everything.Where(x => x.DataExpiracao.HasValue && x.DataExpiracao.Value <= dataExpiracaoFinal);
+            var certificadosVencidos = Everything.Where(x => x.DataExpiracao.HasValue && x.DataExpiracao.Value <= dataExpiracaoFinal && x.Ativo == true);
 
             foreach (var item in certificadosVencidos)
             {

@@ -6,7 +6,10 @@ using System.Web.Security;
 using Newtonsoft.Json;
 using Fly01.Core.Defaults;
 using Fly01.uiJS.Responses;
-using System.Linq;
+using System.Net;
+using System;
+using Fly01.Core.Presentation.Application;
+using Fly01.Core.ViewModels;
 
 namespace Fly01.Core.Presentation.Controllers
 {
@@ -17,14 +20,64 @@ namespace Fly01.Core.Presentation.Controllers
         public ContentResult Platforms()
         {
             LoginResponse response = RestHelper.ExecutePostRequest<LoginResponse>(
-                AppDefaults.UrlGateway, 
-                "v1/Platforms", 
-                JsonConvert.SerializeObject(new { platformUser = SessionManager.Current.UserData.PlatformUser })
+                AppDefaults.UrlGateway,
+                "v1/Platforms",
+                JsonConvert.SerializeObject(new
+                {
+                    platformUser = SessionManager.Current.UserData.PlatformUser,
+                    platformUrl = SessionManager.Current.UserData.PlatformUrl
+                })
             );
+
+            response.PostFormUrl = @Url.Action("ChangePlatform");
 
             return Content(JsonConvert.SerializeObject(response, JsonSerializerSetting.Front), "application/json");
         }
 
+        public ContentResult ChangePlatform()
+        {
+            LoginResponse loginResponse;
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(Request.Form.Get("PlatformId")))
+                {
+                    string platformUrl = Request.Form["PlatformId"];
+                    var userData = new UserDataCookieVM
+                    {
+                        UserName = SessionManager.Current.UserData.PlatformUser,
+                        Fly01Url = platformUrl
+                    };
+
+                    Response.SetAuthCookie(userData.UserName, userData.RememberMe, userData);
+
+                    loginResponse = new LoginResponse()
+                    {
+                        Code = (int)HttpStatusCode.OK,
+                        Success = true,
+                        Url = ""
+                    };
+                }
+                else
+                {
+                    loginResponse = new LoginResponse()
+                    {
+                        Code = 404,
+                        Success = false,
+                        Url = Url.Action("LoginScreen")
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                loginResponse = new LoginResponse()
+                {
+                    Code = 404,
+                    Success = false,
+                    Message = ex.Message
+                };
+            }
+            return Content(JsonConvert.SerializeObject(loginResponse, JsonSerializerSetting.Front), "application/json");
+        }
         public ActionResult Login(string returnUrl, string email = "")
         {
             if (HttpContext.User.Identity.IsAuthenticated)

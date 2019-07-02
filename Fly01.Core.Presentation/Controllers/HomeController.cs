@@ -96,7 +96,6 @@ namespace Fly01.Core.Presentation.Controllers
             var payload = new Dictionary<string, string>()
                 {
                     {  "platformUrl", SessionManager.Current.UserData.PlatformUrl },
-                    {  "platform", SessionManager.Current.UserData.PlatformName },
                     {  "email", SessionManager.Current.UserData.PlatformUser },
                     {  "clientId", AppDefaults.AppId },
                 };

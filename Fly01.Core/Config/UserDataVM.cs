@@ -16,7 +16,6 @@ namespace Fly01.Core.Config
         public StoneDataVM Stone { get; set; }
         public string PlatformUrl { get; set; }
         public string PlatformUser { get; set; }
-        public string PlatformName { get; set; }
         public List<PermissionResponseVM> Permissions { get; set; }
     }
 }

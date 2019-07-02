@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Web;
@@ -17,17 +17,30 @@ using System.Web.SessionState;
 
 namespace Fly01.Core.Presentation.Application
 {
-    public class UserDataCookieVM
+    public static class HttpResponseBaseExtensions
     {
-        public string Fly01Url { get; set; }
-        public string UserName { get; set; }
-        public string PlatformId { get; set; }
-        public string Name { get; set; }
-        public string Company { get; set; }
-        public string Branch { get; set; }
-        public bool RememberMe { get; set; }
-        public string PlatformName { get; set; }
+        public static int SetAuthCookie<T>(this HttpResponseBase responseBase, string name, bool rememberMe, T userData)
+        {
+            var cookie = FormsAuthentication.GetAuthCookie(name, rememberMe);
+            var ticket = FormsAuthentication.Decrypt(cookie.Value);
+
+            var newTicket = new FormsAuthenticationTicket(ticket.Version, ticket.Name, ticket.IssueDate, ticket.Expiration,
+                ticket.IsPersistent, JsonConvert.SerializeObject(userData), ticket.CookiePath);
+            var encTicket = FormsAuthentication.Encrypt(newTicket);
+
+            cookie.Domain = AppDefaults.UrlGateway.Contains("fly01local")
+                ? ".bemacashlocal.com.br"
+                : AppDefaults.UrlGateway.Contains("fly01dev")
+                    ? ".bemacashstage.com.br"
+                    : ".bemacash.com.br";
+
+            cookie.Value = encTicket;
+            responseBase.Cookies.Add(cookie);
+
+            return encTicket.Length;
+        }
     }
+
     public class GlobalHttpApplication : HttpApplication
     {
         protected virtual string GetInstrumentationKeyAppInsights() => string.Empty;
@@ -56,22 +69,28 @@ namespace Fly01.Core.Presentation.Application
                 UserDataVM userData = new UserDataVM()
                 {
                     PlatformUser = cookieUserData.UserName,
-                    PlatformName = cookieUserData.PlatformName,
                     PlatformUrl = cookieUserData.Fly01Url
                 };
                 HttpContext.Current.User = new GenericPrincipal(new GenericIdentity(cookieUserData.UserName, "Forms"), string.Empty.Split(';'));
                 if (!SessionManager.Current.UserData.IsValidUserData(userData))
                 {
-                    TokenDataVM tokenData = RestHelper.ExecuteGetAuthToken(
-                        AppDefaults.UrlGateway, AppDefaults.GatewayUserName,
-                        AppDefaults.GatewayPassword, cookieUserData.Fly01Url, cookieUserData.UserName);
-                    userData.TokenData = tokenData;
-                    userData.TokenData.UserName = cookieUserData.Name;
-                    userData.Permissions = GetPermissionsByUser(cookieUserData.Fly01Url, cookieUserData.UserName);
+                    try
+                    {
+                        TokenDataVM tokenData = RestHelper.ExecuteGetAuthToken(
+                            AppDefaults.UrlGateway, AppDefaults.GatewayUserName,
+                            AppDefaults.GatewayPassword, cookieUserData.Fly01Url, cookieUserData.UserName);
+                        userData.TokenData = tokenData;
+                        userData.TokenData.UserName = cookieUserData.Name;
+                        userData.Permissions = GetPermissionsByUser(cookieUserData.Fly01Url, cookieUserData.UserName);
 
-                    SessionManager.Current.UserData = userData;
-                    return true;
+                        SessionManager.Current.UserData = userData;
+                    }
+                    catch (Exception ex)
+                    {
+                        return false;
+                    }
                 }
+                return true;
             }
             return false;
         }
@@ -103,14 +122,10 @@ namespace Fly01.Core.Presentation.Application
             }
             else if (FormsAuthentication.CookiesSupported && Request.Cookies[FormsAuthentication.FormsCookieName] != null)
             {
-                if (ReadCookieAndSetSession(Request.Cookies[FormsAuthentication.FormsCookieName].Value))
+                if (!ReadCookieAndSetSession(Request.Cookies[FormsAuthentication.FormsCookieName].Value))
                 {
-                    //HttpCookie mpnData = new HttpCookie("mpndata") { Expires = DateTime.UtcNow.AddDays(2), Path = "/" };
-                    //mpnData.Values["UserEmail"] = SessionManager.Current.UserData.PlatformUser;
-                    //mpnData.Values["UserName"] = SessionManager.Current.UserData.TokenData.UserName;
-                    //mpnData.Values["TrialUntil"] = SessionManager.Current.UserData.TokenData.Trial
-                    //    ? SessionManager.Current.UserData.TokenData.LicenseExpirationString : "";
-                    //Response.Cookies.Add(mpnData);
+                    Response.Write($"<script type=\"text/javascript\">top.location.href='{AppDefaults.UrlManager}';</script>");
+                    Response.End();
                 }
             }
         }
@@ -158,7 +173,7 @@ namespace Fly01.Core.Presentation.Application
             if (FormsAuthentication.CookiesSupported &&
                 Request.Cookies[FormsAuthentication.FormsCookieName] != null)
             {
-                if (ReadCookieAndSetSession(Request.Cookies[FormsAuthentication.FormsCookieName].Value))
+                if (!ReadCookieAndSetSession(Request.Cookies[FormsAuthentication.FormsCookieName].Value))
                 {
                     //HttpCookie mpnData = new HttpCookie("mpndata") { Expires = DateTime.UtcNow.AddDays(2), Path = "/" };
                     //mpnData.Values["UserEmail"] = SessionManager.Current.UserData.PlatformUser;

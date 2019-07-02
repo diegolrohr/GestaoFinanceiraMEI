@@ -36,6 +36,8 @@ namespace Fly01.Core.Reports
                 headerDefault.Append("<br/>");
                 headerDefault.AppendFormat("Bairro: {0} | CEP: {1} | Cidade: {2}", empresaVM.Bairro, empresaVM.CEP, empresaVM.Cidade != null ? empresaVM.Cidade.Nome : "");
                 headerDefault.Append("<br/>");
+                headerDefault.AppendFormat("Estado: {0} | País: {1}", empresaVM?.Cidade?.Estado?.Sigla ?? "", "Brasil");
+                headerDefault.Append("<br/>");
                 headerDefault.AppendFormat("Email: {0} ", empresaVM.Email ?? "");
             }
 

@@ -109,7 +109,7 @@ namespace Fly01.Estoque.Controllers
             config.Columns.Add(new DataTableUIColumn() { Priority = 4, Orderable = false, DataField = "saldoAntesMovimento", DisplayName = "Saldo Anterior"});
             config.Columns.Add(new DataTableUIColumn() { Priority = 5, Orderable = false, DataField = "tipoMovimento_descricao", DisplayName = "Tipo Movimento" });
             config.Columns.Add(new DataTableUIColumn() { Priority = 6, Orderable = false, DataField = "inventario_descricao", DisplayName = "Inventário" });
-            config.Columns.Add(new DataTableUIColumn() { Priority = 7, Orderable = false, DataField = "observacao", DisplayName = "Observação" });
+            config.Columns.Add(new DataTableUIColumn() { Priority = 7, Orderable = false, DataField = "observacao", DisplayName = "Observação:" , Searchable = false});
 
             cfg.Content.Add(cfgForm);
             cfg.Content.Add(config);

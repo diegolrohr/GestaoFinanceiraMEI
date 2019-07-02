@@ -69,7 +69,6 @@ namespace Fly01.Core.Presentation.Application
                 UserDataVM userData = new UserDataVM()
                 {
                     PlatformUser = cookieUserData.UserName,
-                    PlatformName = cookieUserData.PlatformName,
                     PlatformUrl = cookieUserData.Fly01Url
                 };
                 HttpContext.Current.User = new GenericPrincipal(new GenericIdentity(cookieUserData.UserName, "Forms"), string.Empty.Split(';'));
@@ -123,19 +122,11 @@ namespace Fly01.Core.Presentation.Application
             }
             else if (FormsAuthentication.CookiesSupported && Request.Cookies[FormsAuthentication.FormsCookieName] != null)
             {
-                //try
-                //{
-                    if (!ReadCookieAndSetSession(Request.Cookies[FormsAuthentication.FormsCookieName].Value))
-                    {
-                        Response.Write($"<script type=\"text/javascript\">top.location.href='{AppDefaults.UrlLoginSSO}';</script>");
-                        Response.End();
-                    }
-                //}
-                //catch (Exception ex)
-                //{
-                //    Response.Write($"<script type=\"text/javascript\">top.location.href='{AppDefaults.UrlManager}';</script>");
-                //    Response.End();
-                //}
+                if (!ReadCookieAndSetSession(Request.Cookies[FormsAuthentication.FormsCookieName].Value))
+                {
+                    Response.Write($"<script type=\"text/javascript\">top.location.href='{AppDefaults.UrlManager}';</script>");
+                    Response.End();
+                }
             }
         }
 

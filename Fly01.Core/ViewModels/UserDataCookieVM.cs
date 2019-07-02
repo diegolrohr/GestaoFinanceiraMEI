@@ -9,6 +9,5 @@
         public string Company { get; set; }
         public string Branch { get; set; }
         public bool RememberMe { get; set; }
-        public string PlatformName { get; set; }
     }
 }

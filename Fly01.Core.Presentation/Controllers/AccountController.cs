@@ -45,7 +45,6 @@ namespace Fly01.Core.Presentation.Controllers
                     var userData = new UserDataCookieVM
                     {
                         UserName = SessionManager.Current.UserData.PlatformUser,
-                        PlatformName = SessionManager.Current.UserData.PlatformName,
                         Fly01Url = platformUrl
                     };
 

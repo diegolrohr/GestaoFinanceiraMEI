@@ -69,7 +69,7 @@ namespace Fly01.Core.Presentation.Application
                 UserDataVM userData = new UserDataVM()
                 {
                     PlatformUser = cookieUserData.UserName,
-                    PlatformUrl = cookieUserData.Fly01Url
+                    PlatformUrl = cookieUserData.Fly01Url ?? cookieUserData.PlatformId,                    
                 };
                 HttpContext.Current.User = new GenericPrincipal(new GenericIdentity(cookieUserData.UserName, "Forms"), string.Empty.Split(';'));
                 if (!SessionManager.Current.UserData.IsValidUserData(userData))
@@ -78,16 +78,16 @@ namespace Fly01.Core.Presentation.Application
                     {
                         TokenDataVM tokenData = RestHelper.ExecuteGetAuthToken(
                             AppDefaults.UrlGateway, AppDefaults.GatewayUserName,
-                            AppDefaults.GatewayPassword, cookieUserData.Fly01Url, cookieUserData.UserName);
+                            AppDefaults.GatewayPassword, userData.PlatformUrl, userData.PlatformUser);
                         userData.TokenData = tokenData;
                         userData.TokenData.UserName = cookieUserData.Name;
-                        userData.Permissions = GetPermissionsByUser(cookieUserData.Fly01Url, cookieUserData.UserName);
+                        userData.Permissions = GetPermissionsByUser(userData.PlatformUrl, userData.PlatformUser);
 
                         SessionManager.Current.UserData = userData;
                     }
                     catch (Exception ex)
                     {
-                        return false;
+                        throw ex;
                     }
                 }
                 return true;
@@ -124,8 +124,8 @@ namespace Fly01.Core.Presentation.Application
             {
                 if (!ReadCookieAndSetSession(Request.Cookies[FormsAuthentication.FormsCookieName].Value))
                 {
-                    Response.Write($"<script type=\"text/javascript\">top.location.href='{AppDefaults.UrlManager}';</script>");
-                    Response.End();
+                    //Response.Write($"<script type=\"text/javascript\">top.location.href='{AppDefaults.UrlManager}';</script>");
+                    //Response.End();
                 }
             }
         }

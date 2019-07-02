@@ -76,15 +76,16 @@ namespace Fly01.Compras.BL
 
         public List<PedidoItem> GetPedidoItens(Guid pedidoId)
         {
-            return PedidoItemBL.All.Where(x => x.PedidoId == pedidoId).ToList();
+            return PedidoItemBL.AllIncluding(x => x.GrupoTributario).Where(x => x.PedidoId == pedidoId).ToList();
         }
 
-        public void DadosValidosCalculoTributario(OrdemCompra entity, Guid fornecedorId, bool onList = true)
+        public void DadosValidosCalculoTributario(Pedido entity, Guid fornecedorId, bool onList = true)
         {
             GetOrUpdateEmpresa();
             var pessoa = GetPessoa(fornecedorId);
             var fornecedorUF = pessoa != null ? (pessoa.Estado != null ? pessoa.Estado.Sigla : "") : "";
             var pedidoItens = GetPedidoItens(entity.Id);
+            var parametros = GetParametrosTributarios();
 
             int num = 1;
             foreach (var item in pedidoItens)
@@ -97,10 +98,16 @@ namespace Fly01.Compras.BL
                 {
                     throw new BusinessException(string.Format("Informe um Grupo Tributário válido no produto {0}.", num));
                 }
+                if (parametros.TipoCRT != TipoCRT.RegimeNormal && entity.TipoCompra != TipoCompraVenda.Devolucao && ((int)item?.GrupoTributario.TipoTributacaoICMS >= 0 && (int)item?.GrupoTributario.TipoTributacaoICMS <= 90))
+                {
+                    throw new BusinessException(string.Format("Seu regime é Simples Nacional e no grupo tributário do produto {0}, foi configurado CST, altere para CSOSN.", num));
+                }
+                if (parametros.TipoCRT == TipoCRT.RegimeNormal && entity.TipoCompra != TipoCompraVenda.Devolucao && ((int)item?.GrupoTributario.TipoTributacaoICMS >= 101 && (int)item?.GrupoTributario.TipoTributacaoICMS <= 900))
+                {
+                    throw new BusinessException(string.Format("Seu regime é Normal e no grupo tributário do produto {0}, foi configurado CSOSN, altere para CST.", num));
+                }
                 num++;
             }
-
-            var parametros = GetParametrosTributarios();
 
             if (string.IsNullOrEmpty(empresaUF) || string.IsNullOrEmpty(fornecedorUF) || parametros == null)
             {

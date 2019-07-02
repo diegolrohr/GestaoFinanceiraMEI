@@ -85,7 +85,7 @@ namespace Fly01.Faturamento.BL
 
         public List<OrdemVendaProduto> GetOrdemVendaProdutos(Guid ordemVendaId)
         {
-            return OrdemVendaProdutoBL.All.Where(x => x.OrdemVendaId == ordemVendaId).ToList();
+            return OrdemVendaProdutoBL.AllIncluding(x => x.GrupoTributario).Where(x => x.OrdemVendaId == ordemVendaId).ToList();
         }
 
         public List<OrdemVendaServico> GetOrdemVendaServicos(Guid ordemVendaId)
@@ -100,6 +100,8 @@ namespace Fly01.Faturamento.BL
             var ordemVendaProdutos = GetOrdemVendaProdutos(entity.Id);
             var ordemVendaServicos = GetOrdemVendaServicos(entity.Id);
             int num = 1;
+            var parametros = GetParametrosTributarios();
+
             foreach (var item in ordemVendaProdutos)
             {
                 if (GetProduto(item.ProdutoId) == null)
@@ -109,6 +111,14 @@ namespace Fly01.Faturamento.BL
                 if (GetGrupoTributario(item.GrupoTributarioId ?? default(Guid)) == null)
                 {
                     throw new BusinessException(string.Format("Informe um Grupo Tributário válido no produto {0}.", num));
+                }
+                if(parametros.TipoCRT != TipoCRT.RegimeNormal && entity.TipoVenda != TipoCompraVenda.Devolucao && ((int)item?.GrupoTributario.TipoTributacaoICMS >= 0 && (int)item?.GrupoTributario.TipoTributacaoICMS <= 90))
+                {
+                    throw new BusinessException(string.Format("Seu regime é Simples Nacional e no grupo tributário do produto {0}, foi configurado CST, altere para CSOSN.", num));
+                }
+                if (parametros.TipoCRT == TipoCRT.RegimeNormal && entity.TipoVenda != TipoCompraVenda.Devolucao && ((int)item?.GrupoTributario.TipoTributacaoICMS >= 101 && (int)item?.GrupoTributario.TipoTributacaoICMS <= 900))
+                {
+                    throw new BusinessException(string.Format("Seu regime é Normal e no grupo tributário do produto {0}, foi configurado CSOSN, altere para CST.", num));
                 }
                 num++;
             }
@@ -128,7 +138,6 @@ namespace Fly01.Faturamento.BL
 
             var dadosEmpresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
             var empresaUF = dadosEmpresa.Cidade != null ? (dadosEmpresa.Cidade.Estado != null ? dadosEmpresa.Cidade.Estado.Sigla : "") : "";
-            var parametros = GetParametrosTributarios();
 
             if (string.IsNullOrEmpty(empresaUF) || string.IsNullOrEmpty(clienteUF) || parametros == null)
             {

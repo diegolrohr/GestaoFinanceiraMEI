@@ -56,7 +56,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
             set { ValorICMSSTRetido = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
         
-        [XmlIgnore]
+     /*   [XmlIgnore]
         public double? ValorICMSSubstituto { get; set; }
 
         [XmlElement("vICMSSubstituto")]
@@ -68,10 +68,10 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
             }
             set { ValorICMSSubstituto = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
-       
+        */
         [XmlIgnore]
         public double? BaseFCPSTRetido { get; set; }
-        [XmlElement(ElementName = "vBCFCPSTRet", IsNullable = true)]
+        [XmlElement(ElementName = "vBCFCPSTRet")]
         public string BaseFCPSTRetidoString
         {
             get
@@ -82,28 +82,28 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         }
         public bool ShouldSerializeBaseFCPSTRetidoString()
         {
-            return BaseFCPSTRetido.HasValue && BaseFCPSTRetido.Value > 0;
+            return BaseFCPSTRetido.HasValue && BaseFCPSTRetido.Value >= 0;
         }
 
         [XmlIgnore]
         public double? AliquotaFCPSTRetido { get; set; }
-        [XmlElement(ElementName = "pFCPSTRet", IsNullable = true)]
+        [XmlElement(ElementName = "pFCPSTRet")]
         public string AliquotaFCPSTRetidoString
         {
             get
             {
-                return AliquotaFCPSTRetido.HasValue ? AliquotaFCPSTRetido.Value.ToString("0.00").Replace(",", ".") : "0.00";
+                return AliquotaFCPSTRetido.HasValue ? AliquotaFCPSTRetido.Value.ToString("0.0000").Replace(",", ".") : "0.0000";
             }
             set { AliquotaFCPSTRetido = double.Parse(value); }
         }
         public bool ShouldSerializeAliquotaFCPSTRetidoString()
         {
-            return AliquotaFCPSTRetido.HasValue && AliquotaFCPSTRetido.Value > 0;
+            return AliquotaFCPSTRetido.HasValue && AliquotaFCPSTRetido.Value >= 0;
         }
 
         [XmlIgnore]
         public double? ValorFCPSTRetido { get; set; }
-        [XmlElement(ElementName = "vFCPSTRet", IsNullable = true)]
+        [XmlElement(ElementName = "vFCPSTRet")]
         public string ValorFCPSTRetidoString
         {
             get
@@ -114,7 +114,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         }
         public bool ShouldSerializeValorFCPSTRetidoString()
         {
-            return ValorFCPSTRetido.HasValue && ValorFCPSTRetido.Value > 0;
+            return ValorFCPSTRetido.HasValue && ValorFCPSTRetido.Value >= 0;
         }
     }
 }

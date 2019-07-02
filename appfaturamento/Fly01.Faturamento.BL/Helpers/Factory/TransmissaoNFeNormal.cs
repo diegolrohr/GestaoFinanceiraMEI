@@ -170,10 +170,12 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                     var AliquotaFCPSTRetido = item.ValorBCFCPSTRetidoAnterior > 0 ? Math.Round(((item.ValorFCPSTRetidoAnterior / item.ValorBCFCPSTRetidoAnterior) * 100), 2) : 0;
                     ICMS.BaseFCPSTRetido = Math.Round(item.ValorBCFCPSTRetidoAnterior, 2);
                     ICMS.AliquotaFCPSTRetido = AliquotaFCPSTRetido;
-                    ICMS.ValorFCPSTRetido = Math.Round(item.ValorFCPSTRetidoAnterior, 2);
-                    ICMS.ValorICMSSubstituto = Math.Round(itemTributacao.STBase, 2);
+                    ICMS.ValorFCPSTRetido = Math.Round(item.ValorFCPSTRetidoAnterior, 2);                    
                     ICMS.AliquotaConsumidorFinal = itemTributacao.STAliquota > 0 ? Math.Round(itemTributacao.STAliquota, 2) + AliquotaFCPSTRetido : 0;
-
+                    if (ICMS.ValorICMSSTRetido != 0 & ICMS.ValorBCSTRetido != 0)
+                    {
+                        ICMS.ValorICMSSubstituto = Math.Round(itemTributacao.STBase, 2);            
+                    }                    
                 }
             }
         }

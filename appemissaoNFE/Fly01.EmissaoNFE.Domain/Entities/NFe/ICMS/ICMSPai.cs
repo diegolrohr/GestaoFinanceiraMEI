@@ -351,7 +351,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                         ValorBCSTRetido = ValorBCSTRetido.Value,
                         ValorICMSSTRetido = ValorICMSSTRetido.Value,
                         BaseFCPSTRetido = BaseFCPSTRetido,
-                        ValorICMSSubstituto = ValorICMSSubstituto,
+                       // ValorICMSSubstituto = ValorICMSSubstituto,
                         AliquotaFCPSTRetido = AliquotaFCPSTRetido,
                         ValorFCPSTRetido = ValorFCPSTRetido,
                         AliquotaConsumidorFinal = AliquotaConsumidorFinal,

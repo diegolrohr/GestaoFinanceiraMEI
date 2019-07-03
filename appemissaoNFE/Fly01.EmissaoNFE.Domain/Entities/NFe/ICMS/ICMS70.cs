@@ -21,6 +21,19 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         public ModalidadeDeterminacaoBCICMS ModalidadeBC { get; set; }
 
         [XmlIgnore]
+        public double PercentualReducaoBC { get; set; }
+
+        [XmlElement("pRedBC")]
+        public string PercentualReducaoBCString
+        {
+            get
+            {
+                return PercentualReducaoBC.ToString("0.0000").Replace(",", ".");
+            }
+            set { PercentualReducaoBC = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
+        }
+
+        [XmlIgnore]
         public double ValorBC { get; set; }
 
         [XmlElement("vBC")]
@@ -65,6 +78,32 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         public ModalidadeDeterminacaoBCICMSST ModalidadeBCST { get; set; }
 
         [XmlIgnore]
+        public double PercentualMargemValorAdicionadoST { get; set; }
+
+        [XmlElement("pMVAST")]
+        public string PercentualMargemValorAdicionadoSTString
+        {
+            get
+            {
+                return PercentualMargemValorAdicionadoST.ToString("0.0000").Replace(",", ".");
+            }
+            set { PercentualMargemValorAdicionadoST = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
+        }
+
+        [XmlIgnore]
+        public double PercentualReducaoBCST { get; set; }
+
+        [XmlElement("pRedBCST")]
+        public string PercentualReducaoBCSTString
+        {
+            get
+            {
+                return PercentualReducaoBCST.ToString("0.0000").Replace(",", ".");
+            }
+            set { PercentualReducaoBCST = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
+        }
+
+        [XmlIgnore]
         public double ValorBCST { get; set; }
 
         [XmlElement("vBCST")]
@@ -103,19 +142,6 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
             set { ValorICMSST = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
-
-        [XmlIgnore]
-        public double PercentualMargemValorAdicionadoST { get; set; }
-
-        [XmlElement("pMVAST")]
-        public string PercentualMargemValorAdicionadoSTString
-        {
-            get
-            {
-                return PercentualMargemValorAdicionadoST.ToString("0.0000").Replace(",", ".");
-            }
-            set { PercentualMargemValorAdicionadoST = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
-        }
                            
 
         [XmlIgnore]
@@ -165,36 +191,5 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         {
             return (BaseFCPST.HasValue && BaseFCPST.Value > 0.0) && (AliquotaFCPST.HasValue && AliquotaFCPST.Value > 0.0) && (ValorFCPST.HasValue && ValorFCPST.Value > 0.0);
         }
-
-        [XmlIgnore]
-        public double PercentualReducaoBC { get; set; }
-
-        [XmlElement("pRedBC")]
-        public string PercentualReducaoBCString
-        {
-            get
-            {
-                return PercentualReducaoBC.ToString("0.0000").Replace(",", ".");
-            }
-            set { PercentualReducaoBC = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
-        }
-
-        [XmlIgnore]
-        public double PercentualReducaoBCST { get; set; }
-
-        [XmlElement("pRedBCST")]
-        public string PercentualReducaoBCSTString
-        {
-            get
-            {
-                return PercentualReducaoBCST.ToString("0.0000").Replace(",", ".");
-            }
-            set { PercentualReducaoBCST = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
-        }
-
-
-
-
-
     }
 }

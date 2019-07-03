@@ -536,6 +536,10 @@
     <Compile Include="Migrations\201906111321411_MigrationTipoCRT.Designer.cs">
       <DependentUpon>201906111321411_MigrationTipoCRT.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201907031831526_AlterOrdemVendaProdutoAddPercentualReducaoBC.cs" />
+    <Compile Include="Migrations\201907031831526_AlterOrdemVendaProdutoAddPercentualReducaoBC.Designer.cs">
+      <DependentUpon>201907031831526_AlterOrdemVendaProdutoAddPercentualReducaoBC.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\AliquotaSimplesNacionalDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
@@ -934,6 +938,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201906111321411_MigrationTipoCRT.resx">
       <DependentUpon>201906111321411_MigrationTipoCRT.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907031831526_AlterOrdemVendaProdutoAddPercentualReducaoBC.resx">
+      <DependentUpon>201907031831526_AlterOrdemVendaProdutoAddPercentualReducaoBC.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

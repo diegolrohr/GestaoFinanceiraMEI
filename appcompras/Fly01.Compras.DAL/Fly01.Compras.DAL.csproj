@@ -384,6 +384,10 @@
     <Compile Include="Migrations\201906111725349_MigrationTipoCRTEntrada.Designer.cs">
       <DependentUpon>201906111725349_MigrationTipoCRTEntrada.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201907031831078_AlterPedidoItemAddPercentualReducaoBC.cs" />
+    <Compile Include="Migrations\201907031831078_AlterPedidoItemAddPercentualReducaoBC.Designer.cs">
+      <DependentUpon>201907031831078_AlterPedidoItemAddPercentualReducaoBC.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer7.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer6.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer5.cs" />
@@ -684,6 +688,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201906111725349_MigrationTipoCRTEntrada.resx">
       <DependentUpon>201906111725349_MigrationTipoCRTEntrada.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907031831078_AlterPedidoItemAddPercentualReducaoBC.resx">
+      <DependentUpon>201907031831078_AlterPedidoItemAddPercentualReducaoBC.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

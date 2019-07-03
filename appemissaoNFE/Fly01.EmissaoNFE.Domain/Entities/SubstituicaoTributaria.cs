@@ -14,5 +14,6 @@
         public bool DespesaNaBase { get; set; }
         public double AliquotaIntraEstadual { get; set; }
         public double AliquotaInterEstadual { get; set; }
+        public double? PercentualReducaoBCST { get; set; }
     }
 }

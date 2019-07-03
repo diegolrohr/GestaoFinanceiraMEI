@@ -139,6 +139,13 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 ICMS.PercentualReducaoBCST = 0;
             }
 
+            if (item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.ComRedDeBaseDeST
+                    || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.ComReducaoDeBaseDeCalculo)
+            {
+                ICMS.PercentualReducaoBC = item.PercentualReducaoBC;
+                ICMS.PercentualReducaoBCST = item.PercentualReducaoBCST;
+            }
+
             if (Cabecalho.Versao == "4.00")
             {
                 if (

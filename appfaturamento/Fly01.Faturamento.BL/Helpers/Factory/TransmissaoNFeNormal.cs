@@ -160,6 +160,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 ICMS.ValorICMSST = Math.Round(itemTributacao.STValor, 2);
                 ICMS.ValorBCSTRetido = Math.Round(item.ValorBCSTRetido, 2);
                 ICMS.ValorICMSSTRetido = Math.Round(item.ValorICMSSTRetido, 2);
+                ICMS.PercentualReducaoBCST = item.PercentualReducaoBCST;
 
                 if (Cabecalho.Versao == "4.00")
                 {
@@ -193,14 +194,14 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                     || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.Diferimento
                     || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaComCobrancaDeSubstituicao
                     || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.Outros90
-                    || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaIntegralmente
-                    )
+                    || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaIntegralmente)
                 {
                     ICMS.ModalidadeBC = ModalidadeDeterminacaoBCICMS.ValorDaOperacao;
                     ICMS.AliquotaICMS = Math.Round(itemTributacao.ICMSAliquota, 2);
                     ICMS.ModalidadeBCST = ModalidadeDeterminacaoBCICMSST.ListaPositiva;
                     ICMS.ValorBC = Math.Round(itemTributacao.ICMSBase, 2);
                     ICMS.ValorICMS = Math.Round(itemTributacao.ICMSValor, 2);
+                    ICMS.PercentualReducaoBC = item.PercentualReducaoBC;
                 }
 
                 if (item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaComPermissaoDeCreditoST

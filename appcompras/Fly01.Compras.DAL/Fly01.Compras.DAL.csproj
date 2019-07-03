@@ -388,6 +388,10 @@
     <Compile Include="Migrations\201907031831078_AlterPedidoItemAddPercentualReducaoBC.Designer.cs">
       <DependentUpon>201907031831078_AlterPedidoItemAddPercentualReducaoBC.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201907031926104_AlterNFeProdutoAddReducaoBC.cs" />
+    <Compile Include="Migrations\201907031926104_AlterNFeProdutoAddReducaoBC.Designer.cs">
+      <DependentUpon>201907031926104_AlterNFeProdutoAddReducaoBC.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer7.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer6.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer5.cs" />
@@ -691,6 +695,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201907031831078_AlterPedidoItemAddPercentualReducaoBC.resx">
       <DependentUpon>201907031831078_AlterPedidoItemAddPercentualReducaoBC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907031926104_AlterNFeProdutoAddReducaoBC.resx">
+      <DependentUpon>201907031926104_AlterNFeProdutoAddReducaoBC.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

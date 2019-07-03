@@ -48,15 +48,7 @@ namespace Fly01.EmissaoNFE.BL
             
             if (entity.Ipi != null)
                 retorno.Ipi = IpiBL.Ipi(entity);
-
-            if(entity.SubstituicaoTributaria != null)
-            {
-                retorno.SubstituicaoTributaria = SubstituicaoTributariaBL.CalcularSubstituicaoTributaria(entity, TabelaIcmsBL);
-
-                if (entity.FcpSt != null)
-                    retorno.FcpSt = FcpStBL.FcpSt(entity);
-            }
-            
+           
             if(entity.Icms != null)
             {
                 if (entity.Icms.Difal)
@@ -66,6 +58,14 @@ namespace Fly01.EmissaoNFE.BL
 
                 if (entity.Fcp != null)
                     retorno.Fcp = FcpBL.Fcp(entity);
+            }
+
+            if (entity.SubstituicaoTributaria != null)
+            {
+                retorno.SubstituicaoTributaria = SubstituicaoTributariaBL.CalcularSubstituicaoTributaria(entity, TabelaIcmsBL);
+
+                if (entity.FcpSt != null)
+                    retorno.FcpSt = FcpStBL.FcpSt(entity);
             }
 
             if (entity.Pis != null)

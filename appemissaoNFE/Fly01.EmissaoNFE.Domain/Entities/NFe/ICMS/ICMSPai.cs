@@ -281,7 +281,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                         ValorICMS = ValorICMS.Value,
                         AliquotaICMS = AliquotaICMS.Value,
                         PercentualReducaoBC = PercentualReducaoBC.Value,
-                        MotivoDesoneracaoICMS = MotivoDesoneracaoICMS.Value,
+                        MotivoDesoneracaoICMS = MotivoDesoneracaoICMS,
                         AliquotaFCP = AliquotaFCP.Value,
                         ValorFCP = ValorFCP.Value,
 
@@ -311,7 +311,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                         ValorFCPST = ValorFCPST.Value,
                         PercentualMargemValorAdicionadoST = PercentualMargemValorAdicionadoST.Value,
                         PercentualReducaoBCST = PercentualReducaoBCST.Value,
-                        MotivoDesoneracaoICMS = MotivoDesoneracaoICMS.Value,
+                        MotivoDesoneracaoICMS = MotivoDesoneracaoICMS,
 
                     };
                     break;
@@ -328,7 +328,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                 case "50"://Com suspensao.
                     ICMS = new ICMS50(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT);
                     {
-                        MotivoDesoneracaoICMS = MotivoDesoneracaoICMS.Value;
+                        MotivoDesoneracaoICMS = MotivoDesoneracaoICMS;
                     };
                     break;
                 case "51"://Diferimento. 

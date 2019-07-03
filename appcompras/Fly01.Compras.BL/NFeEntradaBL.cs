@@ -354,6 +354,7 @@ namespace Fly01.Compras.BL
                                 detalhe.Imposto.ICMS.ModalidadeBCST = ModalidadeDeterminacaoBCICMSST.MargemValorAgregado;
                                 detalhe.Imposto.ICMS.ValorICMS = Math.Round(itemTributacao.ICMSValor, 2);
                                 detalhe.Imposto.ICMS.ValorBC = Math.Round(itemTributacao.ICMSBase, 2);
+                                detalhe.Imposto.ICMS.PercentualReducaoBC = item.PercentualReducaoBC;
                             }
                             if (item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaComPermissaoDeCreditoST
                                 || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaSemPermissaoDeCreditoST
@@ -387,6 +388,7 @@ namespace Fly01.Compras.BL
                             detalhe.Imposto.ICMS.ValorICMSST = Math.Round(itemTributacao.STValor, 2);
                             detalhe.Imposto.ICMS.ValorBCSTRetido = Math.Round(item.ValorBCSTRetido, 2);
                             detalhe.Imposto.ICMS.ValorICMSSTRetido = Math.Round(item.ValorICMSSTRetido, 2);
+                            detalhe.Imposto.ICMS.PercentualReducaoBCST = item.PercentualReducaoBCST;
 
                             if (versao == "4.00")
                             {

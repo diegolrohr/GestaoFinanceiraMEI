@@ -19,6 +19,10 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public double ValorBCFCPSTRetidoAnterior { get; set; }
 
+        public double PercentualReducaoBC { get; set; }
+
+        public double PercentualReducaoBCST { get; set; }
+
         public virtual Produto Produto { get; set; }
 
         [NotMapped]

@@ -3,6 +3,7 @@ using Fly01.EmissaoNFE.Domain.ViewModel;
 using System;
 using System.Linq;
 using Fly01.Core.BL;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.EmissaoNFE.BL
 {
@@ -34,7 +35,14 @@ namespace Fly01.EmissaoNFE.BL
 
         private double ObterValorBase(Tributacao entity)
         {
-            var valorBase = entity.SubstituicaoTributaria.IpiNaBase ? entity.ValorBase + entity.Ipi.Valor : entity.ValorBase;
+            var valorBase = entity.ValorBase;
+            if (entity.SubstituicaoTributaria.PercentualReducaoBCST.HasValue && entity.SubstituicaoTributaria.PercentualReducaoBCST > 0 && (entity.Icms.CSOSN == TipoTributacaoICMS.ComRedDeBaseDeST))
+            {
+                var reducao = Math.Round(valorBase / 100 * entity.SubstituicaoTributaria.PercentualReducaoBCST.Value, 2);
+                valorBase -= reducao;
+            }
+
+            valorBase = entity.SubstituicaoTributaria.IpiNaBase ? valorBase + entity.Ipi.Valor : valorBase;
             valorBase += entity.SubstituicaoTributaria.DespesaNaBase ? entity.ValorDespesa : 0;
             valorBase += entity.SubstituicaoTributaria.FreteNaBase ? entity.ValorFrete : 0;
             return valorBase;

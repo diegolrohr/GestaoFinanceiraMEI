@@ -20,6 +20,19 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         public ModalidadeDeterminacaoBCICMS ModalidadeBC { get; set; }
 
         [XmlIgnore]
+        public double PercentualReducaoBC { get; set; }
+
+        [XmlElement("pRedBC")]
+        public string PercentualReducaoBCString
+        {
+            get
+            {
+                return PercentualReducaoBC.ToString("0.0000").Replace(",", ".");
+            }
+            set { PercentualReducaoBC = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
+        }
+
+        [XmlIgnore]
         public double ValorBC { get; set; }
 
         [XmlElement("vBC")]
@@ -56,19 +69,6 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                 return ValorICMS.ToString("0.00").Replace(",", ".");
             }
             set { ValorICMS = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
-        }
-
-        [XmlIgnore]
-        public double PercentualReducaoBC { get; set; }
-
-        [XmlElement("pRedBC")]
-        public string PercentualReducaoBCString
-        {
-            get
-            {
-                return PercentualReducaoBC.ToString("0.0000").Replace(",", ".");
-            }
-            set { PercentualReducaoBC = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlElement(ElementName = "motDesICMS", IsNullable = true)]
@@ -117,8 +117,5 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
             }
             set { ValorFCP = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
-
-
-
     }
 }

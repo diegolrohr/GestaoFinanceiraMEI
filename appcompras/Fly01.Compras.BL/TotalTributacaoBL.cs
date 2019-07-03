@@ -238,6 +238,7 @@ namespace Fly01.Compras.BL
                         tributacao.Icms = new Icms()
                         {
                             Aliquota = parametros.AliquotaSimplesNacional,
+                            PercentualReducaoBC = itemProduto.PercentualReducaoBC,
                             DespesaNaBase = grupoTributario.AplicaDespesaBaseIcms,
                             Difal = grupoTributario.CalculaIcmsDifal,
                             FreteNaBase = grupoTributario.AplicaFreteBaseIcms,
@@ -392,8 +393,9 @@ namespace Fly01.Compras.BL
                 Total = x.Total,
                 ProdutoId = x.ProdutoId,
                 GrupoTributarioId = x.GrupoTributarioId.Value,
-                PedidoItemId = x.Id
-
+                PedidoItemId = x.Id,
+                PercentualReducaoBC = x.PercentualReducaoBC,
+                PercentualReducaoBCST = x.PercentualReducaoBCST
             }).ToList(), fornecedorId, tipoCompra, tipoFrete, valorFrete);
         }
 
@@ -407,7 +409,9 @@ namespace Fly01.Compras.BL
                 Desconto = x.Desconto,
                 Total = x.Total,
                 ProdutoId = x.ProdutoId,
-                GrupoTributarioId = x.GrupoTributarioId.Value
+                GrupoTributarioId = x.GrupoTributarioId.Value,
+                PercentualReducaoBC = x.PercentualReducaoBC,
+                PercentualReducaoBCST = x.PercentualReducaoBCST
             }).ToList(), fornecedorId, tipoCompra, tipoFrete, valorFrete);
         }
 
@@ -421,7 +425,9 @@ namespace Fly01.Compras.BL
                 Desconto = x.Desconto,
                 Total = x.Total,
                 ProdutoId = x.ProdutoId,
-                GrupoTributarioId = x.GrupoTributarioId.Value
+                GrupoTributarioId = x.GrupoTributarioId.Value,
+                PercentualReducaoBC = x.PercentualReducaoBC,
+                PercentualReducaoBCST = x.PercentualReducaoBCST
             }).ToList(), fornecedorId, tipoCompra, tipoFrete, valorFrete);
         }
     }
@@ -439,9 +445,9 @@ namespace Fly01.Compras.BL
 
         public double Total { get; set; }
 
-        public double Fcp { get; set; }
+        public double PercentualReducaoBC { get; set; }
 
-        public double Icms { get; set; }
+        public double PercentualReducaoBCST { get; set; }
 
         public virtual GrupoTributario GrupoTributario { get; set; }
     }

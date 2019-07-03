@@ -163,6 +163,8 @@ namespace Fly01.Compras.BL
                             ValorCreditoICMS = x.ValorCreditoICMS,
                             ValorFCPSTRetidoAnterior = x.ValorFCPSTRetidoAnterior,
                             ValorBCFCPSTRetidoAnterior = x.ValorBCFCPSTRetidoAnterior,
+                            PercentualReducaoBC = x.PercentualReducaoBC,
+                            PercentualReducaoBCST = x.PercentualReducaoBCST,
                             PedidoItemId = x.Id
                         }).ToList();
 

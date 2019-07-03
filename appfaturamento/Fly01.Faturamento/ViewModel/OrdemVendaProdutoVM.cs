@@ -31,8 +31,11 @@ namespace Fly01.Faturamento.ViewModel
         [JsonProperty("valorBCFCPSTRetidoAnterior")]
         public double ValorBCFCPSTRetidoAnterior { get; set; }
 
-        
+        [JsonProperty("percentualReducaoBC")]
+        public double PercentualReducaoBC { get; set; }
 
+        [JsonProperty("percentualReducaoBCST")]
+        public double PercentualReducaoBCST { get; set; }
 
         #region NavigationProperties
 

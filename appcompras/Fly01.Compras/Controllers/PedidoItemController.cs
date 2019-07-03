@@ -160,7 +160,41 @@ namespace Fly01.Compras.Controllers
                 Value = "0"
             });
 
+            config.Elements.Add(new InputCustommaskUI
+            {
+                Id = "percentualReducaoBC",
+                Class = "col s12 l6 numeric",
+                Label = "Percentual Redução Base Cálculo",
+                Value = "0",
+                Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
+            });
+
+            config.Elements.Add(new InputCustommaskUI
+            {
+                Id = "percentualReducaoBCST",
+                Class = "col s12 l6 numeric",
+                Label = "Percentual Redução Base Cálculo ST.",
+                Value = "0",
+                Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
+            });
+
             #region Helpers 
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "percentualReducaoBCST",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Percentual da Redução da Base de Cálculo ST(Substituição Tributária). Se o pedido gerar nota fiscal com CST 70, conforme cadastro do Grupo Tributário, este dado pode ser informado."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "percentualReducaoBC",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Percentual da Redução da Base de Cálculo. Se o pedido gerar nota fiscal com CST 20 ou 70, conforme cadastro do Grupo Tributário, este dado deve ser informado."
+                }
+            });
             config.Helpers.Add(new TooltipUI
             {
                 Id = "icms",

@@ -24,6 +24,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
                                  (detalhe.Imposto.ICMS.ValorICMS ?? 0) +
                                  (CSTsICMSST.Contains(((int)detalhe.Imposto.ICMS.CodigoSituacaoOperacao).ToString()) ? (detalhe.Imposto.ICMS.ValorICMSST ?? 0) : 0) +
                                  (detalhe.Imposto.ICMS.ValorFCPST ?? 0) +
+                                 (detalhe.Imposto.ICMS.ValorFCP ?? 0) +
                                  (detalhe.Imposto.II != null ? detalhe.Imposto.II.ValorII : 0) +
                                  (detalhe.Imposto.IPI != null ? detalhe.Imposto.IPI.ValorIPI : 0) +
                                  (detalhe.Imposto.PIS != null ? detalhe.Imposto.PIS.ValorPIS : 0) +

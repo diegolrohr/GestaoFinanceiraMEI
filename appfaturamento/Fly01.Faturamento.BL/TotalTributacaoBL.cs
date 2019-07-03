@@ -332,8 +332,8 @@ namespace Fly01.Faturamento.BL
                     };
                     var tributacao = new Tributacao();
                     tributacao.ValorBase = itemServico.Total;
-                    tributacao.SimplesNacional = true;
-                    
+                    tributacao.SimplesNacional = parametros.TipoCRT != TipoCRT.RegimeNormal;
+
                     //ISS
                     if (grupoTributario.CalculaIss || grupoTributario.RetemISS)
                     {
@@ -499,7 +499,7 @@ namespace Fly01.Faturamento.BL
                 var tributacao = new Tributacao();
                 tributacao.ValorBase = itemProduto.Total;
                 tributacao.ValorFrete = itemRetorno.FreteValorFracionado;
-                tributacao.SimplesNacional = true;
+                tributacao.SimplesNacional = parametros.TipoCRT != TipoCRT.RegimeNormal;
 
                 //ICMS
                 //refatorar para cada caso

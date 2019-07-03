@@ -108,7 +108,8 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 + icmsTotal.SomatorioICMSST
                 + icmsTotal.SomatorioIPI
                 + icmsTotal.SomatorioPis
-                + icmsTotal.SomatorioFCPST;
+                + icmsTotal.SomatorioFCPST
+                + icmsTotal.SomatorioFCP;
         }
 
         #region Impostos
@@ -136,6 +137,21 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
             {
                 ICMS.ModalidadeBCST = ModalidadeDeterminacaoBCICMSST.MargemValorAgregado;
                 ICMS.PercentualReducaoBCST = 0;
+            }
+
+            if (Cabecalho.Versao == "4.00")
+            {
+                if (
+                     item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.ComReducaoDeBaseDeCalculo
+                     || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.Diferimento
+                     || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaComCobrancaDeSubstituicao
+                     || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.Outros90
+                     || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaIntegralmente)
+                {
+                    ICMS.BaseFCP = Math.Round(itemTributacao.FCPBase, 2);
+                    ICMS.AliquotaFCP = Math.Round(itemTributacao.FCPAliquota, 2);
+                    ICMS.ValorFCP = Math.Round(itemTributacao.FCPValor, 2);
+                }
             }
         }
 

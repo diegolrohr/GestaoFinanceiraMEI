@@ -94,22 +94,6 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
             return ValorICMSSTUFDestino.HasValue && ValorICMSSTUFDestino.Value > 0;
         }
 
-         [XmlIgnore]
-         public double? BaseFCP { get; set; }
-        [XmlElement(ElementName = "vBCFCP", IsNullable = true)]
-        public string BaseFCPString
-        {
-            get
-            {
-                return BaseFCP.HasValue ? BaseFCP.Value.ToString("0.00").Replace(",", ".") : "0.00";
-            }
-            set { BaseFCP = double.Parse(value); }
-        }
-        public bool ShouldSerializeBaseFCPString()
-        {
-            return (BaseFCP.HasValue && BaseFCP.Value > 0.0) && (AliquotaFCP.HasValue && AliquotaFCP.Value >= 0.0) && (ValorFCP.HasValue && ValorFCP.Value >= 0.0);
-        }
-
         [XmlIgnore]
         public double? AliquotaFCP { get; set; }
         [XmlElement(ElementName = "pFCP", IsNullable = true)]
@@ -123,7 +107,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         }
         public bool ShouldSerializeAliquotaFCPString()
         {
-            return (BaseFCP.HasValue && BaseFCP.Value >= 0.0) && (AliquotaFCP.HasValue && AliquotaFCP.Value >= 0.0) && (ValorFCP.HasValue && ValorFCP.Value >= 0.0);
+            return ((AliquotaFCP.HasValue && AliquotaFCP.Value >= 0.0) && (ValorFCP.HasValue && ValorFCP.Value >= 0.0));
         }
 
         [XmlIgnore]
@@ -139,7 +123,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         }
         public bool ShouldSerializeValorFCPString()
         {
-            return (BaseFCP.HasValue && BaseFCP.Value >= 0.0) && (AliquotaFCP.HasValue && AliquotaFCP.Value >= 0.0) && (ValorFCP.HasValue && ValorFCP.Value >= 0.0);
+            return ((AliquotaFCP.HasValue && AliquotaFCP.Value >= 0.0) && (ValorFCP.HasValue && ValorFCP.Value >= 0.0));
         }
 
 

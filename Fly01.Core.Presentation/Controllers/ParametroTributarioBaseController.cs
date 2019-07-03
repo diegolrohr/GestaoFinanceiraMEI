@@ -212,7 +212,7 @@ namespace Fly01.Core.Presentation.Controllers
             {
                 Id = "aliquotaSimplesNacional",
                 Class = "col s12 m3",
-                Label = "ICMS Simples Nacional",
+                Label = "ICMS",
                 Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
             });
 

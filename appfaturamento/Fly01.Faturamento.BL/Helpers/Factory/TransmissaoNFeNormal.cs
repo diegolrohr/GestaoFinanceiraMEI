@@ -123,7 +123,8 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 + icmsTotal.SomatorioICMSST
                 + icmsTotal.SomatorioIPI
                 + icmsTotal.SomatorioPis
-                + icmsTotal.SomatorioFCPST;
+                + icmsTotal.SomatorioFCPST
+                + icmsTotal.SomatorioFCP;
         }
 
         public override TipoFormaPagamento ObterTipoFormaPagamento()
@@ -170,12 +171,12 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                     var AliquotaFCPSTRetido = item.ValorBCFCPSTRetidoAnterior > 0 ? Math.Round(((item.ValorFCPSTRetidoAnterior / item.ValorBCFCPSTRetidoAnterior) * 100), 2) : 0;
                     ICMS.BaseFCPSTRetido = Math.Round(item.ValorBCFCPSTRetidoAnterior, 2);
                     ICMS.AliquotaFCPSTRetido = AliquotaFCPSTRetido;
-                    ICMS.ValorFCPSTRetido = Math.Round(item.ValorFCPSTRetidoAnterior, 2);                    
+                    ICMS.ValorFCPSTRetido = Math.Round(item.ValorFCPSTRetidoAnterior, 2);
                     ICMS.AliquotaConsumidorFinal = itemTributacao.STAliquota > 0 ? Math.Round(itemTributacao.STAliquota, 2) + AliquotaFCPSTRetido : 0;
                     if (ICMS.ValorICMSSTRetido != 0 & ICMS.ValorBCSTRetido != 0)
                     {
-                        ICMS.ValorICMSSubstituto = Math.Round(itemTributacao.STBase, 2);            
-                    }                    
+                        ICMS.ValorICMSSubstituto = Math.Round(itemTributacao.STBase, 2);
+                    }
                 }
             }
         }
@@ -200,7 +201,6 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                     ICMS.ModalidadeBCST = ModalidadeDeterminacaoBCICMSST.ListaPositiva;
                     ICMS.ValorBC = Math.Round(itemTributacao.ICMSBase, 2);
                     ICMS.ValorICMS = Math.Round(itemTributacao.ICMSValor, 2);
-                                       
                 }
 
                 if (item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaComPermissaoDeCreditoST
@@ -212,20 +212,19 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 }
 
                 if (Cabecalho.Versao == "4.00")
-                 {
-                   if(                      
-                        item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.ComReducaoDeBaseDeCalculo
-                        || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.Diferimento
-                        || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaComCobrancaDeSubstituicao
-                        || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.Outros90
-                        || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaIntegralmente)
-                   {   
+                {
+                    if (
+                         item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.ComReducaoDeBaseDeCalculo
+                         || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.Diferimento
+                         || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaComCobrancaDeSubstituicao
+                         || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.Outros90
+                         || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaIntegralmente)
+                    {
                         ICMS.BaseFCP = Math.Round(itemTributacao.FCPBase, 2);
                         ICMS.AliquotaFCP = Math.Round(itemTributacao.FCPAliquota, 2);
                         ICMS.ValorFCP = Math.Round(itemTributacao.FCPValor, 2);
-                   }
-                 }
-
+                    }
+                }
             }
         }
 

@@ -214,12 +214,11 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                         ModalidadeBC = ModalidadeBC.Value,
                         ValorBC = ValorBC.Value,
                         ValorICMS = ValorICMS.Value,
-                        AliquotaICMS = AliquotaICMS.Value,                       
+                        AliquotaICMS = AliquotaICMS.Value,
                         AliquotaFCP = AliquotaFCP,
                         ValorFCP = ValorFCP,
                         ValorICMSSTUFDestino = ValorICMSSTUFDestino,
-                        ValorBCSTDestino = ValorBCSTDestino,
-
+                        ValorBCSTDestino = ValorBCSTDestino
                     };
                     break;
               

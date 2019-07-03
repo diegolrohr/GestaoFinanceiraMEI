@@ -15,7 +15,7 @@ namespace Fly01.EmissaoNFE.BL
         
         public TributacaoRetornoBaseVM Icms(Tributacao entity, TabelaIcmsBL TabelaIcmsBL)
         {
-            if (!entity.SimplesNacional)
+            if (!entity.Icms.Aliquota.HasValue)
             {
                 entity.Icms.Aliquota = (from e in TabelaIcmsBL.All
                                     where e.SiglaDestino.Equals(entity.Icms.EstadoDestino, StringComparison.InvariantCultureIgnoreCase)

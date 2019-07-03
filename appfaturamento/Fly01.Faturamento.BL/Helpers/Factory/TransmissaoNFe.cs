@@ -279,6 +279,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
             return (detalhe.Imposto.COFINS != null ? detalhe.Imposto.COFINS.ValorCOFINS : 0) +
                    (detalhe.Imposto.ICMS.ValorICMS ?? 0) +
                    (detalhe.Imposto.ICMS.ValorFCPST ?? 0) +
+                   (detalhe.Imposto.ICMS.ValorFCP ?? 0) +
                    (CSTsICMSST.Contains(((int)detalhe.Imposto.ICMS.CodigoSituacaoOperacao).ToString()) ? (detalhe.Imposto.ICMS.ValorICMSST ?? 0) : 0) +
                    (detalhe.Imposto.II != null ? detalhe.Imposto.II.ValorII : 0) +
                    (detalhe.Imposto.IPI != null ? detalhe.Imposto.IPI.ValorIPI : 0) +
@@ -346,7 +347,22 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                     SomatorioPis = detalhes.Sum(y => y.Imposto.PIS.ValorPIS),
                     SomatorioProdutos = detalhes.Sum(x => x.Produto.ValorBruto),
                     SomatorioOutro = 0,
-                    SomatorioFCP = 0,
+                    SomatorioFCP = detalhes.Select(x => x.Imposto.ICMS).Any(x => x != null && x.ValorFCP.HasValue &&
+                    (
+                        x.CodigoSituacaoOperacao == TipoTributacaoICMS.ComReducaoDeBaseDeCalculo ||
+                        x.CodigoSituacaoOperacao == TipoTributacaoICMS.Diferimento ||
+                        x.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaComCobrancaDeSubstituicao ||
+                        x.CodigoSituacaoOperacao == TipoTributacaoICMS.Outros90 ||
+                        x.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaIntegralmente
+                    )) ?
+                    Math.Round(detalhes.Where(x => x.Imposto.ICMS != null && x.Imposto.ICMS.ValorFCP.HasValue &&
+                    (
+                        x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.ComReducaoDeBaseDeCalculo ||
+                        x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.Diferimento ||
+                        x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaComCobrancaDeSubstituicao ||
+                        x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.Outros90 ||
+                        x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaIntegralmente
+                    )).Sum(x => x.Imposto.ICMS.ValorFCP.Value), 2) : 0,
                     SomatorioFCPST = detalhes.Select(x => x.Imposto.ICMS).Any(x => x != null && x.ValorFCPST.HasValue) ? Math.Round(detalhes.Where(x => x.Imposto.ICMS != null && x.Imposto.ICMS.ValorFCPST.HasValue).Sum(x => x.Imposto.ICMS.ValorFCPST.Value), 2) : 0,
                     SomatorioFCPSTRetido = detalhes.Select(x => x.Imposto.ICMS).Any(x => x != null && x.ValorFCPSTRetido.HasValue) ? Math.Round(detalhes.Where(x => x.Imposto.ICMS != null && x.Imposto.ICMS.ValorFCPSTRetido.HasValue).Sum(x => x.Imposto.ICMS.ValorFCPSTRetido.Value), 2) : 0,
                 }

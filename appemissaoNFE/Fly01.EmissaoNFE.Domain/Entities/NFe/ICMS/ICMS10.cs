@@ -69,16 +69,6 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         [XmlIgnore]
         public double ValorBCST { get; set; }
 
-        [XmlElement("vBCST")]
-        public string ValorBCSTString
-        {
-            get
-            {
-                return ValorBCST.ToString("0.00").Replace(",", ".");
-            }
-            set { ValorBCST = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
-        }
-
         [XmlIgnore]
         public double? PercentualMargemValorAdicionadoST { get; set; }
 
@@ -91,10 +81,19 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
             }
             set { PercentualMargemValorAdicionadoST = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
-
         public bool ShouldSerializePercentualMargemValorAdicionadoSTString()
         {
             return PercentualMargemValorAdicionadoST.HasValue & PercentualMargemValorAdicionadoST > 0;
+        }
+
+        [XmlElement("vBCST")]
+        public string ValorBCSTString
+        {
+            get
+            {
+                return ValorBCST.ToString("0.00").Replace(",", ".");
+            }
+            set { ValorBCST = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]

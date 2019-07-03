@@ -229,7 +229,8 @@ namespace Fly01.Compras.BL
                     var tributacao = new Tributacao();
                     tributacao.ValorBase = itemProduto.Total;
                     tributacao.ValorFrete = itemRetorno.FreteValorFracionado;
-                    tributacao.SimplesNacional = true;
+
+                    tributacao.SimplesNacional = parametros.TipoCRT != TipoCRT.RegimeNormal;
 
                     //ICMS
                     if (grupoTributario.CalculaIcms)
@@ -392,6 +393,7 @@ namespace Fly01.Compras.BL
                 ProdutoId = x.ProdutoId,
                 GrupoTributarioId = x.GrupoTributarioId.Value,
                 PedidoItemId = x.Id
+
             }).ToList(), fornecedorId, tipoCompra, tipoFrete, valorFrete);
         }
 
@@ -422,7 +424,6 @@ namespace Fly01.Compras.BL
                 GrupoTributarioId = x.GrupoTributarioId.Value
             }).ToList(), fornecedorId, tipoCompra, tipoFrete, valorFrete);
         }
-
     }
 
     #region Classes auxiliares, calculo pode ser para ordemVenda ou notaFiscal
@@ -437,6 +438,10 @@ namespace Fly01.Compras.BL
         public Guid GrupoTributarioId { get; set; }
 
         public double Total { get; set; }
+
+        public double Fcp { get; set; }
+
+        public double Icms { get; set; }
 
         public virtual GrupoTributario GrupoTributario { get; set; }
     }

@@ -217,7 +217,6 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                     if (
                          item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.ComReducaoDeBaseDeCalculo
                          || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.Diferimento
-                         || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaComCobrancaDeSubstituicao
                          || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.Outros90
                          || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaIntegralmente)
                     {

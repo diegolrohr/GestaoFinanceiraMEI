@@ -369,7 +369,6 @@ namespace Fly01.Compras.BL
                                 if (
                                      item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.ComReducaoDeBaseDeCalculo
                                      || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.Diferimento
-                                     || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaComCobrancaDeSubstituicao
                                      || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.Outros90
                                      || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaIntegralmente)
                                 {
@@ -494,10 +493,9 @@ namespace Fly01.Compras.BL
                                 x.CodigoSituacaoOperacao == TipoTributacaoICMS.Outros ||
                                 x.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaComPermissaoDeCreditoST ||
                                 x.CodigoSituacaoOperacao == TipoTributacaoICMS.IsencaoParaFaixaDeReceitaBrutaST ||
+                                x.CodigoSituacaoOperacao == TipoTributacaoICMS.ComRedDeBaseDeST ||
                                 x.CodigoSituacaoOperacao == TipoTributacaoICMS.Outros90 ||
-                                x.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaComCobrancaDeSubstituicao ||
-                                x.CodigoSituacaoOperacao == TipoTributacaoICMS.ComRedDeBaseDeST
-
+                                x.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaComCobrancaDeSubstituicao
                             )) ?
                             Math.Round(itemTransmissao.Detalhes.Where(x => x.Imposto.ICMS != null && x.Imposto.ICMS.ValorBCST.HasValue &&
                             (
@@ -505,8 +503,8 @@ namespace Fly01.Compras.BL
                                 x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.Outros ||
                                 x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaComPermissaoDeCreditoST ||
                                 x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.IsencaoParaFaixaDeReceitaBrutaST ||
-                                x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.Outros90 ||
                                 x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.ComRedDeBaseDeST ||
+                                x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.Outros90 ||
                                 x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaComCobrancaDeSubstituicao
                             )).Sum(x => x.Imposto.ICMS.ValorBCST.Value), 2) : 0,
                             SomatorioCofins = itemTransmissao.Detalhes.Select(x => x.Imposto.COFINS).Any(x => x != null) ? Math.Round(itemTransmissao.Detalhes.Sum(x => x.Imposto.COFINS.ValorCOFINS), 2) : 0,
@@ -525,7 +523,6 @@ namespace Fly01.Compras.BL
                             (
                                 x.CodigoSituacaoOperacao == TipoTributacaoICMS.ComReducaoDeBaseDeCalculo ||
                                 x.CodigoSituacaoOperacao == TipoTributacaoICMS.Diferimento ||
-                                x.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaComCobrancaDeSubstituicao ||
                                 x.CodigoSituacaoOperacao == TipoTributacaoICMS.Outros90 ||
                                 x.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaIntegralmente
                             )) ?
@@ -533,7 +530,6 @@ namespace Fly01.Compras.BL
                             (
                                 x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.ComReducaoDeBaseDeCalculo ||
                                 x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.Diferimento ||
-                                x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaComCobrancaDeSubstituicao ||
                                 x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.Outros90 ||
                                 x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaIntegralmente
                             )).Sum(x => x.Imposto.ICMS.ValorFCP.Value), 2) : 0,

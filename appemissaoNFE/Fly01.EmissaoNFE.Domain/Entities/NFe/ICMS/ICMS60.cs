@@ -82,7 +82,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         }
         public bool ShouldSerializeBaseFCPSTRetidoString()
         {
-            return BaseFCPSTRetido.HasValue && BaseFCPSTRetido.Value >= 0;
+            return BaseFCPSTRetido.HasValue && BaseFCPSTRetido.Value > 0;
         }
 
         [XmlIgnore]
@@ -98,7 +98,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         }
         public bool ShouldSerializeAliquotaFCPSTRetidoString()
         {
-            return AliquotaFCPSTRetido.HasValue && AliquotaFCPSTRetido.Value >= 0;
+            return AliquotaFCPSTRetido.HasValue && AliquotaFCPSTRetido.Value > 0;
         }
 
         [XmlIgnore]
@@ -114,7 +114,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         }
         public bool ShouldSerializeValorFCPSTRetidoString()
         {
-            return ValorFCPSTRetido.HasValue && ValorFCPSTRetido.Value >= 0;
+            return ValorFCPSTRetido.HasValue && ValorFCPSTRetido.Value > 0;
         }
     }
 }

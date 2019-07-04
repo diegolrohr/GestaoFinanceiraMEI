@@ -324,8 +324,8 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                 case "41"://Não tributado. 
                     ICMS = new ICMS40(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT);
                     break;
-                case "50"://Com suspensao.
-                    ICMS = new ICMS50(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT);
+                case "50"://Com suspensao, quando 50 é ICMS40 com cst 50 ??
+                    ICMS = new ICMS40(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT);
                     {
                         MotivoDesoneracaoICMS = MotivoDesoneracaoICMS;
                     };
@@ -411,6 +411,9 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                         ValorICMSST = ValorICMSST,                        
                         ValorICMSSTUFDestino = ValorICMSSTUFDestino,
                         PercentualReducaoBC = PercentualReducaoBC,
+                        //BaseFCP = BaseFCP,
+                        AliquotaFCP = AliquotaFCP,
+                        ValorFCP = ValorFCP,
                         BaseFCPST = BaseFCPST,
                         AliquotaFCPST = AliquotaFCPST,
                         ValorFCPST = ValorFCPST

@@ -527,7 +527,7 @@ namespace Fly01.Faturamento.Controllers
             {
                 DataField = "status",
                 DisplayName = "Status",
-                Priority = 2,
+                Priority = 4,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(Status))),
                 RenderFn = "fnRenderEnum(full.statusCssClass, full.statusDescription)"
             });
@@ -535,7 +535,7 @@ namespace Fly01.Faturamento.Controllers
             {
                 DataField = "tipoOrdemVenda",
                 DisplayName = "Tipo",
-                Priority = 3,
+                Priority = 5,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoOrdemVenda))),
                 RenderFn = "fnRenderEnum(full.tipoOrdemVendaCssClass, full.tipoOrdemVendaDescription)"
             });
@@ -543,12 +543,12 @@ namespace Fly01.Faturamento.Controllers
             {
                 DataField = "tipoVenda",
                 DisplayName = "Finalidade",
-                Priority = 4,
+                Priority = 6,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoCompraVenda))),
                 RenderFn = "fnRenderEnum(full.tipoVendaCssClass, full.tipoVendaDescription)"
             });
-            config.Columns.Add(new DataTableUIColumn { DataField = "cliente_nome", DisplayName = "Cliente", Priority = 5 });
-            config.Columns.Add(new DataTableUIColumn { DataField = "data", DisplayName = "Data", Priority = 6, Type = "date" });
+            config.Columns.Add(new DataTableUIColumn { DataField = "cliente_nome", DisplayName = "Cliente", Priority = 2 });
+            config.Columns.Add(new DataTableUIColumn { DataField = "data", DisplayName = "Data", Priority = 3, Type = "date" });
 
             cfg.Content.Add(config);
 

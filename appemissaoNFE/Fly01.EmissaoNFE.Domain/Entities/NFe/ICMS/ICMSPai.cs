@@ -275,7 +275,6 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
 
                     ICMS = new ICMS20(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT)
                     {
-
                         ModalidadeBC = ModalidadeBC.Value,
                         ValorBC = ValorBC.Value,
                         ValorICMS = ValorICMS.Value,
@@ -284,7 +283,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                         MotivoDesoneracaoICMS = MotivoDesoneracaoICMS,
                         AliquotaFCP = AliquotaFCP.Value,
                         ValorFCP = ValorFCP.Value,
-
+                        ValorBCFCP = BaseFCP.Value
                     };
                     break;
 

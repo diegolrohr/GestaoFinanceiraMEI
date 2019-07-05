@@ -100,11 +100,11 @@ namespace Fly01.Compras.BL
                 }
                 if (parametros.TipoCRT != TipoCRT.RegimeNormal && entity.TipoCompra != TipoCompraVenda.Devolucao && ((int)item?.GrupoTributario.TipoTributacaoICMS >= 0 && (int)item?.GrupoTributario.TipoTributacaoICMS <= 90))
                 {
-                    throw new BusinessException(string.Format("Seu regime é Simples Nacional e no grupo tributário do produto {0}, foi configurado CST, altere para CSOSN.", num));
+                    throw new BusinessException(string.Format("Seu regime tributário configurado, é Simples Nacional e no grupo tributário do produto {0}, foi configurado CST nas configurações de ICMS, altere para CSOSN.", num));
                 }
                 if (parametros.TipoCRT == TipoCRT.RegimeNormal && entity.TipoCompra != TipoCompraVenda.Devolucao && ((int)item?.GrupoTributario.TipoTributacaoICMS >= 101 && (int)item?.GrupoTributario.TipoTributacaoICMS <= 900))
                 {
-                    throw new BusinessException(string.Format("Seu regime é Normal e no grupo tributário do produto {0}, foi configurado CSOSN, altere para CST.", num));
+                    throw new BusinessException(string.Format("Seu regime tributário configurado, é Normal e no grupo tributário do produto {0}, foi configurado CSOSN nas configurações de ICMS, altere para CST.", num));
                 }
                 num++;
             }
@@ -289,6 +289,7 @@ namespace Fly01.Compras.BL
                                 FreteNaBase = grupoTributario.AplicaFreteBaseST,
                                 DespesaNaBase = grupoTributario.AplicaDespesaBaseST,
                                 Mva = st.Mva,
+                                PercentualReducaoBCST = itemProduto.PercentualReducaoBCST,
                                 AliquotaIntraEstadual = st.AliquotaIntraEstadual,
                                 AliquotaInterEstadual = st.AliquotaInterEstadual,
                             };

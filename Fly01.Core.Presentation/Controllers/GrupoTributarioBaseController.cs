@@ -348,6 +348,14 @@ namespace Fly01.Core.Presentation.Controllers
                     Text = "Necessário estar cadastrado no menu de Substituição Tributária, de acordo com a situação do estado origem e destino."
                 }
             });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "calculaIcms",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Se o seu Regime Tributário configurado no menu de Parâmetros Tributários, for Simples Nacional, escolha CSOSN do 101 ao 900; se for Regime Normal, escolha CST do 00 ao 90. Exceções para notas fiscais de devolução."
+                }
+            });
             #endregion
 
             cfg.Content.Add(config);

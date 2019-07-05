@@ -89,10 +89,6 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                             }
                         )?.XML;
 
-                        string xml = "";
-                        xml = String.Concat("<nfeProc xmlns='http://www.portalfiscal.inf.br/nfe' versao='4.00'>", nota.XML);
-                        nota.XML = xml + "</nfeProc>";
-
                         nota.PDF = DanfePDFHelper.Producao(
                             new DanfeVM()
                             {
@@ -149,11 +145,6 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                                 DanfeId = nfe?.ID
                             }
                         )?.XML;
-
-                        string xml = "";
-                        xml = String.Concat("<nfeProc xmlns='http://www.portalfiscal.inf.br/nfe' versao='4.00'>", nota.XML);
-                        nota.XML = xml + "</nfeProc>";
-
 
                         nota.PDF = DanfePDFHelper.Homologacao(
                             new DanfeVM()

@@ -20,7 +20,7 @@ namespace Fly01.Faturamento.BL
         protected NotaFiscalInutilizadaBL NotaFiscalInutilizadaBL { get; set; }
         protected NotaFiscalCartaCorrecaoBL NotaFiscalCartaCorrecaoBL { get; set; }
 
-        public MonitorNFBL(AppDataContextBase context, TotalTributacaoBL totalTributacao, NFeBL nFeBL, 
+        public MonitorNFBL(AppDataContextBase context, TotalTributacaoBL totalTributacao, NFeBL nFeBL,
             CertificadoDigitalBL certificadoDigitalBL, NotaFiscalInutilizadaBL notaFiscalInutilizadaBL, NotaFiscalCartaCorrecaoBL notaFiscalCartaCorrecaoBL)
             : base(context)
         {
@@ -41,17 +41,16 @@ namespace Fly01.Faturamento.BL
                                                 plataformaId = g.Key.PlataformaId,
                                                 tipoAmbiente = g.Key.TipoAmbiente,
                                                 certificadoDigitalId = g.Key.CertificadoDigitalId,
-                                                notaInicial = g.Min(x => x.SefazId.Substring(22, 12)),
-                                                notaFinal = g.Max(x => x.SefazId.Substring(22, 12))
-                                            }).ToList();
+                                                notaInicial = g.Min(x => x.SefazId),
+                                                notaFinal = g.Max(x => x.SefazId)
+                                            });
 
             var header = new Dictionary<string, string>()
             {
                 { "AppUser", AppUser },
                 { "PlataformaUrl", string.IsNullOrEmpty(plataformaUrl) ? PlataformaUrl : plataformaUrl }
             };
-            //3519075311379100012255 0120000015301005844207
-            //TODO: revisar demais apps e eventos de monitor
+
             foreach (var dadosPlataforma in notasFiscaisByPlataforma)
             {
                 try
@@ -61,18 +60,16 @@ namespace Fly01.Faturamento.BL
                     if (entidade == null)
                         continue;
 
+
                     if (TotalTributacaoBL.ConfiguracaoTSSOK(dadosPlataforma.plataformaId))
                     {
-                        var sefazIdInicial = NFeBL.Everything.Where(x => x.SefazId.Substring(22, 12) == dadosPlataforma.notaInicial && x.PlataformaId == dadosPlataforma.plataformaId).FirstOrDefault()?.SefazId;
-                        var sefazIdFinal = NFeBL.Everything.Where(x => x.SefazId.Substring(22, 12) == dadosPlataforma.notaFinal && x.PlataformaId == dadosPlataforma.plataformaId).FirstOrDefault()?.SefazId;
-                        
                         var monitorVM = new MonitorVM()
                         {
                             Homologacao = entidade.Homologacao,
                             Producao = entidade.Producao,
                             EntidadeAmbiente = entidade.EntidadeAmbiente,
-                            NotaInicial = sefazIdInicial,
-                            NotaFinal = sefazIdFinal,
+                            NotaInicial = dadosPlataforma.notaInicial.ToString(),
+                            NotaFinal = dadosPlataforma.notaFinal.ToString(),
                         };
 
                         var responseMonitor = RestHelper.ExecutePostRequest<ListMonitorRetornoVM>(AppDefaults.UrlEmissaoNfeApi, "monitor", JsonConvert.SerializeObject(monitorVM), null, header);
@@ -226,8 +223,8 @@ namespace Fly01.Faturamento.BL
 
                             var responseMonitor = RestHelper.ExecutePostRequest<MonitorEventoRetornoVM>(AppDefaults.UrlEmissaoNfeApi, "monitorevento", JsonConvert.SerializeObject(monitorEventoVM), null, header);
                             if (responseMonitor == null)
-                                continue;                           
-                            
+                                continue;
+
                             cartaCorrecao.Mensagem = string.Format("{0} {1}",
                                 (responseMonitor.Motivo != null ? responseMonitor.Motivo : ""),
                                 (responseMonitor.MotivoEvento != null ? responseMonitor.MotivoEvento : ""));
@@ -236,7 +233,7 @@ namespace Fly01.Faturamento.BL
                             cartaCorrecao.XML = responseMonitor.XML;
                             cartaCorrecao.IdRetorno = responseMonitor.IdEvento;
 
-                            if(responseMonitor.Status == StatusCartaCorrecao.RegistradoENaoVinculado || responseMonitor.Status == StatusCartaCorrecao.RegistradoEVinculado)
+                            if (responseMonitor.Status == StatusCartaCorrecao.RegistradoENaoVinculado || responseMonitor.Status == StatusCartaCorrecao.RegistradoEVinculado)
                             {
                                 var idRetornoLength = cartaCorrecao.IdRetorno.Length;
                                 cartaCorrecao.Numero = int.Parse(responseMonitor.IdEvento.Substring(idRetornoLength - 2, 2));

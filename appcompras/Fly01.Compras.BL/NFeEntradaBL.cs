@@ -286,13 +286,17 @@ namespace Fly01.Compras.BL
 
                     foreach (var item in NFeProdutos)
                     {
-                        var st = SubstituicaoTributariaBL.AllIncluding(y => y.EstadoOrigem).AsNoTracking().Where(x =>
+                        var isEntrada = (entity.TipoCompra == TipoCompraVenda.Normal)
+                            || (entity.TipoCompra == TipoCompraVenda.Complementar);
+
+                        var st = SubstituicaoTributariaBL.AllIncluding(y => y.EstadoOrigem, y => y.EstadoDestino).AsNoTracking().Where(x =>
                             x.NcmId == (item.Produto.NcmId.HasValue ? item.Produto.NcmId.Value : Guid.NewGuid()) &&
                             ((item.Produto.CestId.HasValue && x.CestId == item.Produto.CestId.Value) || !item.Produto.CestId.HasValue) &&
-                            x.EstadoOrigem.Sigla == UFSiglaEmpresa &&
-                            x.EstadoDestinoId == fornecedor.EstadoId &&
-                            x.TipoSubstituicaoTributaria == (entity.TipoCompra == TipoCompraVenda.Devolucao ? TipoSubstituicaoTributaria.Saida : TipoSubstituicaoTributaria.Entrada)
+                            x.EstadoOrigem.Sigla == (entity.TipoCompra != TipoCompraVenda.Devolucao ? fornecedor.Estado.Sigla : UFSiglaEmpresa) &&
+                            x.EstadoDestino.Sigla == (entity.TipoCompra != TipoCompraVenda.Devolucao ? UFSiglaEmpresa : fornecedor.Estado.Sigla) &&
+                            x.TipoSubstituicaoTributaria == (isEntrada ? TipoSubstituicaoTributaria.Entrada : TipoSubstituicaoTributaria.Saida)
                             ).FirstOrDefault();
+
                         var CST = item.GrupoTributario.TipoTributacaoPIS.HasValue ? item.GrupoTributario.TipoTributacaoPIS.Value.ToString() : "";
                         var itemTributacao = new NotaFiscalItemTributacaoEntrada();
                         itemTributacao = NotaFiscalItemTributacaoEntradaBL.All.Where(x => x.NotaFiscalItemEntradaId == item.Id).FirstOrDefault();
@@ -401,6 +405,10 @@ namespace Fly01.Compras.BL
                                 detalhe.Imposto.ICMS.AliquotaFCPSTRetido = AliquotaFCPSTRetido;
                                 detalhe.Imposto.ICMS.ValorFCPSTRetido = Math.Round(item.ValorFCPSTRetidoAnterior, 2);
                                 detalhe.Imposto.ICMS.AliquotaConsumidorFinal = itemTributacao.STAliquota > 0 ? Math.Round(itemTributacao.STAliquota, 2) + AliquotaFCPSTRetido : 0;
+                                if (detalhe.Imposto.ICMS.ValorICMSSTRetido != 0 & detalhe.Imposto.ICMS.ValorBCSTRetido != 0)
+                                {
+                                    detalhe.Imposto.ICMS.ValorICMSSubstituto = Math.Round(itemTributacao.STBase, 2);
+                                }
                             }
                         }
 

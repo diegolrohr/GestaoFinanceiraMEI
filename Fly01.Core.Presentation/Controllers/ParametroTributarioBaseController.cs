@@ -334,9 +334,8 @@ namespace Fly01.Core.Presentation.Controllers
             {
                 Id = "tipoCRT",
                 Class = "col s6 m6 l3",
-                Label = "CRT",
+                Label = "Código Regime Tributário(CRT)",
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoCRT)))
-                //.ToList().FindAll(x => "SimplesNacional,ExcessoSublimiteDeReceitaBruta".Contains(x.Value)))               
             });
 
             form2.Elements.Add(new TextAreaUI { Id = "mensagemPadraoNota", Class = "col s12", Label = "Informações Adicionais", MaxLength = 1000 });

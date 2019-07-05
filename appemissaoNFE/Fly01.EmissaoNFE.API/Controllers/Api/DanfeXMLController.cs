@@ -5,6 +5,7 @@ using Fly01.Core.API;
 using Fly01.Core.Entities.Domains.Enum;
 using System;
 using System.Web.Http;
+using Fly01.EmissaoNFE.API.NFESBRAProd;
 
 namespace Fly01.EmissaoNFE.API.Controllers.Api
 {
@@ -43,13 +44,21 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
 
     public static class DanfeXMLHelper
     {
+        public static string ConcatXml(string xmlString, string xmlProtString)
+        {
+            return String.Concat("<nfeProc xmlns='http://www.portalfiscal.inf.br/nfe' versao='4.00'>", xmlString, xmlProtString, "</nfeProc>");
+        }
+
         public static XMLVM Producao(DanfeVM entity)
         {
-            var response = new NFESBRAProd.NFESBRA().RETORNAFAIXA(AppDefault.Token, entity.Producao, entity.DanfeId, entity.DanfeId, "");
+            //var response = new NFESBRAProd.NFESBRA().RETORNAFAIXA(AppDefault.Token, entity.Producao, entity.DanfeId, entity.DanfeId, "");
+            var response = new NFESBRAProd.NFESBRA().RETORNAFX(AppDefault.Token, entity.Producao, entity.DanfeId, entity.DanfeId, "", DateTime.MinValue, DateTime.MaxValue, "", "");
+            var xmlString = response.NOTAS != null ? (response.NOTAS.Length > 0 ? response.NOTAS[0].NFE.XML : "") : "";
+            var xmlProtString = response.NOTAS != null ? (response.NOTAS.Length > 0 ? response.NOTAS[0].NFE.XMLPROT : "") : "";
 
             var xml = new XMLVM()
             {
-                XML = response.NOTAS != null ? response.NOTAS.Length > 0 ? response.NOTAS[0].NFE.XML : "" : ""
+                XML = ConcatXml(xmlString, xmlProtString)
             };
 
             return xml;
@@ -57,11 +66,14 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
 
         public static XMLVM Homologacao(DanfeVM entity)
         {
-            var response = new NFESBRA.NFESBRA().RETORNAFAIXA(AppDefault.Token, entity.Homologacao, entity.DanfeId, entity.DanfeId, "");
+            //var response = new NFESBRA.NFESBRA().RETORNAFAIXA(AppDefault.Token, entity.Homologacao, entity.DanfeId, entity.DanfeId, "");
+            var response = new NFESBRA.NFESBRA().RETORNAFX(AppDefault.Token, entity.Homologacao, entity.DanfeId, entity.DanfeId, "", DateTime.MinValue, DateTime.MaxValue, "", "");
+            var xmlString = response.NOTAS != null ? (response.NOTAS.Length > 0 ? response.NOTAS[0].NFE.XML : "") : "";
+            var xmlProtString = response.NOTAS != null ? (response.NOTAS.Length > 0 ? response.NOTAS[0].NFE.XMLPROT : "") : "";
 
             var xml = new XMLVM()
             {
-                XML = response.NOTAS != null ? response.NOTAS.Length > 0 ? response.NOTAS[0].NFE.XML : "" : ""
+                XML = ConcatXml(xmlString, xmlProtString)
             };
 
             return xml;

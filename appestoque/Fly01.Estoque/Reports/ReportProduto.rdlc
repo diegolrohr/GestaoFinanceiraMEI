@@ -18,19 +18,19 @@
               <Width>2.6545cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.09687cm</Width>
+              <Width>2.27326cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.51222cm</Width>
+              <Width>2.07666cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.45537cm</Width>
+              <Width>2.15551cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.5cm</Width>
+              <Width>2.34125cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.50814cm</Width>
+              <Width>1.76731cm</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>1.46551cm</Width>
@@ -699,7 +699,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!Quantidade.Value</Value>
+                              <Value>=Replace(Fields!Quantidade.Value,",00","")</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
                               </Style>
@@ -985,7 +985,7 @@
         <DataSetName>ds</DataSetName>
         <Top>0.93417cm</Top>
         <Height>1.2cm</Height>
-        <Width>28.29507cm</Width>
+        <Width>27.83646cm</Width>
         <Style>
           <Border>
             <Style>Solid</Style>
@@ -1075,7 +1075,7 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox1</rd:DefaultName>
-          <Left>8.09311cm</Left>
+          <Left>6.39977cm</Left>
           <Height>2.50472cm</Height>
           <Width>15.72168cm</Width>
           <Style>
@@ -1083,10 +1083,6 @@
               <Style>None</Style>
             </Border>
             <VerticalAlign>Middle</VerticalAlign>
-            <PaddingLeft>2pt</PaddingLeft>
-            <PaddingRight>2pt</PaddingRight>
-            <PaddingTop>2pt</PaddingTop>
-            <PaddingBottom>2pt</PaddingBottom>
           </Style>
         </Textbox>
         <Image Name="ImgLogo">
@@ -1094,7 +1090,7 @@
           <Value>=System.Convert.FromBase64String(Parameters!ReportLogo.Value)</Value>
           <MIMEType>image/png</MIMEType>
           <Sizing>FitProportional</Sizing>
-          <Left>4.445cm</Left>
+          <Left>3.175cm</Left>
           <Height>2.50472cm</Height>
           <Width>3.40116cm</Width>
           <ZIndex>1</ZIndex>

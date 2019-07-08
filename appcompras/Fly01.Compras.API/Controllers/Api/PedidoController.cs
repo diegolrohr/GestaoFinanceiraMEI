@@ -95,7 +95,7 @@ namespace Fly01.Compras.API.Controllers.Api
                                 .ToList()
                                 .Select(x => new
                                 {
-                                    Total = Convert.ToDouble(Math.Round(x.Quantidade * x.Valor - x.Desconto, 2,
+                                    Total = Convert.ToDouble(Math.Round((x.Quantidade * x.Valor) - x.Desconto, 2,
                                         MidpointRounding.AwayFromZero))
                                 })
                                 .Sum(x => x.Total) +

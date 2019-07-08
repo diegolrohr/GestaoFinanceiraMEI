@@ -41,8 +41,8 @@ namespace Fly01.Compras.BL
                                                 plataformaId = g.Key.PlataformaId,
                                                 tipoAmbiente = g.Key.TipoAmbiente,
                                                 certificadoDigitalId = g.Key.CertificadoDigitalId,
-                                                notaInicial = g.Min(x => x.SefazId),
-                                                notaFinal = g.Max(x => x.SefazId)
+                                                notaInicial = g.Min(x => x.SefazId.Substring(22, 12)),
+                                                notaFinal = g.Max(x => x.SefazId.Substring(22, 12))
                                             });
 
             var header = GetHeader(PlataformaUrl);
@@ -58,7 +58,16 @@ namespace Fly01.Compras.BL
 
                     if (TotalTributacaoBL.ConfiguracaoTSSOK(dadosPlataforma.plataformaId))
                     {
-                        var monitorVM = GetMonitorVM(entidade, dadosPlataforma);
+                        var sefazIdInicial = NFeEntradaBL.Everything.AsNoTracking().Where(x => x.SefazId.Substring(22, 12) == dadosPlataforma.notaInicial && x.PlataformaId == dadosPlataforma.plataformaId).FirstOrDefault()?.SefazId;
+                        var sefazIdFinal = NFeEntradaBL.Everything.AsNoTracking().Where(x => x.SefazId.Substring(22, 12) == dadosPlataforma.notaFinal && x.PlataformaId == dadosPlataforma.plataformaId).FirstOrDefault()?.SefazId;
+                        var monitorVM = new MonitorVM()
+                        {
+                            Homologacao = entidade.Homologacao,
+                            Producao = entidade.Producao,
+                            EntidadeAmbiente = entidade.EntidadeAmbiente,
+                            NotaInicial = sefazIdInicial,
+                            NotaFinal = sefazIdFinal,
+                        };
 
                         var responseMonitor = RestHelper.ExecutePostRequest<ListMonitorRetornoVM>(AppDefaults.UrlEmissaoNfeApi, "monitor", JsonConvert.SerializeObject(monitorVM), null, header);
                         if (responseMonitor == null)
@@ -84,8 +93,8 @@ namespace Fly01.Compras.BL
                                                             plataformaId = g.Key.PlataformaId,
                                                             tipoAmbiente = g.Key.TipoAmbiente,
                                                             certificadoDigitalId = g.Key.CertificadoDigitalId,
-                                                            notaInicial = g.Min(x => x.SefazChaveAcesso),
-                                                            notaFinal = g.Max(x => x.SefazChaveAcesso)
+                                                            notaInicial = g.Min(x => x.SefazChaveAcesso.Substring(22, 12)),
+                                                            notaFinal = g.Max(x => x.SefazChaveAcesso.Substring(22, 12))
                                                         });
 
             var header = GetHeader(PlataformaUrl); 
@@ -101,7 +110,16 @@ namespace Fly01.Compras.BL
 
                     if (TotalTributacaoBL.ConfiguracaoTSSOK(dadosPlataforma.plataformaId))
                     {
-                        var monitorVM = GetMonitorVM(entidade, dadosPlataforma);
+                        var sefazIdInicial = NotaFiscalInutilizadaBL.Everything.AsNoTracking().Where(x => x.SefazChaveAcesso.Substring(22, 12) == dadosPlataforma.notaInicial && x.PlataformaId == dadosPlataforma.plataformaId).FirstOrDefault()?.SefazChaveAcesso;
+                        var sefazIdFinal = NotaFiscalInutilizadaBL.Everything.AsNoTracking().Where(x => x.SefazChaveAcesso.Substring(22, 12) == dadosPlataforma.notaFinal && x.PlataformaId == dadosPlataforma.plataformaId).FirstOrDefault()?.SefazChaveAcesso;
+                        var monitorVM = new MonitorVM()
+                        {
+                            Homologacao = entidade.Homologacao,
+                            Producao = entidade.Producao,
+                            EntidadeAmbiente = entidade.EntidadeAmbiente,
+                            NotaInicial = sefazIdInicial,
+                            NotaFinal = sefazIdFinal,
+                        };
 
                         var responseMonitor = RestHelper.ExecutePostRequest<ListMonitorRetornoVM>(AppDefaults.UrlEmissaoNfeApi, "monitor", JsonConvert.SerializeObject(monitorVM), null, header);
                         if (responseMonitor == null)
@@ -227,18 +245,6 @@ namespace Fly01.Compras.BL
                     nfInutilizada.Recomendacao = itemNF.Recomendacao;
                 }
             }
-        }
-
-        private MonitorVM GetMonitorVM(EntidadeVM entidade, dynamic dadosPlataforma)
-        {
-            return new MonitorVM()
-            {
-                Homologacao = entidade.Homologacao,
-                Producao = entidade.Producao,
-                EntidadeAmbiente = entidade.EntidadeAmbiente,
-                NotaInicial = dadosPlataforma.notaInicial.ToString(),
-                NotaFinal = dadosPlataforma.notaFinal.ToString(),
-            };
         }
 
         private MonitorEventoVM GetMonitorEventoVM(EntidadeVM entidade, NotaFiscalCartaCorrecaoEntrada cartaCorrecao)

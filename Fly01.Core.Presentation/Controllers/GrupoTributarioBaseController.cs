@@ -220,7 +220,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Class = "col s12 l12",
                 Label = "Situação da Operação",
                 ConstrainWidth = true,
-                Options = tipoTributacaoIcms.GetRange(11, 9).Concat(tipoTributacaoIcms.GetRange(0, 11)).ToList()//csosn antes de cst
+                Options = tipoTributacaoIcms.GetRange(11, 10).Concat(tipoTributacaoIcms.GetRange(0, 11)).ToList()//csosn antes de cst
             });
             config.Elements.Add(new InputCheckboxUI { Id = "calculaIcmsDifal", Class = "col s12 m6 l6", Label = "Calcula ICMS DIFAL", Disabled = true });
             config.Elements.Add(new InputCheckboxUI { Id = "aplicaIpiBaseIcms", Class = "col s12 m6 l6", Label = "Aplica valor do IPI na base de cálculo", Disabled = true });

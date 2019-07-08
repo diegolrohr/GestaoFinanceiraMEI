@@ -51,7 +51,6 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
 
         public static XMLVM Producao(DanfeVM entity)
         {
-            //var response = new NFESBRAProd.NFESBRA().RETORNAFAIXA(AppDefault.Token, entity.Producao, entity.DanfeId, entity.DanfeId, "");
             var response = new NFESBRAProd.NFESBRA().RETORNAFX(AppDefault.Token, entity.Producao, entity.DanfeId, entity.DanfeId, "", DateTime.MinValue, DateTime.MaxValue, "", "");
             var xmlString = response.NOTAS != null ? (response.NOTAS.Length > 0 ? response.NOTAS[0].NFE.XML : "") : "";
             var xmlProtString = response.NOTAS != null ? (response.NOTAS.Length > 0 ? response.NOTAS[0].NFE.XMLPROT : "") : "";
@@ -66,7 +65,6 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
 
         public static XMLVM Homologacao(DanfeVM entity)
         {
-            //var response = new NFESBRA.NFESBRA().RETORNAFAIXA(AppDefault.Token, entity.Homologacao, entity.DanfeId, entity.DanfeId, "");
             var response = new NFESBRA.NFESBRA().RETORNAFX(AppDefault.Token, entity.Homologacao, entity.DanfeId, entity.DanfeId, "", DateTime.MinValue, DateTime.MaxValue, "", "");
             var xmlString = response.NOTAS != null ? (response.NOTAS.Length > 0 ? response.NOTAS[0].NFE.XML : "") : "";
             var xmlProtString = response.NOTAS != null ? (response.NOTAS.Length > 0 ? response.NOTAS[0].NFE.XMLPROT : "") : "";

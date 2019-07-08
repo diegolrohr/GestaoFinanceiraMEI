@@ -77,7 +77,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                     nota.Data = nfe.ERRO[nfe.ERRO.Length - 1].DATALOTE;
                     nota.Hora = nfe.ERRO[nfe.ERRO.Length - 1].HORALOTE;
 
-                    if(nota.Status == StatusNotaFiscal.Autorizada)
+                    if(nota.Status == StatusNotaFiscal.Autorizada || nota.Status == StatusNotaFiscal.Cancelada)
                     {
                         nota.XML = DanfeXMLHelper.Producao(
                             new DanfeVM()
@@ -134,7 +134,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                     nota.Data = nfe.ERRO[nfe.ERRO.Length - 1].DATALOTE;
                     nota.Hora = nfe.ERRO[nfe.ERRO.Length - 1].HORALOTE;
 
-                    if (nota.Status == StatusNotaFiscal.Autorizada)
+                    if(nota.Status == StatusNotaFiscal.Autorizada || nota.Status == StatusNotaFiscal.Cancelada)
                     {
                         nota.XML = DanfeXMLHelper.Homologacao(
                             new DanfeVM()

@@ -93,6 +93,7 @@ namespace Fly01.Estoque.BL
             GetIdEnquadramentoLegalIPIBL(entity);
             base.Insert(entity);
         }
+
         public void Insert(Produto entity, bool MustProduceMessageServiceBus)
         {
             Insert(entity);

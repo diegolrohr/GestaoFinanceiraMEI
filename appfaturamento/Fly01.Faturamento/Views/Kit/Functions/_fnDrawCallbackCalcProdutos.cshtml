@@ -27,7 +27,7 @@
 
             valorVenda = valorVenda + (value.valorVenda == null ? 0 : parseFloat(value.valorVenda.replace(".", "").replace(",", "."))) * quantidade;
             valorServico = valorServico + (value.valorServico == null ? 0 : parseFloat(value.valorServico.replace(".", "").replace(",", "."))) * quantidade;
-            valorCusto = parseFloat(valorCusto.toString().replace(".", "").replace(",", ".")) + (value.valorCusto == null ? 0 : parseFloat(value.valorCusto.replace(".", "").replace(",", ".")));
+            valorCusto = valorCusto + (value.valorCusto == null ? 0 : parseFloat(value.valorCusto.replace(".", "").replace(",", "."))) * quantidade;
         });
 
         $('#valorVendaTotal').val(valorVenda);

@@ -3,11 +3,6 @@
 
     
     function fnAssistenciaRemotaFormReady() {
-        $$$._.instaladorTeamViewer.info("A instalação deste programa poderá ser necessária durante o atendimento da equipe de suporte do Bemacash Gestão Finaceira.<br />");
-        $("#instaladorTeamViewer h5").css({ "text-align": "left" });
-        $("#instaladorTeamViewer span").css("font-weight", "Bold");
-        $("#instaladorTeamViewer h5").addClass("thin");
-
         $("#instaladorTeamViewer a").on("click", function () {
             fnBaixarArquivo();
         })

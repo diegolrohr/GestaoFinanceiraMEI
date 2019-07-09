@@ -19,7 +19,6 @@ namespace Fly01.Core.Presentation.Controllers
 {
     public class AssistenciaRemotaBaseController : BaseController<DomainBaseVM>
     {
-
         public override ContentResult Form()
         {
             var cfg = new ContentUI
@@ -53,9 +52,10 @@ namespace Fly01.Core.Presentation.Controllers
                 Color = "blue",
                 Id = "instaladorTeamViewer",
                 Title = "Instalador do TeamViewer v.13",
+                Placeholder = "A instalação deste programa poderá ser necessária durante o atendimento da equipe de suporte do Bemacash Gestão Finaceira.",
                 Action = new LinkUI()
                 {
-                    Label = "Clique Aqui para Baixar o Instalador"
+                    Label = "Clique aqui para baixar o instalador"
                 }
             });
 

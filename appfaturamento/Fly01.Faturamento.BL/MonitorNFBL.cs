@@ -41,8 +41,8 @@ namespace Fly01.Faturamento.BL
                                                 plataformaId = g.Key.PlataformaId,
                                                 tipoAmbiente = g.Key.TipoAmbiente,
                                                 certificadoDigitalId = g.Key.CertificadoDigitalId,
-                                                notaInicial = g.Min(x => x.SefazId),
-                                                notaFinal = g.Max(x => x.SefazId)
+                                                notaInicial = g.Min(x => x.SefazId.Substring(22, 12)),
+                                                notaFinal = g.Max(x => x.SefazId.Substring(22, 12))
                                             });
 
             var header = new Dictionary<string, string>()
@@ -63,13 +63,15 @@ namespace Fly01.Faturamento.BL
 
                     if (TotalTributacaoBL.ConfiguracaoTSSOK(dadosPlataforma.plataformaId))
                     {
+                        var sefazIdInicial = NFeBL.Everything.AsNoTracking().Where(x => x.SefazId.Substring(22, 12) == dadosPlataforma.notaInicial && x.PlataformaId == dadosPlataforma.plataformaId).FirstOrDefault()?.SefazId;
+                        var sefazIdFinal = NFeBL.Everything.AsNoTracking().Where(x => x.SefazId.Substring(22, 12) == dadosPlataforma.notaFinal && x.PlataformaId == dadosPlataforma.plataformaId).FirstOrDefault()?.SefazId;
                         var monitorVM = new MonitorVM()
                         {
                             Homologacao = entidade.Homologacao,
                             Producao = entidade.Producao,
                             EntidadeAmbiente = entidade.EntidadeAmbiente,
-                            NotaInicial = dadosPlataforma.notaInicial.ToString(),
-                            NotaFinal = dadosPlataforma.notaFinal.ToString(),
+                            NotaInicial = sefazIdInicial,
+                            NotaFinal = sefazIdFinal,
                         };
 
                         var responseMonitor = RestHelper.ExecutePostRequest<ListMonitorRetornoVM>(AppDefaults.UrlEmissaoNfeApi, "monitor", JsonConvert.SerializeObject(monitorVM), null, header);
@@ -112,9 +114,9 @@ namespace Fly01.Faturamento.BL
                                                             plataformaId = g.Key.PlataformaId,
                                                             tipoAmbiente = g.Key.TipoAmbiente,
                                                             certificadoDigitalId = g.Key.CertificadoDigitalId,
-                                                            notaInicial = g.Min(x => x.SefazChaveAcesso),
-                                                            notaFinal = g.Max(x => x.SefazChaveAcesso)
-                                                        });
+                                                            notaInicial = g.Min(x => x.SefazChaveAcesso.Substring(22, 12)),
+                                                            notaFinal = g.Max(x => x.SefazChaveAcesso.Substring(22, 12))
+                                                        }).ToList();
 
             var header = new Dictionary<string, string>()
             {
@@ -134,13 +136,15 @@ namespace Fly01.Faturamento.BL
 
                     if (TotalTributacaoBL.ConfiguracaoTSSOK(dadosPlataforma.plataformaId))
                     {
+                        var sefazIdInicial = NotaFiscalInutilizadaBL.Everything.AsNoTracking().Where(x => x.SefazChaveAcesso.Substring(22, 12) == dadosPlataforma.notaInicial && x.PlataformaId == dadosPlataforma.plataformaId).FirstOrDefault()?.SefazChaveAcesso;
+                        var sefazIdFinal = NotaFiscalInutilizadaBL.Everything.AsNoTracking().Where(x => x.SefazChaveAcesso.Substring(22, 12) == dadosPlataforma.notaFinal && x.PlataformaId == dadosPlataforma.plataformaId).FirstOrDefault()?.SefazChaveAcesso;
                         var monitorVM = new MonitorVM()
                         {
                             Homologacao = entidade.Homologacao,
                             Producao = entidade.Producao,
                             EntidadeAmbiente = entidade.EntidadeAmbiente,
-                            NotaInicial = dadosPlataforma.notaInicial.ToString(),
-                            NotaFinal = dadosPlataforma.notaFinal.ToString(),
+                            NotaInicial = sefazIdInicial,
+                            NotaFinal = sefazIdFinal,
                         };
 
                         var responseMonitor = RestHelper.ExecutePostRequest<ListMonitorRetornoVM>(AppDefaults.UrlEmissaoNfeApi, "monitor", JsonConvert.SerializeObject(monitorVM), null, header);
@@ -185,7 +189,6 @@ namespace Fly01.Faturamento.BL
                 { "AppUser", AppUser },
                 { "PlataformaUrl", string.IsNullOrEmpty(plataformaUrl) ? PlataformaUrl : plataformaUrl }
             };
-
 
             foreach (var dadosPlataforma in groupPlataformas)
             {

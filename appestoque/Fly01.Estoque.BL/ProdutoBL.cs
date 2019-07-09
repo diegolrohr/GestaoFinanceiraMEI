@@ -85,6 +85,7 @@ namespace Fly01.Estoque.BL
 
             base.ValidaModel(entity);
         }
+
         public override void Insert(Produto entity)
         {
             GetIdNCM(entity);
@@ -94,13 +95,12 @@ namespace Fly01.Estoque.BL
             base.Insert(entity);
         }
 
-        public void Insert(Produto entity, bool MustProduceMessageServiceBus)
-        {
-            Insert(entity);
-            base.Insert(entity);
-            if(entity.IsValid() && MustProduceMessageServiceBus)
-               Producer<Produto>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity, RabbitConfig.EnHttpVerb.POST);
-        }
+        //public void Insert(Produto entity, bool MustProduceMessageServiceBus)
+        //{
+        //    Insert(entity);
+        //    if(entity.IsValid() && MustProduceMessageServiceBus)
+        //       Producer<Produto>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity, RabbitConfig.EnHttpVerb.POST);
+        //}
 
         public void Update(Produto entity, bool MustProduceMessageServiceBus)
         {

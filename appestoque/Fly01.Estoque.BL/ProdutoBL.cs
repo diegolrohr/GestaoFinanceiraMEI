@@ -95,13 +95,6 @@ namespace Fly01.Estoque.BL
             base.Insert(entity);
         }
 
-        //public void Insert(Produto entity, bool MustProduceMessageServiceBus)
-        //{
-        //    Insert(entity);
-        //    if(entity.IsValid() && MustProduceMessageServiceBus)
-        //       Producer<Produto>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity, RabbitConfig.EnHttpVerb.POST);
-        //}
-
         public void Update(Produto entity, bool MustProduceMessageServiceBus)
         {
             GetIdNCM(entity);
@@ -114,12 +107,6 @@ namespace Fly01.Estoque.BL
                 Producer<Produto>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity, RabbitConfig.EnHttpVerb.PUT);
         }
 
-        public void Delete(Produto entity, bool MustProduceMessageServiceBus)
-        {
-            base.Delete(entity);
-            if (entity.IsValid() && MustProduceMessageServiceBus)
-                Producer<Produto>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity, RabbitConfig.EnHttpVerb.DELETE);
-        }
         public static List<string> ColunasParaImportacao()
         {
             return new List<string>

@@ -96,8 +96,7 @@ namespace Fly01.Core.Presentation.Controllers
             var payload = new Dictionary<string, string>()
                 {
                     {  "platformUrl", SessionManager.Current.UserData.PlatformUrl },
-                    {  "email", SessionManager.Current.UserData.PlatformUser },
-                    {  "clientId", AppDefaults.AppId },
+                    {  "email", SessionManager.Current.UserData.PlatformUser }
                 };
             var token = JWTHelper.Encode(payload, "https://meu.bemacash.com.br/", DateTime.Now.AddMinutes(60));
             return token;

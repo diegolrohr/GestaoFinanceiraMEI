@@ -33,7 +33,7 @@ namespace Fly01.Faturamento.BL
 
         public void AtualizaStatusTSS(string plataformaUrl)
         {
-            var notasFiscaisByPlataforma = (from nf in NFeBL.Everything.Where(x => (x.Status == StatusNotaFiscal.Transmitida || x.Status == StatusNotaFiscal.EmCancelamento))
+            var notasFiscaisByPlataforma = (from nf in NFeBL.Everything.AsNoTracking().Where(x => (x.Status == StatusNotaFiscal.Transmitida || x.Status == StatusNotaFiscal.EmCancelamento))
                                             where (string.IsNullOrEmpty(plataformaUrl) || nf.PlataformaId == plataformaUrl) && nf.TipoNotaFiscal == TipoNotaFiscal.NFe
                                             group nf by new { nf.PlataformaId, nf.TipoAmbiente, nf.CertificadoDigitalId } into g
                                             select new
@@ -106,7 +106,7 @@ namespace Fly01.Faturamento.BL
 
         public void AtualizaStatusTSSInutilizada(string plataformaUrl)
         {
-            var notasFiscaisInutilizadasByPlataforma = (from nf in NotaFiscalInutilizadaBL.Everything.Where(x => (x.Status == StatusNotaFiscal.InutilizacaoSolicitada || x.Status == StatusNotaFiscal.Transmitida))
+            var notasFiscaisInutilizadasByPlataforma = (from nf in NotaFiscalInutilizadaBL.Everything.AsNoTracking().Where(x => (x.Status == StatusNotaFiscal.InutilizacaoSolicitada || x.Status == StatusNotaFiscal.Transmitida))
                                                         where string.IsNullOrEmpty(plataformaUrl) || nf.PlataformaId == plataformaUrl
                                                         group nf by new { nf.PlataformaId, nf.TipoAmbiente, nf.CertificadoDigitalId } into g
                                                         select new
@@ -178,7 +178,7 @@ namespace Fly01.Faturamento.BL
 
         public void AtualizaStatusTSSCartaCorrecao(string plataformaUrl, Guid idNotaFiscal)
         {
-            var groupPlataformas = (from nf in NotaFiscalCartaCorrecaoBL.Everything.Where(x => (x.Status == StatusCartaCorrecao.Transmitida))
+            var groupPlataformas = (from nf in NotaFiscalCartaCorrecaoBL.Everything.AsNoTracking().Where(x => (x.Status == StatusCartaCorrecao.Transmitida))
                                     where (string.IsNullOrEmpty(plataformaUrl) || nf.PlataformaId == plataformaUrl)
                                     && (idNotaFiscal == default(Guid) || nf.NotaFiscalId == idNotaFiscal)
                                     group nf by nf.PlataformaId into g
@@ -197,7 +197,7 @@ namespace Fly01.Faturamento.BL
                     if (TotalTributacaoBL.ConfiguracaoTSSOK(dadosPlataforma.plataformaId))
                     {
                         var cartasCorrecoesByPlataforma = new List<NotaFiscalCartaCorrecao>();
-                        cartasCorrecoesByPlataforma = NotaFiscalCartaCorrecaoBL.Everything.Where(x => x.PlataformaId == dadosPlataforma.plataformaId && (x.Status == StatusCartaCorrecao.Transmitida)).ToList();
+                        cartasCorrecoesByPlataforma = NotaFiscalCartaCorrecaoBL.Everything.AsNoTracking().Where(x => x.PlataformaId == dadosPlataforma.plataformaId && (x.Status == StatusCartaCorrecao.Transmitida)).ToList();
 
                         foreach (var cartaCorrecao in cartasCorrecoesByPlataforma)
                         {

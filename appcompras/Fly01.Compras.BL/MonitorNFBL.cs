@@ -85,7 +85,7 @@ namespace Fly01.Compras.BL
 
         public void AtualizaStatusTSSInutilizada(string plataformaUrl)
         {
-            var notasFiscaisInutilizadasByPlataforma = (from nf in NotaFiscalInutilizadaBL.Everything.Where(x => (x.Status == StatusNotaFiscal.InutilizacaoSolicitada || x.Status == StatusNotaFiscal.Transmitida))
+            var notasFiscaisInutilizadasByPlataforma = (from nf in NotaFiscalInutilizadaBL.Everything.AsNoTracking().Where(x => (x.Status == StatusNotaFiscal.InutilizacaoSolicitada || x.Status == StatusNotaFiscal.Transmitida))
                                                         where string.IsNullOrEmpty(plataformaUrl) || nf.PlataformaId == plataformaUrl
                                                         group nf by new { nf.PlataformaId, nf.TipoAmbiente, nf.CertificadoDigitalId } into g
                                                         select new
@@ -137,7 +137,7 @@ namespace Fly01.Compras.BL
 
         public void AtualizaStatusTSSCartaCorrecao(string plataformaUrl, Guid idNotaFiscal)
         {
-            var groupPlataformas = (from nf in NotaFiscalCartaCorrecaoEntradaBL.Everything.Where(x => (x.Status == StatusCartaCorrecao.Transmitida))
+            var groupPlataformas = (from nf in NotaFiscalCartaCorrecaoEntradaBL.Everything.AsNoTracking().Where(x => (x.Status == StatusCartaCorrecao.Transmitida))
                                     where (string.IsNullOrEmpty(plataformaUrl) || nf.PlataformaId == plataformaUrl)
                                     && (idNotaFiscal == default(Guid) || nf.NotaFiscalId == idNotaFiscal)
                                     group nf by nf.PlataformaId into g
@@ -152,7 +152,7 @@ namespace Fly01.Compras.BL
                     if (TotalTributacaoBL.ConfiguracaoTSSOK(dadosPlataforma.plataformaId))
                     {
                         var cartasCorrecoesByPlataforma = new List<NotaFiscalCartaCorrecaoEntrada>();
-                        cartasCorrecoesByPlataforma = NotaFiscalCartaCorrecaoEntradaBL.Everything.Where(x => x.PlataformaId == dadosPlataforma.plataformaId && (x.Status == StatusCartaCorrecao.Transmitida)).ToList();
+                        cartasCorrecoesByPlataforma = NotaFiscalCartaCorrecaoEntradaBL.Everything.AsNoTracking().Where(x => x.PlataformaId == dadosPlataforma.plataformaId && (x.Status == StatusCartaCorrecao.Transmitida)).ToList();
 
                         foreach (var cartaCorrecao in cartasCorrecoesByPlataforma)
                         {

@@ -23,8 +23,10 @@ namespace Fly01.EmissaoNFE.BL
                                         select e.IcmsAliquota).FirstOrDefault();
             }
 
-            entity.Icms.Base = entity.ValorBase;
-
+            entity.Icms.Base = entity.ValorBase;            
+            entity.Icms.Base += entity.Icms.FreteNaBase ? entity.ValorFrete : 0;
+            entity.Icms.Base = entity.Icms.IpiNaBase ? entity.Icms.Base + entity.Ipi.Valor : entity.Icms.Base;
+            entity.Icms.Base += entity.Icms.DespesaNaBase ? entity.ValorDespesa : 0;
             if (entity.Icms.PercentualReducaoBC.HasValue && entity.Icms.PercentualReducaoBC > 0 && (entity.Icms.CSOSN == TipoTributacaoICMS.ComRedDeBaseDeST || entity.Icms.CSOSN == TipoTributacaoICMS.ComReducaoDeBaseDeCalculo))
             {
                 var reducao = Math.Round(entity.Icms.Base / 100 * entity.Icms.PercentualReducaoBC.Value, 2);
@@ -33,10 +35,6 @@ namespace Fly01.EmissaoNFE.BL
 
             if (entity.Icms.CSOSN == TipoTributacaoICMS.Outros || entity.Icms.CSOSN == TipoTributacaoICMS.TributadaIntegralmente || entity.Icms.CSOSN == TipoTributacaoICMS.ComRedDeBaseDeST || entity.Icms.CSOSN == TipoTributacaoICMS.ComReducaoDeBaseDeCalculo || entity.Icms.CSOSN == TipoTributacaoICMS.Diferimento || entity.Icms.CSOSN == TipoTributacaoICMS.Outros90 || entity.Icms.CSOSN == TipoTributacaoICMS.TributadaComCobrancaDeSubstituicao)
             {
-                entity.Icms.Base = entity.Icms.IpiNaBase ? entity.Icms.Base + entity.Ipi.Valor : entity.Icms.Base;
-                entity.Icms.Base += entity.Icms.DespesaNaBase ? entity.ValorDespesa : 0;
-                entity.Icms.Base += entity.Icms.FreteNaBase ? entity.ValorFrete : 0;
-
                 entity.Icms.Valor = Math.Round(entity.Icms.Base / 100 * entity.Icms.Aliquota.Value, 2);
             }
             else

@@ -564,8 +564,9 @@ namespace Fly01.Faturamento.BL
                             DespesaNaBase = grupoTributario.AplicaDespesaBaseST,
                             Mva = st.Mva,
                             PercentualReducaoBCST = itemProduto.PercentualReducaoBCST,
+                            PercentualReducaoBCICMSST = itemProduto.PercentualReducaoBC,
                             AliquotaIntraEstadual = st.AliquotaIntraEstadual,
-                            AliquotaInterEstadual = st.AliquotaInterEstadual,
+                            AliquotaInterEstadual = st.AliquotaInterEstadual
                         };
                         if (produto.AliquotaIpi > 0)
                         {

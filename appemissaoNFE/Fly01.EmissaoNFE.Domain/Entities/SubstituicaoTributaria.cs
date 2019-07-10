@@ -15,5 +15,6 @@
         public double AliquotaIntraEstadual { get; set; }
         public double AliquotaInterEstadual { get; set; }
         public double? PercentualReducaoBCST { get; set; }
+        public double? PercentualReducaoBCICMSST { get; set; }
     }
 }

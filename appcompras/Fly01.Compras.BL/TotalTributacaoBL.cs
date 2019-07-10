@@ -290,6 +290,7 @@ namespace Fly01.Compras.BL
                                 DespesaNaBase = grupoTributario.AplicaDespesaBaseST,
                                 Mva = st.Mva,
                                 PercentualReducaoBCST = itemProduto.PercentualReducaoBCST,
+                                PercentualReducaoBCICMSST = itemProduto.PercentualReducaoBC,
                                 AliquotaIntraEstadual = st.AliquotaIntraEstadual,
                                 AliquotaInterEstadual = st.AliquotaInterEstadual,
                             };

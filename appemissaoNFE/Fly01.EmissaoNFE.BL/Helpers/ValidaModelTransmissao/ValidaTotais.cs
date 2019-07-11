@@ -195,7 +195,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
 
         private static void ValidarSomatorioICMSST(ItemTransmissaoVM item, TransmissaoVM entity)
         {
-            var CSTsICMSST = "201||202||203||900";
+            var CSTsICMSST = "201||202||203||900||10||30||70||90";
             double? somatorioICMSSTTrue = item.Detalhes.Where(x => CSTsICMSST.Contains(((int)x.Imposto.ICMS.CodigoSituacaoOperacao).ToString())).Sum(e => e.Imposto.ICMS.ValorICMSST ?? 0);
             item.Total.ICMSTotal.SomatorioICMSST = Arredondar(item.Total.ICMSTotal.SomatorioICMSST, 2);
             somatorioICMSSTTrue = Arredondar(somatorioICMSSTTrue, 2);
@@ -212,7 +212,10 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
                 x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaSemPermissaoDeCreditoST ||
                 x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.Outros ||
                 x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaComPermissaoDeCreditoST ||
-                x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.IsencaoParaFaixaDeReceitaBrutaST
+                x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.IsencaoParaFaixaDeReceitaBrutaST ||
+                x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.ComRedDeBaseDeST ||
+                x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaComCobrancaDeSubstituicao ||
+                x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.Outros90 
             ).Sum(e => e.Imposto.ICMS.ValorBCST ?? 0);
             item.Total.ICMSTotal.SomatorioBCST = Arredondar(item.Total.ICMSTotal.SomatorioBCST, 2);
             somatorioBCSTTrue = Arredondar(somatorioBCSTTrue, 2);

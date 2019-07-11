@@ -5,6 +5,7 @@ using Fly01.Core.API;
 using Fly01.Core.Entities.Domains.Enum;
 using System;
 using System.Web.Http;
+using Fly01.EmissaoNFE.API.NFESBRAProd;
 
 namespace Fly01.EmissaoNFE.API.Controllers.Api
 {

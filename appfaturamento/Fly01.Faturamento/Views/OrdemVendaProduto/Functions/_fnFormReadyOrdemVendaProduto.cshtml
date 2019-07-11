@@ -8,17 +8,27 @@
         $('form#fly01mdlfrmOrdemVendaProduto #valorBCSTRetidoField').hide();
         $('form#fly01mdlfrmOrdemVendaProduto #valorBCFCPSTRetidoAnteriorField').hide();
         $('form#fly01mdlfrmOrdemVendaProduto #valorFCPSTRetidoAnteriorField').hide();
+        $('form#fly01mdlfrmOrdemVendaProduto #percentualReducaoBCField').hide();
+        $('form#fly01mdlfrmOrdemVendaProduto #percentualReducaoBCSTField').hide();
 
         //101 e 201 e 900
         if (tipoTribICMS == "TributadaComPermissaoDeCredito" || tipoTribICMS == "TributadaComPermissaoDeCreditoST" || tipoTribICMS == "Outros") {
             $('form#fly01mdlfrmOrdemVendaProduto #valorCreditoICMSField').show();
         }
         //500
-        if (tipoTribICMS == "ICMSSubstituidoOuAntecipado") {
+        if (tipoTribICMS == "ICMSSubstituidoOuAntecipado" || tipoTribICMS == "ICMSCobradoAnteriormentePorST") {
             $('form#fly01mdlfrmOrdemVendaProduto #valorICMSSTRetidoField').show();
             $('form#fly01mdlfrmOrdemVendaProduto #valorBCSTRetidoField').show();
             $('form#fly01mdlfrmOrdemVendaProduto #valorBCFCPSTRetidoAnteriorField').show();
             $('form#fly01mdlfrmOrdemVendaProduto #valorFCPSTRetidoAnteriorField').show();
+        }
+        //20,70
+        if (tipoTribICMS == "ComReducaoDeBaseDeCalculo" || tipoTribICMS == "ComRedDeBaseDeST") {
+            $('form#fly01mdlfrmOrdemVendaProduto #percentualReducaoBCField').show();
+        }
+        //70
+        if (tipoTribICMS == "ComRedDeBaseDeST") {
+            $('form#fly01mdlfrmOrdemVendaProduto #percentualReducaoBCSTField').show();
         }
     }
 

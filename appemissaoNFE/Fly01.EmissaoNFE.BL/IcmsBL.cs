@@ -12,23 +12,29 @@ namespace Fly01.EmissaoNFE.BL
         public IcmsBL(AppDataContextBase context)
         {
         }
-        
+
         public TributacaoRetornoBaseVM Icms(Tributacao entity, TabelaIcmsBL TabelaIcmsBL)
         {
-            if (!entity.SimplesNacional)
+            if (!entity.Icms.Aliquota.HasValue)
             {
                 entity.Icms.Aliquota = (from e in TabelaIcmsBL.All
-                                    where e.SiglaDestino.Equals(entity.Icms.EstadoDestino, StringComparison.InvariantCultureIgnoreCase)
-                                    && e.SiglaOrigem.Equals(entity.Icms.EstadoOrigem, StringComparison.InvariantCultureIgnoreCase)
-                                    select e.IcmsAliquota).FirstOrDefault();
+                                        where e.SiglaDestino.Equals(entity.Icms.EstadoDestino, StringComparison.InvariantCultureIgnoreCase)
+                                        && e.SiglaOrigem.Equals(entity.Icms.EstadoOrigem, StringComparison.InvariantCultureIgnoreCase)
+                                        select e.IcmsAliquota).FirstOrDefault();
             }
 
-            if(entity.Icms.CSOSN == TipoTributacaoICMS.Outros)
+            entity.Icms.Base = entity.ValorBase;            
+            entity.Icms.Base += entity.Icms.FreteNaBase ? entity.ValorFrete : 0;
+            entity.Icms.Base = entity.Icms.IpiNaBase ? entity.Icms.Base + entity.Ipi.Valor : entity.Icms.Base;
+            entity.Icms.Base += entity.Icms.DespesaNaBase ? entity.ValorDespesa : 0;
+            if (entity.Icms.PercentualReducaoBC.HasValue && entity.Icms.PercentualReducaoBC > 0 && (entity.Icms.CSOSN == TipoTributacaoICMS.ComRedDeBaseDeST || entity.Icms.CSOSN == TipoTributacaoICMS.ComReducaoDeBaseDeCalculo))
             {
-                entity.Icms.Base = entity.Icms.IpiNaBase ? entity.ValorBase + entity.Ipi.Valor : entity.ValorBase;
-                entity.Icms.Base += entity.Icms.DespesaNaBase ? entity.ValorDespesa : 0;
-                entity.Icms.Base += entity.Icms.FreteNaBase ? entity.ValorFrete : 0;
+                var reducao = Math.Round(entity.Icms.Base / 100 * entity.Icms.PercentualReducaoBC.Value, 2);
+                entity.Icms.Base -= reducao;
+            }
 
+            if (entity.Icms.CSOSN == TipoTributacaoICMS.Outros || entity.Icms.CSOSN == TipoTributacaoICMS.TributadaIntegralmente || entity.Icms.CSOSN == TipoTributacaoICMS.ComRedDeBaseDeST || entity.Icms.CSOSN == TipoTributacaoICMS.ComReducaoDeBaseDeCalculo || entity.Icms.CSOSN == TipoTributacaoICMS.Diferimento || entity.Icms.CSOSN == TipoTributacaoICMS.Outros90 || entity.Icms.CSOSN == TipoTributacaoICMS.TributadaComCobrancaDeSubstituicao)
+            {
                 entity.Icms.Valor = Math.Round(entity.Icms.Base / 100 * entity.Icms.Aliquota.Value, 2);
             }
             else

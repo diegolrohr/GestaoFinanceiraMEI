@@ -108,7 +108,8 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 + icmsTotal.SomatorioICMSST
                 + icmsTotal.SomatorioIPI
                 + icmsTotal.SomatorioPis
-                + icmsTotal.SomatorioFCPST;
+                + icmsTotal.SomatorioFCPST
+                + icmsTotal.SomatorioFCP;
         }
 
         #region Impostos
@@ -133,6 +134,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 ICMS.AliquotaICMSST = Math.Round(itemTributacao.STAliquota, 2);
                 ICMS.ValorICMSST = Math.Round(itemTributacao.STValor, 2);
                 ICMS.ValorBCSTRetido = Math.Round(item.ValorBCSTRetido, 2);
+                ICMS.PercentualReducaoBC = item.PercentualReducaoBC;
 
                 if (Cabecalho.Versao == "4.00")
                 {
@@ -163,6 +165,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                     ICMS.ModalidadeBCST = ModalidadeDeterminacaoBCICMSST.MargemValorAgregado;
                     ICMS.ValorICMS = Math.Round(itemTributacao.ICMSValor, 2);
                     ICMS.ValorBC = Math.Round(itemTributacao.ICMSBase, 2);
+                    ICMS.PercentualReducaoBC = item.PercentualReducaoBC;
                 }
 
                 if (item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaComPermissaoDeCreditoST
@@ -183,6 +186,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 //AliquotaAplicavelCalculoCreditoSN = Math.Round(((item.ValorCreditoICMS / (item.Quantidade * item.Valor)) * 100), 2),
                 //ValorCreditoICMS = Math.Round(item.ValorCreditoICMS, 2),
                 CodigoSituacaoOperacao = TipoTributacaoICMS.TributadaSemPermissaoDeCredito, //TODO: ver Wilson
+                TipoCRT = ParametrosTributarios.TipoCRT,
 
             };
             CalculaICMSPai(item, itemTributacao, ICMS);

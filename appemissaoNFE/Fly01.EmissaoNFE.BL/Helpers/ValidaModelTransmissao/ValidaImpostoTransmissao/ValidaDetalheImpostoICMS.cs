@@ -72,6 +72,47 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao.ValidaImpostoTransm
                     ValidarSubstituicaoTributariaOutros_900(detalhe, entity, nItemDetalhe, item, Modalidade, ModalidadeST);
                     break;
 
+                case "00":
+                    ValidarLP(detalhe, entity, nItemDetalhe, item, Modalidade);
+                    break;
+
+                case "0":
+                    ValidarLP(detalhe, entity, nItemDetalhe, item, Modalidade);
+                    break;
+
+                case "10":
+                    ValidarSubstituicaoTributaria_202(detalhe, entity, nItemDetalhe, item, ModalidadeST);
+                    break;
+
+                case "20":
+                    ValidarLP(detalhe, entity, nItemDetalhe, item, Modalidade);
+                    break;
+
+                case "30":
+                    break;
+
+                case "40":
+                    break;
+
+                case "41":
+                    break;
+
+                case "50":
+                    break;
+
+                case "51":
+                    ValidarLP(detalhe, entity, nItemDetalhe, item, Modalidade);
+                    break;
+
+                case "60":
+                    break;
+
+                case "70":
+                    break;
+
+                case "90":
+                    break;
+
                 default:
                     entity.Fail(true, new Error("CSOSN inválido. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.CodigoSituacaoOperacao"));
                     break;
@@ -388,5 +429,15 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao.ValidaImpostoTransm
             entity.Fail(detalhe.Imposto.ICMS.OrigemMercadoria < 0 || (int)detalhe.Imposto.ICMS.OrigemMercadoria > 8,
                                 new Error("Origem da mercadoria inválida. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.OrigemMercadoria"));
         }
+
+
+        private static void ValidarLP(Detalhe detalhe, TransmissaoVM entity, int nItemDetalhe, ItemTransmissaoVM item, List<SubtitleAttribute> Modalidade)
+        {            
+
+            var ICMSProprio = ValidarInformacoesCSOSNeICMSProprio(detalhe, entity, nItemDetalhe, Modalidade);
+                    
+        }                   
+              
+
     }
 }

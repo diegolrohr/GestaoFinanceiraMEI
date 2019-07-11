@@ -1,5 +1,7 @@
 ﻿using Fly01.Core;
 using System.Xml.Serialization;
+using Fly01.Core.Entities.Domains.Enum;
+using Fly01.EmissaoNFE.Domain.Enums;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFe.COFINS
 {
@@ -8,7 +10,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.COFINS
     {
         public COFINSAliq() { }
 
-        public COFINSAliq(string codigoSituacaoTributaria) : base(codigoSituacaoTributaria) { }
+        public COFINSAliq(string codigoSituacaoTributaria, TipoCRT tipoCRT) : base(codigoSituacaoTributaria, tipoCRT) { }
 
         [XmlIgnore]
         public double ValorBC { get; set; }

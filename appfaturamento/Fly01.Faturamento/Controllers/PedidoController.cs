@@ -795,6 +795,11 @@ namespace Fly01.Faturamento.Controllers
                 ordemvenda.Status = Status.Aberto.ToString();
                 ordemvenda.Data = DateTime.Now;
                 ordemvenda.DataVencimento = DateTime.Now;
+                if (ordemvenda.TotalImpostosProdutos.HasValue) { ordemvenda.TotalImpostosProdutos = null; };
+                if (ordemvenda.TotalRetencoesServicos.HasValue) { ordemvenda.TotalRetencoesServicos = null; };
+                ordemvenda.TotalImpostosProdutosNaoAgrega = 0;
+                ordemvenda.TotalImpostosServicosNaoAgrega = 0;
+
                 var postResponse = RestHelper.ExecutePostRequest("OrdemVenda", JsonConvert.SerializeObject(ordemvenda, JsonSerializerSetting.Default));
 
                 List<OrdemVendaProdutoVM> produtos = GetProdutosPedido(id);

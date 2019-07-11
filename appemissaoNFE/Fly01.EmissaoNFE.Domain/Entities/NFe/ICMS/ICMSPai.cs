@@ -32,7 +32,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
 
                     DoTheValidation();
 
-                    ICMS = new ICMSSN101(OrigemMercadoria, CodigoSituacaoOperacao)
+                    ICMS = new ICMSSN101(OrigemMercadoria, CodigoSituacaoOperacao,TipoCRT)
                     {
                         AliquotaAplicavelCalculoCreditoSN = AliquotaAplicavelCalculoCreditoSN.Value,
                         ValorCreditoICMS = ValorCreditoICMS.Value
@@ -40,18 +40,18 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                     break;
 
                 case "102"://Tributada pelo Simples Nacional sem permissão de crédito.
-                    ICMS = new ICMSSN102(OrigemMercadoria, CodigoSituacaoOperacao);
+                    ICMS = new ICMSSN102(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT);
                     break;
 
                 case "103"://Isenção do ICMS no Simples Nacional para faixa de receita bruta.
-                    ICMS = new ICMSSN102(OrigemMercadoria, CodigoSituacaoOperacao);
+                    ICMS = new ICMSSN102(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT);
                     break;
 
                 case "300"://Imune.
-                    ICMS = new ICMSSN102(OrigemMercadoria, CodigoSituacaoOperacao);
+                    ICMS = new ICMSSN102(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT);
                     break;
                 case "400"://Não tributada pelo Simples Nacional. 
-                    ICMS = new ICMSSN102(OrigemMercadoria, CodigoSituacaoOperacao);
+                    ICMS = new ICMSSN102(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT);
                     break;
 
                 case "201"://Tributada pelo Simples Nacional com permissão de crédito e com cobrança do ICMS por substituição tributária.
@@ -71,7 +71,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
 
                     DoTheValidation();
 
-                    ICMS = new ICMSSN201(OrigemMercadoria, CodigoSituacaoOperacao)
+                    ICMS = new ICMSSN201(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT)
                     {
                         ModalidadeBCST = ModalidadeBCST.Value,
                         PercentualMargemValorAdicionadoST = PercentualMargemValorAdicionadoST.Value,
@@ -103,7 +103,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
 
                     DoTheValidation();
 
-                    ICMS = new ICMSSN202(OrigemMercadoria, CodigoSituacaoOperacao)
+                    ICMS = new ICMSSN202(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT)
                     {
                         ModalidadeBCST = ModalidadeBCST.Value,
                         PercentualMargemValorAdicionadoST = PercentualMargemValorAdicionadoST.Value,
@@ -132,7 +132,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
 
                     DoTheValidation();
 
-                    ICMS = new ICMSSN202(OrigemMercadoria, CodigoSituacaoOperacao)
+                    ICMS = new ICMSSN202(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT)
                     {
                         ModalidadeBCST = ModalidadeBCST.Value,
                         PercentualMargemValorAdicionadoST = PercentualMargemValorAdicionadoST.Value,
@@ -158,7 +158,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
 
                     DoTheValidation();
 
-                    ICMS = new ICMSSN500(OrigemMercadoria, CodigoSituacaoOperacao)
+                    ICMS = new ICMSSN500(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT)
                     {
                         ValorBCSTRetido = ValorBCSTRetido.Value,
                         ValorICMSSTRetido = ValorICMSSTRetido.Value,
@@ -171,7 +171,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                 case "900"://Outros
                     DoTheValidation();
 
-                    ICMS = new ICMSSN900(OrigemMercadoria, CodigoSituacaoOperacao)
+                    ICMS = new ICMSSN900(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT)
                     {
                         AliquotaAplicavelCalculoCreditoSN = AliquotaAplicavelCalculoCreditoSN,
                         AliquotaICMS = AliquotaICMS,
@@ -196,8 +196,231 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                         AliquotaFCPST = AliquotaFCPST,
                         ValorFCPST = ValorFCPST
                     };
-
                     break;
+
+                case "0"://Integral
+
+                    ToValidate.Add(NewKeyValuePair("ModalidadeBC", (int?)ModalidadeBC));
+                 //   ToValidate.Add(NewKeyValuePair("ValorICMS", ValorICMS));
+                 //   ToValidate.Add(NewKeyValuePair("AliquotaICMS", AliquotaICMS));
+                  //  ToValidate.Add(NewKeyValuePair("ValorBC", ValorBC));
+
+
+                    DoTheValidation();
+
+                    ICMS = new ICMS00(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT)
+                    {
+
+                        ModalidadeBC = ModalidadeBC.Value,
+                        ValorBC = ValorBC.Value,
+                        ValorICMS = ValorICMS.Value,
+                        AliquotaICMS = AliquotaICMS.Value,
+                        AliquotaFCP = AliquotaFCP,
+                        ValorFCP = ValorFCP,
+                        ValorICMSSTUFDestino = ValorICMSSTUFDestino,
+                        ValorBCSTDestino = ValorBCSTDestino
+                    };
+                    break;
+              
+               
+                case "10"://Com substituiçao
+
+                    ToValidate.Add(NewKeyValuePair("ModalidadeBC", (int?)ModalidadeBC));
+                    ToValidate.Add(NewKeyValuePair("ModalidadeBCST", (int?)ModalidadeBCST));
+                    ToValidate.Add(NewKeyValuePair("ValorICMS", ValorICMS));
+                    ToValidate.Add(NewKeyValuePair("ValorICMSST", ValorICMSST));
+                    ToValidate.Add(NewKeyValuePair("AliquotaICMS", AliquotaICMS));
+                    ToValidate.Add(NewKeyValuePair("AliquotaICMSST", AliquotaICMSST));
+                    ToValidate.Add(NewKeyValuePair("ValorBC", ValorBC));
+                    ToValidate.Add(NewKeyValuePair("ValorBCST", ValorBCST));
+                    ToValidate.Add(NewKeyValuePair("PercentualMargemValorAdicionadoST", PercentualMargemValorAdicionadoST));
+
+                    //FCP
+                    ToValidate.Add(NewKeyValuePair("BaseFCPST", BaseFCPST));
+                    ToValidate.Add(NewKeyValuePair("AliquotaFCPST", AliquotaFCPST));
+                    ToValidate.Add(NewKeyValuePair("ValorFCPST", ValorFCPST));
+
+
+
+                    DoTheValidation();
+
+                    ICMS = new ICMS10(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT)
+                    {
+                        ModalidadeBC = ModalidadeBC.Value,
+                        ModalidadeBCST = ModalidadeBCST.Value,
+                        ValorBC = ValorBC.Value,
+                        ValorBCST = ValorBCST.Value,
+                        ValorICMS = ValorICMS.Value,
+                        ValorICMSST = ValorICMSST.Value,
+                        AliquotaICMS = AliquotaICMS.Value,
+                        AliquotaICMSST = AliquotaICMSST.Value,
+                        BaseFCPST = BaseFCPST,
+                        AliquotaFCPST = AliquotaFCPST,
+                        ValorFCPST = ValorFCPST,
+                        PercentualMargemValorAdicionadoST = PercentualMargemValorAdicionadoST.Value,                       
+                    };
+                    break;
+
+
+                case "20"://Com reduçao na base 
+
+                    ToValidate.Add(NewKeyValuePair("ModalidadeBC", (int?)ModalidadeBC));
+                    ToValidate.Add(NewKeyValuePair("ValorICMS", ValorICMS));
+                    ToValidate.Add(NewKeyValuePair("AliquotaICMS", AliquotaICMS));
+                    ToValidate.Add(NewKeyValuePair("ValorBC", ValorBC));
+                    ToValidate.Add(NewKeyValuePair("PercentualReducaoBC", PercentualReducaoBC));                   
+
+
+                    DoTheValidation();
+
+                    ICMS = new ICMS20(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT)
+                    {
+                        ModalidadeBC = ModalidadeBC.Value,
+                        ValorBC = ValorBC.Value,
+                        ValorICMS = ValorICMS.Value,
+                        AliquotaICMS = AliquotaICMS.Value,
+                        PercentualReducaoBC = PercentualReducaoBC.Value,
+                        MotivoDesoneracaoICMS = MotivoDesoneracaoICMS,
+                        AliquotaFCP = AliquotaFCP.Value,
+                        ValorFCP = ValorFCP.Value,
+                        ValorBCFCP = BaseFCP.Value
+                    };
+                    break;
+
+                case "30"://Com reduçao de st
+
+                 
+                    ToValidate.Add(NewKeyValuePair("ModalidadeBCST", (int?)ModalidadeBCST));
+                    ToValidate.Add(NewKeyValuePair("ValorBCST", ValorBCST));
+                    ToValidate.Add(NewKeyValuePair("AliquotaICMSST", AliquotaICMSST));
+                    ToValidate.Add(NewKeyValuePair("ValorICMSST", ValorICMSST));
+                    ToValidate.Add(NewKeyValuePair("PercentualMargemValorAdicionadoST", PercentualMargemValorAdicionadoST));
+             
+                    DoTheValidation();
+
+                    ICMS = new ICMS30(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT)
+                    {
+                        
+                        ModalidadeBCST = ModalidadeBCST.Value,
+                        ValorBCST = ValorBCST.Value,                 
+                        ValorICMSST = ValorICMSST.Value,                       
+                        AliquotaICMSST = AliquotaICMSST.Value,
+                        BaseFCPST = BaseFCPST.Value,
+                        AliquotaFCPST = AliquotaFCPST.Value,
+                        ValorFCPST = ValorFCPST.Value,
+                        PercentualMargemValorAdicionadoST = PercentualMargemValorAdicionadoST.Value,
+                        PercentualReducaoBCST = PercentualReducaoBCST.Value,
+                        MotivoDesoneracaoICMS = MotivoDesoneracaoICMS,
+
+                    };
+                    break;
+
+                case "40"://Isento.
+                    ICMS = new ICMS40(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT);
+                    {
+                        MotivoDesoneracaoICMS = MotivoDesoneracaoICMS;
+                    };
+                    break;
+                case "41"://Não tributado. 
+                    ICMS = new ICMS40(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT);
+                    break;
+                case "50"://Com suspensao, quando 50 é ICMS40 com cst 50 ??
+                    ICMS = new ICMS40(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT);
+                    {
+                        MotivoDesoneracaoICMS = MotivoDesoneracaoICMS;
+                    };
+                    break;
+                case "51"://Diferimento. 
+                    ICMS = new ICMS51(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT);
+                    break;
+
+                case "60"://ICMS ST Retido anteriormente
+                /*    ToValidate.Add(NewKeyValuePair("ValorBCSTRetido", ValorBCSTRetido));
+                    ToValidate.Add(NewKeyValuePair("ValorICMSSTRetido", ValorICMSSTRetido));
+                    ToValidate.Add(NewKeyValuePair("BaseFCPSTRetido", BaseFCPSTRetido));
+                    ToValidate.Add(NewKeyValuePair("AliquotaFCPSTRetido", AliquotaFCPSTRetido));
+                    ToValidate.Add(NewKeyValuePair("ValorFCPSTRetido", ValorFCPSTRetido));
+                    ToValidate.Add(NewKeyValuePair("AliquotaConsumidorFinal", AliquotaConsumidorFinal));
+                    */
+                    DoTheValidation();
+
+                    ICMS = new ICMS60(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT)
+                    {
+                        ValorBCSTRetido = ValorBCSTRetido.Value,
+                        ValorICMSSTRetido = ValorICMSSTRetido.Value,
+                        BaseFCPSTRetido = BaseFCPSTRetido,
+                       // ValorICMSSubstituto = ValorICMSSubstituto,
+                        AliquotaFCPSTRetido = AliquotaFCPSTRetido,
+                        ValorFCPSTRetido = ValorFCPSTRetido,
+                        AliquotaConsumidorFinal = AliquotaConsumidorFinal,
+                    };
+                    break;
+
+                case "70"://Com reducaçao da base e cobrado por substituiçao
+
+                    ToValidate.Add(NewKeyValuePair("ModalidadeBC", (int?)ModalidadeBC));
+                    ToValidate.Add(NewKeyValuePair("ModalidadeBCST", (int?)ModalidadeBCST));
+                    ToValidate.Add(NewKeyValuePair("ValorICMS", ValorICMS));
+                    ToValidate.Add(NewKeyValuePair("ValorICMSST", ValorICMSST));
+                    ToValidate.Add(NewKeyValuePair("AliquotaICMS", AliquotaICMS));
+                    ToValidate.Add(NewKeyValuePair("AliquotaICMSST", AliquotaICMSST));
+                    ToValidate.Add(NewKeyValuePair("ValorBC", ValorBC));
+                    ToValidate.Add(NewKeyValuePair("ValorBCST", ValorBCST));
+                    ToValidate.Add(NewKeyValuePair("PercentualMargemValorAdicionadoST", PercentualMargemValorAdicionadoST));
+
+                    DoTheValidation();
+
+                    ICMS = new ICMS70(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT)
+                    {
+                        ModalidadeBC = ModalidadeBC.Value,
+                        ModalidadeBCST = ModalidadeBCST.Value,
+                        ValorBC = ValorBC.Value,
+                        ValorBCST = ValorBCST.Value,
+                        ValorICMS = ValorICMS.Value,
+                        ValorICMSST = ValorICMSST.Value,
+                        AliquotaICMS = AliquotaICMS.Value,
+                        AliquotaICMSST = AliquotaICMSST.Value,
+                        BaseFCPST = BaseFCPST.Value,
+                        AliquotaFCPST = AliquotaFCPST.Value,
+                        ValorFCPST = ValorFCPST.Value,
+                        PercentualMargemValorAdicionadoST = PercentualMargemValorAdicionadoST.Value,
+                        PercentualReducaoBC = PercentualReducaoBC.Value,
+                        PercentualReducaoBCST = PercentualReducaoBCST.Value,
+                    };
+                    break;
+
+                case "90"://Outros
+                    DoTheValidation();
+
+                    ICMS = new ICMS90(OrigemMercadoria, CodigoSituacaoOperacao, TipoCRT)
+                    {                        
+                        AliquotaICMS = AliquotaICMS,
+                        AliquotaICMSST = AliquotaICMSST,
+                        ModalidadeBC = ModalidadeBC,
+                        ModalidadeBCST = ModalidadeBCST,
+                        PercentualBCop = PercentualBCop,
+                        PercentualReducaoBCST = PercentualReducaoBCST,
+                        MotivoDesoneracaoICMS = MotivoDesoneracaoICMS,
+                        ValorBC = ValorBC,
+                        ValorBCST = ValorBCST,
+                        ValorBCSTDestino = ValorBCSTDestino,
+                        ValorBCSTRetido = ValorBCSTRetido,
+                        PercentualMargemValorAdicionadoST = PercentualMargemValorAdicionadoST,
+                        ValorICMSSTRetido = ValorICMSSTRetido,
+                        ValorICMS = ValorICMS,
+                        ValorICMSST = ValorICMSST,                        
+                        ValorICMSSTUFDestino = ValorICMSSTUFDestino,
+                        PercentualReducaoBC = PercentualReducaoBC,
+                        //BaseFCP = BaseFCP,
+                        AliquotaFCP = AliquotaFCP,
+                        ValorFCP = ValorFCP,
+                        BaseFCPST = BaseFCPST,
+                        AliquotaFCPST = AliquotaFCPST,
+                        ValorFCPST = ValorFCPST
+                    };
+                    break;
+
+
                 default:
                     throw new NotImplementedException();
             }
@@ -207,6 +430,9 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
 
         [XmlIgnore]
         public OrigemMercadoria OrigemMercadoria { get; set; }
+
+        [XmlIgnore]
+        public TipoCRT TipoCRT { get; set; }
 
         [XmlIgnore]
         public TipoTributacaoICMS CodigoSituacaoOperacao { get; set; }
@@ -224,6 +450,9 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         public double? AliquotaICMS { get; set; }
 
         [XmlIgnore]
+        public double? ValorBCST { get; set; }
+
+        [XmlIgnore]
         public double? ValorICMS { get; set; }
 
         [XmlIgnore]
@@ -233,10 +462,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         public double? PercentualMargemValorAdicionadoST { get; set; }
 
         [XmlIgnore]
-        public double? PercentualReducaoBCST { get; set; }
-
-        [XmlIgnore]
-        public double? ValorBCST { get; set; }
+        public double? PercentualReducaoBCST { get; set; }        
 
         [XmlIgnore]
         public double? AliquotaICMSST { get; set; }
@@ -271,7 +497,19 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         [XmlIgnore]
         public double? ValorCreditoICMS { get; set; }
 
+        [XmlIgnore] 
+        public double? ValorICMSSubstituto{ get; set; }
+        
         #region FCP
+
+        [XmlIgnore]
+        public double? BaseFCP { get; set; }
+
+        [XmlIgnore]
+        public double? AliquotaFCP { get; set; }
+
+        [XmlIgnore]
+        public double? ValorFCP { get; set; }
 
         [XmlIgnore]
         public double? BaseFCPST { get; set; }

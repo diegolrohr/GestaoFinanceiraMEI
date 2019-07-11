@@ -35,7 +35,7 @@ namespace Fly01.Compras.BL
         {
             var notasFiscaisByPlataforma = (from nf in NFeEntradaBL.Everything.Where(x => (x.Status == StatusNotaFiscal.Transmitida || x.Status == StatusNotaFiscal.EmCancelamento))
                                             where (string.IsNullOrEmpty(plataformaUrl) || nf.PlataformaId == plataformaUrl) && nf.TipoNotaFiscal == TipoNotaFiscal.NFe
-                                            group nf by new { nf.PlataformaId, nf.TipoAmbiente, nf.CertificadoDigitalId } into g
+                                            group nf by new { nf.PlataformaId, nf.TipoAmbiente, nf.CertificadoDigitalId, nf.SerieNotaFiscalId } into g
                                             select new
                                             {
                                                 plataformaId = g.Key.PlataformaId,
@@ -87,7 +87,7 @@ namespace Fly01.Compras.BL
         {
             var notasFiscaisInutilizadasByPlataforma = (from nf in NotaFiscalInutilizadaBL.Everything.AsNoTracking().Where(x => (x.Status == StatusNotaFiscal.InutilizacaoSolicitada || x.Status == StatusNotaFiscal.Transmitida))
                                                         where string.IsNullOrEmpty(plataformaUrl) || nf.PlataformaId == plataformaUrl
-                                                        group nf by new { nf.PlataformaId, nf.TipoAmbiente, nf.CertificadoDigitalId } into g
+                                                        group nf by new { nf.PlataformaId, nf.TipoAmbiente, nf.CertificadoDigitalId, nf.Serie } into g
                                                         select new
                                                         {
                                                             plataformaId = g.Key.PlataformaId,

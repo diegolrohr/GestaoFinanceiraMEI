@@ -28,7 +28,7 @@ namespace Fly01.Compras.BL
             if (entity.TipoTributacaoICMS.HasValue)
             {
                 var TipoTributacaoICMS = (int)entity.TipoTributacaoICMS;
-                if (TipoTributacaoICMS == 201 || TipoTributacaoICMS == 202 || TipoTributacaoICMS == 203 || TipoTributacaoICMS == 500 || TipoTributacaoICMS == 10 || TipoTributacaoICMS == 30 || TipoTributacaoICMS == 60 || TipoTributacaoICMS == 70)
+                if (TipoTributacaoICMS == 201 || TipoTributacaoICMS == 202 || TipoTributacaoICMS == 203 || TipoTributacaoICMS == 500 || TipoTributacaoICMS == 10 || TipoTributacaoICMS == 30 || TipoTributacaoICMS == 70)
                 {
                     entity.CalculaSubstituicaoTributaria = true;
                 }

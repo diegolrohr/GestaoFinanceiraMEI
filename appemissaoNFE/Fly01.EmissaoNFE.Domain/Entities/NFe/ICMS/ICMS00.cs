@@ -107,7 +107,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         }
         public bool ShouldSerializeAliquotaFCPString()
         {
-            return ((AliquotaFCP.HasValue && AliquotaFCP.Value >= 0.0) && (ValorFCP.HasValue && ValorFCP.Value >= 0.0));
+            return ((AliquotaFCP.HasValue && AliquotaFCP.Value > 0.0) && (ValorFCP.HasValue && ValorFCP.Value > 0.0));
         }
 
         [XmlIgnore]
@@ -123,7 +123,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         }
         public bool ShouldSerializeValorFCPString()
         {
-            return ((AliquotaFCP.HasValue && AliquotaFCP.Value >= 0.0) && (ValorFCP.HasValue && ValorFCP.Value >= 0.0));
+            return ((AliquotaFCP.HasValue && AliquotaFCP.Value > 0.0) && (ValorFCP.HasValue && ValorFCP.Value > 0.0));
         }
 
 

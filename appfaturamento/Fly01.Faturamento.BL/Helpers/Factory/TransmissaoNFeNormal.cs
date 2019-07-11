@@ -145,11 +145,11 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
             if (itemTributacao.CalculaST)
             {
                 string UFSiglaEmpresa = (Cabecalho.Empresa.Cidade != null ? (Cabecalho.Empresa.Cidade.Estado != null ? Cabecalho.Empresa.Cidade.Estado.Sigla : "") : "");
-                var st = TransmissaoBLs.SubstituicaoTributariaBL.AllIncluding(y => y.EstadoOrigem).AsNoTracking().Where(x =>
+                var st = TransmissaoBLs.SubstituicaoTributariaBL.AllIncluding(y => y.EstadoOrigem, y => y.EstadoDestino).AsNoTracking().Where(x =>
                     x.NcmId == (item.Produto.NcmId ?? Guid.NewGuid()) &&
                     ((item.Produto.CestId.HasValue && x.CestId == item.Produto.CestId.Value) || !item.Produto.CestId.HasValue) &&
                     x.EstadoOrigem.Sigla == UFSiglaEmpresa &&
-                    x.EstadoDestinoId == Cabecalho.Cliente.EstadoId &&
+                    x.EstadoDestino.Sigla == Cabecalho.Cliente.Estado.Sigla &&
                     x.TipoSubstituicaoTributaria == TipoSubstituicaoTributaria.Saida
                     ).FirstOrDefault();
 

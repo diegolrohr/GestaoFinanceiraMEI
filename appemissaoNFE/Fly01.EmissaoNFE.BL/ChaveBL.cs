@@ -70,6 +70,10 @@ namespace Fly01.EmissaoNFE.BL
                 {
                     //pega o número correspondente da tabela ascii
                     var nOrig = Convert.ToInt32(Convert.ToChar(codigoNF.Substring(i, 1))) - 47;
+                    if(nOrig > 9)
+                    {
+                        nOrig = 9;
+                    }
                     cNumcheck += dePara[digito + 1].Substring(nOrig, 1);
                 }
 

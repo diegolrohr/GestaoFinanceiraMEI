@@ -50,15 +50,15 @@ namespace Fly01.Core.Entities.Domains.Enum
         TributadaIntegralmente = 0,
 
         [XmlEnum(Name = "10")]
-        [Subtitle("TributadaComCobrancaDeSubstituicao", "10 - Tributada Com cobrança de substituição Tributária")]
+        [Subtitle("TributadaComCobrancaDeSubstituicao", "10 - Tributada Com cobrança de substituição tributária")]
         TributadaComCobrancaDeSubstituicao = 10,
 
         [XmlEnum(Name = "20")]
-        [Subtitle("ComReducaoDeBaseDeCalculo", "20 - Com Redução de Base de Calculo")]
+        [Subtitle("ComReducaoDeBaseDeCalculo", "20 - Com Redução de Base de Cálculo")]
         ComReducaoDeBaseDeCalculo = 20,
 
         [XmlEnum(Name = "30")]
-        [Subtitle("IsentaOuNaoTributadaPorST", "30 - Isenta ou Nao Tributada Por Substituição Tributária")]
+        [Subtitle("IsentaOuNaoTributadaPorST", "30 - Isenta/Não Tributada e Com cobrança de substituição tributária")]
         IsentaOuNaoTributadaPorST = 30,
 
         [XmlEnum(Name = "40")]
@@ -82,7 +82,7 @@ namespace Fly01.Core.Entities.Domains.Enum
         ICMSCobradoAnteriormentePorST = 60,
 
         [XmlEnum(Name = "70")]
-        [Subtitle("ComRedDeBaseDeST", "70 - Com Redução de calculo e cobrado por Substituição Tributária")]
+        [Subtitle("ComRedDeBaseDeST", "70 - Com Redução de cálculo e cobrado por Substituição Tributária")]
         ComRedDeBaseDeST = 70,
 
         [XmlEnum(Name = "90")]

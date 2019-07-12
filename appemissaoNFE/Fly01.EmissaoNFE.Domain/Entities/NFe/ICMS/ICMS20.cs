@@ -91,6 +91,10 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
             }
             set { ValorBCFCP = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
+        public bool ShouldSerializeValorBCFCPString()
+        {
+            return (ValorBCFCP > 0.0) && (AliquotaFCP > 0.0) && (ValorFCP > 0.0);
+        }
 
         [XmlIgnore]
         public double AliquotaFCP { get; set; }
@@ -104,6 +108,10 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
             }
             set { AliquotaFCP = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
+        public bool ShouldSerializeAliquotaFCPString()
+        {
+            return (ValorBCFCP > 0.0) && (AliquotaFCP > 0.0) && (ValorFCP > 0.0);
+        }
 
         [XmlIgnore]
         public double ValorFCP { get; set; }
@@ -116,6 +124,10 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                 return ValorFCP.ToString("0.00").Replace(",", ".");
             }
             set { ValorFCP = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
+        }
+        public bool ShouldSerializeValorFCPString()
+        {
+            return (ValorBCFCP > 0.0) && (AliquotaFCP > 0.0) && (ValorFCP > 0.0);
         }
     }
 }

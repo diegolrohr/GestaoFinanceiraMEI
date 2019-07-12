@@ -182,7 +182,7 @@ namespace Fly01.Faturamento.Controllers
             {
                 Id = "icms",
                 Class = "col s12 l6",
-                Label = "ICMS Simples Nacional",
+                Label = "Alíquota ICMS",
                 Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
             });
 

@@ -133,6 +133,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaComCobrancaDeSubstituicao
                 || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaIntegralmente
                 || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.ComReducaoDeBaseDeCalculo
+                || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.IsentaOuNaoTributadaPorST
                 )
             {
                 ICMS.ModalidadeBCST = ModalidadeDeterminacaoBCICMSST.MargemValorAgregado;

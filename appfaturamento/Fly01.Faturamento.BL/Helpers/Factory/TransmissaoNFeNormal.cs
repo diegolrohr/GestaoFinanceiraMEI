@@ -155,6 +155,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
 
                 ICMS.UF = Cabecalho.Cliente.Estado?.Sigla;
                 ICMS.PercentualMargemValorAdicionadoST = st != null ? st.Mva : 0;
+                ICMS.ModalidadeBCST = ModalidadeDeterminacaoBCICMSST.MargemValorAgregado;
                 ICMS.ValorBCST = Math.Round(itemTributacao.STBase, 2);
                 ICMS.AliquotaICMSST = Math.Round(itemTributacao.STAliquota, 2);
                 ICMS.ValorICMSST = Math.Round(itemTributacao.STValor, 2);

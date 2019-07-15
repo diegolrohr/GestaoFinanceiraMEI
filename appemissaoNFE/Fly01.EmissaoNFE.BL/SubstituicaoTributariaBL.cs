@@ -32,8 +32,9 @@ namespace Fly01.EmissaoNFE.BL
         {
             var valorBaseIntra = ObterValorBaseIntraEstadual(entity);
 
-            var aliquotaIntraEstadual = entity.SubstituicaoTributaria.AliquotaIntraEstadual > 0 ?
-                                        entity.SubstituicaoTributaria.AliquotaIntraEstadual : ObterAliquotaIntraEstadual(entity, TabelaIcmsBL);
+            //usuário precisa informar no cadastro de ST, pois essa tabela não é atualizada
+            //var aliquotaIntraEstadual = entity.SubstituicaoTributaria.AliquotaIntraEstadual > 0 ?
+            //                            entity.SubstituicaoTributaria.AliquotaIntraEstadual : ObterAliquotaIntraEstadual(entity, TabelaIcmsBL);
 
             //Base com MVA
             valorBaseIntra += (valorBaseIntra / 100 * entity.SubstituicaoTributaria.Mva);
@@ -44,20 +45,21 @@ namespace Fly01.EmissaoNFE.BL
                 valorBaseIntra -= reducao;
             }
 
-            entity.SubstituicaoTributaria.Aliquota = aliquotaIntraEstadual;
+            entity.SubstituicaoTributaria.Aliquota = entity.SubstituicaoTributaria.AliquotaIntraEstadual;
             entity.SubstituicaoTributaria.Base = valorBaseIntra;
 
-            var valorIntraEstadual = Math.Round(entity.SubstituicaoTributaria.Base / 100 * aliquotaIntraEstadual, 2);
+            var valorIntraEstadual = Math.Round(entity.SubstituicaoTributaria.Base / 100 * entity.SubstituicaoTributaria.Aliquota, 2);
             return valorIntraEstadual;
         }
 
         private double CalculaValorInterEstadual(Tributacao entity, TabelaIcmsBL TabelaIcmsBL)
         {
             var valorBaseInter = ObterValorBaseInterEstadual(entity);
-            var aliquotaInterEstadual = entity.SubstituicaoTributaria.AliquotaInterEstadual > 0 ?
-                                        entity.SubstituicaoTributaria.AliquotaInterEstadual : ObterAliquotaInterEstadual(entity, TabelaIcmsBL);
+            //usuário precisa informar no cadastro de ST, pois essa tabela não é atualizada
+            //var aliquotaInterEstadual = entity.SubstituicaoTributaria.AliquotaInterEstadual > 0 ?
+            //                            entity.SubstituicaoTributaria.AliquotaInterEstadual : ObterAliquotaInterEstadual(entity, TabelaIcmsBL);
 
-            var valorInterEstadual = Math.Round(valorBaseInter / 100 * aliquotaInterEstadual, 2);
+            var valorInterEstadual = Math.Round(valorBaseInter / 100 * entity.SubstituicaoTributaria.AliquotaInterEstadual, 2);
             return valorInterEstadual;
         }
 

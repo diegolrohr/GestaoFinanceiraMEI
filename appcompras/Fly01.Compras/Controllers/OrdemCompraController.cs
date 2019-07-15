@@ -46,7 +46,7 @@ namespace Fly01.Compras.Controllers
                 tipoOrdemCompraValue = EnumHelper.GetValue(typeof(TipoOrdemCompra), x.TipoOrdemCompra),
                 data = x.Data.ToString("dd/MM/yyyy"),
                 status = x.Status,
-                total = x.Total?.ToString("C", AppDefaults.CultureInfoDefault),
+                total = x.Total.ToString("C", AppDefaults.CultureInfoDefault),
                 observacao = string.IsNullOrEmpty(x.Observacao) ? "" : x.Observacao.Substring(0, x.Observacao.Length <= 20 ? x.Observacao.Length : 20),
                 statusDescription = EnumHelper.GetDescription(typeof(StatusOrdemCompra), x.Status),
                 statusCssClass = EnumHelper.GetCSS(typeof(StatusOrdemCompra), x.Status),

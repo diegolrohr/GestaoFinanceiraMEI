@@ -82,7 +82,7 @@ namespace Fly01.Compras.Controllers
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
             config.Elements.Add(new InputHiddenUI { Id = "notaFiscalId", Value = id.ToString() });
-            config.Elements.Add(new TextAreaUI { Id = "mensagemCorrecao", Class = "col s12", Label = "Mensagem Carta de Correção", MaxLength = 1000 });
+            config.Elements.Add(new TextAreaUI { Id = "mensagemCorrecao", Class = "col s12", Label = "Mensagem Carta de Correção", MinLength = 15, MaxLength = 1000 });
 
             cfg.Content.Add(config);
 

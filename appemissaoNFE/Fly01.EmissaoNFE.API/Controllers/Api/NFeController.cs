@@ -14,7 +14,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
         {
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                var base64 = Base64Helper.CodificaBase64(unitOfWork.NFeBL.ConvertToXML(entity, TipoCRT.SimplesNacional));
+                var base64 = Base64Helper.CodificaBase64(unitOfWork.NFeBL.ConvertToXML(entity, entity.InfoNFe.Emitente.CRT));
                 return Ok(new { data = base64});
             }
         }

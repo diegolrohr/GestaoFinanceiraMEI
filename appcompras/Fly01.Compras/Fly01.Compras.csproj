@@ -451,7 +451,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Fly01.uiJS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Fly01.uiJS.2.0.5.5\lib\net452\Fly01.uiJS.dll</HintPath>
+      <HintPath>..\..\packages\Fly01.uiJS.2.0.5.7\lib\net452\Fly01.uiJS.dll</HintPath>
     </Reference>
     <Reference Include="HtmlRenderer, Version=1.5.0.5, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\HtmlRenderer.Core.1.5.0.5\lib\net45\HtmlRenderer.dll</HintPath>

@@ -29,7 +29,7 @@ namespace Fly01.Faturamento.Controllers
     {
         public OrdemVendaController()
         {
-            ExpandProperties = "cliente($select=id,nome,email),grupoTributarioPadrao($select=id,descricao,tipoTributacaoICMS),transportadora($select=id,nome),estadoPlacaVeiculo,condicaoParcelamento,formaPagamento,categoria,centroCusto,ufSaidaPais($select=id,nome)";
+            ExpandProperties = "cliente($select=id,nome,email,endereco,bairro,numero,cep,complemento;$expand=cidade($select=nome),estado($select=sigla),pais($select=nome)),grupoTributarioPadrao($select=id,descricao,tipoTributacaoICMS),transportadora($select=id,nome),estadoPlacaVeiculo,condicaoParcelamento,formaPagamento,categoria,centroCusto,ufSaidaPais($select=id,nome)";
         }
 
         private JsonResult GetJson(object data)
@@ -100,6 +100,14 @@ namespace Fly01.Faturamento.Controllers
                     Id = OrdemVenda.Id.ToString(),
                     CategoriaDescricao = OrdemVenda.Categoria != null ? OrdemVenda.Categoria.Descricao : string.Empty,
                     ClienteNome = OrdemVenda.Cliente != null ? OrdemVenda.Cliente.Nome : string.Empty,
+                    Endereco = OrdemVenda.Cliente != null ? OrdemVenda.Cliente.Endereco : string.Empty,
+                    NumeroCliente = OrdemVenda.Cliente != null ? OrdemVenda.Cliente.Numero : string.Empty,
+                    Bairro = OrdemVenda.Cliente != null ? OrdemVenda.Cliente.Bairro : string.Empty,
+                    Cidade = OrdemVenda.Cliente != null && OrdemVenda.Cliente.Cidade != null ? OrdemVenda.Cliente.Cidade.Nome : string.Empty,
+                    Cep = OrdemVenda.Cliente != null ? OrdemVenda.Cliente.CEP : string.Empty,
+                    Complemento = OrdemVenda.Cliente != null ? OrdemVenda.Cliente.Complemento : string.Empty,
+                    Estado = OrdemVenda.Cliente != null && OrdemVenda.Cliente.Estado != null ? OrdemVenda.Cliente.Estado.Sigla : string.Empty,
+                    Pais = OrdemVenda.Cliente != null && OrdemVenda.Cliente.Pais != null ? OrdemVenda.Cliente.Pais.Nome : string.Empty,
                     Data = OrdemVenda.Data.ToString(),
                     CondicaoParcelamentoDescricao = OrdemVenda.CondicaoParcelamento != null ? OrdemVenda.CondicaoParcelamento.Descricao : string.Empty,
                     CondicaoParcelamentoQtdParcelas = OrdemVenda.CondicaoParcelamento != null ? OrdemVenda.CondicaoParcelamento.QtdParcelas : 0,
@@ -146,6 +154,14 @@ namespace Fly01.Faturamento.Controllers
                     Id = OrdemVenda.Id.ToString(),
                     CategoriaDescricao = OrdemVenda.Categoria != null ? OrdemVenda.Categoria.Descricao : string.Empty,
                     ClienteNome = OrdemVenda.Cliente != null ? OrdemVenda.Cliente.Nome : string.Empty,
+                    Endereco = OrdemVenda.Cliente != null ? OrdemVenda.Cliente.Endereco : string.Empty,
+                    NumeroCliente = OrdemVenda.Cliente != null ? OrdemVenda.Cliente.Numero : string.Empty,
+                    Bairro = OrdemVenda.Cliente != null ? OrdemVenda.Cliente.Bairro : string.Empty,
+                    Cidade = OrdemVenda.Cliente != null && OrdemVenda.Cliente.Cidade != null ? OrdemVenda.Cliente.Cidade.Nome : string.Empty,
+                    Cep = OrdemVenda.Cliente != null ? OrdemVenda.Cliente.CEP : string.Empty,
+                    Complemento = OrdemVenda.Cliente != null ? OrdemVenda.Cliente.Complemento : string.Empty,
+                    Estado = OrdemVenda.Cliente != null && OrdemVenda.Cliente.Estado != null ? OrdemVenda.Cliente.Estado.Sigla : string.Empty,
+                    Pais = OrdemVenda.Cliente != null && OrdemVenda.Cliente.Pais != null ? OrdemVenda.Cliente.Pais.Nome : string.Empty,
                     Data = OrdemVenda.Data.ToString(),
                     CondicaoParcelamentoDescricao = OrdemVenda.CondicaoParcelamento != null ? OrdemVenda.CondicaoParcelamento.Descricao : string.Empty,
                     CondicaoParcelamentoQtdParcelas = OrdemVenda.CondicaoParcelamento != null ? OrdemVenda.CondicaoParcelamento.QtdParcelas : 0,
@@ -192,6 +208,14 @@ namespace Fly01.Faturamento.Controllers
                     Id = OrdemVenda.Id.ToString(),
                     CategoriaDescricao = OrdemVenda.Categoria != null ? OrdemVenda.Categoria.Descricao : string.Empty,
                     ClienteNome = OrdemVenda.Cliente != null ? OrdemVenda.Cliente.Nome : string.Empty,
+                    Endereco = OrdemVenda.Cliente != null ? OrdemVenda.Cliente.Endereco : string.Empty,
+                    NumeroCliente = OrdemVenda.Cliente != null ? OrdemVenda.Cliente.Numero : string.Empty,
+                    Bairro = OrdemVenda.Cliente != null ? OrdemVenda.Cliente.Bairro : string.Empty,
+                    Cidade = OrdemVenda.Cliente != null && OrdemVenda.Cliente.Cidade != null ? OrdemVenda.Cliente.Cidade.Nome : string.Empty,
+                    Cep = OrdemVenda.Cliente != null ? OrdemVenda.Cliente.CEP : string.Empty,
+                    Complemento = OrdemVenda.Cliente != null ? OrdemVenda.Cliente.Complemento : string.Empty,
+                    Estado = OrdemVenda.Cliente != null && OrdemVenda.Cliente.Estado != null ? OrdemVenda.Cliente.Estado.Sigla : string.Empty,
+                    Pais = OrdemVenda.Cliente != null && OrdemVenda.Cliente.Pais != null ? OrdemVenda.Cliente.Pais.Nome : string.Empty,
                     Data = OrdemVenda.Data.ToString(),
                     CondicaoParcelamentoDescricao = OrdemVenda.CondicaoParcelamento != null ? OrdemVenda.CondicaoParcelamento.Descricao : string.Empty,
                     CondicaoParcelamentoQtdParcelas = OrdemVenda.CondicaoParcelamento != null ? OrdemVenda.CondicaoParcelamento.QtdParcelas : 0,
@@ -503,7 +527,7 @@ namespace Fly01.Faturamento.Controllers
             {
                 DataField = "status",
                 DisplayName = "Status",
-                Priority = 2,
+                Priority = 4,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(Status))),
                 RenderFn = "fnRenderEnum(full.statusCssClass, full.statusDescription)"
             });
@@ -511,7 +535,7 @@ namespace Fly01.Faturamento.Controllers
             {
                 DataField = "tipoOrdemVenda",
                 DisplayName = "Tipo",
-                Priority = 3,
+                Priority = 5,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoOrdemVenda))),
                 RenderFn = "fnRenderEnum(full.tipoOrdemVendaCssClass, full.tipoOrdemVendaDescription)"
             });
@@ -519,12 +543,12 @@ namespace Fly01.Faturamento.Controllers
             {
                 DataField = "tipoVenda",
                 DisplayName = "Finalidade",
-                Priority = 4,
+                Priority = 6,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoCompraVenda))),
                 RenderFn = "fnRenderEnum(full.tipoVendaCssClass, full.tipoVendaDescription)"
             });
-            config.Columns.Add(new DataTableUIColumn { DataField = "cliente_nome", DisplayName = "Cliente", Priority = 5 });
-            config.Columns.Add(new DataTableUIColumn { DataField = "data", DisplayName = "Data", Priority = 6, Type = "date" });
+            config.Columns.Add(new DataTableUIColumn { DataField = "cliente_nome", DisplayName = "Cliente", Priority = 2 });
+            config.Columns.Add(new DataTableUIColumn { DataField = "data", DisplayName = "Data", Priority = 3, Type = "date" });
 
             cfg.Content.Add(config);
 

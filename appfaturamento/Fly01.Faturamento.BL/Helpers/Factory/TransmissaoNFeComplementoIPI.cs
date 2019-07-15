@@ -109,7 +109,8 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 + icmsTotal.SomatorioICMSST
                 + icmsTotal.SomatorioIPI
                 + icmsTotal.SomatorioPis
-                + icmsTotal.SomatorioFCPST;
+                + icmsTotal.SomatorioFCPST
+                + icmsTotal.SomatorioFCP;
         }
 
         #region Impostos  
@@ -135,7 +136,8 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
             return new ICMSPai()
             {
                 OrigemMercadoria = item.Produto.OrigemMercadoria,
-                CodigoSituacaoOperacao = TipoTributacaoICMS.Imune//TODO: Ver Wilson TipoTributacaoICMS.NaoTributadaPeloSN
+                CodigoSituacaoOperacao = TipoTributacaoICMS.Imune,//TODO: Ver Wilson TipoTributacaoICMS.NaoTributadaPeloSN
+                TipoCRT = ParametrosTributarios.TipoCRT
             };
         }
 

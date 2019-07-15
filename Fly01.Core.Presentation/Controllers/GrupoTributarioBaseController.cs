@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using System.Linq;
 
 namespace Fly01.Core.Presentation.Controllers
 {
@@ -211,13 +212,15 @@ namespace Fly01.Core.Presentation.Controllers
                     new DomEventUI() { DomEvent = "change", Function = "fnShowICMS" }
                 }
             });
+
+            var tipoTributacaoIcms = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoTributacaoICMS)));
             config.Elements.Add(new SelectUI
             {
                 Id = "tipoTributacaoICMS",
                 Class = "col s12 l12",
-                Label = "Situação da Operação no Simples Nacional",
+                Label = "Situação da Operação",
                 ConstrainWidth = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoTributacaoICMS)))
+                Options = tipoTributacaoIcms.GetRange(11, 10).Concat(tipoTributacaoIcms.GetRange(0, 11)).ToList()//csosn antes de cst
             });
             config.Elements.Add(new InputCheckboxUI { Id = "calculaIcmsDifal", Class = "col s12 m6 l6", Label = "Calcula ICMS DIFAL", Disabled = true });
             config.Elements.Add(new InputCheckboxUI { Id = "aplicaIpiBaseIcms", Class = "col s12 m6 l6", Label = "Aplica valor do IPI na base de cálculo", Disabled = true });
@@ -345,6 +348,14 @@ namespace Fly01.Core.Presentation.Controllers
                 Tooltip = new HelperUITooltip()
                 {
                     Text = "Necessário estar cadastrado no menu de Substituição Tributária, de acordo com a situação do estado origem e destino."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "calculaIcms",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Se o seu Regime Tributário configurado no menu de Parâmetros Tributários, for Simples Nacional, escolha CSOSN do 101 ao 900; se for Regime Normal, escolha CST do 00 ao 90. Exceções para notas fiscais de devolução. Consulte seu contador."
                 }
             });
             #endregion

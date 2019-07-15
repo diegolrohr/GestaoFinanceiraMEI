@@ -1,13 +1,17 @@
 ﻿<script>
     function fnFormReady() {
-        $("#emiteNotaFiscal").click(function () {
+        @* $("#emiteNotaFiscal").click(function () {
+
+        });*@
+
+        $("#save").click(function () {
             if ($("#emiteNotaFiscal").is(":checked")) {
                 $("[data-go*=CertificadoDigital]").each((i, x) => $(x).closest("li").toggleClass("hide", false));
             }
             else {
                 $("[data-go*=CertificadoDigital]").each((i, x) => $(x).closest("li").toggleClass("hide", true));
             }
-        }); 
+        });
     }
 
     $(function () {

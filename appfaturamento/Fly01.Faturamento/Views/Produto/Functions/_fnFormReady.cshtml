@@ -9,7 +9,6 @@
             $("#saldoProdutoField").prop('disabled', false);
         } else {
             var saldoProduto = $("#saldoProduto").val();
-            saldoProduto = parseFloat(saldoProduto).toLocaleString("pt-BR");
             $("#saldoProdutoField").val(saldoProduto);
             fnChangeSaldoProduto();
         }

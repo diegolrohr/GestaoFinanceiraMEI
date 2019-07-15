@@ -1,4 +1,6 @@
 ﻿using System.Xml.Serialization;
+using Fly01.Core.Entities.Domains.Enum;
+using Fly01.EmissaoNFE.Domain.Enums;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFe.COFINS
 {
@@ -7,7 +9,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.COFINS
     {
         public COFINSOutr() { }
 
-        public COFINSOutr(string codigoSituacaoTributaria) : base(codigoSituacaoTributaria) { }
+        public COFINSOutr(string codigoSituacaoTributaria, TipoCRT tipoCRT) : base(codigoSituacaoTributaria, tipoCRT) { }
 
         [XmlElement(ElementName = "qBCProd")]
         public double QuantidadeVendida { get; set; }

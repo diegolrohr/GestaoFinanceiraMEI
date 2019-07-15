@@ -15,6 +15,12 @@ namespace Fly01.Compras.API.Controllers.Api
     [ODataRoutePrefix("pedidoitem")]
     public class PedidoItemController : ApiPlataformaController<PedidoItem, PedidoItemBL>
     {
+        [EnableQuery(PageSize = 1000, MaxTop = 1000, MaxExpansionDepth = 10)]
+        public override IHttpActionResult Get()
+        {
+            return Ok(All().AsQueryable());
+        }
+
         public override async Task<IHttpActionResult> Post(PedidoItem entity)
         {
             try

@@ -1,20 +1,8 @@
 ﻿<script>
     function fnBaixarTodosXMLNFeZip() {
         $$$.loading.start();
-        var i;
-        var data = $$$._.fly01dt.context[0].aoData;
-
-        if (data.length > 0) {
-            for (i = 0; i < data.length; i++) {
-                if (data[i]._aData.status == "Autorizada") {
-                    $$$._.fly01dt.row(i).select();
-                }
-            }
-        } else {
-            $$$.toast("Não há XMLs para baixar.", "error");
-        }
         $.ajax({
-            url: '@Url.Action("BaixarXMLs", "NotaFiscal")?idsXML=' + $$$._.fly01dt.selected.toString(),
+            url: '@Url.Action("BaixarTodosXMLs", "NotaFiscal")?dataInicial=' + $("#dataInicial").val() + "&dataFinal=" + $("#dataFinal").val(),
             type: "GET"
         }).done(function (data) {
             $$$.loading.stop();
@@ -28,12 +16,12 @@
                 $$$.toast("Ocorreu um erro ao realizar o download de um ou mais arquivos", "error");
 
             $$$._.fly01dt.rows().deselect();
-            
         })
         .fail(function (jqxhr, textStatus, error) {
             var err = 'Ocorreu um erro na requisição: ' + textStatus + ", " + error;
             $$$.toast(err, "error");
             $$$.loading.stop();
+
         });
     }
 </script>

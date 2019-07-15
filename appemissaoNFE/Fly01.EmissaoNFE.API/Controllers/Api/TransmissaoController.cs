@@ -28,6 +28,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
 
                 foreach (var item in entity.Item)
                 {
+                    item.Identificador.CodigoNF = unitOfWork.ChaveBL.CodificaCodigoNF(item.Identificador.CodigoNF, entity.EntidadeAmbiente);
                     item.NotaId = unitOfWork.ChaveBL.GeraChave(
                                     item.Identificador.CodigoUF.ToString(),
                                     item.Identificador.Emissao.Year.ToString(),
@@ -45,7 +46,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 try
                 {
                     var retorno = (int)entity.EntidadeAmbiente == 2 ? Homologacao(entity, unitOfWork) : Producao(entity, unitOfWork);
-
+                    //var retorno = new TransmissaoRetornoVM();
                     return Ok(retorno);
                 }
                 catch (Exception ex)

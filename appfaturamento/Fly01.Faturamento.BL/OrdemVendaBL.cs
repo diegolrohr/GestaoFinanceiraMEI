@@ -258,6 +258,8 @@ namespace Fly01.Faturamento.BL
                             ValorCreditoICMS = x.ValorCreditoICMS,
                             ValorFCPSTRetidoAnterior = x.ValorFCPSTRetidoAnterior,
                             ValorBCFCPSTRetidoAnterior = x.ValorBCFCPSTRetidoAnterior,
+                            PercentualReducaoBC = x.PercentualReducaoBC,
+                            PercentualReducaoBCST = x.PercentualReducaoBCST,
                             OrdemVendaProdutoId = x.Id
                         }).ToList();
 
@@ -459,6 +461,10 @@ namespace Fly01.Faturamento.BL
                         entity.TipoVenda = previousTipoVenda;
                         entity.TipoNfeComplementar = previousTipoNfeComplementar;
                         entity.NFeRefComplementarIsDevolucao = pedidoReferenciado.TipoVenda == TipoCompraVenda.Devolucao;
+                        if (entity.TotalImpostosProdutos.HasValue) { entity.TotalImpostosProdutos = null; };
+                        if (entity.TotalRetencoesServicos.HasValue) { entity.TotalRetencoesServicos = null; };
+                        entity.TotalImpostosProdutosNaoAgrega = 0;
+                        entity.TotalImpostosServicosNaoAgrega = 0;
 
                         if (entity.TipoVenda == TipoCompraVenda.Devolucao)
                         {

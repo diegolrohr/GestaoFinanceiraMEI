@@ -90,5 +90,24 @@ namespace Fly01.Core.Presentation.Controllers
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
         }
+
+        private string GenerateJWT()
+        {
+            var payload = new Dictionary<string, string>()
+                {
+                    {  "platformUrl", SessionManager.Current.UserData.PlatformUrl },
+                    {  "email", SessionManager.Current.UserData.PlatformUser }
+                };
+            var token = JWTHelper.Encode(payload, "https://meu.bemacash.com.br/", DateTime.Now.AddMinutes(60));
+            return token;
+        }
+
+        public JsonResult NotificationJwt()
+        {
+            return Json(new
+            {
+                token = GenerateJWT()
+            }, JsonRequestBehavior.AllowGet);
+        }
     }
 }

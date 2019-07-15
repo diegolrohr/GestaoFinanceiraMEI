@@ -1,26 +1,83 @@
-﻿using System;
-using System.Web;
+﻿using System.Web;
 using System.Web.Mvc;
 using Fly01.Core.Rest;
 using Fly01.Core.Config;
-using Fly01.Core.Helpers;
 using System.Web.Security;
-using System.Collections.Generic;
 using Newtonsoft.Json;
 using Fly01.Core.Defaults;
 using Fly01.uiJS.Responses;
+using System.Net;
+using System;
+using Fly01.Core.Presentation.Application;
+using Fly01.Core.ViewModels;
 
 namespace Fly01.Core.Presentation.Controllers
 {
     [AllowAnonymous]
     public abstract class AccountController : Controller
     {
+
         public ContentResult Platforms()
         {
-            ResponseDataVM<LoginResponse> result = RestUtils.ExecuteGetRequest<ResponseDataVM<LoginResponse>>(AppDefaults.UrlManager, "account/platforms", new Dictionary<string, string>(){}, null);
-            return Content(JsonConvert.SerializeObject(result, JsonSerializerSetting.Default), "application/json");
+            LoginResponse response = RestHelper.ExecutePostRequest<LoginResponse>(
+                AppDefaults.UrlGateway,
+                "v1/Platforms",
+                JsonConvert.SerializeObject(new
+                {
+                    platformUser = SessionManager.Current.UserData.PlatformUser,
+                    platformUrl = SessionManager.Current.UserData.PlatformUrl
+                })
+            );
+
+            response.PostFormUrl = @Url.Action("ChangePlatform");
+
+            return Content(JsonConvert.SerializeObject(response, JsonSerializerSetting.Front), "application/json");
         }
 
+        public ContentResult ChangePlatform()
+        {
+            LoginResponse loginResponse;
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(Request.Form.Get("PlatformId")))
+                {
+                    string platformUrl = Request.Form["PlatformId"];
+                    var userData = new UserDataCookieVM
+                    {
+                        UserName = SessionManager.Current.UserData.PlatformUser,
+                        Fly01Url = platformUrl
+                    };
+
+                    Response.SetAuthCookie(userData.UserName, userData.RememberMe, userData);
+
+                    loginResponse = new LoginResponse()
+                    {
+                        Code = (int)HttpStatusCode.OK,
+                        Success = true,
+                        Url = ""
+                    };
+                }
+                else
+                {
+                    loginResponse = new LoginResponse()
+                    {
+                        Code = 404,
+                        Success = false,
+                        Url = Url.Action("LoginScreen")
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                loginResponse = new LoginResponse()
+                {
+                    Code = 404,
+                    Success = false,
+                    Message = ex.Message
+                };
+            }
+            return Content(JsonConvert.SerializeObject(loginResponse, JsonSerializerSetting.Front), "application/json");
+        }
         public ActionResult Login(string returnUrl, string email = "")
         {
             if (HttpContext.User.Identity.IsAuthenticated)

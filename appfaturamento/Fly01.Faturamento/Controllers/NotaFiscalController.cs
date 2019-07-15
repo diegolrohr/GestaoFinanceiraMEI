@@ -315,7 +315,7 @@ namespace Fly01.Faturamento.Controllers
                 new DataTableUIAction { OnClickFn = "fnTransmitirNFSe", Label = "Transmitir", ShowIf = "((row.status == 'NaoAutorizada' || row.status == 'NaoTransmitida' || row.status == 'FalhaTransmissao') && row.tipoNotaFiscal == 'NFSe')" },
                 new DataTableUIAction { OnClickFn = "fnExcluirNFe", Label = "Excluir", ShowIf = "((row.status == 'NaoAutorizada' || row.status == 'NaoTransmitida' || row.status == 'FalhaTransmissao') && row.tipoNotaFiscal == 'NFe')" },
                 new DataTableUIAction { OnClickFn = "fnExcluirNFSe", Label = "Excluir", ShowIf = "((row.status == 'NaoAutorizada' || row.status == 'NaoTransmitida' || row.status == 'FalhaTransmissao') && row.tipoNotaFiscal == 'NFSe')" },
-                new DataTableUIAction { OnClickFn = "fnBaixarXMLNFe", Label = "Baixar XML", ShowIf = "((row.status == 'NaoAutorizada' || row.status == 'Autorizada' || row.status == 'Transmitida' || row.status == 'FalhaTransmissao') && row.tipoNotaFiscal == 'NFe')" },
+                new DataTableUIAction { OnClickFn = "fnBaixarXMLNFe", Label = "Baixar XML", ShowIf = "((row.status == 'NaoAutorizada' || row.status == 'Autorizada' || row.status == 'Transmitida' || row.status == 'FalhaTransmissao' || row.status == 'UsoDenegado' || row.status == 'Cancelada') && row.tipoNotaFiscal == 'NFe')" },
                 new DataTableUIAction { OnClickFn = "fnBaixarPDFNFe", Label = "Baixar PDF", ShowIf = "(row.status == 'Autorizada' && row.tipoNotaFiscal == 'NFe')" },
                 new DataTableUIAction { OnClickFn = "fnBaixarXMLNFSe", Label = "Baixar XML", ShowIf = "((row.status == 'FalhaTransmissao' || row.status == 'NaoAutorizada' || row.status == 'Autorizada' || row.status == 'Transmitida') && row.tipoNotaFiscal == 'NFSe')" },
                 new DataTableUIAction { OnClickFn = "fnBaixarXMLUnicoNFSe", Label = "Baixar XML TSS", ShowIf = "((row.status == 'NaoAutorizada' || row.status == 'Transmitida' || row.status == 'FalhaTransmissao') && row.tipoNotaFiscal == 'NFSe')" },
@@ -460,6 +460,50 @@ namespace Fly01.Faturamento.Controllers
             }
         }
 
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
+        [HttpGet]
+        public ActionResult BaixarTodosXMLs(DateTime dataInicial, DateTime dataFinal)
+        {
+            try
+            {
+                string idsXML = "";
+                var response = new List<NotaFiscalVM>();
+                try
+                {
+                    var resourceById = string.Format("NotaFiscalXML?&dataInicial={0}&dataFinal={1}", dataInicial.ToString("yyyy-MM-dd"), dataFinal.ToString("yyyy-MM-dd"));
+                    var res = RestHelper.ExecuteGetRequest<List<NotaFiscalVM>>(resourceById);
+                    if (res != null)
+                    {
+                        response = res;
+                    }
+                }
+                catch (Exception)
+                {
+                    HasErrorDownload = true;
+                }
+
+                foreach (NotaFiscalVM item in response)
+                {
+                    if (item.Id != null)
+                    {
+                        idsXML += item.Id + ",";
+                    }
+                }
+
+                if (response.Count == 0)
+                    return JsonResponseStatus.GetFailure("Os XMLs solicitados não estão disponíveis para download");
+
+                Session["responseValue"] = JsonConvert.SerializeObject(response);
+
+                return JsonResponseStatus.GetJson(new { downloadAddress = Url.Action("DownloadXMLs", new { idsXML = idsXML }), hasError = HasErrorDownload });
+            }
+            catch (Exception ex)
+            {
+                ErrorInfo error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
         [OperationRole(NotApply = true)]
         [HttpGet]
         public ActionResult DownloadXMLs(string idsXML)
@@ -477,11 +521,14 @@ namespace Fly01.Faturamento.Controllers
                         fileName = item.Value<string>("tipoNotaFiscal") + item.Value<string>("numNotaFiscal");
 
                         string xml = item.Value<string>("xml");
-                        xml = xml.Replace("\\", "");
-                        Session.Add(fileName, xml);
-                        byte[] data = Convert.FromBase64String(Base64Helper.CodificaBase64(Session[fileName].ToString()));
+                        if (!string.IsNullOrEmpty(xml))
+                        {
+                            xml = xml.Replace("\\", "");
+                            Session.Add(fileName, xml);
+                            byte[] data = Convert.FromBase64String(Base64Helper.CodificaBase64(Session[fileName].ToString()));
 
-                        AddToArchive(ziparchive, fileName + ".xml", data);
+                            AddToArchive(ziparchive, fileName + ".xml", data);
+                        }
                     });
                 }
                 return File(memoryStream.ToArray(), "application/zip", "arquivosXML.zip");

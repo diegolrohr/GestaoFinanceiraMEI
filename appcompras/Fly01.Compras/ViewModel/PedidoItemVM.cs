@@ -24,6 +24,12 @@ namespace Fly01.Compras.ViewModel
         [JsonProperty("valorBCFCPSTRetidoAnterior")]
         public double ValorBCFCPSTRetidoAnterior { get; set; }
 
+        [JsonProperty("percentualReducaoBC")]
+        public double PercentualReducaoBC { get; set; }
+
+        [JsonProperty("percentualReducaoBCST")]
+        public double PercentualReducaoBCST { get; set; }
+
         [JsonProperty("grupoTributarioId")]
         public Guid? GrupoTributarioId { get; set; }
 

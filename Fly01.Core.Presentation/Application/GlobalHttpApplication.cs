@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Web;
@@ -17,6 +17,30 @@ using System.Web.SessionState;
 
 namespace Fly01.Core.Presentation.Application
 {
+    public static class HttpResponseBaseExtensions
+    {
+        public static int SetAuthCookie<T>(this HttpResponseBase responseBase, string name, bool rememberMe, T userData)
+        {
+            var cookie = FormsAuthentication.GetAuthCookie(name, rememberMe);
+            var ticket = FormsAuthentication.Decrypt(cookie.Value);
+
+            var newTicket = new FormsAuthenticationTicket(ticket.Version, ticket.Name, ticket.IssueDate, ticket.Expiration,
+                ticket.IsPersistent, JsonConvert.SerializeObject(userData), ticket.CookiePath);
+            var encTicket = FormsAuthentication.Encrypt(newTicket);
+
+            cookie.Domain = AppDefaults.UrlGateway.Contains("fly01local")
+                ? ".bemacashlocal.com.br"
+                : AppDefaults.UrlGateway.Contains("fly01dev")
+                    ? ".bemacashstage.com.br"
+                    : ".bemacash.com.br";
+
+            cookie.Value = encTicket;
+            responseBase.Cookies.Add(cookie);
+
+            return encTicket.Length;
+        }
+    }
+
     public class GlobalHttpApplication : HttpApplication
     {
         protected virtual string GetInstrumentationKeyAppInsights() => string.Empty;
@@ -40,68 +64,36 @@ namespace Fly01.Core.Presentation.Application
             var formsAuthenticationTicket = FormsAuthentication.Decrypt(token);
             if ((formsAuthenticationTicket != null) && (formsAuthenticationTicket.UserData != null))
             {
-                dynamic cookieUserData = Json.Decode(formsAuthenticationTicket.UserData);
-                string platformUser = cookieUserData.UserName;
-                string platformUrl = cookieUserData.Fly01Url;
-                var userData = new UserDataVM()
+                UserDataCookieVM cookieUserData = Json.Decode<UserDataCookieVM>(formsAuthenticationTicket.UserData);
+
+                UserDataVM userData = new UserDataVM()
                 {
-                    PlatformUser = platformUser,
-                    PlatformUrl = platformUrl
+                    PlatformUser = cookieUserData.UserName,
+                    PlatformUrl = cookieUserData.Fly01Url ?? cookieUserData.PlatformId,                    
                 };
-                HttpContext.Current.User = new GenericPrincipal(new GenericIdentity(platformUser, "Forms"), string.Empty.Split(';'));
+                HttpContext.Current.User = new GenericPrincipal(new GenericIdentity(cookieUserData.UserName, "Forms"), string.Empty.Split(';'));
                 if (!SessionManager.Current.UserData.IsValidUserData(userData))
                 {
-                    TokenDataVM tokenData = RestHelper.ExecuteGetAuthToken(
-                        AppDefaults.UrlGateway, AppDefaults.GatewayUserName,
-                        AppDefaults.GatewayPassword, platformUrl, platformUser);
-                    userData.TokenData = tokenData;
-                    userData.TokenData.Username = cookieUserData.Name;
-                    userData.Permissions = GetPermissionsByUser(platformUrl, platformUser);
+                    try
+                    {
+                        TokenDataVM tokenData = RestHelper.ExecuteGetAuthToken(
+                            AppDefaults.UrlGateway, AppDefaults.GatewayUserName,
+                            AppDefaults.GatewayPassword, userData.PlatformUrl, userData.PlatformUser);
+                        userData.TokenData = tokenData;
+                        userData.TokenData.UserName = cookieUserData.Name;
+                        userData.Permissions = GetPermissionsByUser(userData.PlatformUrl, userData.PlatformUser);
 
-                    SessionManager.Current.UserData = userData;
-                    return true;
+                        SessionManager.Current.UserData = userData;
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
                 }
+                return true;
             }
             return false;
         }
-
-        //protected void Application_PreRequestHandlerExecute(object sender, EventArgs e)
-        //{
-        //    if (FormsAuthentication.CookiesSupported && Request.Cookies[FormsAuthentication.FormsCookieName] != null)
-        //    {
-        //        var clientToken = SessionManager.Current.UserData.ClientToken;
-
-        //        try
-        //        {
-        //            RestHelper.ExecuteGetRequest<object>(AppDefaults.UrlGatewayNew.Replace("api/", ""), "token/validate/" + clientToken);
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            if (HttpContext.Current.Session != null)
-        //            {
-        //                HttpContext.Current.Session.Clear();
-        //                HttpContext.Current.Session.Abandon();
-        //                HttpContext.Current.Session.RemoveAll();
-        //                FormsAuthentication.SignOut();
-        //            }
-
-        //            if (Request.Headers["Accept"] != null && Request.Headers["Accept"].Contains("application/json"))
-        //            {
-        //                Response.Write(JsonConvert.SerializeObject(new { urlToRedirect = $"{AppDefaults.UrlLogoutSSO}/{clientToken}" }));
-        //                Response.End();
-        //            }
-        //            else if (Request.Headers["X-Requested-With"] != null && Request.Headers["X-Requested-With"].ToUpper().Equals("XMLHTTPREQUEST"))
-        //            {
-        //                FormsAuthentication.RedirectToLoginPage();
-        //            }
-        //            else
-        //            {
-        //                Response.Write($"<script type=\"text/javascript\">top.location.href='{AppDefaults.UrlLogoutSSO}/{clientToken}';</script>");
-        //                Response.End();
-        //            }
-        //        }
-        //    }
-        //}
 
         protected void Application_PreRequestHandlerExecute(object sender, EventArgs e)
         {
@@ -130,14 +122,10 @@ namespace Fly01.Core.Presentation.Application
             }
             else if (FormsAuthentication.CookiesSupported && Request.Cookies[FormsAuthentication.FormsCookieName] != null)
             {
-                if (ReadCookieAndSetSession(Request.Cookies[FormsAuthentication.FormsCookieName].Value))
+                if (!ReadCookieAndSetSession(Request.Cookies[FormsAuthentication.FormsCookieName].Value))
                 {
-                    HttpCookie mpnData = new HttpCookie("mpndata") { Expires = DateTime.UtcNow.AddDays(2), Path = "/" };
-                    mpnData.Values["UserEmail"] = SessionManager.Current.UserData.PlatformUser;
-                    mpnData.Values["UserName"] = SessionManager.Current.UserData.TokenData.Username;
-                    mpnData.Values["TrialUntil"] = SessionManager.Current.UserData.TokenData.Trial
-                        ? SessionManager.Current.UserData.TokenData.LicenseExpirationString : "";
-                    Response.Cookies.Add(mpnData);
+                    //Response.Write($"<script type=\"text/javascript\">top.location.href='{AppDefaults.UrlManager}';</script>");
+                    //Response.End();
                 }
             }
         }
@@ -185,14 +173,14 @@ namespace Fly01.Core.Presentation.Application
             if (FormsAuthentication.CookiesSupported &&
                 Request.Cookies[FormsAuthentication.FormsCookieName] != null)
             {
-                if (ReadCookieAndSetSession(Request.Cookies[FormsAuthentication.FormsCookieName].Value))
+                if (!ReadCookieAndSetSession(Request.Cookies[FormsAuthentication.FormsCookieName].Value))
                 {
-                    HttpCookie mpnData = new HttpCookie("mpndata") { Expires = DateTime.UtcNow.AddDays(2), Path = "/" };
-                    mpnData.Values["UserEmail"] = SessionManager.Current.UserData.PlatformUser;
-                    mpnData.Values["UserName"] = SessionManager.Current.UserData.TokenData.Username;
-                    mpnData.Values["TrialUntil"] = SessionManager.Current.UserData.TokenData.Trial
-                        ? SessionManager.Current.UserData.TokenData.LicenseExpirationString : "";
-                    Response.Cookies.Add(mpnData);
+                    //HttpCookie mpnData = new HttpCookie("mpndata") { Expires = DateTime.UtcNow.AddDays(2), Path = "/" };
+                    //mpnData.Values["UserEmail"] = SessionManager.Current.UserData.PlatformUser;
+                    //mpnData.Values["UserName"] = SessionManager.Current.UserData.TokenData.UserName;
+                    //mpnData.Values["TrialUntil"] = SessionManager.Current.UserData.TokenData.Trial
+                    //    ? SessionManager.Current.UserData.TokenData.LicenseExpirationString : "";
+                    //Response.Cookies.Add(mpnData);
                 }
             }
             else

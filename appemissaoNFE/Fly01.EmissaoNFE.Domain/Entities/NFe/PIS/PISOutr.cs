@@ -1,5 +1,8 @@
 ﻿using System.Xml.Serialization;
 using Fly01.Core;
+using Fly01.Core.Entities.Domains.Enum;
+using Fly01.EmissaoNFE.Domain.Enums;
+
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFe.PIS
 {
@@ -8,7 +11,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.PIS
     {
         public PISOutr() { }
 
-        public PISOutr(string codigoSituacaoTributaria) : base(codigoSituacaoTributaria) { }
+        public PISOutr(string codigoSituacaoTributaria, TipoCRT tipoCRT) : base(codigoSituacaoTributaria, tipoCRT) { }
 
         [XmlIgnore]
         public double? ValorBCDoPIS { get; set; }

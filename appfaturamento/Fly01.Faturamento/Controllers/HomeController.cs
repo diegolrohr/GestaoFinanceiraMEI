@@ -143,7 +143,7 @@ namespace Fly01.Faturamento.Controllers
 
         public override ContentResult Sidebar()
         {
-            var config = new SidebarUI() { Id = "nav-bar", AppName = "Faturamento", Parent = "header" };
+            var config = new SidebarUI() { Id = "nav-bar", AppName = "Faturamento", Parent = "header", PlatformsUrl = @Url.Action("Platforms", "Account") };
 
             #region MenuItems
 
@@ -241,7 +241,7 @@ namespace Fly01.Faturamento.Controllers
 
             #endregion
 
-            config.Name = SessionManager.Current.UserData.TokenData.Username;
+            config.Name = SessionManager.Current.UserData.TokenData.UserName;
             config.Email = SessionManager.Current.UserData.PlatformUser;
             config.Notification = new SidebarUINotification()
             {
@@ -265,25 +265,6 @@ namespace Fly01.Faturamento.Controllers
                 config.Widgets.Insights = new InsightsUI { Key = ConfigurationManager.AppSettings["InstrumentationKeyAppInsights"] };
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
-        }
-
-        private string GenerateJWT()
-        {
-            var payload = new Dictionary<string, string>()
-                {
-                    {  "platformUrl", SessionManager.Current.UserData.PlatformUrl },
-                    {  "clientId", AppDefaults.AppId },
-                };
-            var token = JWTHelper.Encode(payload, "https://meu.bemacash.com.br/", DateTime.Now.AddMinutes(60));
-            return token;
-        }
-
-        public JsonResult NotificationJwt()
-        {
-            return Json(new
-            {
-                token = GenerateJWT()
-            }, JsonRequestBehavior.AllowGet);
         }
 
         private int GetNotasNaoTransmitidas()

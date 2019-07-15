@@ -1,4 +1,6 @@
-﻿namespace Fly01.EmissaoNFE.Domain.ViewModel
+﻿using System;
+
+namespace Fly01.EmissaoNFE.Domain.ViewModel
 {
     public class DanfeVM : EntidadeVM
     {

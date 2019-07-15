@@ -1,6 +1,5 @@
 <script>
     function fnRemoveCertificado() {
-        debugger;
         $.ajax({
             type: "POST",
             url: "@Url.Action("RemoveCertificados", "CertificadoDigital")",
@@ -8,6 +7,7 @@
             success: function (response) {
                 if (response.success) {
                     $$$.toast("Certificado removido com sucesso!", "success");
+                    $("#id").val("");
                 }
                 else {
                     $$$.toast(response.message, "error");
@@ -19,5 +19,6 @@
         });
 
         $$$._.fly01frm.refresh();
+        $('#fly01frm').trigger("reset");
     }
 </script>

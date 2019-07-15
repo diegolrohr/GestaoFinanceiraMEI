@@ -108,7 +108,8 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 + icmsTotal.SomatorioICMSST
                 + icmsTotal.SomatorioIPI
                 + icmsTotal.SomatorioPis
-                + icmsTotal.SomatorioFCPST;
+                + icmsTotal.SomatorioFCPST
+                + icmsTotal.SomatorioFCP;
         }
 
         #region Impostos
@@ -117,22 +118,25 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
             if (itemTributacao.CalculaST)
             {
                 string UFSiglaEmpresa = (Cabecalho.Empresa.Cidade != null ? (Cabecalho.Empresa.Cidade.Estado != null ? Cabecalho.Empresa.Cidade.Estado.Sigla : "") : "");
-                var st = TransmissaoBLs.SubstituicaoTributariaBL.AllIncluding(y => y.EstadoOrigem).AsNoTracking().Where(x =>
+                var st = TransmissaoBLs.SubstituicaoTributariaBL.AllIncluding(y => y.EstadoOrigem, y => y.EstadoDestino).AsNoTracking().Where(x =>
                     x.NcmId == (item.Produto.NcmId ?? Guid.NewGuid()) &&
                     ((item.Produto.CestId.HasValue && x.CestId == item.Produto.CestId.Value) || !item.Produto.CestId.HasValue) &&
                     x.EstadoOrigem.Sigla == UFSiglaEmpresa &&
-                    x.EstadoDestinoId == Cabecalho.Cliente.EstadoId &&
+                    x.EstadoDestino.Sigla == Cabecalho.Cliente.Estado.Sigla &&
                     x.TipoSubstituicaoTributaria == TipoSubstituicaoTributaria.Saida
                     ).FirstOrDefault();
+
                 //TODO: colocar cst fixo? ver Wilson
                 var CST = item.GrupoTributario.TipoTributacaoPIS.HasValue ? item.GrupoTributario.TipoTributacaoPIS.Value.ToString() : "";
 
                 ICMS.UF = Cabecalho.Cliente.Estado?.Sigla;
                 ICMS.PercentualMargemValorAdicionadoST = st != null ? st.Mva : 0;
+                ICMS.ModalidadeBCST = ModalidadeDeterminacaoBCICMSST.MargemValorAgregado;
                 ICMS.ValorBCST = Math.Round(itemTributacao.STBase, 2);
                 ICMS.AliquotaICMSST = Math.Round(itemTributacao.STAliquota, 2);
                 ICMS.ValorICMSST = Math.Round(itemTributacao.STValor, 2);
                 ICMS.ValorBCSTRetido = Math.Round(item.ValorBCSTRetido, 2);
+                ICMS.PercentualReducaoBC = item.PercentualReducaoBC;
 
                 if (Cabecalho.Versao == "4.00")
                 {
@@ -163,6 +167,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                     ICMS.ModalidadeBCST = ModalidadeDeterminacaoBCICMSST.MargemValorAgregado;
                     ICMS.ValorICMS = Math.Round(itemTributacao.ICMSValor, 2);
                     ICMS.ValorBC = Math.Round(itemTributacao.ICMSBase, 2);
+                    ICMS.PercentualReducaoBC = item.PercentualReducaoBC;
                 }
 
                 if (item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaComPermissaoDeCreditoST
@@ -183,6 +188,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 //AliquotaAplicavelCalculoCreditoSN = Math.Round(((item.ValorCreditoICMS / (item.Quantidade * item.Valor)) * 100), 2),
                 //ValorCreditoICMS = Math.Round(item.ValorCreditoICMS, 2),
                 CodigoSituacaoOperacao = TipoTributacaoICMS.TributadaSemPermissaoDeCredito, //TODO: ver Wilson
+                TipoCRT = ParametrosTributarios.TipoCRT,
 
             };
             CalculaICMSPai(item, itemTributacao, ICMS);

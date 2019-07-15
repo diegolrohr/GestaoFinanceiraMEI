@@ -144,5 +144,6 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
 
         [JsonProperty("registroFixo")]
         public bool RegistroFixo { get; set; }
+             
     }
 }

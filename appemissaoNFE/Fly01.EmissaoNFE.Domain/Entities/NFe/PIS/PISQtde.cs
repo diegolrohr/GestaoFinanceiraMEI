@@ -1,4 +1,6 @@
 ﻿using System.Xml.Serialization;
+using Fly01.Core.Entities.Domains.Enum;
+using Fly01.EmissaoNFE.Domain.Enums;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFe.PIS
 {
@@ -7,7 +9,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.PIS
     {
         public PISQtde() { }
 
-        public PISQtde(string codigoSituacaoTributaria) : base(codigoSituacaoTributaria)
+        public PISQtde(string codigoSituacaoTributaria, TipoCRT tipoCRT) : base(codigoSituacaoTributaria, tipoCRT)
         {
         }
 

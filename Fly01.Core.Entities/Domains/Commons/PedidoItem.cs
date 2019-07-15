@@ -20,6 +20,10 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public double ValorBCFCPSTRetidoAnterior { get; set; }
 
+        public double PercentualReducaoBC { get; set; }
+
+        public double PercentualReducaoBCST { get; set; }
+
         public Guid? NFeImportacaoProdutoId { get; set; }
 
         public virtual GrupoTributario GrupoTributario { get; set; }

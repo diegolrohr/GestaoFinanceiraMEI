@@ -163,6 +163,8 @@ namespace Fly01.Compras.BL
                             ValorCreditoICMS = x.ValorCreditoICMS,
                             ValorFCPSTRetidoAnterior = x.ValorFCPSTRetidoAnterior,
                             ValorBCFCPSTRetidoAnterior = x.ValorBCFCPSTRetidoAnterior,
+                            PercentualReducaoBC = x.PercentualReducaoBC,
+                            PercentualReducaoBCST = x.PercentualReducaoBCST,
                             PedidoItemId = x.Id
                         }).ToList();
 
@@ -307,7 +309,9 @@ namespace Fly01.Compras.BL
 
             rpc = new RpcClient();
             numero = int.Parse(rpc.Call($"plataformaid={PlataformaUrl},tipoordemcompra={(int)TipoOrdemCompra.Pedido}"));
-            //numero = All.Max(x => x.Numero)+1;
+            //numero = All.Max(x => x.Numero) + 1;
+
+
 
             entity.Numero = numero;
 

@@ -85,7 +85,7 @@ namespace Fly01.Faturamento.BL
 
         public List<OrdemVendaProduto> GetOrdemVendaProdutos(Guid ordemVendaId)
         {
-            return OrdemVendaProdutoBL.All.Where(x => x.OrdemVendaId == ordemVendaId).ToList();
+            return OrdemVendaProdutoBL.AllIncluding(x => x.GrupoTributario).Where(x => x.OrdemVendaId == ordemVendaId).ToList();
         }
 
         public List<OrdemVendaServico> GetOrdemVendaServicos(Guid ordemVendaId)
@@ -100,6 +100,8 @@ namespace Fly01.Faturamento.BL
             var ordemVendaProdutos = GetOrdemVendaProdutos(entity.Id);
             var ordemVendaServicos = GetOrdemVendaServicos(entity.Id);
             int num = 1;
+            var parametros = GetParametrosTributarios();
+
             foreach (var item in ordemVendaProdutos)
             {
                 if (GetProduto(item.ProdutoId) == null)
@@ -109,6 +111,14 @@ namespace Fly01.Faturamento.BL
                 if (GetGrupoTributario(item.GrupoTributarioId ?? default(Guid)) == null)
                 {
                     throw new BusinessException(string.Format("Informe um Grupo Tributário válido no produto {0}.", num));
+                }
+                if(parametros.TipoCRT != TipoCRT.RegimeNormal && entity.TipoVenda != TipoCompraVenda.Devolucao && ((int)item?.GrupoTributario.TipoTributacaoICMS >= 0 && (int)item?.GrupoTributario.TipoTributacaoICMS <= 90))
+                {
+                    throw new BusinessException(string.Format("Seu regime tributário configurado, é Simples Nacional e no grupo tributário do produto {0}, foi configurado CST nas configurações de ICMS, altere para CSOSN.", num));
+                }
+                if (parametros.TipoCRT == TipoCRT.RegimeNormal && entity.TipoVenda != TipoCompraVenda.Devolucao && ((int)item?.GrupoTributario.TipoTributacaoICMS >= 101 && (int)item?.GrupoTributario.TipoTributacaoICMS <= 900))
+                {
+                    throw new BusinessException(string.Format("Seu regime tributário configurado, é Normal e no grupo tributário do produto {0}, foi configurado CSOSN nas configurações de ICMS, altere para CST.", num));
                 }
                 num++;
             }
@@ -128,7 +138,6 @@ namespace Fly01.Faturamento.BL
 
             var dadosEmpresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
             var empresaUF = dadosEmpresa.Cidade != null ? (dadosEmpresa.Cidade.Estado != null ? dadosEmpresa.Cidade.Estado.Sigla : "") : "";
-            var parametros = GetParametrosTributarios();
 
             if (string.IsNullOrEmpty(empresaUF) || string.IsNullOrEmpty(clienteUF) || parametros == null)
             {
@@ -323,8 +332,8 @@ namespace Fly01.Faturamento.BL
                     };
                     var tributacao = new Tributacao();
                     tributacao.ValorBase = itemServico.Total;
-                    tributacao.SimplesNacional = true;
-                    
+                    tributacao.SimplesNacional = parametros.TipoCRT != TipoCRT.RegimeNormal;
+
                     //ISS
                     if (grupoTributario.CalculaIss || grupoTributario.RetemISS)
                     {
@@ -490,7 +499,7 @@ namespace Fly01.Faturamento.BL
                 var tributacao = new Tributacao();
                 tributacao.ValorBase = itemProduto.Total;
                 tributacao.ValorFrete = itemRetorno.FreteValorFracionado;
-                tributacao.SimplesNacional = true;
+                tributacao.SimplesNacional = parametros.TipoCRT != TipoCRT.RegimeNormal;
 
                 //ICMS
                 //refatorar para cada caso
@@ -500,6 +509,7 @@ namespace Fly01.Faturamento.BL
                     tributacao.Icms = new Icms()
                     {
                         Aliquota = itemProduto.AliquotaICMS,
+                        PercentualReducaoBC = itemProduto.PercentualReducaoBC,
                         DespesaNaBase = grupoTributario.AplicaDespesaBaseIcms,
                         Difal = grupoTributario.CalculaIcmsDifal,
                         FreteNaBase = grupoTributario.AplicaFreteBaseIcms,
@@ -553,8 +563,10 @@ namespace Fly01.Faturamento.BL
                             FreteNaBase = grupoTributario.AplicaFreteBaseST,
                             DespesaNaBase = grupoTributario.AplicaDespesaBaseST,
                             Mva = st.Mva,
+                            PercentualReducaoBCST = itemProduto.PercentualReducaoBCST,
+                            PercentualReducaoBCICMSST = itemProduto.PercentualReducaoBC,
                             AliquotaIntraEstadual = st.AliquotaIntraEstadual,
-                            AliquotaInterEstadual = st.AliquotaInterEstadual,
+                            AliquotaInterEstadual = st.AliquotaInterEstadual
                         };
                         if (produto.AliquotaIpi > 0)
                         {
@@ -660,7 +672,9 @@ namespace Fly01.Faturamento.BL
                 GrupoTributarioId = x.GrupoTributarioId.Value,
                 AliquotaFCP = x.Fcp,
                 AliquotaICMS = x.Icms,
-                OrdemVendaProdutoId = x.Id
+                OrdemVendaProdutoId = x.Id,
+                PercentualReducaoBC = x.PercentualReducaoBC,
+                PercentualReducaoBCST = x.PercentualReducaoBCST
             }).ToList(), clienteId, tipoVenda, tipoNfeComplementar, tipoFrete, nFeRefIsDevolucao, valorFrete);
         }
 
@@ -690,7 +704,9 @@ namespace Fly01.Faturamento.BL
                 ProdutoId = x.ProdutoId,
                 GrupoTributarioId = x.GrupoTributarioId.Value,
                 AliquotaFCP = x.Fcp,
-                AliquotaICMS = x.Icms
+                AliquotaICMS = x.Icms,
+                PercentualReducaoBC = x.PercentualReducaoBC,
+                PercentualReducaoBCST = x.PercentualReducaoBCST
             }).ToList(), clienteId, tipoVenda, tipoNfeComplementar, tipoFrete, nFeRefIsDevolucao, valorFrete);
         }
 
@@ -706,7 +722,9 @@ namespace Fly01.Faturamento.BL
                 ProdutoId = x.ProdutoId,
                 GrupoTributarioId = x.GrupoTributarioId.Value,
                 AliquotaFCP = x.Fcp,
-                AliquotaICMS = x.Icms
+                AliquotaICMS = x.Icms,
+                PercentualReducaoBC = x.PercentualReducaoBC,
+                PercentualReducaoBCST = x.PercentualReducaoBCST
             }).ToList(), clienteId, tipoVenda, tipoNfeComplementar, tipoFrete, nFeRefIsDevolucao, valorFrete);
         }
 
@@ -755,6 +773,10 @@ namespace Fly01.Faturamento.BL
         public Guid GrupoTributarioId { get; set; }
 
         public double Total { get; set; }
+
+        public double PercentualReducaoBC { get; set; }
+
+        public double PercentualReducaoBCST { get; set; }
 
         public virtual GrupoTributario GrupoTributario { get; set; }
     }

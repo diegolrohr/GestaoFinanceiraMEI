@@ -1,4 +1,5 @@
 ﻿using Fly01.Core.BL;
+using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
 using Fly01.Core.Notifications;
 using Fly01.EmissaoNFE.Domain.Enums;
@@ -20,11 +21,11 @@ namespace Fly01.EmissaoNFE.BL
             EntidadeBL = entidadeBL;
             EstadoBL = estadoBL;
         }
-        
+
         public ChaveRetornoVM ChaveNFe(ChaveVM entity)
         {
             var chave = GeraChave(entity.CodigoUF.ToString(),
-                                    entity.Emissao.Year.ToString(), 
+                                    entity.Emissao.Year.ToString(),
                                     entity.Emissao.Month.ToString(),
                                     entity.Cnpj,
                                     entity.Modelo.ToString(),
@@ -34,7 +35,7 @@ namespace Fly01.EmissaoNFE.BL
                                     entity.CodigoNF.ToString()
                                     );
 
-            if(chave == null)
+            if (chave == null)
             {
                 entity.Notification.Errors.Add(new Error("Erro ao gerar a chave da NFe"));
                 throw new BusinessException(entity.Notification.Get());
@@ -45,10 +46,87 @@ namespace Fly01.EmissaoNFE.BL
             }
         }
 
+        public string CodificaCodigoNF(string codigoNF, TipoAmbiente tipoAmbiente)
+        {
+            //Id = "NFe35190753113791000122558890000008351003111161"
+            //835 > 00311116
+
+            if (tipoAmbiente == TipoAmbiente.Producao && DateTime.Now < new DateTime(2019,9,1))
+            {
+                return codigoNF;
+            }
+            else
+            {
+                //000000835
+                codigoNF = codigoNF.PadLeft(8, '0');
+                var digito = CalculaDigitoCodigoNF(codigoNF);
+                var cNumcheck = "";
+                //ATENCAO: JAMAIS ALTERAR NENHUM DIGITO DESTE CODIGO
+                var dePara = new string[] { "3247015698", "8762341509", "1350924687", "6420875931", "2345678901", "5398712460", "1470258369", "5647382901", "9123765408", "1973820564" };
+                
+                // Fase 1 : Pega do terceiro ao oitavo digito 
+                // E realiza a troca pela tabela de-para
+                for (int i = 2; i < 7; i++)
+                {
+                    //pega o número correspondente da tabela ascii
+                    var nOrig = Convert.ToInt32(Convert.ToChar(codigoNF.Substring(i, 1))) - 47;
+                    if(nOrig > 9)
+                    {
+                        nOrig = 9;
+                    }
+                    cNumcheck += dePara[digito + 1].Substring(nOrig, 1);
+                }
+
+                // Fase 2: Desloca o numero gerado um pouco ...
+                for (int i = 0; i < digito +1; i++)
+                {
+                    cNumcheck = (cNumcheck.Substring(1) + cNumcheck.Substring(0, 1));
+                }
+
+                // Fase 3 : Copia os 2 primeiros digitos, mais o numero criptografado, 
+                // mais o ultimo numero, que foi o indice usado para fazer as trocas! 
+                return (codigoNF.Substring(0, 2) + cNumcheck + codigoNF.Substring(codigoNF.Length - 1, 1));
+            }
+        }
+
+        public int CalculaDigitoCodigoNF(string codigoNF)
+        {
+            var peso = 2;
+            var total = 0;
+            int dv = 0;
+
+            for (int x = codigoNF.Length - 1; x >= 0; x--)
+            {
+                int valor = 0;
+                Int32.TryParse(codigoNF[x].ToString(), out valor);
+
+                total = total + valor * peso;
+                peso++;
+
+                if (peso == 2)
+                {
+                    peso = 1;
+                }
+                else
+                {
+                    peso = 2;
+                }
+
+            }
+
+            dv = 10 - (total % 10);
+
+            if (dv > 9)
+                dv = 0;
+
+            return dv;
+        }
+
         public string GeraChave(string UF, string ano, string mes, string cnpj, string modelo, string serie, string numeroNota, string tipoEmissao, string codigoNF)
         {
             var retorno = UF + ano[2] + ano[3] + mes.PadLeft(2, '0') + cnpj.PadLeft(14, '0') + modelo.PadLeft(2, '0') +
                             serie.PadLeft(3, '0') + numeroNota.PadLeft(9, '0') + tipoEmissao + codigoNF.PadLeft(8, '0');
+
             int dv = 0;
 
             if (retorno.Length != 43)
@@ -75,7 +153,6 @@ namespace Fly01.EmissaoNFE.BL
                     dv = 0;
 
             }
-            
             return "NFe" + retorno + dv.ToString();
         }
 
@@ -94,7 +171,7 @@ namespace Fly01.EmissaoNFE.BL
 
             #region Validações
             var tipoNota = EnumHelper.GetDataEnumValues(typeof(TipoNota));
-            
+
             entity.Fail(entity.CodigoUF != 0 && (EstadoBL.All.Where(e => e.CodigoIbge == entity.CodigoUF.ToString()).FirstOrDefault() != null ? false : true), CodigoUFNotValid);
             entity.Fail(entity.Modelo != 0 && entity.Modelo > 99, ModeloNotValid);
             entity.Fail(entity.Serie != 0 && entity.Serie > 999, SerieNotValid);

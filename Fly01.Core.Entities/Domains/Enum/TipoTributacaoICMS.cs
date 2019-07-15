@@ -43,6 +43,50 @@ namespace Fly01.Core.Entities.Domains.Enum
 
         [XmlEnum(Name = "900")]
         [Subtitle("Outros", "900 - Outros")]
-        Outros = 900
+        Outros = 900,
+        //lucro Presumido
+        [XmlEnum(Name = "00")]
+        [Subtitle("TributadaIntegralmente", "00 - Tributada Integralmente")]
+        TributadaIntegralmente = 0,
+
+        [XmlEnum(Name = "10")]
+        [Subtitle("TributadaComCobrancaDeSubstituicao", "10 - Tributada Com cobrança de substituição tributária")]
+        TributadaComCobrancaDeSubstituicao = 10,
+
+        [XmlEnum(Name = "20")]
+        [Subtitle("ComReducaoDeBaseDeCalculo", "20 - Com Redução de Base de Cálculo")]
+        ComReducaoDeBaseDeCalculo = 20,
+
+        [XmlEnum(Name = "30")]
+        [Subtitle("IsentaOuNaoTributadaPorST", "30 - Isenta/Não Tributada e Com cobrança de substituição tributária")]
+        IsentaOuNaoTributadaPorST = 30,
+
+        [XmlEnum(Name = "40")]
+        [Subtitle("Isenta", "40 - Isenta")]
+        Isenta = 40,
+
+        [XmlEnum(Name = "41")]
+        [Subtitle("NaoTributada", "41 - Não Tributada")]
+        NaoTributada = 41,
+
+        [XmlEnum(Name = "50")]
+        [Subtitle("ComSuspensao", "50 - Com Suspensão")]
+        ComSuspensao = 50,
+
+        [XmlEnum(Name = "51")]
+        [Subtitle("Diferimento", "51 - Diferimento")]
+        Diferimento = 51,
+
+        [XmlEnum(Name = "60")]
+        [Subtitle("ICMSCobradoAnteriormentePorST", "60 - ICMS Cobrado Anteriormente Por Substituição Tributária")]
+        ICMSCobradoAnteriormentePorST = 60,
+
+        [XmlEnum(Name = "70")]
+        [Subtitle("ComRedDeBaseDeST", "70 - Com Redução de cálculo e cobrado por Substituição Tributária")]
+        ComRedDeBaseDeST = 70,
+
+        [XmlEnum(Name = "90")]
+        [Subtitle("Outros90", "90 - Outros")]
+        Outros90 = 90
     }
 }

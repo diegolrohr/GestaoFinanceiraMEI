@@ -7,6 +7,7 @@ namespace Fly01.EmissaoNFE.Domain
         public string EstadoOrigem { get; set; }
         public string EstadoDestino { get; set; }
         public double? Aliquota { get; set; }
+        public double? PercentualReducaoBC { get; set; }
         public double Base { get; set; }
         public double Valor { get; set; }
         public bool IpiNaBase { get; set; }

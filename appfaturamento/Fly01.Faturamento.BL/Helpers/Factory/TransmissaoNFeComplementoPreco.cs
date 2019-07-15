@@ -96,6 +96,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
             {
                 OrigemMercadoria = item.Produto.OrigemMercadoria,
                 CodigoSituacaoOperacao = item.GrupoTributario.TipoTributacaoICMS != null ? item.GrupoTributario.TipoTributacaoICMS.Value : TipoTributacaoICMS.TributadaSemPermissaoDeCredito,
+                TipoCRT = ParametrosTributarios.TipoCRT,
             };
         }
 

@@ -35,14 +35,14 @@ namespace Fly01.Compras.BL
         {
             var notasFiscaisByPlataforma = (from nf in NFeEntradaBL.Everything.Where(x => (x.Status == StatusNotaFiscal.Transmitida || x.Status == StatusNotaFiscal.EmCancelamento))
                                             where (string.IsNullOrEmpty(plataformaUrl) || nf.PlataformaId == plataformaUrl) && nf.TipoNotaFiscal == TipoNotaFiscal.NFe
-                                            group nf by new { nf.PlataformaId, nf.TipoAmbiente, nf.CertificadoDigitalId } into g
+                                            group nf by new { nf.PlataformaId, nf.TipoAmbiente, nf.CertificadoDigitalId, nf.SerieNotaFiscalId } into g
                                             select new
                                             {
                                                 plataformaId = g.Key.PlataformaId,
                                                 tipoAmbiente = g.Key.TipoAmbiente,
                                                 certificadoDigitalId = g.Key.CertificadoDigitalId,
-                                                notaInicial = g.Min(x => x.SefazId),
-                                                notaFinal = g.Max(x => x.SefazId)
+                                                notaInicial = g.Min(x => x.SefazId.Substring(22, 12)),
+                                                notaFinal = g.Max(x => x.SefazId.Substring(22, 12))
                                             });
 
             var header = GetHeader(PlataformaUrl);
@@ -58,7 +58,16 @@ namespace Fly01.Compras.BL
 
                     if (TotalTributacaoBL.ConfiguracaoTSSOK(dadosPlataforma.plataformaId))
                     {
-                        var monitorVM = GetMonitorVM(entidade, dadosPlataforma);
+                        var sefazIdInicial = NFeEntradaBL.Everything.AsNoTracking().Where(x => x.SefazId.Substring(22, 12) == dadosPlataforma.notaInicial && x.PlataformaId == dadosPlataforma.plataformaId).FirstOrDefault()?.SefazId;
+                        var sefazIdFinal = NFeEntradaBL.Everything.AsNoTracking().Where(x => x.SefazId.Substring(22, 12) == dadosPlataforma.notaFinal && x.PlataformaId == dadosPlataforma.plataformaId).FirstOrDefault()?.SefazId;
+                        var monitorVM = new MonitorVM()
+                        {
+                            Homologacao = entidade.Homologacao,
+                            Producao = entidade.Producao,
+                            EntidadeAmbiente = entidade.EntidadeAmbiente,
+                            NotaInicial = sefazIdInicial,
+                            NotaFinal = sefazIdFinal,
+                        };
 
                         var responseMonitor = RestHelper.ExecutePostRequest<ListMonitorRetornoVM>(AppDefaults.UrlEmissaoNfeApi, "monitor", JsonConvert.SerializeObject(monitorVM), null, header);
                         if (responseMonitor == null)
@@ -76,16 +85,16 @@ namespace Fly01.Compras.BL
 
         public void AtualizaStatusTSSInutilizada(string plataformaUrl)
         {
-            var notasFiscaisInutilizadasByPlataforma = (from nf in NotaFiscalInutilizadaBL.Everything.Where(x => (x.Status == StatusNotaFiscal.InutilizacaoSolicitada || x.Status == StatusNotaFiscal.Transmitida))
+            var notasFiscaisInutilizadasByPlataforma = (from nf in NotaFiscalInutilizadaBL.Everything.AsNoTracking().Where(x => (x.Status == StatusNotaFiscal.InutilizacaoSolicitada || x.Status == StatusNotaFiscal.Transmitida))
                                                         where string.IsNullOrEmpty(plataformaUrl) || nf.PlataformaId == plataformaUrl
-                                                        group nf by new { nf.PlataformaId, nf.TipoAmbiente, nf.CertificadoDigitalId } into g
+                                                        group nf by new { nf.PlataformaId, nf.TipoAmbiente, nf.CertificadoDigitalId, nf.Serie } into g
                                                         select new
                                                         {
                                                             plataformaId = g.Key.PlataformaId,
                                                             tipoAmbiente = g.Key.TipoAmbiente,
                                                             certificadoDigitalId = g.Key.CertificadoDigitalId,
-                                                            notaInicial = g.Min(x => x.SefazChaveAcesso),
-                                                            notaFinal = g.Max(x => x.SefazChaveAcesso)
+                                                            notaInicial = g.Min(x => x.SefazChaveAcesso.Substring(22, 12)),
+                                                            notaFinal = g.Max(x => x.SefazChaveAcesso.Substring(22, 12))
                                                         });
 
             var header = GetHeader(PlataformaUrl); 
@@ -101,7 +110,16 @@ namespace Fly01.Compras.BL
 
                     if (TotalTributacaoBL.ConfiguracaoTSSOK(dadosPlataforma.plataformaId))
                     {
-                        var monitorVM = GetMonitorVM(entidade, dadosPlataforma);
+                        var sefazIdInicial = NotaFiscalInutilizadaBL.Everything.AsNoTracking().Where(x => x.SefazChaveAcesso.Substring(22, 12) == dadosPlataforma.notaInicial && x.PlataformaId == dadosPlataforma.plataformaId).FirstOrDefault()?.SefazChaveAcesso;
+                        var sefazIdFinal = NotaFiscalInutilizadaBL.Everything.AsNoTracking().Where(x => x.SefazChaveAcesso.Substring(22, 12) == dadosPlataforma.notaFinal && x.PlataformaId == dadosPlataforma.plataformaId).FirstOrDefault()?.SefazChaveAcesso;
+                        var monitorVM = new MonitorVM()
+                        {
+                            Homologacao = entidade.Homologacao,
+                            Producao = entidade.Producao,
+                            EntidadeAmbiente = entidade.EntidadeAmbiente,
+                            NotaInicial = sefazIdInicial,
+                            NotaFinal = sefazIdFinal,
+                        };
 
                         var responseMonitor = RestHelper.ExecutePostRequest<ListMonitorRetornoVM>(AppDefaults.UrlEmissaoNfeApi, "monitor", JsonConvert.SerializeObject(monitorVM), null, header);
                         if (responseMonitor == null)
@@ -119,7 +137,7 @@ namespace Fly01.Compras.BL
 
         public void AtualizaStatusTSSCartaCorrecao(string plataformaUrl, Guid idNotaFiscal)
         {
-            var groupPlataformas = (from nf in NotaFiscalCartaCorrecaoEntradaBL.Everything.Where(x => (x.Status == StatusCartaCorrecao.Transmitida))
+            var groupPlataformas = (from nf in NotaFiscalCartaCorrecaoEntradaBL.Everything.AsNoTracking().Where(x => (x.Status == StatusCartaCorrecao.Transmitida))
                                     where (string.IsNullOrEmpty(plataformaUrl) || nf.PlataformaId == plataformaUrl)
                                     && (idNotaFiscal == default(Guid) || nf.NotaFiscalId == idNotaFiscal)
                                     group nf by nf.PlataformaId into g
@@ -134,7 +152,7 @@ namespace Fly01.Compras.BL
                     if (TotalTributacaoBL.ConfiguracaoTSSOK(dadosPlataforma.plataformaId))
                     {
                         var cartasCorrecoesByPlataforma = new List<NotaFiscalCartaCorrecaoEntrada>();
-                        cartasCorrecoesByPlataforma = NotaFiscalCartaCorrecaoEntradaBL.Everything.Where(x => x.PlataformaId == dadosPlataforma.plataformaId && (x.Status == StatusCartaCorrecao.Transmitida)).ToList();
+                        cartasCorrecoesByPlataforma = NotaFiscalCartaCorrecaoEntradaBL.Everything.AsNoTracking().Where(x => x.PlataformaId == dadosPlataforma.plataformaId && (x.Status == StatusCartaCorrecao.Transmitida)).ToList();
 
                         foreach (var cartaCorrecao in cartasCorrecoesByPlataforma)
                         {
@@ -227,18 +245,6 @@ namespace Fly01.Compras.BL
                     nfInutilizada.Recomendacao = itemNF.Recomendacao;
                 }
             }
-        }
-
-        private MonitorVM GetMonitorVM(EntidadeVM entidade, dynamic dadosPlataforma)
-        {
-            return new MonitorVM()
-            {
-                Homologacao = entidade.Homologacao,
-                Producao = entidade.Producao,
-                EntidadeAmbiente = entidade.EntidadeAmbiente,
-                NotaInicial = dadosPlataforma.notaInicial.ToString(),
-                NotaFinal = dadosPlataforma.notaFinal.ToString(),
-            };
         }
 
         private MonitorEventoVM GetMonitorEventoVM(EntidadeVM entidade, NotaFiscalCartaCorrecaoEntrada cartaCorrecao)

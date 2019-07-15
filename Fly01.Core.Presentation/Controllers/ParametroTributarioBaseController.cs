@@ -653,8 +653,17 @@ namespace Fly01.Core.Presentation.Controllers
                     { "$select", "id" }
             };
 
-            var response = RestHelper.ExecuteGetRequest<ParametroTributarioVM>(ResourceName, queryString);
-            return Json(new { existeParametro = (response?.Id != null && response?.Id != default(Guid)) }, JsonRequestBehavior.AllowGet);
+            try
+            {
+                var response = RestHelper.ExecuteGetRequest<ParametroTributarioVM>(ResourceName, queryString);
+                return Json(new { existeParametro = (response?.Id != null && response?.Id != default(Guid)) }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult { Data = new { success = false, message = ex } };
+                //return Json(new { existeParametro = (response?.Id != null && response?.Id != default(Guid)) }, JsonRequestBehavior.AllowGet);
+            }
         }
     }
 }

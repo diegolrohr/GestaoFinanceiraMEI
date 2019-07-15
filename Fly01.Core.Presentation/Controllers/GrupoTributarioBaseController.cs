@@ -1,5 +1,6 @@
 ﻿using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Presentation.Commons;
+using Fly01.Core.Rest;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
@@ -171,7 +172,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Id = "tipoTributacaoCOFINS",
                 Class = "col s12 l12",
                 Label = "Situação Tributária",
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoTributacaoPISCOFINS))),
+                Options = GetTipoTributacao(),
                 ConstrainWidth = true
             });
             config.Elements.Add(new InputCheckboxUI { Id = "aplicaFreteBaseCofins", Class = "col s12 m6 l6", Label = "Aplica FRETE na base de cálculo", Disabled = true });
@@ -351,6 +352,17 @@ namespace Fly01.Core.Presentation.Controllers
             cfg.Content.Add(config);
 
             return cfg;
+        }
+
+        private static List<SelectOptionUI> GetTipoTributacao()
+        {
+            var queryString = new Dictionary<string, string>();
+            var returnObj = RestHelper.ExecuteGetRequest<ParametroTributarioVM>("parametrotributario", queryString);
+
+            if (returnObj.TipoCRT == "SimplesNacional")
+                return new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoTributacaoICMS)));
+            else
+                return new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoTributacaoICMS)));
         }
     }
 }

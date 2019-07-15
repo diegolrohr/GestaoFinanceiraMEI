@@ -163,7 +163,7 @@ namespace Fly01.Faturamento.BL
 
         private ConfiguracaoPersonalizacaoBL configuracaoPersonalizacaoBL;
         public ConfiguracaoPersonalizacaoBL ConfiguracaoPersonalizacaoBL => configuracaoPersonalizacaoBL ?? (configuracaoPersonalizacaoBL = new ConfiguracaoPersonalizacaoBL(Context));
-
+                
         #endregion
     }
 }

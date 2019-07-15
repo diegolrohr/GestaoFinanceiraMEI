@@ -6,6 +6,8 @@ using Fly01.EmissaoNFE.Domain.Enums;
 using Fly01.EmissaoNFE.Domain.ViewModel;
 using Fly01.Core;
 using Fly01.EmissaoNFE.Domain.ViewModelNFS;
+using System;
+using Fly01.EmissaoNFE.Domain.Entities.NFe;
 
 namespace Fly01.EmissaoNFE.BL
 {
@@ -26,13 +28,15 @@ namespace Fly01.EmissaoNFE.BL
                     && (nota.Identificador.TipoDocumentoFiscal == TipoNota.Saida) && (nota.Identificador.ConsumidorFinal == 1))
                 {
                     var empresaUF = EstadoBL.All.Where(x => x.CodigoIbge == nota.Identificador.CodigoUF.ToString()).FirstOrDefault().Sigla;
-                    double impostoFederal = 0;
-                    double impostoEstadual = 0;
-                    double impostoMunicipal = 0;
+                    double impostoFederalTotal = 0;
+                    double impostoEstadualTotal = 0;
+                    double impostoMunicipalTotal = 0;
 
                     foreach (var detalhe in nota.Detalhes)
                     {
-
+                        double impostoFederalItem = 0;
+                        double impostoEstadualItem = 0;
+                        double impostoMunicipalItem = 0;
                         if (detalhe.Produto.NCM != null && detalhe.Produto.TipoProduto == TipoProduto.ProdutoFinal)
                         {
                             var codigoFilter = detalhe.Produto.NCM[0] == '0'
@@ -42,38 +46,48 @@ namespace Fly01.EmissaoNFE.BL
                             var ibpt = All.FirstOrDefault(x => x.Codigo == codigoFilter && x.UF == empresaUF);
                             if (ibpt != null)
                             {
-
-                                impostoFederal += (
+                                impostoFederalItem = (
                                     ((detalhe.Produto.Quantidade * detalhe.Produto.ValorUnitario)
                                       - (detalhe.Produto.ValorDesconto.HasValue ? detalhe.Produto.ValorDesconto.Value : 0))
                                     * (ibpt.ImpostoNacional / 100.00));
+                                impostoFederalTotal += impostoFederalItem;
 
-                                impostoEstadual += (
+                                impostoEstadualItem = (
                                     ((detalhe.Produto.Quantidade * detalhe.Produto.ValorUnitario)
                                       - (detalhe.Produto.ValorDesconto.HasValue ? detalhe.Produto.ValorDesconto.Value : 0))
                                      * (ibpt.ImpostoEstadual / 100.00));
+                                impostoEstadualTotal += impostoEstadualItem;
 
-                                impostoMunicipal += (
+                                impostoMunicipalItem = (
                                     ((detalhe.Produto.Quantidade * detalhe.Produto.ValorUnitario)
                                       - (detalhe.Produto.ValorDesconto.HasValue ? detalhe.Produto.ValorDesconto.Value : 0))
                                      * (ibpt.ImpostoMunicipal / 100.00));
+                                impostoMunicipalTotal += impostoMunicipalItem;
+                                detalhe.Imposto.TotalAprox += Math.Round((impostoFederalItem + impostoEstadualItem + impostoMunicipalItem), 2);
                             }
                         }
                     }
                     //percentual 
 
-                    var percImpostoFederal = "(" + ((impostoFederal * 100) / nota.Total.ICMSTotal.ValorTotalNF).ToString("N", AppDefaults.CultureInfoDefault) + "%)";
-                    var percImpostoEstadual = "(" + ((impostoEstadual * 100) / nota.Total.ICMSTotal.ValorTotalNF).ToString("N", AppDefaults.CultureInfoDefault) + "%)";
-                    var percImpostoMunicipal = "(" + ((impostoMunicipal * 100) / nota.Total.ICMSTotal.ValorTotalNF).ToString("N", AppDefaults.CultureInfoDefault) + "%)";
+                    var percImpostoFederal = "(" + ((impostoFederalTotal * 100) / nota.Total.ICMSTotal.ValorTotalNF).ToString("N", AppDefaults.CultureInfoDefault) + "%)";
+                    var percImpostoEstadual = "(" + ((impostoEstadualTotal * 100) / nota.Total.ICMSTotal.ValorTotalNF).ToString("N", AppDefaults.CultureInfoDefault) + "%)";
+                    var percImpostoMunicipal = "(" + ((impostoMunicipalTotal * 100) / nota.Total.ICMSTotal.ValorTotalNF).ToString("N", AppDefaults.CultureInfoDefault) + "%)";
                     var InformacoesIBPT = " | " + "Valor aproximado do(s) Tributo(s): "
-                        + impostoFederal.ToString("C", AppDefaults.CultureInfoDefault) + percImpostoFederal + " Federal, "
-                        + impostoEstadual.ToString("C", AppDefaults.CultureInfoDefault) + percImpostoEstadual + " Estadual, "
-                        + impostoMunicipal.ToString("C", AppDefaults.CultureInfoDefault) + percImpostoMunicipal
+                        + impostoFederalTotal.ToString("C", AppDefaults.CultureInfoDefault) + percImpostoFederal + " Federal, "
+                        + impostoEstadualTotal.ToString("C", AppDefaults.CultureInfoDefault) + percImpostoEstadual + " Estadual, "
+                        + impostoMunicipalTotal.ToString("C", AppDefaults.CultureInfoDefault) + percImpostoMunicipal
                         + " Municipal. Fonte: IBPT";
-
+                    nota.Total.ICMSTotal.TotalTributosAprox += Math.Round((impostoFederalTotal + impostoEstadualTotal + impostoMunicipalTotal), 2);
                     if (nota.InformacoesAdicionais != null)
                     {
                         nota.InformacoesAdicionais.InformacoesComplementares = nota.InformacoesAdicionais.InformacoesComplementares != null ? nota.InformacoesAdicionais.InformacoesComplementares += InformacoesIBPT : InformacoesIBPT;
+                    }
+                    else
+                    {
+                        nota.InformacoesAdicionais = new InformacoesAdicionais()
+                        {
+                            InformacoesComplementares = InformacoesIBPT.Trim()
+                        };
                     }
                 }
 

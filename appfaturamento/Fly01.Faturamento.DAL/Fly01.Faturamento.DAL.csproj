@@ -544,6 +544,10 @@
     <Compile Include="Migrations\201907031927289_AlterNFeProdutoAddReducaoBC.Designer.cs">
       <DependentUpon>201907031927289_AlterNFeProdutoAddReducaoBC.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201907151325430_CreateTotalOrdemVenda.cs" />
+    <Compile Include="Migrations\201907151325430_CreateTotalOrdemVenda.Designer.cs">
+      <DependentUpon>201907151325430_CreateTotalOrdemVenda.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\AliquotaSimplesNacionalDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
@@ -948,6 +952,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201907031927289_AlterNFeProdutoAddReducaoBC.resx">
       <DependentUpon>201907031927289_AlterNFeProdutoAddReducaoBC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907151325430_CreateTotalOrdemVenda.resx">
+      <DependentUpon>201907151325430_CreateTotalOrdemVenda.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

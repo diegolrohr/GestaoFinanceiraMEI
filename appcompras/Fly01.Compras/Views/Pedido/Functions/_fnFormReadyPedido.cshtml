@@ -152,6 +152,7 @@
     function fnBindOverrideSubmit() {
         $("form#fly01frm").off("submit");
         $("form#fly01frm").on("submit", function (e) {
+            debugger;
             e.preventDefault();
             if (!$(this).valid()) return false;
 

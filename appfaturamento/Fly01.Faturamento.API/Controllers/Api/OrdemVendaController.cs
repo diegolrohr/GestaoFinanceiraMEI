@@ -9,6 +9,7 @@ using System.Data.Entity.Infrastructure;
 using System.Net;
 using System.Data.Entity;
 using System.Linq;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Faturamento.API.Controllers.Api
 {
@@ -26,6 +27,8 @@ namespace Fly01.Faturamento.API.Controllers.Api
                 return BadRequest(ModelState);
 
             ModelState.Clear();
+
+            entity.Total = GetTotalPedidoItens(entity);
 
             Validate(entity);
 
@@ -48,6 +51,9 @@ namespace Fly01.Faturamento.API.Controllers.Api
 
             ModelState.Clear();
             model.Patch(entity);
+
+            entity.Total = GetTotalPedidoItens(entity);
+
             Update(entity);
 
             Validate(entity);
@@ -71,6 +77,43 @@ namespace Fly01.Faturamento.API.Controllers.Api
             }
 
             return Ok();
+        }
+
+        private double GetTotalPedidoItens(OrdemVenda ordemVenda)
+        {
+            using (var unitOfWork = new UnitOfWork(ContextInitialize))
+            {
+                var configuracaoPersonalizacao = unitOfWork.ConfiguracaoPersonalizacaoBL.All.AsNoTracking().FirstOrDefault();
+                var exibirTransportadora = configuracaoPersonalizacao != null ? configuracaoPersonalizacao.ExibirStepTransportadoraCompras : true;
+
+                var total = unitOfWork
+                                .OrdemVendaProdutoBL
+                                .All
+                                .Where(x => x.OrdemVendaId == ordemVenda.Id)
+                                .ToList()
+                                .Select(x => new
+                                {
+                                    Total = Convert.ToDouble(Math.Round((x.Quantidade * x.Valor) - x.Desconto, 2,
+                                        MidpointRounding.AwayFromZero))
+                                })
+                                .Sum(x => x.Total) +
+                                (((ordemVenda.TipoFrete == TipoFrete.FOB) && exibirTransportadora) ? (ordemVenda.ValorFrete ?? 0.0) : 0.0);
+
+                total += unitOfWork
+                                .OrdemVendaServicoBL
+                                .All
+                                .Where(x => x.OrdemVendaId == ordemVenda.Id)
+                                .ToList()
+                                .Select(x => new
+                                {
+                                    Total = Convert.ToDouble(Math.Round((x.Quantidade * x.Valor) - x.Desconto, 2,
+                                        MidpointRounding.AwayFromZero))
+                                })
+                                .Sum(x => x.Total) +
+                                (((ordemVenda.TipoFrete == TipoFrete.FOB) && exibirTransportadora) ? (ordemVenda.ValorFrete ?? 0.0) : 0.0);
+
+                return total;
+            }
         }
 
         public override async Task<IHttpActionResult> Delete([FromODataUri] Guid key)

@@ -391,7 +391,7 @@ namespace Fly01.Faturamento.Controllers
                 statusDescription = EnumHelper.GetDescription(typeof(Status), x.Status),
                 statusCssClass = EnumHelper.GetCSS(typeof(Status), x.Status),
                 statusValue = EnumHelper.GetValue(typeof(Status), x.Status),
-                total = x.Total?.ToString("C", AppDefaults.CultureInfoDefault),
+                total = x.Total.ToString("C", AppDefaults.CultureInfoDefault),
                 tipoVenda = x.TipoVenda,
                 tipoVendaDescription = EnumHelper.GetDescription(typeof(TipoCompraVenda), x.TipoVenda),
                 tipoVendaCssClass = EnumHelper.GetCSS(typeof(TipoCompraVenda), x.TipoVenda),

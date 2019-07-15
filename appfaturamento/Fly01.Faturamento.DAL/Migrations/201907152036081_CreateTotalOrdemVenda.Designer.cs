@@ -13,7 +13,7 @@ namespace Fly01.Faturamento.DAL.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201907151325430_CreateTotalOrdemVenda"; }
+            get { return "201907152036081_CreateTotalOrdemVenda"; }
         }
         
         string IMigrationMetadata.Source

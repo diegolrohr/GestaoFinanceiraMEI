@@ -61,7 +61,7 @@ namespace Fly01.Compras.BL
                 {
                     Id = x.Key.Id,
                     Nome = x.Key.Nome,
-                    Valor = x.Sum(y => y.Total ?? 0)
+                    Valor = x.Sum(y => y.Total)
                 })
                 .OrderByDescending(x => x.Valor)
                 .Take(10).ToList();
@@ -80,7 +80,7 @@ namespace Fly01.Compras.BL
                 .Select(x => new DashboardComprasVM
                 {
                     Tipo = x.Key.Descricao,
-                    Total = x.Sum(v => v.Total ?? 0)
+                    Total = x.Sum(v => v.Total)
                 })
                 .ToList();
         }
@@ -97,7 +97,7 @@ namespace Fly01.Compras.BL
                 .Select(x => new DashboardComprasVM
                 {
                     Tipo = x.Key.Descricao,
-                    Total = x.Sum(v => v.Total ?? 0)
+                    Total = x.Sum(v => v.Total)
                 })
                 .ToList();
         }
@@ -114,7 +114,7 @@ namespace Fly01.Compras.BL
                 .Select(x => new DashboardComprasVM
                 {
                     Tipo = x.Key.Descricao,
-                    Total = x.Sum(v => v.Total ?? 0)
+                    Total = x.Sum(v => v.Total)
                 })
                 .ToList();
         }

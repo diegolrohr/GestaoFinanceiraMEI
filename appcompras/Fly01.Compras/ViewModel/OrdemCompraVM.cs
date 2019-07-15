@@ -65,7 +65,7 @@ namespace Fly01.Compras.ViewModel
         public double TotalImpostosProdutosNaoAgrega { get; set; }
 
         [JsonProperty("total")]
-        public double? Total { get; set; }
+        public double Total { get; set; }
 
         [JsonProperty("centroCustoId")]
         public Guid? CentroCustoId { get; set; }

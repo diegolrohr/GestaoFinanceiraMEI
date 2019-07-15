@@ -28,8 +28,6 @@ namespace Fly01.Faturamento.API.Controllers.Api
 
             ModelState.Clear();
 
-            entity.Total = GetTotalPedidoItens(entity);
-
             Validate(entity);
 
             Insert(entity);
@@ -81,39 +79,10 @@ namespace Fly01.Faturamento.API.Controllers.Api
 
         private double GetTotalPedidoItens(OrdemVenda ordemVenda)
         {
-            using (var unitOfWork = new UnitOfWork(ContextInitialize))
-            {
-                var configuracaoPersonalizacao = unitOfWork.ConfiguracaoPersonalizacaoBL.All.AsNoTracking().FirstOrDefault();
-                var exibirTransportadora = configuracaoPersonalizacao != null ? configuracaoPersonalizacao.ExibirStepTransportadoraCompras : true;
-
-                var total = unitOfWork
-                                .OrdemVendaProdutoBL
-                                .All
-                                .Where(x => x.OrdemVendaId == ordemVenda.Id)
-                                .ToList()
-                                .Select(x => new
-                                {
-                                    Total = Convert.ToDouble(Math.Round((x.Quantidade * x.Valor) - x.Desconto, 2,
-                                        MidpointRounding.AwayFromZero))
-                                })
-                                .Sum(x => x.Total) +
-                                (((ordemVenda.TipoFrete == TipoFrete.FOB) && exibirTransportadora) ? (ordemVenda.ValorFrete ?? 0.0) : 0.0);
-
-                total += unitOfWork
-                                .OrdemVendaServicoBL
-                                .All
-                                .Where(x => x.OrdemVendaId == ordemVenda.Id)
-                                .ToList()
-                                .Select(x => new
-                                {
-                                    Total = Convert.ToDouble(Math.Round((x.Quantidade * x.Valor) - x.Desconto, 2,
-                                        MidpointRounding.AwayFromZero))
-                                })
-                                .Sum(x => x.Total) +
-                                (((ordemVenda.TipoFrete == TipoFrete.FOB) && exibirTransportadora) ? (ordemVenda.ValorFrete ?? 0.0) : 0.0);
-
-                return total;
-            }
+                using (var unitOfWork = new UnitOfWork(ContextInitialize))
+                {
+                    return unitOfWork.OrdemVendaBL.CalculaTotalOrdemVenda(ordemVenda.Id, ordemVenda.ClienteId, ordemVenda.GeraNotaFiscal, ordemVenda.TipoNfeComplementar.ToString(), ordemVenda.TipoFrete.ToString(), ordemVenda.ValorFrete ?? 0, false).Total;
+                }
         }
 
         public override async Task<IHttpActionResult> Delete([FromODataUri] Guid key)

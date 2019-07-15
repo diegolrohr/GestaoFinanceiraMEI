@@ -51,7 +51,7 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public double TotalImpostosProdutosNaoAgrega { get; set; }
 
-        public double? Total { get; set; }
+        public double Total { get; set; }
 
         [MaxLength(5000)]
         public string MensagemPadraoNota { get; set; }

@@ -4,6 +4,7 @@ using System;
 using System.Threading.Tasks;
 using Fly01.Core.API;
 using Fly01.Core.Notifications;
+using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Compras.API.Controllers.Api
 {
@@ -29,15 +30,21 @@ namespace Fly01.Compras.API.Controllers.Api
         }
 
         [HttpGet]
-        public async Task<IHttpActionResult> Get(DateTime dataInicial, DateTime dataFinal)
+        public IHttpActionResult Get(DateTime dataInicial, DateTime dataFinal)
         {
             try
             {
                 using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
                 {
-                    var xml = unitOfWork.NotaFiscalEntradaBL.NotasFiscaisPeriodo(dataInicial, dataFinal);
-                    await unitOfWork.Save();
-                    return Ok(xml);
+                    string idsXML = "";
+                    foreach (NotaFiscalEntrada item in unitOfWork.NotaFiscalEntradaBL.NotasFiscaisPeriodo(dataInicial, dataFinal))
+                    {
+                        if (item.Id != null)
+                        {
+                            idsXML += item.Id + ",";
+                        }
+                    }
+                    return Ok(new { idsXML = idsXML });
                 }
             }
             catch (Exception ex)

@@ -560,6 +560,34 @@ namespace Fly01.Core.Presentation.Controllers
                 },
                 Id = "fly01mdlfrmAtualizaIE"
             };
+            config.Elements.Add(new AutoCompleteUI
+            {
+                Id = "estadoId",
+                Class = "col s12 l4",
+                Label = "Estado",
+                MaxLength = 35,
+                DataUrl = Url.Action("EstadoManagerNew", "AutoComplete"),
+                LabelId = "estadoNome",
+                DomEvents = new List<DomEventUI>
+                {
+                    new DomEventUI() { DomEvent = "autocompleteselect", Function = "fnStateSelect" }
+                }
+            });
+
+            config.Elements.Add(new AutoCompleteUI
+            {
+                Id = "cidadeId",
+                Class = "col s12 l4",
+                Label = "Cidade (Escolha o estado antes)",
+                MaxLength = 35,
+                DataUrl = Url.Action("CidadeManagerNew", "AutoComplete"),
+                LabelId = "cidadeNome",
+                PreFilter = "estadoId",
+                DomEvents = new List<DomEventUI>
+                {
+                    new DomEventUI() { DomEvent = "autocompleteselect", Function = "fnCitySelect" }
+                }
+            });
             config.Elements.Add(new InputTextUI
             {
                 Id = "inscricaoEstadualId",
@@ -615,13 +643,16 @@ namespace Fly01.Core.Presentation.Controllers
             }
         }
 
-        public JsonResult PostAtualizacaoIE(string inscricaoEstadual)
+        public JsonResult PostAtualizacaoIE(string inscricaoEstadual, string cidadeId)
         {
             try
             {
                 ManagerEmpresaVM empresa = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
 
                 var msgErrorInscricaoEstadual = string.Empty;
+                if(empresa.CEP == null) { empresa.CEP = string.Empty; };
+                if (!string.IsNullOrEmpty(cidadeId)) { empresa.CidadeId = int.Parse(cidadeId); };
+
                 if (InscricaoEstadualHelper.IsValid(empresa.Cidade?.Estado?.Sigla, inscricaoEstadual, out msgErrorInscricaoEstadual))
                 {
                     empresa.InscricaoEstadual = inscricaoEstadual;

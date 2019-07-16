@@ -19,6 +19,18 @@ namespace Fly01.Core.Helpers
         public T Data { get; set; }
     }
 
+    public class ResponseDataNewGatewayVM<T>
+    {
+        [JsonProperty("statusCode")]
+        public int StatusCode { get; set; }
+
+        [JsonProperty("hasError")]
+        public bool HasError { get; set; }
+
+        [JsonProperty("data")]
+        public List<T> Data { get; set; }
+    }
+
     public class ErrorInfoVM
     {
         [JsonProperty("message")]

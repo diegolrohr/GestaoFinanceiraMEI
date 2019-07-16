@@ -14,6 +14,9 @@ namespace Fly01.Core.ViewModels
 
     public class ManagerEstadoVM
     {
+        [JsonProperty("id")]
+        public string Id { get; set; }
+
         [JsonProperty("sigla")]
         public string Sigla { get; set; }
 
@@ -28,6 +31,9 @@ namespace Fly01.Core.ViewModels
     }
     public class ManagerCidadeVM
     {
+        [JsonProperty("id")]
+        public string Id { get; set; }
+
         [JsonProperty("nome")]
         public string Nome { get; set; }
 

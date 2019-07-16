@@ -9,7 +9,8 @@
                 type: "POST",
                 url: "@Url.Action("PostAtualizacaoIE", "ParametroTributario")",
                 data: {
-                    inscricaoEstadual: $('#inscricaoEstadualId').val()
+                    inscricaoEstadual: $('#inscricaoEstadualId').val(),
+                    cidadeId: $('#cidadeId').val()
                 },
                 success: function (response) {
                     if (response.success) {

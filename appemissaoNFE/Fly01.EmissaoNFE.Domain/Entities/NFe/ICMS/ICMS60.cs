@@ -37,10 +37,23 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         public string AliquotaConsumidorFinalString
         {
             get
-            {               
+            {
                 return AliquotaConsumidorFinal.HasValue && AliquotaConsumidorFinal > 0 ? AliquotaConsumidorFinal.Value.ToString("0.0000").Replace(",", ".") : "0.0000";
             }
             set { AliquotaConsumidorFinal = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
+        }
+
+        [XmlIgnore]
+        public double? ValorICMSSubstituto { get; set; }
+
+        [XmlElement("vICMSSubstituto")]
+        public string ValorICMSSubstitutoString
+        {
+            get
+            {
+                return ValorICMSSubstituto.HasValue && ValorICMSSubstituto > 0 ? ValorICMSSubstituto.Value.ToString("0.00").Replace(",", ".") : "0.00";
+            }
+            set { ValorICMSSubstituto = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]
@@ -55,20 +68,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
             }
             set { ValorICMSSTRetido = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
-        
-     /*   [XmlIgnore]
-        public double? ValorICMSSubstituto { get; set; }
 
-        [XmlElement("vICMSSubstituto")]
-        public string ValorICMSSubstitutoString
-        {
-            get
-            {
-                return ValorICMSSubstituto.HasValue && ValorICMSSubstituto > 0 ? ValorICMSSubstituto.Value.ToString("0.00").Replace(",", ".") : "0.00";
-            }
-            set { ValorICMSSubstituto = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
-        }
-        */
         [XmlIgnore]
         public double? BaseFCPSTRetido { get; set; }
         [XmlElement(ElementName = "vBCFCPSTRet")]

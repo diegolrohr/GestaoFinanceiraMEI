@@ -372,7 +372,7 @@ namespace Fly01.Faturamento.Controllers
         public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
         {
             var queryString = base.GetQueryStringDefaultGridLoad();
-            queryString.Add("$select", "id,numero,tipoOrdemVenda,data,status,tipoVenda,geraNotaFiscal");
+            queryString.Add("$select", "id,numero,tipoOrdemVenda,data,total,status,tipoVenda,geraNotaFiscal");
             return queryString;
         }
 
@@ -391,6 +391,7 @@ namespace Fly01.Faturamento.Controllers
                 statusDescription = EnumHelper.GetDescription(typeof(Status), x.Status),
                 statusCssClass = EnumHelper.GetCSS(typeof(Status), x.Status),
                 statusValue = EnumHelper.GetValue(typeof(Status), x.Status),
+                total = x.Total.ToString("C", AppDefaults.CultureInfoDefault),
                 tipoVenda = x.TipoVenda,
                 tipoVendaDescription = EnumHelper.GetDescription(typeof(TipoCompraVenda), x.TipoVenda),
                 tipoVendaCssClass = EnumHelper.GetCSS(typeof(TipoCompraVenda), x.TipoVenda),
@@ -527,7 +528,7 @@ namespace Fly01.Faturamento.Controllers
             {
                 DataField = "status",
                 DisplayName = "Status",
-                Priority = 4,
+                Priority = 5,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(Status))),
                 RenderFn = "fnRenderEnum(full.statusCssClass, full.statusDescription)"
             });
@@ -535,7 +536,7 @@ namespace Fly01.Faturamento.Controllers
             {
                 DataField = "tipoOrdemVenda",
                 DisplayName = "Tipo",
-                Priority = 5,
+                Priority = 6,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoOrdemVenda))),
                 RenderFn = "fnRenderEnum(full.tipoOrdemVendaCssClass, full.tipoOrdemVendaDescription)"
             });
@@ -543,12 +544,13 @@ namespace Fly01.Faturamento.Controllers
             {
                 DataField = "tipoVenda",
                 DisplayName = "Finalidade",
-                Priority = 6,
+                Priority = 7,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoCompraVenda))),
                 RenderFn = "fnRenderEnum(full.tipoVendaCssClass, full.tipoVendaDescription)"
             });
             config.Columns.Add(new DataTableUIColumn { DataField = "cliente_nome", DisplayName = "Cliente", Priority = 2 });
-            config.Columns.Add(new DataTableUIColumn { DataField = "data", DisplayName = "Data", Priority = 3, Type = "date" });
+            config.Columns.Add(new DataTableUIColumn { DataField = "total", DisplayName = "Total", Priority = 3, Type = "currency", Class = "dt_center" });
+            config.Columns.Add(new DataTableUIColumn { DataField = "data", DisplayName = "Data", Priority = 4, Type = "date" });
 
             cfg.Content.Add(config);
 

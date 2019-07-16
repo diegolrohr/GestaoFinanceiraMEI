@@ -27,8 +27,6 @@ namespace Fly01.Compras.API.Controllers.Api
 
             ModelState.Clear();
 
-            entity.Total = GetTotalPedidoItens(entity);
-
             Insert(entity);
 
             Validate(entity);
@@ -85,22 +83,7 @@ namespace Fly01.Compras.API.Controllers.Api
         {
             using (var unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                var configuracaoPersonalizacao = unitOfWork.ConfiguracaoPersonalizacaoBL.All.AsNoTracking().FirstOrDefault();
-                var exibirTransportadora = configuracaoPersonalizacao != null ? configuracaoPersonalizacao.ExibirStepTransportadoraCompras : true;
-
-                var total = unitOfWork
-                                .PedidoItemBL
-                                .All
-                                .Where(x => x.PedidoId == pedido.Id)
-                                .ToList()
-                                .Select(x => new
-                                {
-                                    Total = Convert.ToDouble(Math.Round((x.Quantidade * x.Valor) - x.Desconto, 2,
-                                        MidpointRounding.AwayFromZero))
-                                })
-                                .Sum(x => x.Total) +
-                                (((pedido.TipoFrete == TipoFrete.FOB) && exibirTransportadora) ? (pedido.ValorFrete ?? 0.0) : 0.0);
-                return total;
+                return unitOfWork.PedidoBL.CalculaTotalOrdemCompra(pedido.Id, pedido.FornecedorId, pedido.GeraNotaFiscal, pedido.TipoCompra.ToString(), pedido.TipoFrete.ToString(), pedido.ValorFrete ?? 0, false).Total;
             }
         }
     }

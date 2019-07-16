@@ -1,21 +1,20 @@
-﻿using Fly01.Core.BL;
-using Fly01.Compras.DAL;
+﻿using Fly01.Compras.DAL;
+using Fly01.Core.BL;
 using Fly01.Core.Entities.Domains.Commons;
-using System;
-using System.Linq;
 using Fly01.Core.Entities.Domains.Enum;
-using Fly01.Core.Notifications;
 using Fly01.Core.Helpers;
+using Fly01.Core.Notifications;
+using Fly01.Core.Rest;
+using Fly01.Core.ServiceBus;
 using Fly01.EmissaoNFE.Domain.Entities.NFe;
+using Fly01.EmissaoNFE.Domain.Enums;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.IO;
+using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
-using System.IO;
-using Fly01.EmissaoNFE.Domain.Enums;
-using Fly01.Core.Rest;
-using System.Data.Entity;
-using Fly01.Core.ServiceBus;
-using Fly01.Core;
-using Fly01.Core.ViewModels;
 
 namespace Fly01.Compras.BL
 {
@@ -142,7 +141,7 @@ namespace Fly01.Compras.BL
         protected void TryGetFornecedorIdFromXml(NFeImportacao entity, string cnpj)
         {
             var fornecedor = PessoaBL.All.FirstOrDefault(x => x.CPFCNPJ.ToUpper() == cnpj.ToUpper());
-            if(fornecedor != null)
+            if (fornecedor != null)
             {
                 //mesmo cnpj mas não estava com a flag do tipo marcado
                 //caso encontre.. já atualizamos para ser do tipo.. senão iria dar o erro de cadastro duplicado
@@ -157,7 +156,7 @@ namespace Fly01.Compras.BL
         protected void TryGetTransportadoraIdFromXml(NFeImportacao entity, string cnpj)
         {
             var transportadora = PessoaBL.All.FirstOrDefault(x => x.CPFCNPJ.ToUpper() == cnpj.ToUpper());
-            if(transportadora != null)
+            if (transportadora != null)
             {
                 transportadora.Transportadora = true;
                 entity.TransportadoraId = transportadora?.Id;
@@ -233,7 +232,9 @@ namespace Fly01.Compras.BL
 
                     #region Vincular produtos
                     var unPadrao = UnidadeMedidaBL.All.AsNoTracking().FirstOrDefault(x => x.Abreviacao.ToUpper() == "UN");
-                    foreach (var item in NFe.InfoNFe.Detalhes.Select(x => x.Produto))
+
+                    List<EmissaoNFE.Domain.Entities.NFe.Produto> produtos = UnificarProdutos(NFe.InfoNFe.Detalhes.Select(x => x.Produto));
+                    foreach (var item in produtos)
                     {
                         var produto = ProdutoBL.AllIncluding(x => x.UnidadeMedida).AsNoTracking().FirstOrDefault(x =>
                             (x.CodigoBarras.ToUpper() == item.GTIN.ToUpper() && x.CodigoBarras != "SEM GTIN") ||
@@ -296,6 +297,26 @@ namespace Fly01.Compras.BL
             {
                 throw new BusinessException("Não foi possível recuperar os dados das tags(nfeProc > NFe > infNFe) do XML da nota. Verifique se a nota esta autorizada e em formato válido.");
             }
+        }
+
+        private List<EmissaoNFE.Domain.Entities.NFe.Produto> UnificarProdutos(IEnumerable<EmissaoNFE.Domain.Entities.NFe.Produto> produtos)
+        {
+            List<EmissaoNFE.Domain.Entities.NFe.Produto> NewProdutos = new List<EmissaoNFE.Domain.Entities.NFe.Produto>();
+
+            foreach (var item in produtos)
+            {
+                var produtoExiste = NewProdutos.Any(x => x.Descricao.Replace(" ", "").ToUpper().Contains(item.Descricao.Replace(" ", "").ToUpper()) && x.Codigo == item.Codigo);
+
+                if (produtoExiste)
+                {
+                    var qtdProduto = NewProdutos.FirstOrDefault(x => x.Descricao.Replace(" ", "").ToUpper().Contains(item.Descricao.Replace(" ", "").ToUpper()) && x.Codigo == item.Codigo).Quantidade;
+                    NewProdutos.FirstOrDefault(x => x.Descricao.Replace(" ", "").ToUpper().Contains(item.Descricao.Replace(" ", "").ToUpper()) && x.Codigo == item.Codigo).Quantidade = qtdProduto + item.Quantidade;
+                }
+                else
+                    NewProdutos.Add(item);
+            }
+
+            return NewProdutos;
         }
     }
 }

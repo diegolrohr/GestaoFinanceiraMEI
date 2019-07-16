@@ -123,7 +123,9 @@ namespace Fly01.Faturamento.ViewModel
         public string LocalEmbarque { get; set; }
 
         [JsonProperty("localDespacho")]
-        public string LocalDespacho { get; set; }        [JsonProperty("totalRetencoesServicos")]        public double? TotalRetencoesServicos { get; set; }
+        public string LocalDespacho { get; set; }
+
+        [JsonProperty("total")]        public double Total { get; set; }        [JsonProperty("totalRetencoesServicos")]        public double? TotalRetencoesServicos { get; set; }
 
         [JsonProperty("totalImpostosProdutos")]
         public double? TotalImpostosProdutos { get; set; }

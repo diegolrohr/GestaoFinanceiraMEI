@@ -32,6 +32,10 @@ namespace Fly01.Faturamento.BL
                 {
                     entity.CalculaSubstituicaoTributaria = true;
                 }
+                if (TipoTributacaoICMS == 70)
+                {
+                    entity.CalculaIcms = true;
+                }
             }
         }
 

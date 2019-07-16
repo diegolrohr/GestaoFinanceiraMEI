@@ -87,6 +87,8 @@ namespace Fly01.Core.Entities.Domains.Commons
         [DataType(DataType.MultilineText)]
         public string Observacao { get; set; }
 
+        public double Total { get; set; }
+
         public double? TotalRetencoesServicos { get; set; }
 
         public double? TotalImpostosProdutos { get; set; }

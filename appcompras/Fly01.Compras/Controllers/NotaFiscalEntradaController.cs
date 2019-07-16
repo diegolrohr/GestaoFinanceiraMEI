@@ -80,7 +80,7 @@ namespace Fly01.Compras.Controllers
             {
                 target.Add(new HtmlUIButton { Id = "baixarXmls", Label = "Baixar Todos Xmls", OnClickFn = "fnBaixarTodosXMLNFeZip", Position = HtmlUIButtonPosition.Out });
                 target.Add(new HtmlUIButton { Id = "baixarTodosXmls", Label = "Baixar Xmls", OnClickFn = "fnBaixarXMLNFeZip", Position = HtmlUIButtonPosition.Out });
-                target.Add(new HtmlUIButton { Id = "atualizarStatus", Label = "Atualizar Status", OnClickFn = "fnAtualizarStatus",Position = HtmlUIButtonPosition.Main });
+                target.Add(new HtmlUIButton { Id = "atualizarStatus", Label = "Atualizar Status", OnClickFn = "fnAtualizarStatus", Position = HtmlUIButtonPosition.Main });
                 target.Add(new HtmlUIButton { Id = "new", Label = "Novo Pedido", OnClickFn = "fnNovoPedido" });
                 target.Add(new HtmlUIButton { Id = "filterGrid", Label = buttonLabel, OnClickFn = buttonOnClick });
                 target.Add(new HtmlUIButton { Id = "newNFInutilizada", Label = "Inutilizar Nota Fiscal", OnClickFn = "fnNotaFiscalInutilizadaList" });
@@ -383,10 +383,13 @@ namespace Fly01.Compras.Controllers
                 {
                     try
                     {
-                        var resourceById = string.Format("NotaFiscalXML?&id={0}", item);
-                        var res = RestHelper.ExecuteGetRequest<JObject>(resourceById);
-                        if (res != null)
-                            response.Add(res);
+                        if (!string.IsNullOrEmpty(item))
+                        {
+                            var resourceById = string.Format("NotaFiscalXML?&id={0}", item);
+                            var res = RestHelper.ExecuteGetRequest<JObject>(resourceById);
+                            if (res != null)
+                                response.Add(res);
+                        }
                     }
                     catch (Exception)
                     {
@@ -416,35 +419,21 @@ namespace Fly01.Compras.Controllers
             try
             {
                 string idsXML = "";
-                var response = new List<NotaFiscalEntradaVM>();
                 try
                 {
                     var resourceById = string.Format("NotaFiscalXML?&dataInicial={0}&dataFinal={1}", dataInicial.ToString("yyyy-MM-dd"), dataFinal.ToString("yyyy-MM-dd"));
-                    var res = RestHelper.ExecuteGetRequest<List<NotaFiscalEntradaVM>>(resourceById);
-                    if (res != null)
-                    {
-                        response = res;
-                    }
+                    var response = RestHelper.ExecuteGetRequest<JObject>(resourceById);
+                    idsXML = response.Value<string>("idsXML");
                 }
                 catch (Exception)
                 {
                     HasErrorDownload = true;
                 }
 
-                foreach (NotaFiscalEntradaVM item in response)
-                {
-                    if (item.Id != null)
-                    {
-                        idsXML += item.Id + ",";
-                    }
-                }
-
-                if (response.Count == 0)
+                if (string.IsNullOrEmpty(idsXML))
                     return JsonResponseStatus.GetFailure("Os XMLs solicitados não estão disponíveis para download");
 
-                Session["responseValue"] = JsonConvert.SerializeObject(response);
-
-                return JsonResponseStatus.GetJson(new { downloadAddress = Url.Action("DownloadXMLs", new { idsXML = idsXML }), hasError = HasErrorDownload });
+                return BaixarXMLs(idsXML);
             }
             catch (Exception ex)
             {

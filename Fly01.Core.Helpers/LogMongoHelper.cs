@@ -26,14 +26,14 @@ namespace Fly01.Core.Helpers
                     MongoClientSettings settings = new MongoClientSettings()
                     {
                         Server = new MongoServerAddress(Host, Convert.ToInt32(Port)),
-                        UseSsl = true,
-                        SslSettings = new SslSettings()
-                        {
-                            EnabledSslProtocols = SslProtocols.Tls12
-                        },
+                        UseSsl = false,
+                        //SslSettings = new SslSettings()
+                        //{
+                        //    EnabledSslProtocols = SslProtocols.Tls12
+                        //},
                         Credentials = new List<MongoCredential>()
                         {
-                            new MongoCredential("SCRAM-SHA-1", new MongoInternalIdentity(DataBaseName, UserName), new PasswordEvidence(Password))
+                            new MongoCredential("SCRAM-SHA-1", new MongoInternalIdentity(UserName, UserName), new PasswordEvidence(Password))
                         }
                     };
 

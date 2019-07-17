@@ -3,8 +3,9 @@ using System.ComponentModel.DataAnnotations;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Newtonsoft.Json;
 using Fly01.Core.Helpers.Attribute;
+using Fly01.Core.Entities.Domains.Commons;
 
-namespace Fly01.Financeiro.ViewModel
+namespace Fly01.Core.ViewModels.Presentation.Commons
 {
     [Serializable]
     public class ContaFinanceiraVM : DomainBaseVM
@@ -115,7 +116,7 @@ namespace Fly01.Financeiro.ViewModel
         public Guid ContaBancariaId { get; set; }
 
         [JsonProperty("contaBancaria")]
-        public virtual ContaBancariaVM ContaBancaria { get; set; }
+        public virtual ContaBancaria ContaBancaria { get; set; }
 
         [JsonProperty("centroCusto")]
         public virtual CentroCustoVM CentroCusto { get; set; }

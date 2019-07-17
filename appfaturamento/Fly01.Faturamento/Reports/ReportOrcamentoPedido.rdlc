@@ -53,7 +53,7 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>16.1936cm</Width>
+              <Width>16.11469cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -115,10 +115,10 @@ IIF(Fields!ExibirProdutos.Value = "True", "Produtos" ,"Serviços"))</Value>
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>ds</DataSetName>
-        <Top>13.35642cm</Top>
+        <Top>13.99142cm</Top>
         <Left>0.00006cm</Left>
         <Height>0.6cm</Height>
-        <Width>16.1936cm</Width>
+        <Width>16.11469cm</Width>
         <ZIndex>2</ZIndex>
         <Style>
           <Border>
@@ -130,22 +130,22 @@ IIF(Fields!ExibirProdutos.Value = "True", "Produtos" ,"Serviços"))</Value>
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>2.2652cm</Width>
+              <Width>2.25894cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.73805cm</Width>
+              <Width>2.73179cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.98438cm</Width>
+              <Width>1.97812cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.88692cm</Width>
+              <Width>2.88066cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.5cm</Width>
+              <Width>2.49374cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>3.77773cm</Width>
+              <Width>3.77147cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -724,9 +724,8 @@ IIF(Fields!ExibirProdutos.Value = "True", "Produtos" ,"Serviços"))</Value>
         </TablixRowHierarchy>
         <DataSetName>ds</DataSetName>
         <Top>8.16607cm</Top>
-        <Left>0.06015cm</Left>
         <Height>3.14666cm</Height>
-        <Width>16.15228cm</Width>
+        <Width>16.11475cm</Width>
         <ZIndex>3</ZIndex>
         <Visibility>
           <Hidden>=Fields!ExibirTransportadora.Value &lt;&gt; "True"</Hidden>
@@ -1132,8 +1131,7 @@ IIF(Fields!ExibirProdutos.Value = "True", "Produtos" ,"Serviços"))</Value>
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>ds</DataSetName>
-        <Top>14.02697cm</Top>
-        <Left>0.06015cm</Left>
+        <Top>14.66197cm</Top>
         <Height>1.12944cm</Height>
         <Width>16.11475cm</Width>
         <ZIndex>4</ZIndex>
@@ -1147,22 +1145,22 @@ IIF(Fields!ExibirProdutos.Value = "True", "Produtos" ,"Serviços"))</Value>
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>2.23595cm</Width>
+              <Width>2.224cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>3.52411cm</Width>
+              <Width>3.51216cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.7522cm</Width>
+              <Width>2.74025cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.87042cm</Width>
+              <Width>2.85847cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.65875cm</Width>
+              <Width>2.6468cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.14501cm</Width>
+              <Width>2.13306cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -1874,9 +1872,9 @@ IIF(Fields!ExibirProdutos.Value = "True", "Produtos" ,"Serviços"))</Value>
         </TablixRowHierarchy>
         <DataSetName>ds</DataSetName>
         <Top>3.4575cm</Top>
-        <Left>0.00722cm</Left>
+        <Left>0cm</Left>
         <Height>4.53218cm</Height>
-        <Width>16.18644cm</Width>
+        <Width>16.11475cm</Width>
         <ZIndex>5</ZIndex>
         <Style>
           <Border>
@@ -2097,6 +2095,52 @@ IIF(Fields!ExibirProdutos.Value = "True", "Produtos" ,"Serviços"))</Value>
                 </TablixCell>
               </TablixCells>
             </TablixRow>
+            <TablixRow>
+              <Height>0.6cm</Height>
+              <TablixCells>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="ParcelaConta">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Parcelas: </Value>
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                            <TextRun>
+                              <Value>=Fields!ParcelaConta.Value</Value>
+                              <Style>
+                                <FontWeight>Normal</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>ParcelaConta</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Style>None</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                    <ColSpan>2</ColSpan>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell />
+              </TablixCells>
+            </TablixRow>
           </TablixRows>
         </TablixBody>
         <TablixColumnHierarchy>
@@ -2110,11 +2154,12 @@ IIF(Fields!ExibirProdutos.Value = "True", "Produtos" ,"Serviços"))</Value>
             <TablixMember />
             <TablixMember />
             <TablixMember />
+            <TablixMember />
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>ds</DataSetName>
         <Top>11.41856cm</Top>
-        <Height>1.8673cm</Height>
+        <Height>2.4673cm</Height>
         <Width>16.13351cm</Width>
         <ZIndex>6</ZIndex>
         <Style>
@@ -2127,10 +2172,10 @@ IIF(Fields!ExibirProdutos.Value = "True", "Produtos" ,"Serviços"))</Value>
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>7.73749cm</Width>
+              <Width>7.74688cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>8.37724cm</Width>
+              <Width>8.38663cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -2254,7 +2299,7 @@ IIF(Fields!ExibirProdutos.Value = "True", "Produtos" ,"Serviços"))</Value>
                       </Paragraphs>
                       <rd:DefaultName>Textbox3</rd:DefaultName>
                       <Visibility>
-                        <Hidden>=Fields!EmiteNotaFiscal.Value &lt;&gt; "True" And Fields!ExibirProdutos.Value &lt;&gt; "True"</Hidden>
+                        <Hidden>=Fields!EmiteNotaFiscal.Value &lt;&gt; "True" or Fields!ExibirProdutos.Value &lt;&gt; "True"</Hidden>
                       </Visibility>
                       <Style>
                         <Border>
@@ -2346,7 +2391,7 @@ IIF(Fields!ExibirProdutos.Value = "True", "Produtos" ,"Serviços"))</Value>
                       </Paragraphs>
                       <rd:DefaultName>Textbox141</rd:DefaultName>
                       <Visibility>
-                        <Hidden>=Fields!EmiteNotaFiscal.Value &lt;&gt; "True" And Fields!ExibirServicos.Value &lt;&gt; "True"</Hidden>
+                        <Hidden>=Fields!EmiteNotaFiscal.Value &lt;&gt; "True" or Fields!ExibirServicos.Value &lt;&gt; "True"</Hidden>
                       </Visibility>
                       <Style>
                         <Border>
@@ -2467,9 +2512,9 @@ IIF(Fields!ExibirProdutos.Value = "True", "Produtos" ,"Serviços"))</Value>
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>ds</DataSetName>
-        <Top>15.29752cm</Top>
+        <Top>15.93252cm</Top>
         <Height>2.27489cm</Height>
-        <Width>16.11473cm</Width>
+        <Width>16.13351cm</Width>
         <ZIndex>7</ZIndex>
         <Style>
           <Border>
@@ -2481,7 +2526,7 @@ IIF(Fields!ExibirProdutos.Value = "True", "Produtos" ,"Serviços"))</Value>
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>16.13351cm</Width>
+              <Width>16.11475cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -2540,9 +2585,8 @@ IIF(Fields!ExibirProdutos.Value = "True", "Produtos" ,"Serviços"))</Value>
         </TablixRowHierarchy>
         <DataSetName>ds</DataSetName>
         <Top>2.57528cm</Top>
-        <Left>0.06015cm</Left>
         <Height>0.81167cm</Height>
-        <Width>16.13351cm</Width>
+        <Width>16.11475cm</Width>
         <ZIndex>8</ZIndex>
         <Style>
           <Border>
@@ -2834,6 +2878,10 @@ IIF(Fields!ExibirProdutos.Value = "True", "Produtos" ,"Serviços"))</Value>
         </Field>
         <Field Name="Pais">
           <DataField>Pais</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ParcelaConta">
+          <DataField>ParcelaConta</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>

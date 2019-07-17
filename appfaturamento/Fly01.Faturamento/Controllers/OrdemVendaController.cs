@@ -29,12 +29,26 @@ namespace Fly01.Faturamento.Controllers
     {
         public OrdemVendaController()
         {
-            ExpandProperties = "cliente($select=id,nome,email,endereco,bairro,numero,cep,complemento;$expand=cidade($select=nome),estado($select=sigla),pais($select=nome)),grupoTributarioPadrao($select=id,descricao,tipoTributacaoICMS),transportadora($select=id,nome),estadoPlacaVeiculo,condicaoParcelamento,formaPagamento,categoria,centroCusto,ufSaidaPais($select=id,nome)";
+            ExpandProperties = "cliente($select=id,nome,email,endereco,bairro,numero,cep,complemento;$expand=cidade($select=nome),estado($select=sigla),pais($select=nome)),condicaoParcelamento($select=descricao, qtdParcelas,condicoesParcelamento),grupoTributarioPadrao($select=id,descricao,tipoTributacaoICMS),transportadora($select=id,nome),estadoPlacaVeiculo,formaPagamento,categoria,centroCusto,ufSaidaPais($select=id,nome)";
         }
 
         private JsonResult GetJson(object data)
         {
             return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
+        public List<CondicaoParcelamentoParcelaVM> GetSimulacaoContas(OrdemVendaVM ordemVenda)
+        {
+
+            var dadosReferenciaSimulacao = new
+            {
+                valorReferencia = TotalOrdemVendaResponse(ordemVenda.Id.ToString(),ordemVenda.ClienteId.ToString(), ordemVenda.GeraNotaFiscal, ordemVenda.TipoNfeComplementar, ordemVenda.TipoFrete, ordemVenda?.ValorFrete ?? 0)?.Total,
+                dataReferencia = ordemVenda?.DataVencimento,
+                condicoesParcelamento = ordemVenda?.CondicaoParcelamento?.CondicoesParcelamento,
+                qtdParcelas = ordemVenda.CondicaoParcelamento?.QtdParcelas
+            };
+            return RestHelper.ExecutePostRequest<ResponseSimulacaoVM>("condicaoparcelamentosimulacao", dadosReferenciaSimulacao)?.Items;
         }
 
         [OperationRole(PermissionValue = EPermissionValue.Read)]
@@ -78,6 +92,15 @@ namespace Fly01.Faturamento.Controllers
 
             var servicos = new List<OrdemVendaServicoVM>();
             if (exibirProdutos) { servicos = GetServicos(Guid.Parse(id)); };
+
+            var simulacao = GetSimulacaoContas(OrdemVenda);
+            var parcelas = "";
+
+            foreach (CondicaoParcelamentoParcelaVM Simulacao in simulacao)
+            {
+                parcelas += $"\n {Simulacao.DescricaoParcela} - Vencimento {Simulacao.DataVencimento.ToString("dd/MM/yyyy")} - {Simulacao.Valor.ToString("C", AppDefaults.CultureInfoDefault)}";
+            }
+
 
             bool calculaFrete = (
                 (OrdemVenda.TipoFrete == "FOB") && exibirTransportadora
@@ -143,7 +166,8 @@ namespace Fly01.Faturamento.Controllers
                     EmiteNotaFiscal = emiteNotaFiscal.ToString(),
                     ExibirProdutos = exibirProdutos.ToString(),
                     ExibirServicos = exibirServicos.ToString(),
-                    ExibirTransportadora = exibirTransportadora.ToString()
+                    ExibirTransportadora = exibirTransportadora.ToString(),
+                    ParcelaConta = parcelas
                 });
             }
 
@@ -197,7 +221,8 @@ namespace Fly01.Faturamento.Controllers
                     EmiteNotaFiscal = emiteNotaFiscal.ToString(),
                     ExibirProdutos = exibirProdutos.ToString(),
                     ExibirServicos = exibirServicos.ToString(),
-                    ExibirTransportadora = exibirTransportadora.ToString()
+                    ExibirTransportadora = exibirTransportadora.ToString(),
+                    ParcelaConta = parcelas
                 });
             }
 
@@ -239,7 +264,8 @@ namespace Fly01.Faturamento.Controllers
                     EmiteNotaFiscal = emiteNotaFiscal.ToString(),
                     ExibirProdutos = exibirProdutos.ToString(),
                     ExibirServicos = exibirServicos.ToString(),
-                    ExibirTransportadora = exibirTransportadora.ToString()
+                    ExibirTransportadora = exibirTransportadora.ToString(),
+                    ParcelaConta = parcelas
                 });
             }
 
@@ -888,15 +914,20 @@ namespace Fly01.Faturamento.Controllers
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
 
+        private TotalPedidoNotaFiscalVM TotalOrdemVendaResponse(string id, string clienteId, bool geraNotaFiscal, string tipoNfeComplementar, string tipoFrete, double? valorFrete = 0)
+        {
+            var resource = string.Format("CalculaTotalOrdemVenda?&ordemVendaId={0}&clienteId={1}&geraNotaFiscal={2}&tipoNfeComplementar={3}&tipoFrete={4}&valorFrete={5}&onList={6}", id, clienteId, geraNotaFiscal.ToString(), tipoNfeComplementar, tipoFrete, valorFrete.ToString().Replace(",", "."), false);
+            var response = RestHelper.ExecuteGetRequest<TotalPedidoNotaFiscalVM>(resource, queryString: null);
+            return response;
+        }
+
         [OperationRole(PermissionValue = EPermissionValue.Read)]
         [HttpGet]
         public JsonResult TotalOrdemVenda(string id, string clienteId, bool geraNotaFiscal, string tipoNfeComplementar, string tipoFrete, double? valorFrete = 0)
         {
             try
             {
-                var resource = string.Format("CalculaTotalOrdemVenda?&ordemVendaId={0}&clienteId={1}&geraNotaFiscal={2}&tipoNfeComplementar={3}&tipoFrete={4}&valorFrete={5}&onList={6}", id, clienteId, geraNotaFiscal.ToString(), tipoNfeComplementar, tipoFrete, valorFrete.ToString().Replace(",", "."), false);
-                var response = RestHelper.ExecuteGetRequest<TotalPedidoNotaFiscalVM>(resource, queryString: null);
-
+                var response = TotalOrdemVendaResponse(id, clienteId, geraNotaFiscal, tipoNfeComplementar, tipoFrete, valorFrete);
                 return Json(
                     new { success = true, total = response },
                     JsonRequestBehavior.AllowGet

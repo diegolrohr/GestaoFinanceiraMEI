@@ -96,7 +96,7 @@ namespace Fly01.Compras.BL
                 .GroupBy(x => new { x.Descricao })
                 .Select(x => new DashboardComprasVM
                 {
-                    Tipo = x.Key.Descricao,
+                    Tipo = x.Key.Descricao ?? "Não selecionada",
                     Total = x.Sum(v => v.Total)
                 })
                 .ToList();
@@ -113,7 +113,7 @@ namespace Fly01.Compras.BL
                 .GroupBy(x => new { x.Descricao })
                 .Select(x => new DashboardComprasVM
                 {
-                    Tipo = x.Key.Descricao,
+                    Tipo = x.Key.Descricao ?? "Não selecionada",
                     Total = x.Sum(v => v.Total)
                 })
                 .ToList();

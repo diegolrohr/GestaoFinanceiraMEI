@@ -389,7 +389,7 @@
     <Content Include="Views\AliquotaSimplesNacional\Functions\_fnChangeTipoFaixaReceitaBruta.cshtml" />
     <Content Include="Views\AliquotaSimplesNacional\Functions\_fnChkEnviarEmailContador.cshtml" />
     <Content Include="Views\AliquotaSimplesNacional\Functions\_fnFormReadyAliquotaSimplesNacional.cshtml" />
-    <Content Include="Views\EmpresaAtualizaIE\Functions\_fnFormReadyAtualizaIE.cshtml" />
+    <Content Include="Views\EmpresaAtualizaIE\Functions\_fnConfirmAtualizaIE.cshtml" />
     <Content Include="Views\EmpresaAtualizaIE\Functions\_fnChkIsentoInscricaoEstadual.cshtml" />
     <Content Include="Views\ConfiguracaoPersonalizacao\Index.cshtml" />
     <Content Include="Views\ConfiguracaoPersonalizacao\Functions\_fnFormReady.cshtml" />

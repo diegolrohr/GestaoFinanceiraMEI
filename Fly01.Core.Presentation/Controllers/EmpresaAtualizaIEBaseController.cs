@@ -40,7 +40,7 @@ namespace Fly01.Core.Presentation.Controllers
             {
                 Title = "Atualizar Inscrição Estadual:",
                 UrlFunctions = @Url.Action("Functions") + "?fns=",
-                ConfirmAction = new ModalUIAction() { Label = "Enviar", OnClickFn = "fnFormReadyAtualizaIE" },
+                ConfirmAction = new ModalUIAction() { Label = "Enviar", OnClickFn = "fnConfirmAtualizaIE" },
                 CancelAction = new ModalUIAction() { Label = "Cancelar" },
                 Action = new FormUIAction
                 {
@@ -60,6 +60,7 @@ namespace Fly01.Core.Presentation.Controllers
                     Class = "col s12 l6",
                     Label = "Estado",
                     MaxLength = 35,
+                    Required = true,
                     DataUrl = Url.Action("EstadoManagerNew", "AutoComplete"),
                     LabelId = "estadoNome",
                     DomEvents = new List<DomEventUI>
@@ -74,6 +75,7 @@ namespace Fly01.Core.Presentation.Controllers
                     Class = "col s12 l6",
                     Label = "Cidade (Escolha o estado antes)",
                     MaxLength = 35,
+                    Required = true,
                     DataUrl = Url.Action("CidadeManagerNew", "AutoComplete"),
                     LabelId = "cidadeNome",
                     PreFilter = "estadoId"
@@ -87,13 +89,14 @@ namespace Fly01.Core.Presentation.Controllers
             config.Elements.Add(new InputTextUI
             {
                 Id = "inscricaoEstadualId",
-                Class = "col s12 m8",
-                Label = "Inscrição Estadual"
+                Class = "col s12 m6",
+                Label = "Inscrição Estadual",
+                Required = true
             });
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "chkIsento",
-                Class = "col s12 m4",
+                Class = "col s12 m6",
                 Label = "Sim, é isento de Inscrição Estadual?",
                 DomEvents = new List<DomEventUI>
                 {
@@ -117,7 +120,7 @@ namespace Fly01.Core.Presentation.Controllers
             try
             {
                 ManagerEmpresaVM empresa = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
-                if (!string.IsNullOrWhiteSpace(empresa.InscricaoEstadual) || empresa.CidadeId == 0)
+                if (!string.IsNullOrWhiteSpace(empresa.InscricaoEstadual) || empresa.CidadeId > 0)
                 {
                     return Json(new
                     {
@@ -181,7 +184,7 @@ namespace Fly01.Core.Presentation.Controllers
 
             try
             {
-                var response = RestHelper.ExecuteGetRequest<ParametroTributarioVM>(ResourceName, queryString);
+                var response = RestHelper.ExecuteGetRequest<ParametroTributarioVM>("ParametroTributario", queryString);
                 return Json(new { existeParametro = (response?.Id != null && response?.Id != default(Guid)) }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)

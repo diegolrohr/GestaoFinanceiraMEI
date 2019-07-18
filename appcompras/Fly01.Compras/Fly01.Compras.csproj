@@ -433,7 +433,7 @@
     <Content Include="Views\AssistenciaRemota\index.cshtml" />
     <Content Include="Views\CertificadoDigital\Functions\_fnRemoveCertificado.cshtml" />
     <Content Include="Views\EmpresaAtualizaIE\Functions\_fnChkIsentoInscricaoEstadual.cshtml" />
-    <Content Include="Views\EmpresaAtualizaIE\Functions\_fnFormReadyAtualizaIE.cshtml" />
+    <Content Include="Views\EmpresaAtualizaIE\Functions\_fnConfirmAtualizaIE.cshtml" />
     <Content Include="Views\EmpresaAtualizaIE\Functions\_fnStateSelect.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>

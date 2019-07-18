@@ -1,7 +1,7 @@
 ﻿<script>
-    function fnFormReadyAtualizaIE() {
-        if ($('#inscricaoEstadualId').val() == "") {
-            $$$.toast("Inscrição Estadual Inválida, para o estado da sua empresa.", "error");
+    function fnConfirmAtualizaIE() {
+        if (!$("form#fly01mdlfrmAtualizaIE").valid()) {
+            return;
         }
         else {
             $$$.loading.start();

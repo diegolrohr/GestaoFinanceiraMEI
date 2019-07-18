@@ -5,6 +5,7 @@ using Fly01.Core.Helpers;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.Core.Entities.Domains.Enum;
 using System.Collections.Generic;
+using Fly01.Core.ViewModels;
 
 namespace Fly01.Core.Presentation.Controllers
 {
@@ -432,6 +433,28 @@ namespace Fly01.Core.Presentation.Controllers
 
             var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<PaisVM>>(resourceName, queryString).Data
                                 select new { id = item.Id, label = item.Nome, detail = item.Sigla };
+
+            return GetJson(filterObjects);
+        }
+
+        public JsonResult EstadoManagerNew(string term)
+        {
+            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResponseDataNewGatewayVM<ManagerEstadoVM>>($"{AppDefaults.UrlManagerNew}", $"state/{term}")?.Data
+                                select new { id = item.Id, label = item.Nome, detail = item.Sigla };
+
+            return GetJson(filterObjects);
+        }
+
+        //http://10.51.8.188:3000/api/manager/city?term=porto&stateId=10
+        public JsonResult CidadeManagerNew(string term, string prefilter)
+        {
+            var queryString = new Dictionary<string, string> {
+                { "term", term },
+                { "stateId", prefilter },
+            };
+
+            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResponseDataNewGatewayVM<ManagerCidadeVM>>($"{AppDefaults.UrlManagerNew}", $"city", queryString)?.Data
+                                select new { id = item.Id, label = item.Nome, detail = item.CodigoIbge };
 
             return GetJson(filterObjects);
         }

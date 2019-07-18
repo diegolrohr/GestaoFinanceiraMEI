@@ -97,7 +97,7 @@
             }
             else {//ou salva novo parâmetro na home
                 $.ajax({
-                    url: '@Url.Action("ValidaDadosEmpresa", "ParametroTributario")',
+                    url: '@Url.Action("ValidaDadosEmpresa", "EmpresaAtualizaIE")',
                     type: "POST",
                     data: {},
                     success: function (response) {
@@ -144,7 +144,7 @@
                         }
                         else {
                             $$$.loading.stop();
-                            var url = "@Url.Action("ModalAtualizaIE", "AliquotaSimplesNacional")";
+                            var url = "@Url.Action("ModalAtualizaIE", "EmpresaAtualizaIE")";
                             $$$.modal(url);
                         }
                     },

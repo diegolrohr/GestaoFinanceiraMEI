@@ -177,7 +177,7 @@ namespace Fly01.Core.Presentation.Controllers
 
             var config = new FormUI
             {
-                Id = "fly01frm",
+                Id = "fly01frmCertificadoDigital",
                 Action = new FormUIAction
                 {
                     Create = @Url.Action("Create"),
@@ -264,110 +264,6 @@ namespace Fly01.Core.Presentation.Controllers
                     message = "Certificado digital cadastrado com sucesso.",
                     recordsFiltered = 1,
                     recordsTotal = 1
-                }, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
-            {
-                ErrorInfo error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
-                return JsonResponseStatus.GetFailure(error.Message);
-            }
-        }
-
-        public JsonResult ValidaDadosEmpresa()
-        {
-            try
-            {
-                ManagerEmpresaVM empresa = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
-                if (!string.IsNullOrWhiteSpace(empresa.InscricaoEstadual))
-                {
-                    return Json(new
-                    {
-                        success = true
-                    }, JsonRequestBehavior.AllowGet);
-                }
-                else
-                {
-                    return Json(new
-                    {
-                        success = false,
-                    }, JsonRequestBehavior.AllowGet);
-                }
-            }
-            catch (Exception ex)
-            {
-                ErrorInfo error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
-                return JsonResponseStatus.GetFailure(error.Message);
-            }
-        }
-
-        public ContentResult ModalAtualizaIE()
-        {
-            ModalUIForm config = new ModalUIForm()
-            {
-                Title = "Atualizar Inscrição Estadual:",
-                UrlFunctions = @Url.Action("Functions") + "?fns=",
-                ConfirmAction = new ModalUIAction() { Label = "Enviar", OnClickFn = "fnFormReadyAtualizaIE" },
-                CancelAction = new ModalUIAction() { Label = "Cancelar" },
-                Action = new FormUIAction
-                {
-                    Create = @Url.Action("Create"),
-                    Edit = @Url.Action("Edit"),
-                    Get = @Url.Action("Json") + "/",
-                    List = @Url.Action("List")
-                },
-                Id = "fly01mdlfrmAtualizaIE"
-            };
-            config.Elements.Add(new InputTextUI
-            {
-                Id = "inscricaoEstadualId",
-                Class = "col s12 m8",
-                Label = "Inscrição Estadual"
-            });
-            config.Elements.Add(new InputCheckboxUI
-            {
-                Id = "chkIsento",
-                Class = "col s12 m4",
-                Label = "Sim, é isento de Inscrição Estadual?",
-                DomEvents = new List<DomEventUI>
-                {
-                    new DomEventUI {DomEvent = "change", Function = "fnChkIsentoInscricaoEstadual"}
-                }
-            });
-            config.Helpers.Add(new TooltipUI
-            {
-                Id = "inscricaoEstadualId",
-                Tooltip = new HelperUITooltip()
-                {
-                    Text = "Verificamos que você não possui cadastrado sua Inscrição Estadual nos dados de sua Empresa. Por favor, insira sua inscrição estadual para realizarmos o upload do certificado digital."
-                }
-            });
-
-            return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
-        }
-
-        public JsonResult PostAtualizacaoIE(string inscricaoEstadual)
-        {
-            try
-            {
-                ManagerEmpresaVM empresa = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
-
-                var msgErrorInscricaoEstadual = string.Empty;
-                if (InscricaoEstadualHelper.IsValid(empresa.Cidade?.Estado?.Sigla, inscricaoEstadual, out msgErrorInscricaoEstadual))
-                {
-                    empresa.InscricaoEstadual = inscricaoEstadual;
-
-                    ApiEmpresaManager.AtualizaDadosEmpresa(empresa, SessionManager.Current.UserData.PlatformUrl);
-                    //var response = RestHelper.ExecutePutRequest<ManagerEmpresaVM>(AppDefaults.UrlManager, $"company/{SessionManager.Current.UserData.PlatformUrl}", empresa, AppDefaults.GetQueryStringDefault());
-
-                    return Json(new
-                    {
-                        success = true,
-                    }, JsonRequestBehavior.AllowGet);
-                }
-                return Json(new
-                {
-                    success = false,
-                    message = "Inscrição Estudal Inválida."
                 }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)

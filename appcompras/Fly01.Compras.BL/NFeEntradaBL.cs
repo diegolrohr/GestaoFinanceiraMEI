@@ -254,7 +254,8 @@ namespace Fly01.Compras.BL
                             Logradouro = fornecedor.Endereco,
                             Municipio = fornecedor.Cidade != null ? fornecedor.Cidade.Nome : null,
                             Numero = fornecedor.Numero,
-                            UF = fornecedor.Estado != null ? fornecedor.Estado.Sigla : null
+                            UF = fornecedor.Estado != null ? fornecedor.Estado.Sigla : null,
+                            Complemento = fornecedor?.Complemento
                         }
                     };
                     #endregion

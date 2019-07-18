@@ -1156,6 +1156,8 @@ namespace Fly01.Compras.Reports {
             
             private global::System.Data.DataColumn columnValorTotal;
             
+            private global::System.Data.DataColumn columnParcelaConta;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public ImprimirOrcamentoDataTable() {
@@ -1287,6 +1289,14 @@ namespace Fly01.Compras.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ParcelaContaColumn {
+                get {
+                    return this.columnParcelaConta;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -1322,7 +1332,7 @@ namespace Fly01.Compras.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public ImprimirOrcamentoRow AddImprimirOrcamentoRow(string Id, string Categoria, string CondicaoParcelamento, string DataVencimento, string FormaPagamento, string Numero, string Observacao, string NomeProduto, string Fornecedor, double QtdProduto, double ValorUnitario, double ValorTotal) {
+            public ImprimirOrcamentoRow AddImprimirOrcamentoRow(string Id, string Categoria, string CondicaoParcelamento, string DataVencimento, string FormaPagamento, string Numero, string Observacao, string NomeProduto, string Fornecedor, double QtdProduto, double ValorUnitario, double ValorTotal, string ParcelaConta) {
                 ImprimirOrcamentoRow rowImprimirOrcamentoRow = ((ImprimirOrcamentoRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Id,
@@ -1336,7 +1346,8 @@ namespace Fly01.Compras.Reports {
                         Fornecedor,
                         QtdProduto,
                         ValorUnitario,
-                        ValorTotal};
+                        ValorTotal,
+                        ParcelaConta};
                 rowImprimirOrcamentoRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowImprimirOrcamentoRow);
                 return rowImprimirOrcamentoRow;
@@ -1371,6 +1382,7 @@ namespace Fly01.Compras.Reports {
                 this.columnQtdProduto = base.Columns["QtdProduto"];
                 this.columnValorUnitario = base.Columns["ValorUnitario"];
                 this.columnValorTotal = base.Columns["ValorTotal"];
+                this.columnParcelaConta = base.Columns["ParcelaConta"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1400,6 +1412,8 @@ namespace Fly01.Compras.Reports {
                 base.Columns.Add(this.columnValorUnitario);
                 this.columnValorTotal = new global::System.Data.DataColumn("ValorTotal", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnValorTotal);
+                this.columnParcelaConta = new global::System.Data.DataColumn("ParcelaConta", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnParcelaConta);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2844,6 +2858,22 @@ namespace Fly01.Compras.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string ParcelaConta {
+                get {
+                    try {
+                        return ((string)(this[this.tableImprimirOrcamento.ParcelaContaColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ParcelaConta\' in table \'ImprimirOrcamento\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableImprimirOrcamento.ParcelaContaColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsIdNull() {
                 return this.IsNull(this.tableImprimirOrcamento.IdColumn);
             }
@@ -2984,6 +3014,18 @@ namespace Fly01.Compras.Reports {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetValorTotalNull() {
                 this[this.tableImprimirOrcamento.ValorTotalColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsParcelaContaNull() {
+                return this.IsNull(this.tableImprimirOrcamento.ParcelaContaColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetParcelaContaNull() {
+                this[this.tableImprimirOrcamento.ParcelaContaColumn] = global::System.Convert.DBNull;
             }
         }
         

@@ -12,7 +12,7 @@
   <xs:element name="DataSetReports" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSetReports" msprop:Generator_UserDSName="DataSetReports">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="ImprimirPedido" msprop:Generator_TableClassName="ImprimirPedidoDataTable" msprop:Generator_TableVarName="tableImprimirPedido" msprop:Generator_RowChangedName="ImprimirPedidoRowChanged" msprop:Generator_TablePropName="ImprimirPedido" msprop:Generator_RowDeletingName="ImprimirPedidoRowDeleting" msprop:Generator_RowChangingName="ImprimirPedidoRowChanging" msprop:Generator_RowEvHandlerName="ImprimirPedidoRowChangeEventHandler" msprop:Generator_RowDeletedName="ImprimirPedidoRowDeleted" msprop:Generator_RowClassName="ImprimirPedidoRow" msprop:Generator_UserTableName="ImprimirPedido" msprop:Generator_RowEvArgName="ImprimirPedidoRowChangeEvent">
+        <xs:element name="ImprimirPedido" msprop:Generator_TableClassName="ImprimirPedidoDataTable" msprop:Generator_TableVarName="tableImprimirPedido" msprop:Generator_TablePropName="ImprimirPedido" msprop:Generator_RowDeletingName="ImprimirPedidoRowDeleting" msprop:Generator_RowChangingName="ImprimirPedidoRowChanging" msprop:Generator_RowEvHandlerName="ImprimirPedidoRowChangeEventHandler" msprop:Generator_RowDeletedName="ImprimirPedidoRowDeleted" msprop:Generator_UserTableName="ImprimirPedido" msprop:Generator_RowChangedName="ImprimirPedidoRowChanged" msprop:Generator_RowEvArgName="ImprimirPedidoRowChangeEvent" msprop:Generator_RowClassName="ImprimirPedidoRow">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="Id" msprop:Generator_ColumnVarNameInTable="columnId" msprop:Generator_ColumnPropNameInRow="Id" msprop:Generator_ColumnPropNameInTable="IdColumn" msprop:Generator_UserColumnName="Id" type="xs:string" minOccurs="0" />
@@ -57,7 +57,7 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="ImprimirOrcamento" msprop:Generator_TableClassName="ImprimirOrcamentoDataTable" msprop:Generator_TableVarName="tableImprimirOrcamento" msprop:Generator_RowChangedName="ImprimirOrcamentoRowChanged" msprop:Generator_TablePropName="ImprimirOrcamento" msprop:Generator_RowDeletingName="ImprimirOrcamentoRowDeleting" msprop:Generator_RowChangingName="ImprimirOrcamentoRowChanging" msprop:Generator_RowEvHandlerName="ImprimirOrcamentoRowChangeEventHandler" msprop:Generator_RowDeletedName="ImprimirOrcamentoRowDeleted" msprop:Generator_RowClassName="ImprimirOrcamentoRow" msprop:Generator_UserTableName="ImprimirOrcamento" msprop:Generator_RowEvArgName="ImprimirOrcamentoRowChangeEvent">
+        <xs:element name="ImprimirOrcamento" msprop:Generator_TableClassName="ImprimirOrcamentoDataTable" msprop:Generator_TableVarName="tableImprimirOrcamento" msprop:Generator_TablePropName="ImprimirOrcamento" msprop:Generator_RowDeletingName="ImprimirOrcamentoRowDeleting" msprop:Generator_RowChangingName="ImprimirOrcamentoRowChanging" msprop:Generator_RowEvHandlerName="ImprimirOrcamentoRowChangeEventHandler" msprop:Generator_RowDeletedName="ImprimirOrcamentoRowDeleted" msprop:Generator_UserTableName="ImprimirOrcamento" msprop:Generator_RowChangedName="ImprimirOrcamentoRowChanged" msprop:Generator_RowEvArgName="ImprimirOrcamentoRowChangeEvent" msprop:Generator_RowClassName="ImprimirOrcamentoRow">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="Id" msprop:Generator_ColumnVarNameInTable="columnId" msprop:Generator_ColumnPropNameInRow="Id" msprop:Generator_ColumnPropNameInTable="IdColumn" msprop:Generator_UserColumnName="Id" type="xs:string" minOccurs="0" />
@@ -72,6 +72,7 @@
               <xs:element name="QtdProduto" msprop:Generator_ColumnVarNameInTable="columnQtdProduto" msprop:Generator_ColumnPropNameInRow="QtdProduto" msprop:Generator_ColumnPropNameInTable="QtdProdutoColumn" msprop:Generator_UserColumnName="QtdProduto" type="xs:double" minOccurs="0" />
               <xs:element name="ValorUnitario" msprop:Generator_ColumnVarNameInTable="columnValorUnitario" msprop:Generator_ColumnPropNameInRow="ValorUnitario" msprop:Generator_ColumnPropNameInTable="ValorUnitarioColumn" msprop:Generator_UserColumnName="ValorUnitario" type="xs:double" minOccurs="0" />
               <xs:element name="ValorTotal" msprop:Generator_ColumnVarNameInTable="columnValorTotal" msprop:Generator_ColumnPropNameInRow="ValorTotal" msprop:Generator_ColumnPropNameInTable="ValorTotalColumn" msprop:Generator_UserColumnName="ValorTotal" type="xs:double" minOccurs="0" />
+              <xs:element name="ParcelaConta" msprop:Generator_ColumnVarNameInTable="columnParcelaConta" msprop:Generator_ColumnPropNameInRow="ParcelaConta" msprop:Generator_ColumnPropNameInTable="ParcelaContaColumn" msprop:Generator_UserColumnName="ParcelaConta" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

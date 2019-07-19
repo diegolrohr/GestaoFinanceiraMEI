@@ -29,7 +29,7 @@ namespace Fly01.Faturamento.Controllers
     {
         public OrdemVendaController()
         {
-            ExpandProperties = "cliente($select=id,nome,email,endereco,bairro,numero,cep,complemento;$expand=cidade($select=nome),estado($select=sigla),pais($select=nome)),condicaoParcelamento($select=descricao, qtdParcelas,condicoesParcelamento),grupoTributarioPadrao($select=id,descricao,tipoTributacaoICMS),transportadora($select=id,nome),estadoPlacaVeiculo,formaPagamento,categoria,centroCusto,ufSaidaPais($select=id,nome)";
+            ExpandProperties = "cliente($select=id,nome,email,endereco,bairro,numero,cep,complemento;$expand=cidade($select=nome),estado($select=sigla),pais($select=nome)),condicaoParcelamento($select=id,descricao, qtdParcelas,condicoesParcelamento),grupoTributarioPadrao($select=id,descricao,tipoTributacaoICMS),transportadora($select=id,nome),estadoPlacaVeiculo,formaPagamento,categoria,centroCusto,ufSaidaPais($select=id,nome)";
         }
 
         private JsonResult GetJson(object data)

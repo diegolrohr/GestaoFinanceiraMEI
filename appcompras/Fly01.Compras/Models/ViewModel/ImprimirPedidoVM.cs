@@ -45,5 +45,6 @@ namespace Fly01.Compras.Models.ViewModel
         public string Pais { get; set; }
         public double? ItemDesconto { get; internal set; }
         public string ParcelaContas { get; internal set; }
+        public double ValorFreteTotal { get; set; }
     }
 }

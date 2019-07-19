@@ -91,7 +91,7 @@ namespace Fly01.Faturamento.Controllers
             if (exibirProdutos) { produtos = GetProdutos(Guid.Parse(id)); };
 
             var servicos = new List<OrdemVendaServicoVM>();
-            if (exibirProdutos) { servicos = GetServicos(Guid.Parse(id)); };
+            if (exibirServicos) { servicos = GetServicos(Guid.Parse(id)); };
 
             var simulacao = GetSimulacaoContas(OrdemVenda);
             var parcelas = "";
@@ -118,7 +118,6 @@ namespace Fly01.Faturamento.Controllers
             var response = RestHelper.ExecuteGetRequest<TotalPedidoNotaFiscalVM>(resource, queryString: null);
 
             List<ImprimirOrcamentoPedidoVM> reportItems = new List<ImprimirOrcamentoPedidoVM>();
-
             foreach (OrdemVendaProdutoVM OrdemProduto in produtos)
             {
                 reportItems.Add(new ImprimirOrcamentoPedidoVM
@@ -141,7 +140,7 @@ namespace Fly01.Faturamento.Controllers
                     PesoBruto = OrdemVenda.PesoBruto.HasValue ? OrdemVenda.PesoBruto.Value : 0,
                     PesoLiquido = OrdemVenda.PesoLiquido.HasValue ? OrdemVenda.PesoLiquido.Value : 0,
                     Status = OrdemVenda.Status.ToString(),
-                    TipoFrete = OrdemVenda.TipoFrete.ToString(),
+                    TipoFrete = EnumHelper.GetValue(typeof(TipoFrete), OrdemVenda.TipoFrete),
                     TipoOrdemVenda = OrdemVenda.TipoOrdemVenda.ToString(),
                     NumeroNota = OrdemVenda.Numero.ToString(),
                     EstadoPlacaVeiculo = OrdemVenda.EstadoPlacaVeiculo != null ? OrdemVenda.EstadoPlacaVeiculo.Sigla : string.Empty,
@@ -196,7 +195,7 @@ namespace Fly01.Faturamento.Controllers
                     PesoBruto = OrdemVenda.PesoBruto.HasValue ? OrdemVenda.PesoBruto.Value : 0,
                     PesoLiquido = OrdemVenda.PesoLiquido.HasValue ? OrdemVenda.PesoLiquido.Value : 0,
                     Status = OrdemVenda.Status.ToString(),
-                    TipoFrete = OrdemVenda.TipoFrete.ToString(),
+                    TipoFrete = EnumHelper.GetValue(typeof(TipoFrete), OrdemVenda.TipoFrete),
                     TipoOrdemVenda = OrdemVenda.TipoOrdemVenda.ToString(),
                     NumeroNota = OrdemVenda.Numero.ToString(),
                     EstadoPlacaVeiculo = OrdemVenda.EstadoPlacaVeiculo != null ? OrdemVenda.EstadoPlacaVeiculo.Sigla : string.Empty,
@@ -251,7 +250,7 @@ namespace Fly01.Faturamento.Controllers
                     PesoBruto = OrdemVenda.PesoBruto.HasValue ? OrdemVenda.PesoBruto.Value : 0,
                     PesoLiquido = OrdemVenda.PesoLiquido.HasValue ? OrdemVenda.PesoLiquido.Value : 0,
                     Status = OrdemVenda.Status.ToString(),
-                    TipoFrete = OrdemVenda.TipoFrete.ToString(),
+                    TipoFrete = EnumHelper.GetValue(typeof(TipoFrete), OrdemVenda.TipoFrete),
                     TipoOrdemVenda = OrdemVenda.TipoOrdemVenda.ToString(),
                     NumeroNota = OrdemVenda.Numero.ToString(),
                     EstadoPlacaVeiculo = OrdemVenda.EstadoPlacaVeiculo != null ? OrdemVenda.EstadoPlacaVeiculo.Sigla : string.Empty,
@@ -262,6 +261,7 @@ namespace Fly01.Faturamento.Controllers
                     QuantidadeVolumes = OrdemVenda.QuantidadeVolumes.HasValue ? OrdemVenda.QuantidadeVolumes.Value : 0,
                     Finalidade = OrdemVenda.TipoVenda,
                     Marca = OrdemVenda.Marca,
+                    ValorFreteTotal = response.ValorFrete.HasValue ? response.ValorFrete.Value : 0,
                     NumeracaoVolumesTrans = OrdemVenda.NumeracaoVolumesTrans,
                     TipoEspecie = OrdemVenda.TipoEspecie,
                     EmiteNotaFiscal = emiteNotaFiscal.ToString(),

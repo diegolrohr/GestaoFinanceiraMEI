@@ -2489,14 +2489,14 @@ IIF(Fields!ExibirProdutos.Value = "True", "Produtos" ,"Serviços"))</Value>
               <TablixCells>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox11">
+                    <Textbox Name="ValorFreteTotal">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Valor do Frete R$: </Value>
+                              <Value>Valor Frete: </Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                                 <Format>#,0.00</Format>
@@ -2505,6 +2505,7 @@ IIF(Fields!ExibirProdutos.Value = "True", "Produtos" ,"Serviços"))</Value>
                             <TextRun>
                               <Value>=Fields!ValorFreteTotal.Value</Value>
                               <Style>
+                                <FontWeight>Normal</FontWeight>
                                 <Format>#,0.00</Format>
                               </Style>
                             </TextRun>
@@ -2514,7 +2515,7 @@ IIF(Fields!ExibirProdutos.Value = "True", "Produtos" ,"Serviços"))</Value>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox11</rd:DefaultName>
+                      <rd:DefaultName>ValorFreteTotal</rd:DefaultName>
                       <Visibility>
                         <Hidden>=Fields!ExibirTransportadora.Value &lt;&gt; "True"</Hidden>
                       </Visibility>

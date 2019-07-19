@@ -394,6 +394,8 @@ namespace Fly01.Compras.Reports {
             
             private global::System.Data.DataColumn columnParcelaContas;
             
+            private global::System.Data.DataColumn columnValorFreteTotal;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public ImprimirPedidoDataTable() {
@@ -749,6 +751,14 @@ namespace Fly01.Compras.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ValorFreteTotalColumn {
+                get {
+                    return this.columnValorFreteTotal;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -824,7 +834,8 @@ namespace Fly01.Compras.Reports {
                         string Estado, 
                         string Pais, 
                         double ItemDesconto, 
-                        string ParcelaContas) {
+                        string ParcelaContas, 
+                        double ValorFreteTotal) {
                 ImprimirPedidoRow rowImprimirPedidoRow = ((ImprimirPedidoRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Id,
@@ -866,7 +877,8 @@ namespace Fly01.Compras.Reports {
                         Estado,
                         Pais,
                         ItemDesconto,
-                        ParcelaContas};
+                        ParcelaContas,
+                        ValorFreteTotal};
                 rowImprimirPedidoRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowImprimirPedidoRow);
                 return rowImprimirPedidoRow;
@@ -929,6 +941,7 @@ namespace Fly01.Compras.Reports {
                 this.columnPais = base.Columns["Pais"];
                 this.columnItemDesconto = base.Columns["ItemDesconto"];
                 this.columnParcelaContas = base.Columns["ParcelaContas"];
+                this.columnValorFreteTotal = base.Columns["ValorFreteTotal"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1014,6 +1027,8 @@ namespace Fly01.Compras.Reports {
                 base.Columns.Add(this.columnItemDesconto);
                 this.columnParcelaContas = new global::System.Data.DataColumn("ParcelaContas", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnParcelaContas);
+                this.columnValorFreteTotal = new global::System.Data.DataColumn("ValorFreteTotal", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnValorFreteTotal);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2213,6 +2228,22 @@ namespace Fly01.Compras.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public double ValorFreteTotal {
+                get {
+                    try {
+                        return ((double)(this[this.tableImprimirPedido.ValorFreteTotalColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ValorFreteTotal\' in table \'ImprimirPedido\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableImprimirPedido.ValorFreteTotalColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsIdNull() {
                 return this.IsNull(this.tableImprimirPedido.IdColumn);
             }
@@ -2689,6 +2720,18 @@ namespace Fly01.Compras.Reports {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetParcelaContasNull() {
                 this[this.tableImprimirPedido.ParcelaContasColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsValorFreteTotalNull() {
+                return this.IsNull(this.tableImprimirPedido.ValorFreteTotalColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetValorFreteTotalNull() {
+                this[this.tableImprimirPedido.ValorFreteTotalColumn] = global::System.Convert.DBNull;
             }
         }
         

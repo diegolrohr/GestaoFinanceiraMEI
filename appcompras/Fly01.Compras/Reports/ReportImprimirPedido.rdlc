@@ -2361,14 +2361,9 @@
                               </Style>
                             </TextRun>
                             <TextRun>
-                              <Value>=Fields!ValorFrete.Value</Value>
+                              <Value>=Fields!ValorFreteTotal.Value</Value>
                               <Style>
-                                <Format>#,0.00;(#,0.00)</Format>
-                              </Style>
-                            </TextRun>
-                            <TextRun>
-                              <Value xml:space="preserve"> </Value>
-                              <Style>
+                                <FontWeight>Normal</FontWeight>
                                 <Format>#,0.00;(#,0.00)</Format>
                               </Style>
                             </TextRun>
@@ -2794,6 +2789,10 @@
         </Field>
         <Field Name="ParcelaContas">
           <DataField>ParcelaContas</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ValorFreteTotal">
+          <DataField>ValorFreteTotal</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>

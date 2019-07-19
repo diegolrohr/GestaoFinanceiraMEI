@@ -317,9 +317,9 @@ namespace Fly01.Compras.BL
                 entity.Id = Guid.NewGuid();
             }
 
-            rpc = new RpcClient();
-            numero = int.Parse(rpc.Call($"plataformaid={PlataformaUrl},tipoordemcompra={(int)TipoOrdemCompra.Pedido}"));
-            //numero = All.Max(x => x.Numero) + 1;
+            //rpc = new RpcClient();
+            //numero = int.Parse(rpc.Call($"plataformaid={PlataformaUrl},tipoordemcompra={(int)TipoOrdemCompra.Pedido}"));
+            numero = All.Max(x => x.Numero) + 1;
             entity.Numero = numero;
 
             ValidaModel(entity);
@@ -523,6 +523,7 @@ namespace Fly01.Compras.BL
         {
             var tipoVendaEnum = (TipoCompraVenda)Enum.Parse(typeof(TipoCompraVenda), tipoCompra, true);
             var tipoFreteEnum = (TipoFrete)Enum.Parse(typeof(TipoFrete), tipoFrete, true);
+            if (tipoFreteEnum != TipoFrete.FOB) { valorFrete = 0; }
 
             var ordemCompra = All.Where(x => x.Id == ordemCompraId).FirstOrDefault();
             if ((geraNotaFiscal && emiteNotaFiscal) && ordemCompra.Status != StatusOrdemCompra.Finalizado)

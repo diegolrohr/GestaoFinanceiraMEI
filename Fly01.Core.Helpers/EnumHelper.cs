@@ -52,8 +52,7 @@ namespace Fly01.Core.Helpers
         {
             try
             {
-                var a = SubtitleDataAnotation(enumType, value)?.Description;
-                return a;
+                return SubtitleDataAnotation(enumType, value)?.Description;
             }
             catch (Exception)
             {

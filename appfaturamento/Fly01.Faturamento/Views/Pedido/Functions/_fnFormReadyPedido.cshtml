@@ -132,9 +132,6 @@
         $('#nFeRefComplementarIsDevolucao').attr('disabled', 'disabled');
         $("#tipoNfeComplementarField").hide();
 
-        if ($("#categoriaDescricao").data("url-post"))
-            $("#categoriaDescricao").data("url-post", "@Url.Action("NovaCategoria")?tipo=" + $("#tipoCarteira").val());
-
         var tipoVendaVal = $('#tipoVenda').val();
         var tipoNfeComplementarVal = $('#tipoNfeComplementar').val();
 
@@ -325,6 +322,9 @@
         $('#localDespachoField').hide();
         $("#chaveNFeReferenciadaField").hide();
         $$$.fn.updateActiveMenu("/OrdemVenda/List");
+
+        if ($("#categoriaDescricao").data("url-post"))
+            $("#categoriaDescricao").data("url-post", "@Url.Action("NovaCategoria")?tipo=" + $("#tipoCarteira").val());
 
         if (isCreate()) {
             fnTipoVendaClick();

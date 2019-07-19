@@ -1,0 +1,78 @@
+﻿<script>
+    function fnSalvarTodosProdutos() {
+        var dataRecord = $$$._.dtProdutosPendencias.ajax.json();
+        debugger;
+        for (let i = 0; i < dataRecord.recordsTotal; i++) {
+            SubmitAndSave(dataRecord.data[i].id);
+        }
+
+    }
+
+    function SubmitAndSave(id) {
+        var formId = "#produtoPendencia" + id;
+        var that = $(formId);
+        that.loading("start");
+        if (!that.valid()) {
+            that.loading("stop");
+            return false;
+        }
+        else {
+            var formData = that.serializeObject();
+            formData.fatorConversao = parseFloat(noComma(formData.fatorConversao));
+            if (formData.novoProduto && formData.novoProduto == "on") {
+                formData.novoProduto = true
+            }
+            else {
+                formData.novoProduto = false
+            }
+
+            if (formData.fatorConversao <= 0) {
+                $$$.toast("Fator de conversão deve ser superior a zero.", "error");
+                that.loading("stop");
+                return false;
+            }
+            if ((formData.produtoId == null || formData.produtoId == "" || formData.produtoId == undefined) && !formData.novoProduto) {
+                $$$.toast("Vincule a um produto existente ou marque para criar um novo produto.", "error");
+                that.loading("stop");
+                return false;
+            }
+
+            $.ajax({
+                url: that.attr("action"),
+                type: that.attr("method"),
+                contentType: 'application/json',
+                dataType: 'json',
+                data: JSON.stringify(formData),
+                success: function success(data) {
+                    if (data.success) {
+                        var strMsg = "Atualizado com sucesso.";
+                        if (data.message !== "")
+                            strMsg = data.message;
+                        $$$.toast(strMsg, "success");
+                        that.loading("stop");
+                        $(`#btnSalvarPendencia${data.id}`).parent().parent().parent().remove();
+                        $$$._.dtProdutosPendencias.ajax.json().recordsTotal -= 1;
+                        $$$._.dtProdutosPendencias.ajax.json().recordsFiltered -= 1;
+
+                        $$$._.dtProdutosPendencias.ajax.json().data.splice($$$._.dtProdutosPendencias.ajax.json().data.findIndex(function (i) {
+                            return i.id === id;
+                        }), 1);
+
+                        if (!verificaPendencias()) {
+                            $('#stepProdutosPendencias').hide();
+                            $('li#stepProdutos > div.step-content > div.step-actions > button.btn.previous-step').click();
+                        }
+                    } else {
+                        that.loading("stop");
+                        $$$.fn.submitErrorHandler(null, data.message);
+                    }
+                    that.loading("stop");
+                },
+                error: function error(jXHR, textStatus) {
+                    $$$.toast(textStatus, "error");
+                    that.loading("stop");
+                }
+            });
+        }
+    }
+</script>

@@ -435,6 +435,7 @@
     <Content Include="Views\EmpresaAtualizaIE\Functions\_fnChkIsentoInscricaoEstadual.cshtml" />
     <Content Include="Views\EmpresaAtualizaIE\Functions\_fnConfirmAtualizaIE.cshtml" />
     <Content Include="Views\EmpresaAtualizaIE\Functions\_fnStateSelect.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnSalvarTodosProdutos.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

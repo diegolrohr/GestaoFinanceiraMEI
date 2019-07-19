@@ -54,6 +54,7 @@
               <xs:element name="Estado" msprop:Generator_ColumnVarNameInTable="columnEstado" msprop:Generator_ColumnPropNameInRow="Estado" msprop:Generator_ColumnPropNameInTable="EstadoColumn" msprop:Generator_UserColumnName="Estado" type="xs:string" minOccurs="0" />
               <xs:element name="Pais" msprop:Generator_ColumnVarNameInTable="columnPais" msprop:Generator_ColumnPropNameInRow="Pais" msprop:Generator_ColumnPropNameInTable="PaisColumn" msprop:Generator_UserColumnName="Pais" type="xs:string" minOccurs="0" />
               <xs:element name="ItemDesconto" msprop:Generator_ColumnVarNameInTable="columnItemDesconto" msprop:Generator_ColumnPropNameInRow="ItemDesconto" msprop:Generator_ColumnPropNameInTable="ItemDescontoColumn" msprop:Generator_UserColumnName="ItemDesconto" type="xs:double" minOccurs="0" />
+              <xs:element name="ParcelaContas" msprop:Generator_ColumnVarNameInTable="columnParcelaContas" msprop:Generator_ColumnPropNameInRow="ParcelaContas" msprop:Generator_ColumnPropNameInTable="ParcelaContasColumn" msprop:Generator_UserColumnName="ParcelaContas" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

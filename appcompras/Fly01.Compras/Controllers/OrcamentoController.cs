@@ -392,7 +392,6 @@ namespace Fly01.Compras.Controllers
         [OperationRole(PermissionValue = EPermissionValue.Read)]
         public List<CondicaoParcelamentoParcelaVM> GetSimulacaoContas(OrcamentoVM orcamento)
         {
-
             var dadosReferenciaSimulacao = new
             {
                 valorReferencia = orcamento.Total,
@@ -434,14 +433,14 @@ namespace Fly01.Compras.Controllers
                     FormaPagamento = Orcamento.FormaPagamento != null ? Orcamento.FormaPagamento.Descricao : string.Empty,
                     Numero = Orcamento.Numero,
                     Observacao = Orcamento.Observacao,
+                    ParcelaConta = parcelas,
                     //PRODUTO
                     Id = produtosorcamento.Id.ToString(),
                     NomeProduto = produtosorcamento.Produto != null ? produtosorcamento.Produto.Descricao : string.Empty,
                     Fornecedor = produtosorcamento.Fornecedor != null ? produtosorcamento.Fornecedor.Nome.ToString() : string.Empty,
                     QtdProduto = produtosorcamento.Quantidade,
                     ValorUnitario = produtosorcamento.Valor,
-                    ValorTotal = produtosorcamento.Total,
-                    ParcelaConta = parcelas
+                    ValorTotal = produtosorcamento.Total
                 });
 
             if (!produtos.Any())

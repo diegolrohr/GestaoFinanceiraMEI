@@ -34,7 +34,7 @@
             $("#aliquotaImpostoRenda").val("0");
         }
         $.ajax({
-            url: '@Url.Action("ValidaDadosEmpresa", "ParametroTributario")',
+            url: '@Url.Action("ValidaDadosEmpresa", "EmpresaAtualizaIE")',
             type: "POST",
             data: {
             },
@@ -44,7 +44,7 @@
                 }
                 else {
                     $$$.loading.stop();
-                    var url = "@Url.Action("ModalAtualizaIE", "ParametroTributario")";
+                    var url = "@Url.Action("ModalAtualizaIE", "EmpresaAtualizaIE")";
                     $$$.modal(url);
                 }
                 

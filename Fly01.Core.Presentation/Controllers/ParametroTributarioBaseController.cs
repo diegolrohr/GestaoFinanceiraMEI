@@ -171,7 +171,7 @@ namespace Fly01.Core.Presentation.Controllers
 
             var tabs = new TabsUI
             {
-                Id = "fly01tabs",
+                Id = "fly01tabsParametros",
                 Tabs = new List<TabsUIItem>()
                 {
                     new TabsUIItem()
@@ -541,119 +541,6 @@ namespace Fly01.Core.Presentation.Controllers
                 ErrorInfo error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
                 return JsonResponseStatus.GetFailure(error.Message);
             }
-        }
-
-        public ContentResult ModalAtualizaIE()
-        {
-            ModalUIForm config = new ModalUIForm()
-            {
-                Title = "Atualizar Inscrição Estadual:",
-                UrlFunctions = @Url.Action("Functions") + "?fns=",
-                ConfirmAction = new ModalUIAction() { Label = "Enviar", OnClickFn = "fnFormReadyAtualizaIE" },
-                CancelAction = new ModalUIAction() { Label = "Cancelar" },
-                Action = new FormUIAction
-                {
-                    Create = @Url.Action("Create"),
-                    Edit = @Url.Action("Edit"),
-                    Get = @Url.Action("Json") + "/",
-                    List = @Url.Action("List")
-                },
-                Id = "fly01mdlfrmAtualizaIE"
-            };
-            config.Elements.Add(new InputTextUI
-            {
-                Id = "inscricaoEstadualId",
-                Class = "col s12 m8",
-                Label = "Inscrição Estadual"
-            });
-            config.Elements.Add(new InputCheckboxUI
-            {
-                Id = "chkIsento",
-                Class = "col s12 m4",
-                Label = "Sim, é isento de Inscrição Estadual?",
-                DomEvents = new List<DomEventUI>
-                {
-                    new DomEventUI {DomEvent = "change", Function = "fnChkIsentoInscricaoEstadual"}
-                }
-            });
-            config.Helpers.Add(new TooltipUI
-            {
-                Id = "inscricaoEstadualId",
-                Tooltip = new HelperUITooltip()
-                {
-                    Text = "Verificamos que você não possui cadastrado sua Inscrição Estadual nos dados de sua Empresa. Por favor, insira sua inscrição estadual para realizarmos a atualização dos seus parâmetros tributários."
-                }
-            });
-
-            return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
-        }
-
-        public JsonResult ValidaDadosEmpresa()
-        {
-            try
-            {
-                ManagerEmpresaVM empresa = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
-                if (!string.IsNullOrWhiteSpace(empresa.InscricaoEstadual))
-                {
-                    return Json(new
-                    {
-                        success = true
-                    }, JsonRequestBehavior.AllowGet);
-                }
-                else
-                {
-                    return Json(new
-                    {
-                        success = false,
-                    }, JsonRequestBehavior.AllowGet);
-                }
-            }
-            catch (Exception ex)
-            {
-                ErrorInfo error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
-                return JsonResponseStatus.GetFailure(error.Message);
-            }
-        }
-
-        public JsonResult PostAtualizacaoIE(string inscricaoEstadual)
-        {
-            try
-            {
-                ManagerEmpresaVM empresa = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
-
-                var msgErrorInscricaoEstadual = string.Empty;
-                if (InscricaoEstadualHelper.IsValid(empresa.Cidade?.Estado?.Sigla, inscricaoEstadual, out msgErrorInscricaoEstadual))
-                {
-                    empresa.InscricaoEstadual = inscricaoEstadual;
-                    ApiEmpresaManager.AtualizaDadosEmpresa(empresa, SessionManager.Current.UserData.PlatformUrl);
-
-                    return Json(new
-                    {
-                        success = true,
-                    }, JsonRequestBehavior.AllowGet);
-                }
-                return Json(new
-                {
-                    success = false,
-                    message = "Inscrição Estudal Inválida."
-                }, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
-            {
-                ErrorInfo error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
-                return JsonResponseStatus.GetFailure(error.Message);
-            }
-        }
-
-        [HttpGet]
-        public JsonResult ExisteParametroSalvo()
-        {
-            var queryString = new Dictionary<string, string> {
-                    { "$select", "id" }
-            };
-
-            var response = RestHelper.ExecuteGetRequest<ParametroTributarioVM>(ResourceName, queryString);
-            return Json(new { existeParametro = (response?.Id != null && response?.Id != default(Guid)) }, JsonRequestBehavior.AllowGet);
         }
     }
 }

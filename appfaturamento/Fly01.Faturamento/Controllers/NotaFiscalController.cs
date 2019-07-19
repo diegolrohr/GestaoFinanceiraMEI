@@ -434,10 +434,13 @@ namespace Fly01.Faturamento.Controllers
                 {
                     try
                     {
-                        var resourceById = string.Format("NotaFiscalXML?&id={0}", item);
-                        var res = RestHelper.ExecuteGetRequest<JObject>(resourceById);
-                        if (res != null)
-                            response.Add(res);
+                        if (!string.IsNullOrEmpty(item))
+                        {
+                            var resourceById = string.Format("NotaFiscalXML?&id={0}", item);
+                            var res = RestHelper.ExecuteGetRequest<JObject>(resourceById);
+                            if (res != null)
+                                response.Add(res);
+                        }
                     }
                     catch (Exception)
                     {
@@ -467,35 +470,21 @@ namespace Fly01.Faturamento.Controllers
             try
             {
                 string idsXML = "";
-                var response = new List<NotaFiscalVM>();
                 try
                 {
                     var resourceById = string.Format("NotaFiscalXML?&dataInicial={0}&dataFinal={1}", dataInicial.ToString("yyyy-MM-dd"), dataFinal.ToString("yyyy-MM-dd"));
-                    var res = RestHelper.ExecuteGetRequest<List<NotaFiscalVM>>(resourceById);
-                    if (res != null)
-                    {
-                        response = res;
-                    }
+                    var response = RestHelper.ExecuteGetRequest<JObject>(resourceById);
+                    idsXML = response.Value<string>("idsXML");
                 }
                 catch (Exception)
                 {
                     HasErrorDownload = true;
                 }
 
-                foreach (NotaFiscalVM item in response)
-                {
-                    if (item.Id != null)
-                    {
-                        idsXML += item.Id + ",";
-                    }
-                }
-
-                if (response.Count == 0)
+                if (string.IsNullOrEmpty(idsXML))
                     return JsonResponseStatus.GetFailure("Os XMLs solicitados não estão disponíveis para download");
 
-                Session["responseValue"] = JsonConvert.SerializeObject(response);
-
-                return JsonResponseStatus.GetJson(new { downloadAddress = Url.Action("DownloadXMLs", new { idsXML = idsXML }), hasError = HasErrorDownload });
+                return BaixarXMLs(idsXML);
             }
             catch (Exception ex)
             {

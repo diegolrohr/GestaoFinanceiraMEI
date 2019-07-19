@@ -363,6 +363,6 @@ namespace Fly01.Core.Presentation.Controllers
             cfg.Content.Add(config);
 
             return cfg;
-        }                
+        }
     }
 }

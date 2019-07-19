@@ -141,6 +141,7 @@
     <Compile Include="Controllers\AliquotaSimplesNacionalBaseController.cs" />
     <Compile Include="Controllers\KitItemBaseController.cs" />
     <Compile Include="Controllers\NotaFiscalInutilizadaBaseController.cs" />
+    <Compile Include="Controllers\EmpresaAtualizaIEBaseController.cs" />
     <Compile Include="Controllers\ParametroTributarioBaseController.cs" />
     <Compile Include="Controllers\KitBaseController.cs" />
     <Compile Include="Controllers\MinhaContaBaseController.cs" />

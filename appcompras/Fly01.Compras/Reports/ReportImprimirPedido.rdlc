@@ -2374,6 +2374,9 @@
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox25</rd:DefaultName>
+                      <Visibility>
+                        <Hidden>=Fields!ExibirTransportadora.Value &lt;&gt; "True"</Hidden>
+                      </Visibility>
                       <Style>
                         <Border>
                           <Style>None</Style>

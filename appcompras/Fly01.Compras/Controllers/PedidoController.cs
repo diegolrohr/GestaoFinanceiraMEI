@@ -33,7 +33,7 @@ namespace Fly01.Compras.Controllers
         //OrcamentoVM e PedidoVM na mesma controller ordemCompra(gridLoad, form), direcionado para a controller via javaScript
         public PedidoController()
         {
-            ExpandProperties = "condicaoParcelamento($select=descricao, qtdParcelas,condicoesParcelamento),formaPagamento($select=id,descricao),fornecedor($select=id,nome,email,endereco,numero,bairro,cep,complemento;$expand=cidade($select=nome),estado($select=sigla),pais($select=nome)),transportadora($select=id,nome),estadoPlacaVeiculo,categoria,centroCusto"; //expand = Cidade($select = id, nome)
+            ExpandProperties = "condicaoParcelamento($select=id,descricao, qtdParcelas,condicoesParcelamento),formaPagamento($select=id,descricao),fornecedor($select=id,nome,email,endereco,numero,bairro,cep,complemento;$expand=cidade($select=nome),estado($select=sigla),pais($select=nome)),transportadora($select=id,nome),estadoPlacaVeiculo,categoria,centroCusto"; //expand = Cidade($select = id, nome)
         }
 
         [HttpPost]
@@ -591,6 +591,22 @@ namespace Fly01.Compras.Controllers
                 Tooltip = new HelperUITooltip()
                 {
                     Text = "Se marcar Faturar, informe a natureza de operação para a nota fiscal a ser emitida. Quando for um novo pedido, o sistema aplica a descrição do cfop configurado no grupo tributário do primeiro produto adicionado. Confirme e altere se necessário."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "totalImpostosProdutos",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Se marcar Faturar, será calculado de acordo com as configurações do grupo tributário informado em cada produto. Impostos que agregam no total, como IPI e Substituição Tributária."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "totalImpostosProdutosNaoAgrega",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Se marcar Faturar, será calculado de acordo com as configurações do grupo tributário informado em cada produto. Impostos que não agregam no total, como ICMS, COFINS, PIS e FCP."
                 }
             });
             #endregion

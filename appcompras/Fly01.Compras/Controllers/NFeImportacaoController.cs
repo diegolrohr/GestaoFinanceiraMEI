@@ -250,7 +250,7 @@ namespace Fly01.Compras.Controllers
                     {
                         Title = "Pendências",
                         Id = "stepProdutosPendencias",
-                        Quantity = 2,
+                        Quantity = 3,
                     },
                     new FormWizardUIStep()
                     {
@@ -389,6 +389,15 @@ namespace Fly01.Compras.Controllers
 
             #region step Produtos Pendências
             config.Elements.Add(new DivElementUI { Id = "infoProdutosPendencias", Class = "col s12 text-justify visible", Label = "Informações" });
+            config.Elements.Add(new ButtonUI
+            {
+                Id = "salvarTodos",
+                Class = "col s12 m3 right",
+                ClassBtn = "btn right",
+                Label = "",
+                Value = "Salvar Todos",
+                OnClickFn = "fnSalvarTodosProdutos"
+            });
             config.Elements.Add(new DivElementUI { Id = "produtosPendencias", Class = "col s12 visible" });
             #endregion
 

@@ -64,6 +64,7 @@
     <Compile Include="Controllers\Api\ISSController.cs" />
     <Compile Include="Controllers\Api\CentroCustoController.cs" />
     <Compile Include="Controllers\Api\MinhaContaController.cs" />
+    <Compile Include="Controllers\Api\AtualizaTotaisOrdemVendaController.cs" />
     <Compile Include="Controllers\Api\ValidaCertificadoController .cs" />
     <Compile Include="Controllers\Api\MonitorNFSController.cs" />
     <Compile Include="Controllers\Api\NotaFiscalConfiguracaoGrupoTributarioController.cs" />

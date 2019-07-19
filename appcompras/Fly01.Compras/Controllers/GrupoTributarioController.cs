@@ -37,6 +37,13 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "calculaCSLL", Value = "false" });
             config.Elements.Add(new InputHiddenUI { Id = "calculaINSS", Value = "false" });
             config.Elements.Add(new InputHiddenUI { Id = "calculaImpostoRenda", Value = "false" });
+            config.Elements.Add(new InputHiddenUI { Id = "tipoTributacaoICMS", Value = "101" });
+            config.Elements.Add(new InputHiddenUI { Id = "tipoTributacaoIPI", Value = "0" });
+            config.Elements.Add(new InputHiddenUI { Id = "tipoTributacaoPIS", Value = "01" });
+            config.Elements.Add(new InputHiddenUI { Id = "tipoTributacaoCOFINS", Value = "01" });
+            config.Elements.Add(new InputHiddenUI { Id = "tipoTributacaoISS", Value = "1" });
+            config.Elements.Add(new InputHiddenUI { Id = "tipoPagamentoImpostoISS", Value = "1" });
+            config.Elements.Add(new InputHiddenUI { Id = "tipoCFPS", Value = "1" });
 
             config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12 l12", Label = "Descrição", Required = true, MaxLength = 40 });
 
@@ -47,7 +54,7 @@ namespace Fly01.Compras.Controllers
                 Label = "Código Fiscal de Operação (CFOP)",
                 Required = true,
                 DataUrl = @Url.Action("Cfop", "AutoComplete"),
-                LabelId = "cfopDescricao"
+                LabelId = "cfopDescricaoModal"
             });
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");

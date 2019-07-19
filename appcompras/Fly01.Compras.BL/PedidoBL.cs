@@ -49,6 +49,16 @@ namespace Fly01.Compras.BL
             exibirTransportadora = ConfiguracaoPersonalizacao != null ? ConfiguracaoPersonalizacao.ExibirStepTransportadoraCompras : true;
         }
 
+
+        public List<Pedido> GetPedidos()
+        {
+            var pedidos = new List<Pedido>();
+
+            pedidos = All.Where(x => x.Status == StatusOrdemCompra.Aberto && x.Ativo == true).ToList();
+
+            return pedidos;
+        }
+
         public override void ValidaModel(Pedido entity)
         {
             if (!string.IsNullOrEmpty(entity.MensagemPadraoNota))

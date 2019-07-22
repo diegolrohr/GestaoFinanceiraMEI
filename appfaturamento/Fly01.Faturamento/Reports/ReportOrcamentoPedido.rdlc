@@ -1885,13 +1885,13 @@ IIF(Fields!ExibirProdutos.Value = "True", "Produtos" ,"Serviços"))</Value>
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>0.33306cm</Width>
+              <Width>1.84223cm</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>9.49265cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>6.28901cm</Width>
+              <Width>4.79863cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -2237,7 +2237,7 @@ IIF(Fields!ExibirProdutos.Value = "True", "Produtos" ,"Serviços"))</Value>
         <DataSetName>ds</DataSetName>
         <Top>11.41856cm</Top>
         <Height>3.0673cm</Height>
-        <Width>16.11472cm</Width>
+        <Width>16.13351cm</Width>
         <ZIndex>6</ZIndex>
         <Style>
           <Border>

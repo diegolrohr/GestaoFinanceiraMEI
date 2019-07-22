@@ -99,7 +99,6 @@
     }
 
     function fnSetNaturezaOperacao(idItem) {
-        debugger;
         //adicionando o primeiro ou editando o único adicionado
         if ($('input#exibeStepProdutos').val() == "True" && $('#tipoOrdemVenda').val() == "Pedido" && ( ($$$._.dtOrdemVendaProdutos.ajax.json().recordsTotal == 0 && idItem.length == 0) || ($$$._.dtOrdemVendaProdutos.ajax.json().recordsTotal == 1 && idItem.length != 0) )) {
             var cfopDescricao = $('input#cfopDescricao').val();

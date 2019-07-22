@@ -18,6 +18,8 @@
     function fnFormReady() {
         if ($('#id').val() != "" && $('#id').val() != undefined) {
             fnContaEmiteBoleto($('#bancoId').val());
+            $("#valorInicialField").hide();
+            $("#inicializaContaBancariaField").hide();
         } else {
             $('#contaEmiteBoletoField').hide();
             $('#codigoCedenteField').hide();

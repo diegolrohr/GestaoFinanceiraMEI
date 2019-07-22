@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Newtonsoft.Json;
@@ -75,5 +75,9 @@ namespace Fly01.Financeiro.ViewModel
 
         [JsonProperty("registroFixo")]
         public bool RegistroFixo { get; set; }
+
+        [JsonProperty("valorInicial")]
+        public double? ValorInicial { get; set; }
+
     }
 }

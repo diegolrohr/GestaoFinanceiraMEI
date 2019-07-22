@@ -157,6 +157,19 @@ namespace Fly01.Financeiro.Controllers
 
             config.Elements.Add(new InputCheckboxUI
             {
+                Id = "inicializaContaBancaria",
+                Class = "col s4 l3",
+                Label = " Inicializar conta com Saldo",
+                DomEvents = new List<DomEventUI>()
+                {
+                    new DomEventUI() { DomEvent = "change", Function = "fnChangeCheckInicializa" },
+                }
+            });
+
+            config.Elements.Add(new InputCurrencyUI { Id = "valorInicial", Class = "col s4 l3", Label = "Valor", Disabled = true });
+
+            config.Elements.Add(new InputCheckboxUI
+            {
                 Id = "contaEmiteBoleto",
                 Class = "col s12 l10",
                 Label = " Habilitar emissão de boletos bancários",

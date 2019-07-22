@@ -13,6 +13,7 @@ using Fly01.Core.Rest;
 using Fly01.Core.Mensageria;
 using System.Configuration;
 using Fly01.Core.Presentation;
+using Fly01.Core.ViewModels.Presentation.Commons;
 
 namespace Fly01.Financeiro.Controllers
 {

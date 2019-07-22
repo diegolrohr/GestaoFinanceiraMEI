@@ -471,7 +471,7 @@ namespace Fly01.Faturamento.BL
                     { "PlataformaUrl", PlataformaUrl }
                 };
 
-            double freteFracionado = valorFrete.HasValue ? valorFrete.Value / tributacaoItens.Sum(x => x.Quantidade) : 0.0;
+            double freteFracionado = (valorFrete.HasValue && tipoFrete == TipoFrete.FOB) ? valorFrete.Value / tributacaoItens.Sum(x => x.Quantidade) : 0.0;
 
             var num = 1;
             foreach (var itemProduto in tributacaoItens)

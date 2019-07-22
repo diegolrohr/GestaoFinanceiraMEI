@@ -29,7 +29,7 @@ namespace Fly01.Compras.Controllers
         //OrcamentoVM e PedidoVM na mesma controller ordemCompra(gridLoad, form), direcionado para a controller via javaScript
         public OrcamentoController()
         {
-            ExpandProperties = "condicaoParcelamento($select=id,descricao),formaPagamento($select=id,descricao),categoria,centroCusto";
+            ExpandProperties = "condicaoParcelamento($select=id,descricao, qtdParcelas,condicoesParcelamento),formaPagamento($select=id,descricao),categoria,centroCusto";
         }
 
         public override Func<OrcamentoVM, object> GetDisplayData()
@@ -389,6 +389,19 @@ namespace Fly01.Compras.Controllers
             }
         }
 
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
+        public List<CondicaoParcelamentoParcelaVM> GetSimulacaoContas(OrcamentoVM orcamento)
+        {
+            var dadosReferenciaSimulacao = new
+            {
+                valorReferencia = orcamento.Total,
+                dataReferencia = orcamento?.DataVencimento,
+                condicoesParcelamento = orcamento?.CondicaoParcelamento?.CondicoesParcelamento,
+                qtdParcelas = orcamento.CondicaoParcelamento?.QtdParcelas
+            };
+            return RestHelper.ExecutePostRequest<ResponseSimulacaoVM>("condicaoparcelamentosimulacao", dadosReferenciaSimulacao)?.Items;
+        }
+
         public virtual ActionResult ImprimirOrcamento(Guid id)
         {
             OrcamentoVM Orcamento = Get(id);
@@ -397,6 +410,18 @@ namespace Fly01.Compras.Controllers
 
             List<ImprimirOrcamentoVM> reportItems = new List<ImprimirOrcamentoVM>();
 
+            var simulacao = GetSimulacaoContas(Orcamento);
+            var parcelas = "";
+
+            for (var i = 0; i < simulacao.Count; i++)
+            {
+                parcelas += $"{simulacao[i].DescricaoParcela} - Vencimento {simulacao[i].DataVencimento.ToString("dd/MM/yyyy")} - {simulacao[i].Valor.ToString("C", AppDefaults.CultureInfoDefault)}    ";
+                if (i % 2 != 0 && i > 0 && i < (simulacao.Count-1))
+                {
+                    parcelas += "\n";
+                }
+            }
+            
             foreach (OrcamentoItemVM produtosorcamento in produtos)
 
                 reportItems.Add(new ImprimirOrcamentoVM
@@ -408,13 +433,14 @@ namespace Fly01.Compras.Controllers
                     FormaPagamento = Orcamento.FormaPagamento != null ? Orcamento.FormaPagamento.Descricao : string.Empty,
                     Numero = Orcamento.Numero,
                     Observacao = Orcamento.Observacao,
+                    ParcelaConta = parcelas,
                     //PRODUTO
                     Id = produtosorcamento.Id.ToString(),
                     NomeProduto = produtosorcamento.Produto != null ? produtosorcamento.Produto.Descricao : string.Empty,
                     Fornecedor = produtosorcamento.Fornecedor != null ? produtosorcamento.Fornecedor.Nome.ToString() : string.Empty,
                     QtdProduto = produtosorcamento.Quantidade,
                     ValorUnitario = produtosorcamento.Valor,
-                    ValorTotal = produtosorcamento.Total,
+                    ValorTotal = produtosorcamento.Total
                 });
 
             if (!produtos.Any())
@@ -428,6 +454,7 @@ namespace Fly01.Compras.Controllers
                     FormaPagamento = Orcamento.FormaPagamento != null ? Orcamento.FormaPagamento.Descricao : string.Empty,
                     Numero = Orcamento.Numero,
                     Observacao = Orcamento.Observacao,
+                    ParcelaConta = parcelas
                 });
             }
 

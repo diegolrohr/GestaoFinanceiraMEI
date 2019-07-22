@@ -100,7 +100,7 @@
 
     function fnSetNaturezaOperacao(idItem) {
         //adicionando o primeiro ou editando o único adicionado
-        if ($('input#exibeStepProdutos').val() == "True" && $('#tipoOrdemVenda').val() == "Pedido" && ($$$._.dtOrdemVendaProdutos.ajax.json().recordsTotal == 0 && idItem.length == 0) || ($$$._.dtOrdemVendaProdutos.ajax.json().recordsTotal == 1 && idItem.length != 0)) {
+        if ($('input#exibeStepProdutos').val() == "True" && $('#tipoOrdemVenda').val() == "Pedido" && ( ($$$._.dtOrdemVendaProdutos.ajax.json().recordsTotal == 0 && idItem.length == 0) || ($$$._.dtOrdemVendaProdutos.ajax.json().recordsTotal == 1 && idItem.length != 0) )) {
             var cfopDescricao = $('input#cfopDescricao').val();
             $('input#naturezaOperacao').val(cfopDescricao.substring(0, (cfopDescricao.length > 60 ? 60 : cfopDescricao.length)));
             $$$.fn.updateTextFields();

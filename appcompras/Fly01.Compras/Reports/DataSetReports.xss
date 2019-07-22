@@ -7,7 +7,7 @@
 <DiagramLayout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ex:showrelationlabel="False" ViewPortX="-10" ViewPortY="14" xmlns:ex="urn:schemas-microsoft-com:xml-msdatasource-layout-extended" xmlns="urn:schemas-microsoft-com:xml-msdatasource-layout">
   <Shapes>
     <Shape ID="DesignTable:ImprimirPedido" ZOrder="1" X="39" Y="27" Height="794" Width="262" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="24" SplitterPosition="790" />
-    <Shape ID="DesignTable:ImprimirOrcamento" ZOrder="2" X="529" Y="55" Height="239" Width="181" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="252" SplitterPosition="235" />
+    <Shape ID="DesignTable:ImprimirOrcamento" ZOrder="2" X="529" Y="55" Height="361" Width="248" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="252" SplitterPosition="357" />
   </Shapes>
   <Connectors />
 </DiagramLayout>

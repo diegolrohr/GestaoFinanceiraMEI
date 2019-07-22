@@ -58,7 +58,7 @@
         <Top>3.12693cm</Top>
         <Left>0.02164cm</Left>
         <Height>0.6cm</Height>
-        <Width>16.44508cm</Width>
+        <Width>16.44507cm</Width>
         <ZIndex>1</ZIndex>
         <Style>
           <Border>
@@ -74,19 +74,19 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>5.30452cm</Width>
+              <Width>5.30019cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>4.6379cm</Width>
+              <Width>4.63357cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.51466cm</Width>
+              <Width>1.51033cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.0693cm</Width>
+              <Width>2.06497cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.74705cm</Width>
+              <Width>2.74272cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -461,10 +461,10 @@
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>ds</DataSetName>
-        <Top>8.66124cm</Top>
-        <Left>0.19328cm</Left>
+        <Top>9.86124cm</Top>
+        <Left>0.18928cm</Left>
         <Height>1.2cm</Height>
-        <Width>16.27343cm</Width>
+        <Width>16.25176cm</Width>
         <ZIndex>2</ZIndex>
         <Style>
           <Border>
@@ -494,10 +494,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Nome</rd:DefaultName>
-        <Top>7.99069cm</Top>
-        <Left>0.19328cm</Left>
+        <Top>9.19069cm</Top>
+        <Left>0.18928cm</Left>
         <Height>0.6cm</Height>
-        <Width>16.2951cm</Width>
+        <Width>16.27343cm</Width>
         <ZIndex>3</ZIndex>
         <Style>
           <Border>
@@ -754,10 +754,13 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>9.91447cm</Width>
+              <Width>0.35528cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>6.35898cm</Width>
+              <Width>9.30426cm</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>6.63556cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -766,7 +769,7 @@
               <TablixCells>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox35">
+                    <Textbox Name="Textbox13">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
@@ -786,7 +789,7 @@
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox33</rd:DefaultName>
+                      <rd:DefaultName>Textbox13</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -799,9 +802,10 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
-                    <ColSpan>2</ColSpan>
+                    <ColSpan>3</ColSpan>
                   </CellContents>
                 </TablixCell>
+                <TablixCell />
                 <TablixCell />
               </TablixCells>
             </TablixRow>
@@ -810,7 +814,7 @@
               <TablixCells>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox58">
+                    <Textbox Name="Textbox14">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
@@ -832,7 +836,7 @@
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox57</rd:DefaultName>
+                      <rd:DefaultName>Textbox14</rd:DefaultName>
                       <Style>
                         <Border>
                           <Style>None</Style>
@@ -843,8 +847,10 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <ColSpan>2</ColSpan>
                   </CellContents>
                 </TablixCell>
+                <TablixCell />
                 <TablixCell>
                   <CellContents>
                     <Textbox Name="Textbox122">
@@ -889,7 +895,7 @@
               <TablixCells>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox124">
+                    <Textbox Name="Textbox15">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
@@ -911,7 +917,7 @@
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox124</rd:DefaultName>
+                      <rd:DefaultName>Textbox15</rd:DefaultName>
                       <Style>
                         <Border>
                           <Style>None</Style>
@@ -922,8 +928,10 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <ColSpan>2</ColSpan>
                   </CellContents>
                 </TablixCell>
+                <TablixCell />
                 <TablixCell>
                   <CellContents>
                     <Textbox Name="Textbox126">
@@ -965,10 +973,125 @@
                 </TablixCell>
               </TablixCells>
             </TablixRow>
+            <TablixRow>
+              <Height>0.6cm</Height>
+              <TablixCells>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox16">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Parcelas:</Value>
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox16</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Style>None</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                    <ColSpan>3</ColSpan>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell />
+                <TablixCell />
+              </TablixCells>
+            </TablixRow>
+            <TablixRow>
+              <Height>0.6cm</Height>
+              <TablixCells>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox18">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox18</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Style>None</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="ParcelaConta">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!ParcelaConta.Value</Value>
+                              <Style>
+                                <FontWeight>Normal</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>ParcelaConta</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Style>None</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                    <ColSpan>2</ColSpan>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell />
+              </TablixCells>
+            </TablixRow>
           </TablixRows>
         </TablixBody>
         <TablixColumnHierarchy>
           <TablixMembers>
+            <TablixMember />
             <TablixMember />
             <TablixMember />
           </TablixMembers>
@@ -978,13 +1101,15 @@
             <TablixMember />
             <TablixMember />
             <TablixMember />
+            <TablixMember />
+            <TablixMember />
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>ds</DataSetName>
         <Top>5.947cm</Top>
         <Left>0.19328cm</Left>
-        <Height>1.8673cm</Height>
-        <Width>16.27345cm</Width>
+        <Height>3.0673cm</Height>
+        <Width>16.2951cm</Width>
         <ZIndex>5</ZIndex>
         <Style>
           <Border>
@@ -1019,8 +1144,8 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox3</rd:DefaultName>
-        <Top>10.60847cm</Top>
-        <Left>0.19328cm</Left>
+        <Top>11.80847cm</Top>
+        <Left>0.18928cm</Left>
         <Height>0.6cm</Height>
         <Width>7.41125cm</Width>
         <ZIndex>6</ZIndex>
@@ -1053,7 +1178,7 @@
     <Height>5.22693in</Height>
     <Style />
   </Body>
-  <Width>6.57643in</Width>
+  <Width>6.59222in</Width>
   <Page>
     <PageFooter>
       <Height>0.92163cm</Height>
@@ -1198,20 +1323,24 @@
         </Field>
         <Field Name="QtdProduto">
           <DataField>QtdProduto</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Double</rd:TypeName>
         </Field>
         <Field Name="ValorUnitario">
           <DataField>ValorUnitario</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Double</rd:TypeName>
         </Field>
         <Field Name="ValorTotal">
           <DataField>ValorTotal</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="ParcelaConta">
+          <DataField>ParcelaConta</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>DataSetReports</rd:DataSetName>
-        <rd:SchemaPath>C:\git\Fly01.Apps\appcompras\Fly01.Compras\Reports\DataSetReports.xsd</rd:SchemaPath>
+        <rd:SchemaPath>C:\projetos\Fly01.Apps\appcompras\Fly01.Compras\Reports\DataSetReports.xsd</rd:SchemaPath>
         <rd:TableName>ImprimirOrcamento</rd:TableName>
         <rd:TableAdapterFillMethod />
         <rd:TableAdapterGetDataMethod />

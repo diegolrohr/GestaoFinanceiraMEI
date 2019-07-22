@@ -1121,6 +1121,8 @@ namespace Fly01.Faturamento.Reports {
             
             private global::System.Data.DataColumn columnPais;
             
+            private global::System.Data.DataColumn columnParcelaConta;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public OrcamentoPedidoDataTable() {
@@ -1532,6 +1534,14 @@ namespace Fly01.Faturamento.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ParcelaContaColumn {
+                get {
+                    return this.columnParcelaConta;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -1614,7 +1624,8 @@ namespace Fly01.Faturamento.Reports {
                         string CEP, 
                         string Complemento, 
                         string Estado, 
-                        string Pais) {
+                        string Pais, 
+                        string ParcelaConta) {
                 OrcamentoPedidoRow rowOrcamentoPedidoRow = ((OrcamentoPedidoRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Id,
@@ -1663,7 +1674,8 @@ namespace Fly01.Faturamento.Reports {
                         CEP,
                         Complemento,
                         Estado,
-                        Pais};
+                        Pais,
+                        ParcelaConta};
                 rowOrcamentoPedidoRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowOrcamentoPedidoRow);
                 return rowOrcamentoPedidoRow;
@@ -1733,6 +1745,7 @@ namespace Fly01.Faturamento.Reports {
                 this.columnComplemento = base.Columns["Complemento"];
                 this.columnEstado = base.Columns["Estado"];
                 this.columnPais = base.Columns["Pais"];
+                this.columnParcelaConta = base.Columns["ParcelaConta"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1832,6 +1845,8 @@ namespace Fly01.Faturamento.Reports {
                 base.Columns.Add(this.columnEstado);
                 this.columnPais = new global::System.Data.DataColumn("Pais", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPais);
+                this.columnParcelaConta = new global::System.Data.DataColumn("ParcelaConta", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnParcelaConta);
                 this.columnPesoBruto.DefaultValue = ((double)(0D));
                 this.columnPesoLiquido.DefaultValue = ((double)(0D));
                 this.columnValorFrete.DefaultValue = ((double)(0D));
@@ -3656,6 +3671,22 @@ namespace Fly01.Faturamento.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string ParcelaConta {
+                get {
+                    try {
+                        return ((string)(this[this.tableOrcamentoPedido.ParcelaContaColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ParcelaConta\' in table \'OrcamentoPedido\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOrcamentoPedido.ParcelaContaColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsIdNull() {
                 return this.IsNull(this.tableOrcamentoPedido.IdColumn);
             }
@@ -4216,6 +4247,18 @@ namespace Fly01.Faturamento.Reports {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetPaisNull() {
                 this[this.tableOrcamentoPedido.PaisColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsParcelaContaNull() {
+                return this.IsNull(this.tableOrcamentoPedido.ParcelaContaColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetParcelaContaNull() {
+                this[this.tableOrcamentoPedido.ParcelaContaColumn] = global::System.Convert.DBNull;
             }
         }
         

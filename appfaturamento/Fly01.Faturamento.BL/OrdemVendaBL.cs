@@ -871,6 +871,7 @@ namespace Fly01.Faturamento.BL
         public TotalPedidoNotaFiscal CalculaTotalOrdemVenda(Guid ordemVendaId, Guid clienteId, bool geraNotaFiscal, string tipoNfeComplementar = "NaoComplementar", string tipoFrete = "SemFrete", double? valorFrete = 0, bool onList = false)
         {
             var tipoFreteEnum = (TipoFrete)Enum.Parse(typeof(TipoFrete), tipoFrete, true);
+            if (tipoFreteEnum != TipoFrete.FOB) { valorFrete = 0;}
             var tipoNfeComplementarEnum = (TipoNfeComplementar)Enum.Parse(typeof(TipoNfeComplementar), tipoNfeComplementar, true);
 
             var ordemVenda = All.Where(x => x.Id == ordemVendaId).FirstOrDefault();

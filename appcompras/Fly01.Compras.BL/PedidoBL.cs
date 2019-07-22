@@ -523,6 +523,7 @@ namespace Fly01.Compras.BL
         {
             var tipoVendaEnum = (TipoCompraVenda)Enum.Parse(typeof(TipoCompraVenda), tipoCompra, true);
             var tipoFreteEnum = (TipoFrete)Enum.Parse(typeof(TipoFrete), tipoFrete, true);
+            if (tipoFreteEnum != TipoFrete.FOB) { valorFrete = 0; }
 
             var ordemCompra = All.Where(x => x.Id == ordemCompraId).FirstOrDefault();
             if ((geraNotaFiscal && emiteNotaFiscal) && ordemCompra.Status != StatusOrdemCompra.Finalizado)

@@ -123,6 +123,10 @@
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Fly01.Core.API\Fly01.Core.API.csproj">
+      <Project>{24148D87-4211-43B6-9C02-CD6E0D03EE0A}</Project>
+      <Name>Fly01.Core.API</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Fly01.Core.BL\Fly01.Core.BL.csproj">
       <Project>{E491B024-3E82-40F3-9108-F402D8023A19}</Project>
       <Name>Fly01.Core.BL</Name>

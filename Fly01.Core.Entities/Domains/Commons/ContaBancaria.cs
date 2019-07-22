@@ -33,5 +33,7 @@ namespace Fly01.Core.Entities.Domains.Commons
         public double? PercentualMulta { get; set; }
 
         public bool ContaEmiteBoleto { get; set; }
+
+        public double? ValorInicial { get; set; }
     }
 }

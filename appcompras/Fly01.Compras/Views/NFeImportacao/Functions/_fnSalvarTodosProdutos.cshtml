@@ -1,7 +1,6 @@
 ﻿<script>
     function fnSalvarTodosProdutos() {
         var dataRecord = $$$._.dtProdutosPendencias.ajax.json();
-        debugger;
         for (let i = 0; i < dataRecord.recordsTotal; i++) {
             SubmitAndSave(dataRecord.data[i].id);
         }

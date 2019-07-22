@@ -39,7 +39,7 @@ namespace Fly01.Financeiro.BL
             return saldos;
         }
 
-        public void InsereSaldoInicial(Guid contaBancariaId)
+        public void InsereSaldoInicial(Guid contaBancariaId, double? valorInicial = 0.0)
         {
             if (contaBancariaId == default(Guid))
                 throw new BusinessException("Conta Bancária Inválida");
@@ -50,10 +50,10 @@ namespace Fly01.Financeiro.BL
                 {
                     ContaBancariaId = contaBancariaId,
                     Data = DateTime.Now.Date,
-                    SaldoDia = default(double),
-                    SaldoConsolidado = default(double),
+                    SaldoDia = (double)valorInicial,
+                    SaldoConsolidado = (double)valorInicial,
                     TotalPagamentos = default(double),
-                    TotalRecebimentos = default(double)
+                    TotalRecebimentos = default(double),
                 };
 
                 base.Insert(saldoInicial);

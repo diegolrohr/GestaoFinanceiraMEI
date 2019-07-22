@@ -1,4 +1,6 @@
-﻿using Fly01.Core.BL;
+﻿using Fly01.Core;
+using Fly01.Core.API;
+using Fly01.Core.BL;
 using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
@@ -9,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Fly01.Financeiro.BL
 {
@@ -67,74 +70,97 @@ namespace Fly01.Financeiro.BL
                 var condicoesParcelamento = condicaoParcelamentoBL.GetPrestacoes(entity.CondicaoParcelamentoId, entity.DataVencimento, entity.ValorPrevisto);
                 var contaFinanceiraPrincipal = entity.Id == default(Guid) ? Guid.NewGuid() : entity.Id;
 
-                for (int iParcela = 0; iParcela < condicoesParcelamento.Count; iParcela++)
+                GravaParcelamentoRepeticoes(entity, repetir, condicoesParcelamento, contaFinanceiraPrincipal);
+            }
+        }
+
+        private void GravaParcelamentoRepeticoes(ContaPagar entity, bool repetir, List<CondicaoParcelamentoParcela> condicoesParcelamento, Guid contaFinanceiraPrincipal)
+        {
+            //numero = All.Max(x => x.Numero) + 1;
+            rpc = new RpcClient();
+            var numero = default(int);
+            numero = int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaPagar},add={condicoesParcelamento.Count}"));
+            numero -= condicoesParcelamento.Count;
+
+            for (int iParcela = 0; iParcela < condicoesParcelamento.Count; iParcela++)
+            {
+                numero += 1;
+                var parcela = condicoesParcelamento[iParcela];
+                var itemContaPagar = new ContaPagar();
+                entity.CopyProperties<ContaPagar>(itemContaPagar);
+
+                GravaParcelamento(entity, repetir, contaFinanceiraPrincipal, iParcela, parcela, itemContaPagar, numero);
+
+                if (repetir)
                 {
-                    var parcela = condicoesParcelamento[iParcela];
-                    var itemContaPagar = new ContaPagar();
-                    entity.CopyProperties<ContaPagar>(itemContaPagar);
-                    itemContaPagar.Notification.Errors.AddRange(entity.Notification.Errors); // CopyProperties não copia as notificações
-                    itemContaPagar.DataVencimento = parcela.DataVencimento;
-                    itemContaPagar.DescricaoParcela = parcela.DescricaoParcela;
-                    itemContaPagar.ValorPrevisto = parcela.Valor;
-                    itemContaPagar.ValorPago = entity.StatusContaBancaria == StatusContaBancaria.Pago ? parcela.Valor : entity.ValorPago;
-
-                    if (iParcela == default(int))
-                        itemContaPagar.Id = contaFinanceiraPrincipal;
-                    else
-                    {
-                        itemContaPagar.Id = Guid.NewGuid();
-                        itemContaPagar.ContaFinanceiraParcelaPaiId = contaFinanceiraPrincipal;
-
-                        if (repetir)
-                            itemContaPagar.ContaFinanceiraRepeticaoPaiId = contaFinanceiraPrincipal;
-                    }
-
-                    rpc = new RpcClient();
-                    numero = int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaPagar}"));
-                    //numero = All.Max(x => x.Numero) + 1;
-                    itemContaPagar.Numero = numero;
-
-                    base.Insert(itemContaPagar);
-
-                    if (entity.StatusContaBancaria == StatusContaBancaria.Pago || entity.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente)
-                        contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(itemContaPagar);
-
-                    if (repetir)
-                    {
-                        for (int iRepeticao = 1; iRepeticao <= entity.NumeroRepeticoes; iRepeticao++)
-                        {
-                            var itemContaPagarRepeticao = new ContaPagar();
-                            itemContaPagar.CopyProperties<ContaPagar>(itemContaPagarRepeticao);
-                            itemContaPagarRepeticao.ContaFinanceiraParcelaPaiId = null;
-                            itemContaPagarRepeticao.Notification.Errors.AddRange(itemContaPagar.Notification.Errors); // CopyProperties não copia as notificações
-                            itemContaPagarRepeticao.Id = default(Guid);
-                            itemContaPagarRepeticao.ContaFinanceiraRepeticaoPaiId = contaFinanceiraPrincipal;                            
-
-                            switch (entity.TipoPeriodicidade)
-                            {
-                                case TipoPeriodicidade.Semanal:
-                                    itemContaPagarRepeticao.DataVencimento = itemContaPagarRepeticao.DataVencimento.AddDays(iRepeticao * 7);
-                                    break;
-                                case TipoPeriodicidade.Mensal:
-                                    itemContaPagarRepeticao.DataVencimento = itemContaPagarRepeticao.DataVencimento.AddMonths(iRepeticao);
-                                    break;
-                                case TipoPeriodicidade.Anual:
-                                    itemContaPagarRepeticao.DataVencimento = itemContaPagarRepeticao.DataVencimento.AddYears(iRepeticao);
-                                    break;
-                            }
-
-                            rpc = new RpcClient();
-                            numero = int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaPagar}"));
-
-                            itemContaPagarRepeticao.Numero = numero;
-
-                            base.Insert(itemContaPagarRepeticao);
-
-                            if (entity.StatusContaBancaria == StatusContaBancaria.Pago || entity.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente)
-                                contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(itemContaPagarRepeticao);
-                        }
-                    }
+                    GravaRepeticoes(entity, contaFinanceiraPrincipal, itemContaPagar);
                 }
+            }
+        }
+
+        private void GravaParcelamento(ContaPagar entity, bool repetir, Guid contaFinanceiraPrincipal, int iParcela, CondicaoParcelamentoParcela parcela, ContaPagar itemContaPagar, int numero)
+        {
+            itemContaPagar.Notification.Errors.AddRange(entity.Notification.Errors);
+            itemContaPagar.DataVencimento = parcela.DataVencimento;
+            itemContaPagar.DescricaoParcela = parcela.DescricaoParcela;
+            itemContaPagar.ValorPrevisto = parcela.Valor;
+            itemContaPagar.ValorPago = entity.StatusContaBancaria == StatusContaBancaria.Pago ? parcela.Valor : entity.ValorPago;
+
+            if (iParcela == default(int))
+                itemContaPagar.Id = contaFinanceiraPrincipal;
+            else
+            {
+                itemContaPagar.Id = Guid.NewGuid();
+                itemContaPagar.ContaFinanceiraParcelaPaiId = contaFinanceiraPrincipal;
+
+                if (repetir)
+                    itemContaPagar.ContaFinanceiraRepeticaoPaiId = contaFinanceiraPrincipal;
+            }
+
+            itemContaPagar.Numero = numero;
+
+            base.Insert(itemContaPagar);
+
+            if (entity.StatusContaBancaria == StatusContaBancaria.Pago || entity.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente)
+                contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(itemContaPagar);
+        }
+
+        private void GravaRepeticoes(ContaPagar entity, Guid contaFinanceiraPrincipal, ContaPagar itemContaPagar)
+        {
+            rpc = new RpcClient();
+            var numero = default(int);
+            numero = int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaPagar},add={entity.NumeroRepeticoes ?? 1}"));
+            numero -= entity.NumeroRepeticoes ?? numero;
+
+            for (int iRepeticao = 1; iRepeticao <= entity.NumeroRepeticoes; iRepeticao++)
+            {
+                numero += 1;
+                var itemContaPagarRepeticao = new ContaPagar();
+                itemContaPagar.CopyProperties<ContaPagar>(itemContaPagarRepeticao);
+                itemContaPagarRepeticao.ContaFinanceiraParcelaPaiId = null;
+                itemContaPagarRepeticao.Notification.Errors.AddRange(itemContaPagar.Notification.Errors);
+                itemContaPagarRepeticao.Id = default(Guid);
+                itemContaPagarRepeticao.ContaFinanceiraRepeticaoPaiId = contaFinanceiraPrincipal;
+
+                switch (entity.TipoPeriodicidade)
+                {
+                    case TipoPeriodicidade.Semanal:
+                        itemContaPagarRepeticao.DataVencimento = itemContaPagarRepeticao.DataVencimento.AddDays(iRepeticao * 7);
+                        break;
+                    case TipoPeriodicidade.Mensal:
+                        itemContaPagarRepeticao.DataVencimento = itemContaPagarRepeticao.DataVencimento.AddMonths(iRepeticao);
+                        break;
+                    case TipoPeriodicidade.Anual:
+                        itemContaPagarRepeticao.DataVencimento = itemContaPagarRepeticao.DataVencimento.AddYears(iRepeticao);
+                        break;
+                }
+
+                itemContaPagarRepeticao.Numero = numero;
+
+                base.Insert(itemContaPagarRepeticao);
+
+                if (entity.StatusContaBancaria == StatusContaBancaria.Pago || entity.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente)
+                    contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(itemContaPagarRepeticao);
             }
         }
 
@@ -161,9 +187,9 @@ namespace Fly01.Financeiro.BL
         {
             var parcelas = new List<ContaPagar>();
 
-            if(All.Any(x => x.Id == contaFinanceiraParcelaPaiId))
+            if (All.Any(x => x.Id == contaFinanceiraParcelaPaiId))
                 parcelas.Add(All.Where(x => x.Id == contaFinanceiraParcelaPaiId).AsNoTracking().FirstOrDefault());
-            if(All.Any(x => x.ContaFinanceiraParcelaPaiId == contaFinanceiraParcelaPaiId))
+            if (All.Any(x => x.ContaFinanceiraParcelaPaiId == contaFinanceiraParcelaPaiId))
                 parcelas.AddRange(All.Where(x => x.ContaFinanceiraParcelaPaiId == contaFinanceiraParcelaPaiId).AsNoTracking().OrderBy(x => x.DataInclusao));
 
             return parcelas;

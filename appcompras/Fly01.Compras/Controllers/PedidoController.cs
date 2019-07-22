@@ -958,11 +958,7 @@ namespace Fly01.Compras.Controllers
 
             for (var i = 0; i < simulacao.Count; i++)
             {
-                parcelas += $"{simulacao[i].DescricaoParcela} - Vencimento {simulacao[i].DataVencimento.ToString("dd/MM/yyyy")} - {simulacao[i].Valor.ToString("C", AppDefaults.CultureInfoDefault)}    ";
-                if (i % 2 != 0 && i > 0 && i < (simulacao.Count - 1))
-                {
-                    parcelas += "\n";
-                }
+                parcelas += $"{simulacao[i].DescricaoParcela} - Vencimento {simulacao[i].DataVencimento.ToString("dd/MM/yyyy")} - {simulacao[i].Valor.ToString("C", AppDefaults.CultureInfoDefault)}\n";
             }
 
             var produtos = GetProdutos(id);
@@ -1192,6 +1188,7 @@ namespace Fly01.Compras.Controllers
                     Status = Pedido.Status,
                     ParcelaContas = parcelas,
                     ValorFreteTotal = response.ValorFrete.HasValue ? response.ValorFrete.Value : 0,
+                    QtdParcelas = Pedido.CondicaoParcelamento != null ? Pedido.CondicaoParcelamento.QtdParcelas : 0,
                     //PRODUTO
                     Id = produtospedido.Id.ToString(),
                     NomeProduto = produtospedido.Produto != null ? produtospedido.Produto.Descricao : string.Empty,
@@ -1247,7 +1244,8 @@ namespace Fly01.Compras.Controllers
                 ExibirTransportadora = exibirTransportadora.ToString(),
                 EmiteNotaFiscal = emiteNotaFiscal.ToString(),
                 ParcelaContas = parcelas,
-                ValorFreteTotal = response.ValorFrete.HasValue ? response.ValorFrete.Value : 0
+                ValorFreteTotal = response.ValorFrete.HasValue ? response.ValorFrete.Value : 0,
+                QtdParcelas = Pedido.CondicaoParcelamento != null ? Pedido.CondicaoParcelamento.QtdParcelas : 0
             });
         }
 

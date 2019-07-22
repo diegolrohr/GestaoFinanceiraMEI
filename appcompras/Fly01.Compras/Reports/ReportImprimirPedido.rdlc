@@ -44,7 +44,7 @@
               <TextRun>
                 <Value>=Parameters!ReportTitle.Value</Value>
                 <Style>
-                  <FontSize>12pt</FontSize>
+                  <FontSize>16pt</FontSize>
                   <FontWeight>Bold</FontWeight>
                 </Style>
               </TextRun>
@@ -1250,13 +1250,13 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>0.36217cm</Width>
+              <Width>1.9325cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>9.45705cm</Width>
+              <Width>8.58861cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>6.74043cm</Width>
+              <Width>6.03854cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -1430,23 +1430,23 @@
                 <TablixCell />
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox126">
+                    <Textbox Name="QtdParcelas">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Data Vencimento: </Value>
+                              <Value>Qtd Parcelas: </Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
                             <TextRun>
-                              <Value>=IIf(Year(Fields!DataVencimento.Value) &gt; 1
-		,FormatDateTime(Fields!DataVencimento.Value, DateFormat.ShortDate)
-		, "")</Value>
-                              <Style />
+                              <Value>=Fields!QtdParcelas.Value</Value>
+                              <Style>
+                                <FontWeight>Normal</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
@@ -1454,7 +1454,7 @@
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox126</rd:DefaultName>
+                      <rd:DefaultName>QtdParcelas</rd:DefaultName>
                       <Style>
                         <Border>
                           <Style>None</Style>
@@ -2527,7 +2527,7 @@
     <Height>8.00958in</Height>
     <Style />
   </Body>
-  <Width>6.62928in</Width>
+  <Width>6.65355in</Width>
   <Page>
     <PageFooter>
       <Height>2.271cm</Height>
@@ -2796,6 +2796,10 @@
         </Field>
         <Field Name="ValorFreteTotal">
           <DataField>ValorFreteTotal</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="QtdParcelas">
+          <DataField>QtdParcelas</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>

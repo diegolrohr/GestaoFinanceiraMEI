@@ -67,74 +67,97 @@ namespace Fly01.Financeiro.BL
                 var condicoesParcelamento = condicaoParcelamentoBL.GetPrestacoes(entity.CondicaoParcelamentoId, entity.DataVencimento, entity.ValorPrevisto);
                 var contaFinanceiraPrincipal = entity.Id == default(Guid) ? Guid.NewGuid() : entity.Id;
 
-                for (int iParcela = 0; iParcela < condicoesParcelamento.Count; iParcela++)
+                GravaParcelamentoRepeticoes(entity, repetir, condicoesParcelamento, contaFinanceiraPrincipal);
+            }
+        }
+
+        private void GravaParcelamentoRepeticoes(ContaReceber entity, bool repetir, List<CondicaoParcelamentoParcela> condicoesParcelamento, Guid contaFinanceiraPrincipal)
+        {
+            //numero = All.Max(x => x.Numero) + 1;
+            rpc = new RpcClient();
+            var numero = default(int);
+            numero = int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaReceber},add={condicoesParcelamento.Count}"));
+            numero -= condicoesParcelamento.Count;
+
+            for (int iParcela = 0; iParcela < condicoesParcelamento.Count; iParcela++)
+            {
+                numero += 1;
+                var parcela = condicoesParcelamento[iParcela];
+                var itemContaReceber = new ContaReceber();
+                entity.CopyProperties<ContaReceber>(itemContaReceber);
+
+                GravaParcelamento(entity, repetir, contaFinanceiraPrincipal, iParcela, parcela, itemContaReceber, numero);
+
+                if (repetir)
                 {
-                    var parcela = condicoesParcelamento[iParcela];
-                    var itemContaReceber = new ContaReceber();
-                    entity.CopyProperties<ContaReceber>(itemContaReceber);
-                    itemContaReceber.Notification.Errors.AddRange(entity.Notification.Errors); // CopyProperties não copia as notificações
-                    itemContaReceber.DataVencimento = parcela.DataVencimento;
-                    itemContaReceber.DescricaoParcela = parcela.DescricaoParcela;
-                    itemContaReceber.ValorPrevisto = parcela.Valor;
-                    itemContaReceber.ValorPago = entity.StatusContaBancaria == StatusContaBancaria.Pago ? parcela.Valor : entity.ValorPago;
-
-                    if (iParcela == default(int))
-                        itemContaReceber.Id = contaFinanceiraPrincipal;
-                    else
-                    {
-                        itemContaReceber.Id = Guid.NewGuid();
-                        itemContaReceber.ContaFinanceiraParcelaPaiId = contaFinanceiraPrincipal;
-
-                        if (repetir)
-                            itemContaReceber.ContaFinanceiraRepeticaoPaiId = contaFinanceiraPrincipal;
-                    }
-
-                    rpc = new RpcClient();
-                    numero = int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaReceber}"));
-                    //numero = All.Max(x => x.Numero) + 1;
-                    itemContaReceber.Numero = numero;
-
-                    base.Insert(itemContaReceber);
-
-                    if (entity.StatusContaBancaria == StatusContaBancaria.Pago || entity.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente)
-                        contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(itemContaReceber);
-
-                    if (repetir)
-                    {
-                        for (int iRepeticao = 1; iRepeticao <= entity.NumeroRepeticoes; iRepeticao++)
-                        {
-                            var itemContaReceberRepeticao = new ContaReceber();
-                            itemContaReceber.CopyProperties<ContaReceber>(itemContaReceberRepeticao);
-                            itemContaReceberRepeticao.ContaFinanceiraParcelaPaiId = null;
-                            itemContaReceberRepeticao.Notification.Errors.AddRange(itemContaReceber.Notification.Errors); // CopyProperties não copia as notificações
-                            itemContaReceberRepeticao.Id = default(Guid);
-                            itemContaReceberRepeticao.ContaFinanceiraRepeticaoPaiId = contaFinanceiraPrincipal;
-
-                            switch (entity.TipoPeriodicidade)
-                            {
-                                case TipoPeriodicidade.Semanal:
-                                    itemContaReceberRepeticao.DataVencimento = itemContaReceberRepeticao.DataVencimento.AddDays(iRepeticao * 7);
-                                    break;
-                                case TipoPeriodicidade.Mensal:
-                                    itemContaReceberRepeticao.DataVencimento = itemContaReceberRepeticao.DataVencimento.AddMonths(iRepeticao);
-                                    break;
-                                case TipoPeriodicidade.Anual:
-                                    itemContaReceberRepeticao.DataVencimento = itemContaReceberRepeticao.DataVencimento.AddYears(iRepeticao);
-                                    break;
-                            }
-
-                            rpc = new RpcClient();
-                            numero = int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaReceber}"));
-                            //numero = All.Max(x => x.Numero) + 1;
-                            itemContaReceberRepeticao.Numero = numero;
-
-                            base.Insert(itemContaReceberRepeticao);
-
-                            if (entity.StatusContaBancaria == StatusContaBancaria.Pago || entity.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente)
-                                contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(itemContaReceberRepeticao);
-                        }
-                    }
+                    GravaRepeticoes(entity, contaFinanceiraPrincipal, itemContaReceber);
                 }
+            }
+        }
+
+        private void GravaParcelamento(ContaReceber entity, bool repetir, Guid contaFinanceiraPrincipal, int iParcela, CondicaoParcelamentoParcela parcela, ContaReceber itemContaReceber, int numero)
+        {
+            itemContaReceber.Notification.Errors.AddRange(entity.Notification.Errors);
+            itemContaReceber.DataVencimento = parcela.DataVencimento;
+            itemContaReceber.DescricaoParcela = parcela.DescricaoParcela;
+            itemContaReceber.ValorPrevisto = parcela.Valor;
+            itemContaReceber.ValorPago = entity.StatusContaBancaria == StatusContaBancaria.Pago ? parcela.Valor : entity.ValorPago;
+
+            if (iParcela == default(int))
+                itemContaReceber.Id = contaFinanceiraPrincipal;
+            else
+            {
+                itemContaReceber.Id = Guid.NewGuid();
+                itemContaReceber.ContaFinanceiraParcelaPaiId = contaFinanceiraPrincipal;
+
+                if (repetir)
+                    itemContaReceber.ContaFinanceiraRepeticaoPaiId = contaFinanceiraPrincipal;
+            }
+
+            itemContaReceber.Numero = numero;
+
+            base.Insert(itemContaReceber);
+
+            if (entity.StatusContaBancaria == StatusContaBancaria.Pago || entity.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente)
+                contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(itemContaReceber);
+        }
+
+        private void GravaRepeticoes(ContaReceber entity, Guid contaFinanceiraPrincipal, ContaReceber itemContaReceber)
+        {
+            rpc = new RpcClient();
+            var numero = default(int);
+            numero = int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaReceber},add={entity.NumeroRepeticoes ?? 1}"));
+            numero -= entity.NumeroRepeticoes ?? numero;
+
+            for (int iRepeticao = 1; iRepeticao <= entity.NumeroRepeticoes; iRepeticao++)
+            {
+                numero += 1;
+                var itemContaReceberRepeticao = new ContaReceber();
+                itemContaReceber.CopyProperties<ContaReceber>(itemContaReceberRepeticao);
+                itemContaReceberRepeticao.ContaFinanceiraParcelaPaiId = null;
+                itemContaReceberRepeticao.Notification.Errors.AddRange(itemContaReceber.Notification.Errors);
+                itemContaReceberRepeticao.Id = default(Guid);
+                itemContaReceberRepeticao.ContaFinanceiraRepeticaoPaiId = contaFinanceiraPrincipal;
+
+                switch (entity.TipoPeriodicidade)
+                {
+                    case TipoPeriodicidade.Semanal:
+                        itemContaReceberRepeticao.DataVencimento = itemContaReceberRepeticao.DataVencimento.AddDays(iRepeticao * 7);
+                        break;
+                    case TipoPeriodicidade.Mensal:
+                        itemContaReceberRepeticao.DataVencimento = itemContaReceberRepeticao.DataVencimento.AddMonths(iRepeticao);
+                        break;
+                    case TipoPeriodicidade.Anual:
+                        itemContaReceberRepeticao.DataVencimento = itemContaReceberRepeticao.DataVencimento.AddYears(iRepeticao);
+                        break;
+                }
+
+                itemContaReceberRepeticao.Numero = numero;
+
+                base.Insert(itemContaReceberRepeticao);
+
+                if (entity.StatusContaBancaria == StatusContaBancaria.Pago || entity.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente)
+                    contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(itemContaReceberRepeticao);
             }
         }
 

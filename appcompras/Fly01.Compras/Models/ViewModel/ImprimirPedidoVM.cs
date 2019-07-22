@@ -46,5 +46,6 @@ namespace Fly01.Compras.Models.ViewModel
         public double? ItemDesconto { get; internal set; }
         public string ParcelaContas { get; internal set; }
         public double ValorFreteTotal { get; set; }
+        public int? QtdParcelas { get; set; }
     }
 }

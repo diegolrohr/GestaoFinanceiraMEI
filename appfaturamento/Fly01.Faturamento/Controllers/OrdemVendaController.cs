@@ -98,11 +98,7 @@ namespace Fly01.Faturamento.Controllers
 
             for (var  i=0; i < simulacao.Count; i++)
             {
-                parcelas += $"{simulacao[i].DescricaoParcela} - Vencimento {simulacao[i].DataVencimento.ToString("dd/MM/yyyy")} - {simulacao[i].Valor.ToString("C", AppDefaults.CultureInfoDefault)}    ";
-                if (i % 2 != 0 && i > 0 && i < (simulacao.Count-1))
-                {
-                    parcelas += "\n";
-                }    
+                parcelas += $"{simulacao[i].DescricaoParcela} - Vencimento {simulacao[i].DataVencimento.ToString("dd/MM/yyyy")} - {simulacao[i].Valor.ToString("C", AppDefaults.CultureInfoDefault)}\n";
             }
 
             bool calculaFrete = (

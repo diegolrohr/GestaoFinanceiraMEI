@@ -1,6 +1,6 @@
 using System;
 
-namespace Fly01.Financeiro.ViewModel
+namespace Fly01.Core.ViewModels.Presentation.Commons
 {
     [Serializable]
     public class ContaReceberVM : ContaFinanceiraVM { }

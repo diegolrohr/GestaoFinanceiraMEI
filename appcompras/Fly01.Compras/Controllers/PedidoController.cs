@@ -33,7 +33,7 @@ namespace Fly01.Compras.Controllers
         //OrcamentoVM e PedidoVM na mesma controller ordemCompra(gridLoad, form), direcionado para a controller via javaScript
         public PedidoController()
         {
-            ExpandProperties = "condicaoParcelamento($select=id,descricao),formaPagamento($select=id,descricao),fornecedor($select=id,nome,email,endereco,numero,bairro,cep,complemento;$expand=cidade($select=nome),estado($select=sigla),pais($select=nome)),transportadora($select=id,nome),estadoPlacaVeiculo,categoria,centroCusto"; //expand = Cidade($select = id, nome)
+            ExpandProperties = "condicaoParcelamento($select=id,descricao, qtdParcelas,condicoesParcelamento),formaPagamento($select=id,descricao),fornecedor($select=id,nome,email,endereco,numero,bairro,cep,complemento;$expand=cidade($select=nome),estado($select=sigla),pais($select=nome)),transportadora($select=id,nome),estadoPlacaVeiculo,categoria,centroCusto"; //expand = Cidade($select = id, nome)
         }
 
         [HttpPost]
@@ -593,6 +593,22 @@ namespace Fly01.Compras.Controllers
                     Text = "Se marcar Faturar, informe a natureza de operação para a nota fiscal a ser emitida. Quando for um novo pedido, o sistema aplica a descrição do cfop configurado no grupo tributário do primeiro produto adicionado. Confirme e altere se necessário."
                 }
             });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "totalImpostosProdutos",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Se marcar Faturar, será calculado de acordo com as configurações do grupo tributário informado em cada produto. Impostos que agregam no total, como IPI e Substituição Tributária."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "totalImpostosProdutosNaoAgrega",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Se marcar Faturar, será calculado de acordo com as configurações do grupo tributário informado em cada produto. Impostos que não agregam no total, como ICMS, COFINS, PIS e FCP."
+                }
+            });
             #endregion
 
             cfg.Content.Add(config);
@@ -908,6 +924,19 @@ namespace Fly01.Compras.Controllers
             }
         }
 
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
+        public List<CondicaoParcelamentoParcelaVM> GetSimulacaoContas(PedidoVM pedido)
+        {
+            var dadosReferenciaSimulacao = new
+            {
+                valorReferencia = TotalOrdemCompraResponse(pedido.Id.ToString(), pedido.FornecedorId.ToString(), pedido.GeraNotaFiscal, pedido.TipoCompra, pedido.TipoFrete, pedido.ValorFrete)?.Total,
+                dataReferencia = pedido?.DataVencimento,
+                condicoesParcelamento = pedido?.CondicaoParcelamento?.CondicoesParcelamento,
+                qtdParcelas = pedido.CondicaoParcelamento?.QtdParcelas
+            };
+            return RestHelper.ExecutePostRequest<ResponseSimulacaoVM>("condicaoparcelamentosimulacao", dadosReferenciaSimulacao)?.Items;
+        }
+
         public virtual ActionResult ImprimirPedido(Guid id)
         {
             ConfiguracaoPersonalizacaoVM personalizacao = null;
@@ -924,13 +953,25 @@ namespace Fly01.Compras.Controllers
 
             PedidoVM Pedido = Get(id);
 
+            var simulacao = GetSimulacaoContas(Pedido);
+            var parcelas = "";
+
+            for (var i = 0; i < simulacao.Count; i++)
+            {
+                parcelas += $"{simulacao[i].DescricaoParcela} - Vencimento {simulacao[i].DataVencimento.ToString("dd/MM/yyyy")} - {simulacao[i].Valor.ToString("C", AppDefaults.CultureInfoDefault)}    ";
+                if (i % 2 != 0 && i > 0 && i < (simulacao.Count - 1))
+                {
+                    parcelas += "\n";
+                }
+            }
+
             var produtos = GetProdutos(id);
             List<ImprimirPedidoVM> reportItems = new List<ImprimirPedidoVM>();
 
             if (!produtos.Any())
-                AdicionarInformacoesPadrao(Pedido, reportItems, emiteNotaFiscal, exibirTransportadora);
+                AdicionarInformacoesPadrao(Pedido, reportItems, emiteNotaFiscal, exibirTransportadora, parcelas);
             else
-                MontarItensParaPrint(Pedido, produtos, reportItems, emiteNotaFiscal, exibirTransportadora);
+                MontarItensParaPrint(Pedido, produtos, reportItems, emiteNotaFiscal, exibirTransportadora, parcelas);
 
             var reportViewer = new WebReportViewer<ImprimirPedidoVM>(ReportImprimirPedido.Instance);
             return File(reportViewer.Print(reportItems, SessionManager.Current.UserData.PlatformUrl), "application/pdf");
@@ -1003,14 +1044,19 @@ namespace Fly01.Compras.Controllers
             };
         }
 
+        private TotalPedidoNotaFiscalVM TotalOrdemCompraResponse(string id, string fornecedorId, bool geraNotaFiscal, string tipoCompra, string tipoFrete, double? valorFrete = 0)
+        {
+            var resource = string.Format("CalculaTotalOrdemCompra?&ordemCompraId={0}&fornecedorId={1}&geraNotaFiscal={2}&tipoCompra={3}&tipoFrete={4}&valorFrete={5}&onList={6}", id, fornecedorId, geraNotaFiscal.ToString(), tipoCompra, tipoFrete, valorFrete.ToString().Replace(",", "."), false);
+            var response = RestHelper.ExecuteGetRequest<TotalPedidoNotaFiscalVM>(resource, queryString: null);
+            return response;
+        }
+
         [HttpGet]
         public JsonResult TotalOrdemCompra(string id, string fornecedorId, bool geraNotaFiscal, string tipoCompra, string tipoFrete, double? valorFrete = 0)
         {
             try
             {
-                var resource = string.Format("CalculaTotalOrdemCompra?&ordemCompraId={0}&fornecedorId={1}&geraNotaFiscal={2}&tipoCompra={3}&tipoFrete={4}&valorFrete={5}&onList={6}", id, fornecedorId, geraNotaFiscal.ToString(), tipoCompra, tipoFrete, valorFrete.ToString().Replace(",", "."), false);
-                var response = RestHelper.ExecuteGetRequest<TotalPedidoNotaFiscalVM>(resource, queryString: null);
-
+                var response = TotalOrdemCompraResponse(id, fornecedorId, geraNotaFiscal, tipoCompra, tipoFrete, valorFrete);
                 return Json(
                     new { success = true, total = response },
                     JsonRequestBehavior.AllowGet
@@ -1083,19 +1129,33 @@ namespace Fly01.Compras.Controllers
             var produtos = GetProdutos(pedido.Id);
             List<ImprimirPedidoVM> reportItems = new List<ImprimirPedidoVM>();
 
+            var simulacao = GetSimulacaoContas(pedido);
+            var parcelas = "";
+
+            for (var i = 0; i < simulacao.Count; i++)
+            {
+                parcelas += $"{simulacao[i].DescricaoParcela} - Vencimento {simulacao[i].DataVencimento.ToString("dd/MM/yyyy")} - {simulacao[i].Valor.ToString("C", AppDefaults.CultureInfoDefault)}    ";
+                if (i % 2 != 0 && i > 0 && i < (simulacao.Count - 1))
+                {
+                    parcelas += "\n";
+                }
+            }
+
             if (!produtos.Any())
-                AdicionarInformacoesPadrao(pedido, reportItems, emiteNotaFiscal, exibirTransportadora);
+                AdicionarInformacoesPadrao(pedido, reportItems, emiteNotaFiscal, exibirTransportadora, parcelas);
             else
-                MontarItensParaPrint(pedido, produtos, reportItems, emiteNotaFiscal, exibirTransportadora);
+                MontarItensParaPrint(pedido, produtos, reportItems, emiteNotaFiscal, exibirTransportadora, parcelas);
 
             var reportViewer = new WebReportViewer<ImprimirPedidoVM>(ReportImprimirPedido.Instance);
             return reportViewer.Print(reportItems, SessionManager.Current.UserData.PlatformUrl);
         }
 
-        private static void MontarItensParaPrint(PedidoVM Pedido, List<PedidoItemVM> produtos, List<ImprimirPedidoVM> reportItems, bool emiteNotaFiscal, bool exibirTransportadora)
+        private static void MontarItensParaPrint(PedidoVM Pedido, List<PedidoItemVM> produtos, List<ImprimirPedidoVM> reportItems, bool emiteNotaFiscal, bool exibirTransportadora, string parcelas)
         {
             foreach (PedidoItemVM produtospedido in produtos)
             {
+                var resource = string.Format("CalculaTotalOrdemCompra?&ordemCompraId={0}&fornecedorId={1}&geraNotaFiscal={2}&tipoCompra={3}&tipoFrete={4}&valorFrete={5}&onList={6}", Pedido.Id, Pedido.FornecedorId, Pedido.GeraNotaFiscal.ToString(), Pedido.TipoCompra, Pedido.TipoFrete, Pedido.ValorFrete.ToString().Replace(",", "."), true);
+                var response = RestHelper.ExecuteGetRequest<TotalPedidoNotaFiscalVM>(resource, queryString: null);
                 reportItems.Add(new ImprimirPedidoVM
                 {
                     //PEDIDO
@@ -1118,7 +1178,7 @@ namespace Fly01.Compras.Controllers
                     PesoBruto = Pedido.PesoBruto != null ? Pedido.PesoBruto : 0,
                     PesoLiquido = Pedido.PesoLiquido != null ? Pedido.PesoLiquido : 0,
                     ValorFrete = (exibirTransportadora && Pedido.ValorFrete.HasValue) ? Pedido.ValorFrete : 0,
-                    TipoFrete = Pedido.TipoFrete,
+                    TipoFrete = EnumHelper.GetValue(typeof(TipoFrete),Pedido.TipoFrete),
                     QuantVolumes = Pedido.QuantidadeVolumes != null ? Pedido.QuantidadeVolumes : 0,
                     Data = Pedido.Data,
                     Finalidade = Pedido.TipoCompra,
@@ -1130,6 +1190,8 @@ namespace Fly01.Compras.Controllers
                     TotalImpostosProdutos = Pedido?.TotalImpostosProdutos ?? 0.0,
                     TotalGeral = Pedido.Total + (Pedido?.TotalImpostosProdutos ?? 0.0),
                     Status = Pedido.Status,
+                    ParcelaContas = parcelas,
+                    ValorFreteTotal = response.ValorFrete.HasValue ? response.ValorFrete.Value : 0,
                     //PRODUTO
                     Id = produtospedido.Id.ToString(),
                     NomeProduto = produtospedido.Produto != null ? produtospedido.Produto.Descricao : string.Empty,
@@ -1139,12 +1201,15 @@ namespace Fly01.Compras.Controllers
                     ItemDesconto = produtospedido.Desconto,
                     ExibirTransportadora = exibirTransportadora.ToString(),
                     EmiteNotaFiscal = emiteNotaFiscal.ToString()
+                    
                 });
             }
         }
 
-        private static void AdicionarInformacoesPadrao(PedidoVM Pedido, List<ImprimirPedidoVM> reportItems, bool emiteNotaFiscal, bool exibirTransportadora)
+        private static void AdicionarInformacoesPadrao(PedidoVM Pedido, List<ImprimirPedidoVM> reportItems, bool emiteNotaFiscal, bool exibirTransportadora, string parcelas)
         {
+            var resource = string.Format("CalculaTotalOrdemCompra?&ordemCompraId={0}&fornecedorId={1}&geraNotaFiscal={2}&tipoCompra={3}&tipoFrete={4}&valorFrete={5}&onList={6}", Pedido.Id, Pedido.FornecedorId, Pedido.GeraNotaFiscal.ToString(), Pedido.TipoCompra, Pedido.TipoFrete, Pedido.ValorFrete.ToString().Replace(",", "."), true);
+            var response = RestHelper.ExecuteGetRequest<TotalPedidoNotaFiscalVM>(resource, queryString: null);
             reportItems.Add(new ImprimirPedidoVM
             {
                 //PEDIDO
@@ -1167,7 +1232,7 @@ namespace Fly01.Compras.Controllers
                 PesoBruto = Pedido.PesoBruto ?? 0,
                 PesoLiquido = Pedido.PesoLiquido ?? 0,
                 ValorFrete = (exibirTransportadora && Pedido.ValorFrete.HasValue) ? Pedido.ValorFrete : 0,
-                TipoFrete = Pedido.TipoFrete,
+                TipoFrete = EnumHelper.GetValue(typeof(TipoFrete), Pedido.TipoFrete),
                 TotalGeral = Pedido.Total + (Pedido?.TotalImpostosProdutos ?? 0.0),
                 Data = Pedido.Data,
                 Finalidade = Pedido.TipoCompra,
@@ -1180,7 +1245,9 @@ namespace Fly01.Compras.Controllers
                 TotalImpostosProdutos = Pedido.TotalImpostosProdutos,
                 Status = Pedido.Status,
                 ExibirTransportadora = exibirTransportadora.ToString(),
-                EmiteNotaFiscal = emiteNotaFiscal.ToString()
+                EmiteNotaFiscal = emiteNotaFiscal.ToString(),
+                ParcelaContas = parcelas,
+                ValorFreteTotal = response.ValorFrete.HasValue ? response.ValorFrete.Value : 0
             });
         }
 

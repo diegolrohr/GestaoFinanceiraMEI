@@ -98,11 +98,11 @@ namespace Fly01.Compras.BL
                 {
                     throw new BusinessException(string.Format("Informe um Grupo Tributário válido no produto {0}.", num));
                 }
-                if (parametros.TipoCRT != TipoCRT.RegimeNormal && entity.TipoCompra != TipoCompraVenda.Devolucao && ((int)item?.GrupoTributario.TipoTributacaoICMS >= 0 && (int)item?.GrupoTributario.TipoTributacaoICMS <= 90))
+                if (parametros.TipoCRT != TipoCRT.RegimeNormal && entity.TipoCompra != TipoCompraVenda.Devolucao && ((int)item?.GrupoTributario?.TipoTributacaoICMS >= 0 && (int)item?.GrupoTributario.TipoTributacaoICMS <= 90))
                 {
                     throw new BusinessException(string.Format("Seu regime tributário configurado, é Simples Nacional e no grupo tributário do produto {0}, foi configurado CST nas configurações de ICMS, altere para CSOSN.", num));
                 }
-                if (parametros.TipoCRT == TipoCRT.RegimeNormal && entity.TipoCompra != TipoCompraVenda.Devolucao && ((int)item?.GrupoTributario.TipoTributacaoICMS >= 101 && (int)item?.GrupoTributario.TipoTributacaoICMS <= 900))
+                if (parametros.TipoCRT == TipoCRT.RegimeNormal && entity.TipoCompra != TipoCompraVenda.Devolucao && ((int)item?.GrupoTributario?.TipoTributacaoICMS >= 101 && (int)item?.GrupoTributario.TipoTributacaoICMS <= 900))
                 {
                     throw new BusinessException(string.Format("Seu regime tributário configurado, é Normal e no grupo tributário do produto {0}, foi configurado CSOSN nas configurações de ICMS, altere para CST.", num));
                 }
@@ -199,7 +199,7 @@ namespace Fly01.Compras.BL
                     { "PlataformaUrl", PlataformaUrl }
                 };
 
-            double freteFracionado = valorFrete.HasValue ? valorFrete.Value / tributacaoItens.Sum(x => x.Quantidade) : 0;
+            double freteFracionado = (valorFrete.HasValue && tipoFrete == TipoFrete.FOB) ? valorFrete.Value / tributacaoItens.Sum(x => x.Quantidade) : 0.0;
 
             var num = 1;
             foreach (var itemProduto in tributacaoItens)

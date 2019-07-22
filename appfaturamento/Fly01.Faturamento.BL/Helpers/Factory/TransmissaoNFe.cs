@@ -193,7 +193,8 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                     Numero = Cabecalho.Cliente?.Numero,
                     UF = Cabecalho.Cliente?.Estado?.Sigla,
                     PaisCodigoBacen = Cabecalho.Cliente?.Pais?.CodigoBacen,
-                    PaisNome = Cabecalho.Cliente?.Pais?.Nome
+                    PaisNome = Cabecalho.Cliente?.Pais?.Nome,
+                    Complemento = Cabecalho.Cliente?.Complemento
                 }
             };
         }

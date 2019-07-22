@@ -51,5 +51,6 @@ namespace Fly01.Faturamento.Models.ViewModel
         public string Complemento { get; internal set; }
         public string Estado { get; internal set; }
         public string Pais { get; internal set; }
+        public string ParcelaConta { get; internal set; }
     }
 }

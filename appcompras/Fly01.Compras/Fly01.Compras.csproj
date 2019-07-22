@@ -72,6 +72,7 @@
     <Compile Include="Controllers\CartaCorrecaoController.cs" />
     <Compile Include="Controllers\CentroCustoController.cs" />
     <Compile Include="Controllers\ConfiguracaoPersonalizacaoController.cs" />
+    <Compile Include="Controllers\EmpresaAtualizaIEController.cs" />
     <Compile Include="Controllers\NFeImportacaoCobrancaController.cs" />
     <Compile Include="Controllers\NFeImportacaoProdutoController.cs" />
     <Compile Include="Controllers\NFeImportacaoController.cs" />
@@ -424,12 +425,6 @@
     <Content Include="Views\AliquotaSimplesNacional\Functions\_fnFormReadyAliquotaSimplesNacional.cshtml" />
     <Content Include="Views\AliquotaSimplesNacional\Functions\_fnChkEnviarEmailContador.cshtml" />
     <Content Include="Views\ParametroTributario\Functions\_fnAtualizarAliquotas.cshtml" />
-    <Content Include="Views\CertificadoDigital\Functions\_fnFormReadyAtualizaIE.cshtml" />
-    <Content Include="Views\ParametroTributario\Functions\_fnFormReadyAtualizaIE.cshtml" />
-    <Content Include="Views\AliquotaSimplesNacional\Functions\_fnFormReadyAtualizaIE.cshtml" />
-    <Content Include="Views\ParametroTributario\Functions\_fnChkIsentoInscricaoEstadual.cshtml" />
-    <Content Include="Views\CertificadoDigital\Functions\_fnChkIsentoInscricaoEstadual.cshtml" />
-    <Content Include="Views\AliquotaSimplesNacional\Functions\_fnChkIsentoInscricaoEstadual.cshtml" />
     <Content Include="Views\ConfiguracaoPersonalizacao\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\ConfiguracaoPersonalizacao\Index.cshtml" />
     <Content Include="Views\Pedido\Functions\_fnChangeCollapseExpand.cshtml" />
@@ -437,6 +432,10 @@
     <Content Include="Views\AssistenciaRemota\Functions\_fnAssistenciaRemotaFormReady.cshtml" />
     <Content Include="Views\AssistenciaRemota\index.cshtml" />
     <Content Include="Views\CertificadoDigital\Functions\_fnRemoveCertificado.cshtml" />
+    <Content Include="Views\EmpresaAtualizaIE\Functions\_fnChkIsentoInscricaoEstadual.cshtml" />
+    <Content Include="Views\EmpresaAtualizaIE\Functions\_fnConfirmAtualizaIE.cshtml" />
+    <Content Include="Views\EmpresaAtualizaIE\Functions\_fnStateSelect.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnSalvarTodosProdutos.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

@@ -62,6 +62,8 @@ namespace Fly01.Core.BL
 
         public override IQueryable<TEntity> AllWithInactive => base.AllWithInactive.Where(x => x.PlataformaId == PlataformaUrl);
 
+        public virtual IQueryable<TEntity> AllWithoutPlatform => base.repository.All;
+
         public override IQueryable<TEntity> AllWithInactiveIncluding(params Expression<Func<TEntity, object>>[] includeProperties)
         {
             return base.AllIncluding(includeProperties).Where(x => x.PlataformaId == PlataformaUrl);

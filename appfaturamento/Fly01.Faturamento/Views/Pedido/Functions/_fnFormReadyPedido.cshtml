@@ -132,9 +132,6 @@
         $('#nFeRefComplementarIsDevolucao').attr('disabled', 'disabled');
         $("#tipoNfeComplementarField").hide();
 
-        if ($("#categoriaDescricao").data("url-post"))
-            $("#categoriaDescricao").data("url-post", "@Url.Action("NovaCategoria")?tipo=" + $("#tipoCarteira").val());
-
         var tipoVendaVal = $('#tipoVenda').val();
         var tipoNfeComplementarVal = $('#tipoNfeComplementar').val();
 
@@ -326,6 +323,9 @@
         $("#chaveNFeReferenciadaField").hide();
         $$$.fn.updateActiveMenu("/OrdemVenda/List");
 
+        if ($("#categoriaDescricao").data("url-post"))
+            $("#categoriaDescricao").data("url-post", "@Url.Action("NovaCategoria")?tipo=" + $("#tipoCarteira").val());
+
         if (isCreate()) {
             fnTipoVendaClick();
             var today = new Date();
@@ -344,7 +344,7 @@
             disableStepFinalidade();
             if (!onCancelMustDeletePedido) { $('li#stepCadastro div.step-title').click(); }
             if ($('input#exibeStepProdutos').val() == "True") { $$$._.dtOrdemVendaProdutos.refresh(); }
-            if ($('input#exibeStepProdutos').val() == "True") { $$$._.dtOrdemVendaServicos.refresh(); }
+            if ($('input#exibeStepServicos').val() == "True") { $$$._.dtOrdemVendaServicos.refresh(); }
         }
 
         fnBindOverrideSubmit();

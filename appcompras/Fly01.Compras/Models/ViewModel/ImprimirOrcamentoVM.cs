@@ -16,5 +16,6 @@ namespace Fly01.Compras.Models.ViewModel
         public double QtdProduto { get; internal set; }
         public double ValorTotal { get; internal set; }
         public double ValorUnitario { get; internal set; }
+        public string ParcelaConta { get; internal set; }
     }
 }

@@ -150,9 +150,6 @@
     <Compile Include="ViewModel\ContaFinanceiraBaixaVM.cs" />
     <Compile Include="ViewModel\ContaFinanceiraBaixaMultiplaVM.cs" />
     <Compile Include="ViewModel\ContaFinanceiraRenegociacaoVM.cs" />
-    <Compile Include="ViewModel\ContaFinanceiraVM.cs" />
-    <Compile Include="ViewModel\ContaPagarVM.cs" />
-    <Compile Include="ViewModel\ContaReceberVM.cs" />
     <Compile Include="ViewModel\DashboardContaFinanceiraVM.cs" />
     <Compile Include="ViewModel\DemonstrativoResultadoExercicioVM.cs" />
     <Compile Include="ViewModel\DespesaPorCategoriaVM.cs" />

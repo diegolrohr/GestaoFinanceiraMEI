@@ -20,6 +20,7 @@ using Fly01.Core.Entities.Domains.Enum;
 using Fly01.EmissaoNFE.Domain.Enums;
 using Fly01.Core.Presentation;
 using Fly01.Core.ViewModels;
+using Fly01.Core.ViewModels.Presentation.Commons;
 
 namespace Fly01.Financeiro.Controllers.Base
 {

@@ -29,12 +29,26 @@ namespace Fly01.Faturamento.Controllers
     {
         public OrdemVendaController()
         {
-            ExpandProperties = "cliente($select=id,nome,email,endereco,bairro,numero,cep,complemento;$expand=cidade($select=nome),estado($select=sigla),pais($select=nome)),grupoTributarioPadrao($select=id,descricao,tipoTributacaoICMS),transportadora($select=id,nome),estadoPlacaVeiculo,condicaoParcelamento,formaPagamento,categoria,centroCusto,ufSaidaPais($select=id,nome)";
+            ExpandProperties = "cliente($select=id,nome,email,endereco,bairro,numero,cep,complemento;$expand=cidade($select=nome),estado($select=sigla),pais($select=nome)),condicaoParcelamento($select=id,descricao, qtdParcelas,condicoesParcelamento),grupoTributarioPadrao($select=id,descricao,tipoTributacaoICMS),transportadora($select=id,nome),estadoPlacaVeiculo,formaPagamento,categoria,centroCusto,ufSaidaPais($select=id,nome)";
         }
 
         private JsonResult GetJson(object data)
         {
             return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
+        public List<CondicaoParcelamentoParcelaVM> GetSimulacaoContas(OrdemVendaVM ordemVenda)
+        {
+
+            var dadosReferenciaSimulacao = new
+            {
+                valorReferencia = TotalOrdemVendaResponse(ordemVenda.Id.ToString(),ordemVenda.ClienteId.ToString(), ordemVenda.GeraNotaFiscal, ordemVenda.TipoNfeComplementar, ordemVenda.TipoFrete, ordemVenda?.ValorFrete ?? 0)?.Total,
+                dataReferencia = ordemVenda?.DataVencimento,
+                condicoesParcelamento = ordemVenda?.CondicaoParcelamento?.CondicoesParcelamento,
+                qtdParcelas = ordemVenda.CondicaoParcelamento?.QtdParcelas
+            };
+            return RestHelper.ExecutePostRequest<ResponseSimulacaoVM>("condicaoparcelamentosimulacao", dadosReferenciaSimulacao)?.Items;
         }
 
         [OperationRole(PermissionValue = EPermissionValue.Read)]
@@ -77,7 +91,19 @@ namespace Fly01.Faturamento.Controllers
             if (exibirProdutos) { produtos = GetProdutos(Guid.Parse(id)); };
 
             var servicos = new List<OrdemVendaServicoVM>();
-            if (exibirProdutos) { servicos = GetServicos(Guid.Parse(id)); };
+            if (exibirServicos) { servicos = GetServicos(Guid.Parse(id)); };
+
+            var simulacao = GetSimulacaoContas(OrdemVenda);
+            var parcelas = "";
+
+            for (var  i=0; i < simulacao.Count; i++)
+            {
+                parcelas += $"{simulacao[i].DescricaoParcela} - Vencimento {simulacao[i].DataVencimento.ToString("dd/MM/yyyy")} - {simulacao[i].Valor.ToString("C", AppDefaults.CultureInfoDefault)}    ";
+                if (i % 2 != 0 && i > 0 && i < (simulacao.Count-1))
+                {
+                    parcelas += "\n";
+                }    
+            }
 
             bool calculaFrete = (
                 (OrdemVenda.TipoFrete == "FOB") && exibirTransportadora
@@ -92,7 +118,6 @@ namespace Fly01.Faturamento.Controllers
             var response = RestHelper.ExecuteGetRequest<TotalPedidoNotaFiscalVM>(resource, queryString: null);
 
             List<ImprimirOrcamentoPedidoVM> reportItems = new List<ImprimirOrcamentoPedidoVM>();
-
             foreach (OrdemVendaProdutoVM OrdemProduto in produtos)
             {
                 reportItems.Add(new ImprimirOrcamentoPedidoVM
@@ -115,7 +140,7 @@ namespace Fly01.Faturamento.Controllers
                     PesoBruto = OrdemVenda.PesoBruto.HasValue ? OrdemVenda.PesoBruto.Value : 0,
                     PesoLiquido = OrdemVenda.PesoLiquido.HasValue ? OrdemVenda.PesoLiquido.Value : 0,
                     Status = OrdemVenda.Status.ToString(),
-                    TipoFrete = OrdemVenda.TipoFrete.ToString(),
+                    TipoFrete = EnumHelper.GetValue(typeof(TipoFrete), OrdemVenda.TipoFrete),
                     TipoOrdemVenda = OrdemVenda.TipoOrdemVenda.ToString(),
                     NumeroNota = OrdemVenda.Numero.ToString(),
                     EstadoPlacaVeiculo = OrdemVenda.EstadoPlacaVeiculo != null ? OrdemVenda.EstadoPlacaVeiculo.Sigla : string.Empty,
@@ -143,7 +168,8 @@ namespace Fly01.Faturamento.Controllers
                     EmiteNotaFiscal = emiteNotaFiscal.ToString(),
                     ExibirProdutos = exibirProdutos.ToString(),
                     ExibirServicos = exibirServicos.ToString(),
-                    ExibirTransportadora = exibirTransportadora.ToString()
+                    ExibirTransportadora = exibirTransportadora.ToString(),
+                    ParcelaConta = parcelas
                 });
             }
 
@@ -169,7 +195,7 @@ namespace Fly01.Faturamento.Controllers
                     PesoBruto = OrdemVenda.PesoBruto.HasValue ? OrdemVenda.PesoBruto.Value : 0,
                     PesoLiquido = OrdemVenda.PesoLiquido.HasValue ? OrdemVenda.PesoLiquido.Value : 0,
                     Status = OrdemVenda.Status.ToString(),
-                    TipoFrete = OrdemVenda.TipoFrete.ToString(),
+                    TipoFrete = EnumHelper.GetValue(typeof(TipoFrete), OrdemVenda.TipoFrete),
                     TipoOrdemVenda = OrdemVenda.TipoOrdemVenda.ToString(),
                     NumeroNota = OrdemVenda.Numero.ToString(),
                     EstadoPlacaVeiculo = OrdemVenda.EstadoPlacaVeiculo != null ? OrdemVenda.EstadoPlacaVeiculo.Sigla : string.Empty,
@@ -197,7 +223,8 @@ namespace Fly01.Faturamento.Controllers
                     EmiteNotaFiscal = emiteNotaFiscal.ToString(),
                     ExibirProdutos = exibirProdutos.ToString(),
                     ExibirServicos = exibirServicos.ToString(),
-                    ExibirTransportadora = exibirTransportadora.ToString()
+                    ExibirTransportadora = exibirTransportadora.ToString(),
+                    ParcelaConta = parcelas
                 });
             }
 
@@ -223,7 +250,7 @@ namespace Fly01.Faturamento.Controllers
                     PesoBruto = OrdemVenda.PesoBruto.HasValue ? OrdemVenda.PesoBruto.Value : 0,
                     PesoLiquido = OrdemVenda.PesoLiquido.HasValue ? OrdemVenda.PesoLiquido.Value : 0,
                     Status = OrdemVenda.Status.ToString(),
-                    TipoFrete = OrdemVenda.TipoFrete.ToString(),
+                    TipoFrete = EnumHelper.GetValue(typeof(TipoFrete), OrdemVenda.TipoFrete),
                     TipoOrdemVenda = OrdemVenda.TipoOrdemVenda.ToString(),
                     NumeroNota = OrdemVenda.Numero.ToString(),
                     EstadoPlacaVeiculo = OrdemVenda.EstadoPlacaVeiculo != null ? OrdemVenda.EstadoPlacaVeiculo.Sigla : string.Empty,
@@ -234,12 +261,14 @@ namespace Fly01.Faturamento.Controllers
                     QuantidadeVolumes = OrdemVenda.QuantidadeVolumes.HasValue ? OrdemVenda.QuantidadeVolumes.Value : 0,
                     Finalidade = OrdemVenda.TipoVenda,
                     Marca = OrdemVenda.Marca,
+                    ValorFreteTotal = response.ValorFrete.HasValue ? response.ValorFrete.Value : 0,
                     NumeracaoVolumesTrans = OrdemVenda.NumeracaoVolumesTrans,
                     TipoEspecie = OrdemVenda.TipoEspecie,
                     EmiteNotaFiscal = emiteNotaFiscal.ToString(),
                     ExibirProdutos = exibirProdutos.ToString(),
                     ExibirServicos = exibirServicos.ToString(),
-                    ExibirTransportadora = exibirTransportadora.ToString()
+                    ExibirTransportadora = exibirTransportadora.ToString(),
+                    ParcelaConta = parcelas
                 });
             }
 
@@ -888,15 +917,20 @@ namespace Fly01.Faturamento.Controllers
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
 
+        private TotalPedidoNotaFiscalVM TotalOrdemVendaResponse(string id, string clienteId, bool geraNotaFiscal, string tipoNfeComplementar, string tipoFrete, double? valorFrete = 0)
+        {
+            var resource = string.Format("CalculaTotalOrdemVenda?&ordemVendaId={0}&clienteId={1}&geraNotaFiscal={2}&tipoNfeComplementar={3}&tipoFrete={4}&valorFrete={5}&onList={6}", id, clienteId, geraNotaFiscal.ToString(), tipoNfeComplementar, tipoFrete, valorFrete.ToString().Replace(",", "."), false);
+            var response = RestHelper.ExecuteGetRequest<TotalPedidoNotaFiscalVM>(resource, queryString: null);
+            return response;
+        }
+
         [OperationRole(PermissionValue = EPermissionValue.Read)]
         [HttpGet]
         public JsonResult TotalOrdemVenda(string id, string clienteId, bool geraNotaFiscal, string tipoNfeComplementar, string tipoFrete, double? valorFrete = 0)
         {
             try
             {
-                var resource = string.Format("CalculaTotalOrdemVenda?&ordemVendaId={0}&clienteId={1}&geraNotaFiscal={2}&tipoNfeComplementar={3}&tipoFrete={4}&valorFrete={5}&onList={6}", id, clienteId, geraNotaFiscal.ToString(), tipoNfeComplementar, tipoFrete, valorFrete.ToString().Replace(",", "."), false);
-                var response = RestHelper.ExecuteGetRequest<TotalPedidoNotaFiscalVM>(resource, queryString: null);
-
+                var response = TotalOrdemVendaResponse(id, clienteId, geraNotaFiscal, tipoNfeComplementar, tipoFrete, valorFrete);
                 return Json(
                     new { success = true, total = response },
                     JsonRequestBehavior.AllowGet

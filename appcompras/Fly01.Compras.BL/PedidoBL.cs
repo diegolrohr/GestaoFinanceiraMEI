@@ -49,6 +49,16 @@ namespace Fly01.Compras.BL
             exibirTransportadora = ConfiguracaoPersonalizacao != null ? ConfiguracaoPersonalizacao.ExibirStepTransportadoraCompras : true;
         }
 
+
+        public List<Pedido> GetPedidos()
+        {
+            var pedidos = new List<Pedido>();
+
+            pedidos = All.Where(x => x.Status == StatusOrdemCompra.Aberto && x.Ativo == true).ToList();
+
+            return pedidos;
+        }
+
         public override void ValidaModel(Pedido entity)
         {
             if (!string.IsNullOrEmpty(entity.MensagemPadraoNota))
@@ -513,6 +523,7 @@ namespace Fly01.Compras.BL
         {
             var tipoVendaEnum = (TipoCompraVenda)Enum.Parse(typeof(TipoCompraVenda), tipoCompra, true);
             var tipoFreteEnum = (TipoFrete)Enum.Parse(typeof(TipoFrete), tipoFrete, true);
+            if (tipoFreteEnum != TipoFrete.FOB) { valorFrete = 0; }
 
             var ordemCompra = All.Where(x => x.Id == ordemCompraId).FirstOrDefault();
             if ((geraNotaFiscal && emiteNotaFiscal) && ordemCompra.Status != StatusOrdemCompra.Finalizado)

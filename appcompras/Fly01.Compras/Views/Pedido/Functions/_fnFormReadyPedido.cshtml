@@ -110,9 +110,6 @@
         $("#tipoNfeComplementarField").hide();
         $('#btnDevolucao').hide();
 
-        if ($("#categoriaDescricao").data("url-post"))
-            $("#categoriaDescricao").data("url-post", "@Url.Action("NovaCategoriaDespesa")?tipo=" + $("#tipoCarteira").val());
-
         if ($('#tipoCompra').val() == "Devolucao") {
             $("#fly01btngrpFinalidade #btnNormal").hide();
             $("#fly01btngrpFinalidade #btnDevolucao").show();
@@ -244,6 +241,9 @@
 
     function fnFormReadyPedido() {
         fnIsNovoPedido();
+        if ($("#categoriaDescricao").data("url-post"))
+            $("#categoriaDescricao").data("url-post", "@Url.Action("NovaCategoriaDespesa")?tipo=" + $("#tipoCarteira").val());
+
         if (isCreate()) {
             $('#btnNormal').click();
             var today = new Date();

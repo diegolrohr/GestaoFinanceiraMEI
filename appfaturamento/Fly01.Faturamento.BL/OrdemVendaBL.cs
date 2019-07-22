@@ -859,9 +859,19 @@ namespace Fly01.Faturamento.BL
             return produtos;
         }
 
+        public List<OrdemVenda> GetOrdemVendas()
+        {
+            var ordemVendas = new List<OrdemVenda>();
+
+            ordemVendas = All.Where(x => x.GeraNotaFiscal == true && x.Status == Status.Aberto && x.Ativo == true).ToList();
+
+            return ordemVendas;
+        }
+
         public TotalPedidoNotaFiscal CalculaTotalOrdemVenda(Guid ordemVendaId, Guid clienteId, bool geraNotaFiscal, string tipoNfeComplementar = "NaoComplementar", string tipoFrete = "SemFrete", double? valorFrete = 0, bool onList = false)
         {
             var tipoFreteEnum = (TipoFrete)Enum.Parse(typeof(TipoFrete), tipoFrete, true);
+            if (tipoFreteEnum != TipoFrete.FOB) { valorFrete = 0;}
             var tipoNfeComplementarEnum = (TipoNfeComplementar)Enum.Parse(typeof(TipoNfeComplementar), tipoNfeComplementar, true);
 
             var ordemVenda = All.Where(x => x.Id == ordemVendaId).FirstOrDefault();
@@ -920,6 +930,8 @@ namespace Fly01.Faturamento.BL
 
             return result;
         }
+
+        
 
         public void UtilizarKitOrdemVenda(UtilizarKitVM entity)
         {

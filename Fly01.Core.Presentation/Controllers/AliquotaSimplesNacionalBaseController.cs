@@ -94,52 +94,6 @@ namespace Fly01.Core.Presentation.Controllers
             }
         }
 
-        public ContentResult ModalAtualizaIE()
-        {
-            ModalUIForm config = new ModalUIForm()
-            {
-                Title = "Atualizar Inscrição Estadual:",
-                UrlFunctions = @Url.Action("Functions") + "?fns=",
-                ConfirmAction = new ModalUIAction() { Label = "Enviar", OnClickFn = "fnFormReadyAtualizaIE" },
-                CancelAction = new ModalUIAction() { Label = "Cancelar" },
-                Action = new FormUIAction
-                {
-                    Create = @Url.Action("Create"),
-                    Edit = @Url.Action("Edit"),
-                    Get = @Url.Action("Json") + "/",
-                    List = @Url.Action("List")
-                },
-                Id = "fly01mdlfrmAtualizaIE"
-            };
-            config.Elements.Add(new InputTextUI
-            {
-                Id = "inscricaoEstadualId",
-                Class = "col s12 m8",
-                Label = "Inscrição Estadual"
-            });
-            config.Elements.Add(new InputCheckboxUI
-            {
-                Id = "chkIsento",
-                Class = "col s12 m4",
-                Label = "Sim, é isento de Inscrição Estadual?",
-                DomEvents = new List<DomEventUI>
-                {
-                    new DomEventUI {DomEvent = "change", Function = "fnChkIsentoInscricaoEstadual"}
-                }
-            });
-
-            config.Helpers.Add(new TooltipUI
-            {
-                Id = "inscricaoEstadualId",
-                Tooltip = new HelperUITooltip()
-                {
-                    Text = "Verificamos que você não possui cadastrado sua Inscrição Estadual nos dados de sua Empresa. Por favor, insira sua inscrição estadual para realizarmos a atualização dos seus parâmetros tributários."
-                }
-            });
-
-            return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
-        }
-
         public ContentResult FormModal(bool isOnCadastroParametros = false, bool isEdit = false)
         {
             var config = new ModalUIFormWizard

@@ -1,0 +1,22 @@
+﻿<script>
+    function fnCardList() {
+        debugger;
+        var date = new Date();
+        var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+        var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
+        $.ajax({
+            url: '@Url.Action("GetDataCardTotais", "ContaPagar")?dataInicial=' + dataInicial + "&dataFinal=" + dataFinal,
+            type: "GET",
+            success: function (data) {
+                if (data.success) {
+                    
+                }
+                else {
+                    $$$.loading.stop();
+                    $$$.toast(data.message, 'error');
+                }
+            },
+        });
+    }
+</script>

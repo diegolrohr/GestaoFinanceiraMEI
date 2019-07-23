@@ -187,7 +187,9 @@ namespace Fly01.Financeiro.Controllers
                     Title = "Contas a Pagar",
                     Buttons = new List<HtmlUIButton>(GetListButtonsOnHeaderCustom(buttonLabel, buttonOnClick))
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                Functions = { "fnCardList" },
+                ReadyFn = "fnCardList"
             };
 
             var cfgForm = new FormUI
@@ -208,8 +210,61 @@ namespace Fly01.Financeiro.Controllers
                         Name = "dataInicial"
                     }
                 },
-                Functions = { "fnRowCallbackContasFinanceiras" }
+                Functions = { "fnRowCallbackContasFinanceiras"}
             };
+
+            cfg.Content.Add(new CardUI
+            {
+                Class = "col s12 m3",
+                Color = "totvs-blue",
+                Id = "fly01cardEmAberto",
+                Title = "Em aberto",
+                Placeholder = "0",
+                Action = new LinkUI
+                {
+                    Label = "Ver mais",
+                    OnClick = @Url.Action("List", "Extrato")
+                }
+            });
+            cfg.Content.Add(new CardUI
+            {
+                Class = "col s12 m3",
+                Color = "totvs-blue",
+                Id = "fly01cardPago",
+                Title = "Pago",
+                Placeholder = "0",
+                Action = new LinkUI
+                {
+                    Label = "Ver mais",
+                    OnClick = @Url.Action("List", "ContaPagar")
+                }
+            });
+            cfg.Content.Add(new CardUI
+            {
+                Class = "col s12 m3",
+                Color = "totvs-blue",
+                Id = "fly01cardRenegociado",
+                Title = "Renegociado",
+                Placeholder = "0",
+                Action = new LinkUI
+                {
+                    Label = "Ver mais",
+                    OnClick = @Url.Action("List", "ContaReceber")
+                }
+            });
+            cfg.Content.Add(new CardUI
+            {
+                Class = "col s12 m3",
+                Color = "totvs-blue",
+                Id = "fly01cardBPacrial",
+                Title = "Baixado Parcialmente",
+                Placeholder = "0",
+                Action = new LinkUI
+                {
+                    Label = "",
+                    OnClick = ""
+                }
+            });
 
             if (gridLoad == "GridLoad")
             {
@@ -906,6 +961,11 @@ namespace Fly01.Financeiro.Controllers
                 return "J";
             }
 
+            return null;
+        }
+
+        private JsonResult GetDataCardTotais()
+        {
             return null;
         }
 

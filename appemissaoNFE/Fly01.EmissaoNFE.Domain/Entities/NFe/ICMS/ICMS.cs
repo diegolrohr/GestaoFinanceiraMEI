@@ -1,5 +1,4 @@
 ﻿using Fly01.Core.Entities.Domains.Enum;
-using Fly01.EmissaoNFE.Domain.Enums;
 using System.Xml.Serialization;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
@@ -8,7 +7,6 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
     {
         public ICMS()
         {
-
         }
 
         public ICMS(OrigemMercadoria origemMercadoria, TipoTributacaoICMS codigoSituacaoOperacao, TipoCRT tipoCRT)
@@ -17,7 +15,6 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
             CodigoSituacaoOperacao = codigoSituacaoOperacao;
             CodigoSituacaoTributaria = codigoSituacaoOperacao;
             TipoCRT = tipoCRT;
-            CodigoSituacaoTributaria = codigoSituacaoOperacao;
         }
 
         [XmlElement("orig")]
@@ -28,7 +25,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
 
         public bool ShouldSerializeCodigoSituacaoOperacao()
         {
-            return TipoCRT != TipoCRT.RegimeNormal;
+            return (int)CodigoSituacaoOperacao >= 101 && (int)CodigoSituacaoOperacao <= 900;
         }
 
         [XmlElement("CST")]
@@ -36,7 +33,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
 
         public bool ShouldSerializeCodigoSituacaoTributaria()
         {
-            return TipoCRT == TipoCRT.RegimeNormal;
+            return (int)CodigoSituacaoOperacao >= 0 && (int)CodigoSituacaoOperacao <= 90;
         }
 
         [XmlIgnore]

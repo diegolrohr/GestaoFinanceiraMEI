@@ -50,7 +50,7 @@ namespace Fly01.Financeiro.BL
         {            
             base.Insert(entity);
 
-            saldoHistoricoBL.InsereSaldoInicial(entity.Id);
+            saldoHistoricoBL.InsereSaldoInicial(entity.Id, entity.ValorInicial == null ? 0 : entity.ValorInicial);
         }
 
         public static Error DescricaoDuplicada = new Error("Descrição da conta bancária já utilizada anteriormente.", "nomeConta");

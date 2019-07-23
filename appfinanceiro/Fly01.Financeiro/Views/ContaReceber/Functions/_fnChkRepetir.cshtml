@@ -1,167 +1,161 @@
 ﻿<script>
 
-function getAgeDiff(fromdate, todate) {
-    //date parameters format 'yyyy-mm-dd'
-    if (todate) todate = new Date(todate);
-    else todate = new Date();
+    function getAgeDiff(fromdate, todate) {
+        //date parameters format 'yyyy-mm-dd'
+        if (todate) todate = new Date(todate);
+        else todate = new Date();
 
-    var age = [], fromdate = new Date(fromdate),
-    y = [todate.getFullYear(), fromdate.getFullYear()],
-    ydiff = y[0] - y[1],
-    m = [todate.getMonth(), fromdate.getMonth()],
-    mdiff = m[0] - m[1],
-    d = [todate.getDate(), fromdate.getDate()],
-    ddiff = d[0] - d[1];
+        var age = [], fromdate = new Date(fromdate),
+            y = [todate.getFullYear(), fromdate.getFullYear()],
+            ydiff = y[0] - y[1],
+            m = [todate.getMonth(), fromdate.getMonth()],
+            mdiff = m[0] - m[1],
+            d = [todate.getDate(), fromdate.getDate()],
+            ddiff = d[0] - d[1];
 
-    if (mdiff < 0 || (mdiff === 0 && ddiff < 0))--ydiff;
-    if (mdiff < 0) mdiff += 12;
-    if (ddiff < 0) {
-        fromdate.setMonth(m[1] + 1, 0);
-        ddiff = fromdate.getDate() - d[1] + d[0];
-        --mdiff;
-    }
-    //if (ydiff > 0) age.push(ydiff + ' year' + (ydiff > 1 ? 's ' : ' '));
-    //if (mdiff > 0) age.push(mdiff + ' month' + (mdiff > 1 ? 's' : ''));
-    //if (ddiff > 0) age.push(ddiff + ' day' + (ddiff > 1 ? 's' : ''));
-    //if (age.length > 1) age.splice(age.length - 1, 0, ' and ');
-    //return age.join('');
-    age.push(ydiff);//[0]
-    age.push(mdiff);//[1]
-    age.push(ddiff);//[2]
-
-    return age;
-}
-
-function validaLimiteRepeticoes(repeticoes) {
-    const limiteRepeticoesSemanal = 208;
-    const limiteRepeticoesMensal = 48;
-    const limiteRepeticoesAnual = 4;
-
-    var msgQtInvalida = 'Quantidade de repetições inválida. Altere a quantidade ou o período a ser calculado';
-    var msgLimite = 'Somente até 48 Meses (4 Anos / 208 Semanas).';
-    $('input#numeroRepeticoes').val(null);
-
-    if ($('select#tipoPeriodicidade').val() == "Nenhuma") {
-        $$$.toast('Escolha a periodicidade', 'error');
-        return;
-    }
-    if ($('#repetir:checked').val() == "true" && repeticoes.toString() != '') {
-
-        if ($('select#tipoPeriodicidade').val() == "Mensal") {
-            if (repeticoes > 0 && repeticoes <= limiteRepeticoesMensal) {
-                $('input#numeroRepeticoes').val(repeticoes);
-            }
-            else if (repeticoes > limiteRepeticoesMensal) {
-                $$$.toast(msgLimite, 'error');
-            }
-            else {
-                $$$.toast(msgQtInvalida, 'error');
-            }
+        if (mdiff < 0 || (mdiff === 0 && ddiff < 0))--ydiff;
+        if (mdiff < 0) mdiff += 12;
+        if (ddiff < 0) {
+            fromdate.setMonth(m[1] + 1, 0);
+            ddiff = fromdate.getDate() - d[1] + d[0];
+            --mdiff;
         }
-        else if ($('select#tipoPeriodicidade').val() == "Anual") {
-            if (repeticoes > 0 && repeticoes <= limiteRepeticoesAnual) {
-                $('input#numeroRepeticoes').val(repeticoes);
-            }
-            else if (repeticoes > limiteRepeticoesAnual) {
-                $$$.toast(msgLimite, 'error');
-            }
-            else {
-                $$$.toast(msgQtInvalida, 'error');
-            }
-        }
-        else if ($('select#tipoPeriodicidade').val() == "Semanal") {
-            if (repeticoes > 0 && repeticoes <= limiteRepeticoesSemanal) {
-                $('input#numeroRepeticoes').val(repeticoes);
-            }
-            else if (repeticoes > limiteRepeticoesSemanal) {
-                $$$.toast(msgLimite, 'error');
-            }
-            else {
-                $$$.toast(msgQtInvalida, 'error');
-            }
-        }
-        $$$.fn.updateTextFields();
-        //setScheduledDateRange();
+        //if (ydiff > 0) age.push(ydiff + ' year' + (ydiff > 1 ? 's ' : ' '));
+        //if (mdiff > 0) age.push(mdiff + ' month' + (mdiff > 1 ? 's' : ''));
+        //if (ddiff > 0) age.push(ddiff + ' day' + (ddiff > 1 ? 's' : ''));
+        //if (age.length > 1) age.splice(age.length - 1, 0, ' and ');
+        //return age.join('');
+        age.push(ydiff);//[0]
+        age.push(mdiff);//[1]
+        age.push(ddiff);//[2]
+
+        return age;
     }
-}
 
-function calculaQuantidadeRepeticoes() {
+    function validaLimiteRepeticoes(repeticoes) {
+        const limiteRepeticoesSemanal = 208;
+        const limiteRepeticoesMensal = 48;
+        const limiteRepeticoesAnual = 4;
 
-    //quando escolhida a opção por período
-    if ($('#repetir:checked').val() == "true" && $('select#tipoRepeticao').val() == "P") {
+        var msgQtInvalida = 'Quantidade de repetições inválida. Altere a quantidade ou o período a ser calculado';
+        var msgLimite = 'Somente até 48 Meses (4 Anos / 208 Semanas).';
+        $('input#numeroRepeticoes').val(null);
 
-        var dataInicio = moment($('input#dataVencimento').val(), "DD/MM/YYYY");
-        var dataFim = moment($('input#periodoFim').val(), "DD/MM/YYYY");
-
-        if (!dataInicio.isValid() || !dataFim.isValid()) {
-            $$$.toast("Informe a data de vencimento e a data fim do período para calcular a recorrência.", "error");           
+        if ($('select#tipoPeriodicidade').val() == "Nenhuma") {
+            $$$.toast('Escolha a periodicidade', 'error');
             return;
         }
+        if ($('#repetir:checked').val() == "true" && repeticoes.toString() != '') {
 
-        dataInicio = moment(dataInicio).format('YYYY-MM-DD');
-        dataFim = moment(dataFim).format('YYYY-MM-DD');
-
-        var diff = getAgeDiff(dataInicio, dataFim);
-        var repeticoes = 0;
-
-        if ($('select#tipoPeriodicidade').val() == "Mensal") {
-            repeticoes = (diff[0] * 12) + diff[1];
-            validaLimiteRepeticoes(repeticoes);
-        }
-        else if ($('select#tipoPeriodicidade').val() == "Anual") {
-            repeticoes = diff[0];
-            validaLimiteRepeticoes(repeticoes);
-        }
-        else if ($('select#tipoPeriodicidade').val() == "Semanal") {
-            var dtInicio = new Date(dataInicio);
-            var dtFim = new Date(dataFim);
-            repeticoes = Math.floor((dtFim - dtInicio + 1) / (1000 * 60 * 60 * 24) / 7);
-            validaLimiteRepeticoes(repeticoes);
+            if ($('select#tipoPeriodicidade').val() == "Mensal") {
+                if (repeticoes > 0 && repeticoes <= limiteRepeticoesMensal) {
+                    $('input#numeroRepeticoes').val(repeticoes);
+                }
+                else if (repeticoes > limiteRepeticoesMensal) {
+                    $$$.toast(msgLimite, 'error');
+                }
+                else {
+                    $$$.toast(msgQtInvalida, 'error');
+                }
+            }
+            else if ($('select#tipoPeriodicidade').val() == "Anual") {
+                if (repeticoes > 0 && repeticoes <= limiteRepeticoesAnual) {
+                    $('input#numeroRepeticoes').val(repeticoes);
+                }
+                else if (repeticoes > limiteRepeticoesAnual) {
+                    $$$.toast(msgLimite, 'error');
+                }
+                else {
+                    $$$.toast(msgQtInvalida, 'error');
+                }
+            }
+            else if ($('select#tipoPeriodicidade').val() == "Semanal") {
+                if (repeticoes > 0 && repeticoes <= limiteRepeticoesSemanal) {
+                    $('input#numeroRepeticoes').val(repeticoes);
+                }
+                else if (repeticoes > limiteRepeticoesSemanal) {
+                    $$$.toast(msgLimite, 'error');
+                }
+                else {
+                    $$$.toast(msgQtInvalida, 'error');
+                }
+            }
+            $$$.fn.updateTextFields();
+            //setScheduledDateRange();
         }
     }
-}
 
-function habilitaCamposRepeticao() {
+    function calculaQuantidadeRepeticoes() {
 
-    $('#tipoPeriodicidadeField').show();
-    $('#tipoRepeticaoField').show();
-    $('#numeroRepeticoesField').show();
-    $('#periodoFimField').show();
+        //quando escolhida a opção por período
+        if ($('#repetir:checked').val() == "true" && $('select#tipoRepeticao').val() == "P") {
 
-    if ($('select#tipoRepeticao').val() == "Q") {
+            var dataInicio = moment($('input#dataVencimento').val(), "DD/MM/YYYY");
+            var dataFim = moment($('input#periodoFim').val(), "DD/MM/YYYY");
+
+            if (!dataInicio.isValid() || !dataFim.isValid()) {
+                $$$.toast("Informe a data de vencimento e a data fim do período para calcular a recorrência.", "error");
+                return;
+            }
+
+            dataInicio = moment(dataInicio).format('YYYY-MM-DD');
+            dataFim = moment(dataFim).format('YYYY-MM-DD');
+
+            var diff = getAgeDiff(dataInicio, dataFim);
+            var repeticoes = 0;
+
+            if ($('select#tipoPeriodicidade').val() == "Mensal") {
+                repeticoes = (diff[0] * 12) + diff[1];
+                validaLimiteRepeticoes(repeticoes);
+            }
+            else if ($('select#tipoPeriodicidade').val() == "Anual") {
+                repeticoes = diff[0];
+                validaLimiteRepeticoes(repeticoes);
+            }
+            else if ($('select#tipoPeriodicidade').val() == "Semanal") {
+                var dtInicio = new Date(dataInicio);
+                var dtFim = new Date(dataFim);
+                repeticoes = Math.floor((dtFim - dtInicio + 1) / (1000 * 60 * 60 * 24) / 7);
+                validaLimiteRepeticoes(repeticoes);
+            }
+        }
+    }
+
+    function habilitaCamposRepeticao() {
+        $('select#tipoRepeticao').material_select();
+        $('select#tipoRepeticao').val("Q");
+        $('select#tipoPeriodicidade').val("Mensal");
+
+        $('#tipoPeriodicidadeField').show();
+        $('#tipoRepeticaoField').show();
+
+        $('#numeroRepeticoesField').show();
         $('#periodoFimField').hide();
         $('input#numeroRepeticoes').removeAttr('readonly');
-    } else {
-        $('input#numeroRepeticoes').attr('disabled', 'disabled');
-        $('#periodoFimField').show();
     }
 
-    $('select#tipoPeriodicidade').val("Mensal");
-}
+    function desabilitaCamposRepeticao() {
+        $('#tipoPeriodicidadeField').hide();
+        $('#tipoRepeticaoField').hide();
+        $('#numeroRepeticoesField').hide();
+        $('#periodoFimField').hide();
 
-function desabilitaCamposRepeticao() {
+        $('select#tipoPeriodicidade').data("val", false);
+        $('select#tipoRepeticao').data("val", false);
+        $('input#numeroRepeticoes').data("val", false);
 
-    $('#tipoPeriodicidadeField').hide();
-    $('#tipoRepeticaoField').hide();
-    $('#numeroRepeticoesField').hide();
-    $('#periodoFimField').hide();
-    
-    $('select#tipoPeriodicidade').data("val", false);
-    $('select#tipoRepeticao').data("val", false);
-    $('input#numeroRepeticoes').data("val", false);
-
-    $('select#tipoPeriodicidade').val(null);
-    $('select#tipoRepeticao').val(null);
-    $('input#numeroRepeticoes').val(null);
-    $('input#periodoFim').val(null);
-}
-
-function fnChkRepetir() {
-    if ($('#repetir:checked').val() == "true") {
-        habilitaCamposRepeticao();
+        $('select#tipoPeriodicidade').val("Mensal");
+        $('input#numeroRepeticoes').val(null);
+        $('input#periodoFim').val(null);
+        $('select#tipoRepeticao').val("Q");
     }
-    else {
-        desabilitaCamposRepeticao();
+
+    function fnChkRepetir() {
+        if ($('#repetir:checked').val() == "true") {
+            habilitaCamposRepeticao();
+        }
+        else {
+            desabilitaCamposRepeticao();
+        }
     }
-}
 </script>

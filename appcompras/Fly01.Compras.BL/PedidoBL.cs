@@ -410,7 +410,7 @@ namespace Fly01.Compras.BL
             if (entity.GeraFinanceiro)
             {
                 bool freteEmpresa = (
-                    (entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario) && exibirTransportadora
+                    (entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente) && exibirTransportadora
                 );
 
                 double totalProdutos = produtos != null ? produtos.Select(e => (e.Quantidade * e.Valor) - e.Desconto).Sum() : 0;
@@ -435,6 +435,10 @@ namespace Fly01.Compras.BL
                         UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao
                     };
                     Producer<ContaPagar>.Send(routePrefixNameContaPagar, AppUser, PlataformaUrl, contaPagarTransp, RabbitConfig.EnHttpVerb.POST);
+                }
+                else if (entity.TipoFrete == TipoFrete.FOB)//frete a ser pago pelo cliente, compõe o total
+                {
+                    valorPrevisto += entity.ValorFrete.HasValue ? entity.ValorFrete.Value : 0;
                 }
 
                 if (entity.TipoCompra == TipoCompraVenda.Normal)

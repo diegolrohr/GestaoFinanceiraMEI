@@ -52,6 +52,7 @@
         public const string FaturamentoCadastros = "981E2668-DCD3-43A9-8550-219617072F8F";
         public const string FaturamentoCadastrosClientes = "3F8EA82D-12D5-42E0-93A5-BB2AF287825C";
         public const string FaturamentoCadastrosFornecedores = "0F7E662E-85DE-47CF-8402-EB42745524B5";
+        public const string FaturamentoCadastrosVendedores = "AC1CD078-A4A7-4633-BAEB-E92F1EBC2293";
         public const string FaturamentoCadastrosTransportadoras = "18D5708C-026F-4529-AED3-FF55C694EAC2";
         public const string FaturamentoCadastrosGrupoTributario = "627E6D58-EB60-41EA-B4D0-2219ED8EA5A0";
         public const string FaturamentoCadastrosProdutos = "B273FF78-B5C4-4478-BBB3-7CD58A960D1D";
@@ -63,6 +64,7 @@
         public const string FaturamentoCadastrosSubstituicaoTributaria = "25503866-3DFC-445A-A13D-677798AD6E89";
         public const string FaturamentoCadastrosKit = "0B083814-AD86-4FC0-A0F4-8A903C2813A7";
         public const string FaturamentoCadastrosCentroCustos = "4F17720D-ADCE-4BC5-A8FE-A95FD383F301";
+
 
         public const string FaturamentoConfiguracoes = "0A6B803C-215C-4CAD-89AF-F9AD96D87EBB";
         public const string FaturamentoConfiguracoesCertificadoDigital = "A4EF868D-E45F-48DB-8483-6EB222CC685B";

@@ -10,7 +10,7 @@ using System.Web.Mvc;
 
 namespace Fly01.Faturamento.Controllers
 {
-    [OperationRole(ResourceKey = ResourceHashConst.OrdemServicoCadastrosResponsaveis)]
+    [OperationRole(ResourceKey = ResourceHashConst.FaturamentoCadastrosVendedores)]
     public class VendedorController : PessoaBaseController<PessoaVM>
     {
         protected override string ResourceTitle => "Vendedor";
@@ -82,6 +82,9 @@ namespace Fly01.Faturamento.Controllers
             return new List<InputCheckboxUI>
             {
                new InputCheckboxUI { Id = "cliente", Class = "col s12 l3", Label = "É Cliente" },
+               new InputCheckboxUI { Id = "fornecedor", Class = "col s12 l3", Label = "É Fornecedor" },
+               new InputCheckboxUI { Id = "transportadora", Class = "col s12 l3", Label = "É Transportadora" },
+               new InputCheckboxUI { Id = "consumidorFinal", Class = "col s12 l3", Label = "É Consumidor Final" }
            };
         }
     }

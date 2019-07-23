@@ -12,7 +12,8 @@
                 url: "@Url.Action("PostAtualizacaoIE", "EmpresaAtualizaIE")",
                 data: {
                     inscricaoEstadual: $('#inscricaoEstadualId').val(),
-                    cidadeId: $('#cidadeId').val()
+                    cidadeId: $('#cidadeId').val(),
+                    estadoSigla: $('#estadoSigla').val()
                 },
                 success: function (response) {
                     if($('#fly01mdlfrmAliquotaSimplesNacional').length == 1){//tela das aliquotas

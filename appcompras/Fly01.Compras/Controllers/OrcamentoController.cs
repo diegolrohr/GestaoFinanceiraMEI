@@ -29,7 +29,7 @@ namespace Fly01.Compras.Controllers
         //OrcamentoVM e PedidoVM na mesma controller ordemCompra(gridLoad, form), direcionado para a controller via javaScript
         public OrcamentoController()
         {
-            ExpandProperties = "condicaoParcelamento($select=id,descricao, qtdParcelas,condicoesParcelamento),formaPagamento($select=id,descricao),categoria,centroCusto";
+            ExpandProperties = "condicaoParcelamento($select=id,descricao, qtdParcelas,condicoesParcelamento),formaPagamento($select=id,descricao),categoria,centroCusto,grupoTributarioPadrao($select=id,descricao,tipoTributacaoICMS)";
         }
 
         public override Func<OrcamentoVM, object> GetDisplayData()

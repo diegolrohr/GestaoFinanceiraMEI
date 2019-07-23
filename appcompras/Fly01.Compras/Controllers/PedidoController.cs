@@ -33,7 +33,7 @@ namespace Fly01.Compras.Controllers
         //OrcamentoVM e PedidoVM na mesma controller ordemCompra(gridLoad, form), direcionado para a controller via javaScript
         public PedidoController()
         {
-            ExpandProperties = "condicaoParcelamento($select=id,descricao, qtdParcelas,condicoesParcelamento),formaPagamento($select=id,descricao),fornecedor($select=id,nome,email,endereco,numero,bairro,cep,complemento;$expand=cidade($select=nome),estado($select=sigla),pais($select=nome)),transportadora($select=id,nome),estadoPlacaVeiculo,categoria,centroCusto"; //expand = Cidade($select = id, nome)
+            ExpandProperties = "condicaoParcelamento($select=id,descricao, qtdParcelas,condicoesParcelamento),formaPagamento($select=id,descricao),fornecedor($select=id,nome,email,endereco,numero,bairro,cep,complemento;$expand=cidade($select=nome),estado($select=sigla),pais($select=nome)),transportadora($select=id,nome),estadoPlacaVeiculo,categoria,centroCusto,grupoTributarioPadrao($select=id,descricao,tipoTributacaoICMS)"; //expand = Cidade($select = id, nome)
         }
 
         [HttpPost]

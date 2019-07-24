@@ -15,10 +15,9 @@
     }
 
     function fnBaixarModelo() {
-        var documentoHelper = '"Nome","TipoDocumento","CPFCNPJ","CEP","Endereco","Numero","Complemento","Bairro","Telefone","Celular","Contato","Observacao","Email","NomeComercial","Cliente","Fornecedor","Transportadora"\n';
-        documentoHelper += '"Nome completo 1","F","00000000000","91000000","R. Fly01","1000","Casa 10","Bairro Alameda dos Anjos","33333333333","99999999999","99999999991","Observação x","teste@teste.com.br","Teste","0","1","0"\n';
-        documentoHelper += '"Nome completo 2","J","00000000000000","91000000","R. Fly01","1000","Casa 10","Bairro Alameda dos Anjos","55555555555","99999999999","99999999992","Observação y","teste@teste.com.br","Teste","0","1","0"\n';
-
+        var documentoHelper = '"Nome","TipoDocumento","CPFCNPJ","CEP","Endereco","Numero","Complemento","Bairro","Telefone","Celular","Contato","Observacao","Email","NomeComercial","Cliente","Fornecedor","Transportadora","Vendedor"\n';
+        documentoHelper += '"Nome completo 1","F","00000000000","91000000","R. Fly01","1000","Casa 10","Bairro Alameda dos Anjos","33333333333","99999999999","99999999991","Observação x","teste@teste.com.br","Teste","0","1","0","0"\n';
+        documentoHelper += '"Nome completo 2","J","00000000000000","91000000","R. Fly01","1000","Casa 10","Bairro Alameda dos Anjos","+55555555555","99999999999","99999999992","Observação y","teste@teste.com.br","Teste","0","1","0","0"\n';
 
         var blob = new Blob([documentoHelper], { type: 'text/csv;charset=utf-8;' });
         var filename = 'template.csv';

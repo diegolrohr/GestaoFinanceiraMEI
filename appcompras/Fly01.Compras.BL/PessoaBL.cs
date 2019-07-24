@@ -224,7 +224,8 @@ namespace Fly01.Compras.BL
                 "NomeComercial",
                 "Cliente",
                 "Fornecedor",
-                "Transportadora"
+                "Transportadora",
+                "Vendedor"
             };
         }
 

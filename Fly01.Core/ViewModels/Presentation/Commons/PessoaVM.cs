@@ -13,7 +13,7 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [JsonProperty("tipoDocumento")]
         public string TipoDocumento { get; set; }
 
-        //Informe o CNPJ se pessoa jurídica ou CPF se pessoa física. Informe apenas       números.
+        //Informe o CNPJ se pessoa jurídica ou CPF se pessoa física. Informe apenas números.
         [JsonProperty("cpfcnpj")]
         public string CPFCNPJ { get; set; }
 

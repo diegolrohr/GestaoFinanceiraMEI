@@ -117,7 +117,7 @@ namespace Fly01.Core.Presentation.Controllers
             try
             {
                 ManagerEmpresaVM empresa = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
-                if (!string.IsNullOrWhiteSpace(empresa.InscricaoEstadual) || empresa.CidadeId > 0)
+                if (empresa.InscricaoEstadual != null && !string.IsNullOrWhiteSpace(empresa?.InscricaoEstadual?.Trim()) && !string.IsNullOrWhiteSpace(empresa?.InscricaoEstadual?.Trim()) && empresa?.CidadeId > 0)
                 {
                     return Json(new
                     {

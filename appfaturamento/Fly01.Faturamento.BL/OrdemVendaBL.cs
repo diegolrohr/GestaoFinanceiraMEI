@@ -704,6 +704,10 @@ namespace Fly01.Faturamento.BL
                     };
                     Producer<ContaPagar>.Send(routePrefixNameContaPagar, AppUser, PlataformaUrl, contaPagarTransp, RabbitConfig.EnHttpVerb.POST);
                 }
+                else if (entity.TipoFrete == TipoFrete.FOB)//frete a ser pago pelo cliente, compõe o total
+                {
+                    valorPrevistoProdutos += entity.ValorFrete.HasValue ? entity.ValorFrete.Value : 0;
+                }
 
                 if ((entity.TipoVenda == TipoCompraVenda.Normal || (entity.TipoVenda == TipoCompraVenda.Complementar && !entity.NFeRefComplementarIsDevolucao)))
                 {

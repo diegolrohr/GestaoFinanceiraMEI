@@ -1,7 +1,8 @@
 ﻿<script>
     function fnStateSelect(event, data) {
+        $('#estadoCodigoIbge').val(data.item.estadoCodigoIbge);
+
         $("#cidadeNome").val("");
         $("#cidadeId").val("");
-        $('#fly01mdlfrmAtualizaIE input#estadoSigla').val(data.item.detail);
     }
 </script>

@@ -3,6 +3,7 @@ using Fly01.Core.Notifications;
 using System.Linq;
 using Fly01.Core.Entities.Domains.Commons;
 using System.Data.Entity;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Faturamento.BL
 {
@@ -37,6 +38,14 @@ namespace Fly01.Faturamento.BL
                     entity.CalculaIcms = true;
                 }
             }
+            //default do combobox, caso não clicado
+            if (!entity.TipoTributacaoICMS.HasValue) { entity.TipoTributacaoICMS = TipoTributacaoICMS.TributadaComPermissaoDeCredito; }
+            if (!entity.TipoTributacaoIPI.HasValue) { entity.TipoTributacaoIPI = TipoTributacaoIPI.EntradaComRecuperacaoDeCredito; }
+            if (!entity.TipoTributacaoPIS.HasValue) { entity.TipoTributacaoPIS = TipoTributacaoPISCOFINS.T01; }
+            if (!entity.TipoTributacaoCOFINS.HasValue) { entity.TipoTributacaoCOFINS = TipoTributacaoPISCOFINS.T01; }
+            if (!entity.TipoTributacaoISS.HasValue) { entity.TipoTributacaoISS = TipoTributacaoISS.T00; }
+            if (!entity.TipoPagamentoImpostoISS.HasValue) { entity.TipoPagamentoImpostoISS = TipoPagamentoImpostoISS.DentroMunicipio; }
+            if (!entity.TipoCFPS.HasValue) { entity.TipoCFPS = TipoCFPS.Tomador; }
         }
 
         public void GetIdCfop(GrupoTributario entity)

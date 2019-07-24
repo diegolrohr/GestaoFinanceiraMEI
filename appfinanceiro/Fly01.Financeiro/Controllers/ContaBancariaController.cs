@@ -248,7 +248,7 @@ namespace Fly01.Financeiro.Controllers
                 },
                 Id = "fly01mdlfrmContaBancaria",
                 UrlFunctions = Url.Action("Functions") + "?fns=",
-                Functions = new List<string>() { "fnChangeBanco", "fnFormReady", "fnAfterLoad" }
+                Functions = new List<string>() { "fnChangeBanco", "fnFormReady", "fnAfterLoad", "fnChangeCheckInicializa" }
             };
             config.Elements.Add(new InputHiddenUI { Id = "id" });
             config.Elements.Add(new AutoCompleteUI
@@ -271,6 +271,19 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputTextUI { Id = "digitoAgencia", Class = "col s1 m1 l1", Label = "Díg.", Required = true, MaxLength = 1 });
             config.Elements.Add(new InputTextUI { Id = "conta", Class = "col s3 m3 l2", Label = "Conta", Required = true, MinLength = 1, MaxLength = 10 });
             config.Elements.Add(new InputTextUI { Id = "digitoConta", Class = "col s1 m1 l1", Label = "Díg.", Required = true, MaxLength = 1 });
+
+            config.Elements.Add(new InputCheckboxUI
+            {
+                Id = "inicializaContaBancaria",
+                Class = "col s4 l3",
+                Label = " Inicializar conta com Saldo",
+                DomEvents = new List<DomEventUI>()
+                {
+                    new DomEventUI() { DomEvent = "change", Function = "fnChangeCheckInicializa" },
+                }
+            });
+
+            config.Elements.Add(new InputCurrencyUI { Id = "valorInicial", Class = "col s4 l3", Label = "Valor", Disabled = true });
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }

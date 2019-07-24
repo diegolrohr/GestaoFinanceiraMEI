@@ -28,7 +28,7 @@ namespace Fly01.OrdemServico.ViewModel
 
         [JsonProperty("duracao")]
         public string Duracao { get; set; }
-        //public string Duracao { get { return this.Duracao == "00:00:00.0000000" ? TimeSpan.FromMinutes(this.Tempo.GetValueOrDefault()).ToString() : this.Duracao; } set { this.Duracao = value; } }
+
         [JsonProperty("tempo")]
         public double? Tempo { get; set; }
 

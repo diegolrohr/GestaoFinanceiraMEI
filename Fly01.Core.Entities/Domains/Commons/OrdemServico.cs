@@ -24,12 +24,9 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public TimeSpan HoraEntrega { get; set; }
 
-        //public TimeSpan Duracao { get { return this.Duracao; } set { this.Tempo = value.TotalMinutes; } }
-        //{ return this.Duracao == TimeSpan.Zero ? TimeSpan.FromMinutes(this.Tempo.GetValueOrDefault()) : this.Duracao;{ this.Duracao = value }
         public TimeSpan Duracao { get; set;  }
 
         public double? Tempo { get; set; }
-        //public double? Tempo { get { return this.Tempo == null ? this.Duracao.TotalMinutes : this.Tempo; } set { this.Tempo = value; } }
 
         public Guid? ResponsavelId { get; set; }
 

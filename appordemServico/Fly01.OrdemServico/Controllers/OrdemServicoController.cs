@@ -414,7 +414,7 @@ namespace Fly01.OrdemServico.Controllers
                     {
                         Title = "Cadastro",
                         Id = "stepCadastro",
-                        Quantity = 10,
+                        Quantity = 11,
                     },
                     new FormWizardUIStep()
                     {
@@ -454,6 +454,7 @@ namespace Fly01.OrdemServico.Controllers
             config.Elements.Add(new InputDateUI { Id = "dataEntrega", Class = "col s12 m3", Label = "Data de Entrega", Required = true, Value = dataEntrega });
             config.Elements.Add(new InputTimeUI { Id = "horaEntrega", Class = "col s12 m2", Label = "Horário Entrega", Required = true, Value = horarioEntrega });
             config.Elements.Add(new InputCustommaskUI { Id = "duracao", Class = "col s12 m2", Label = "Duração", Required = true, Value = "01:00" });
+            config.Elements.Add(new InputHiddenUI { Id = "tempo" });
 
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
@@ -597,6 +598,11 @@ namespace Fly01.OrdemServico.Controllers
         {
             try
             {
+                //Necessario fazer isso pra transformar a duracao em minutos
+                string[] numbers = entityVM.Duracao.Split(':');
+                entityVM.Tempo = (Convert.ToDouble(numbers[0]) * 60) + Convert.ToDouble(numbers[1]);
+                entityVM.Duracao = new TimeSpan(0,0,0).ToString();
+
                 var postResponse = RestHelper.ExecutePostRequest(ResourceName, JsonConvert.SerializeObject(entityVM, JsonSerializerSetting.Default));
                 OrdemServicoVM postResult = JsonConvert.DeserializeObject<OrdemServicoVM>(postResponse);
                 var response = new JsonResult
@@ -604,6 +610,27 @@ namespace Fly01.OrdemServico.Controllers
                     Data = new { success = true, message = AppDefaults.EditSuccessMessage, id = postResult.Id.ToString(), numero = postResult.Numero.ToString() }
                 };
                 return (response);
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
+        [HttpPost]
+        public override JsonResult Edit(OrdemServicoVM entityVM)
+        {
+            try
+            {
+                string[] numbers = entityVM.Duracao.Split(':');
+                entityVM.Tempo = (Convert.ToDouble(numbers[0]) * 60) + Convert.ToDouble(numbers[1]);
+                entityVM.Duracao = new TimeSpan(0, 0, 0).ToString();
+
+                var resourceNamePut = $"{ResourceName}/{entityVM.Id}";
+                RestHelper.ExecutePutRequest(resourceNamePut, JsonConvert.SerializeObject(entityVM, JsonSerializerSetting.Edit));
+
+                return JsonResponseStatus.Get(new ErrorInfo { HasError = false }, Operation.Edit);
             }
             catch (Exception ex)
             {
@@ -783,7 +810,7 @@ namespace Fly01.OrdemServico.Controllers
             {
                 Id = OrdemServico.Id.ToString(),
                 HoraEntrega = OrdemServico.HoraEntrega,
-                Duracao = OrdemServico.Duracao,
+                Duracao = TimeSpan.FromMinutes(OrdemServico.Tempo.GetValueOrDefault()),
                 ClienteNome = OrdemServico.Cliente?.Nome,
                 ClienteCPF = OrdemServico.Cliente?.CPFCNPJ,
                 ClienteCelular = OrdemServico.Cliente?.Celular,
@@ -814,7 +841,7 @@ namespace Fly01.OrdemServico.Controllers
                     //ORDEM SERVICO
                     Id = OrdemServico.Id.ToString(),
                     HoraEntrega = OrdemServico.HoraEntrega,
-                    Duracao = OrdemServico.Duracao,
+                    Duracao = TimeSpan.FromMinutes(OrdemServico.Tempo.GetValueOrDefault()),
                     ClienteNome = OrdemServico.Cliente?.Nome,
                     ClienteCPF = OrdemServico.Cliente?.CPFCNPJ,
                     ClienteCelular = OrdemServico.Cliente?.Celular,
@@ -854,7 +881,7 @@ namespace Fly01.OrdemServico.Controllers
                     //ORDEM SERVICO
                     Id = OrdemServico.Id.ToString(),
                     HoraEntrega = OrdemServico.HoraEntrega,
-                    Duracao = OrdemServico.Duracao,
+                    Duracao = TimeSpan.FromMinutes(OrdemServico.Tempo.GetValueOrDefault()),
                     ClienteNome = OrdemServico.Cliente?.Nome,
                     ClienteCPF = OrdemServico.Cliente?.CPFCNPJ,
                     ClienteCelular = OrdemServico.Cliente?.Celular,
@@ -894,7 +921,7 @@ namespace Fly01.OrdemServico.Controllers
                     //ORDEM SERVICO
                     Id = OrdemServico.Id.ToString(),
                     HoraEntrega = OrdemServico.HoraEntrega,
-                    Duracao = OrdemServico.Duracao,
+                    Duracao = TimeSpan.FromMinutes(OrdemServico.Tempo.GetValueOrDefault()),
                     ClienteNome = OrdemServico.Cliente?.Nome,
                     ClienteCPF = OrdemServico.Cliente?.CPFCNPJ,
                     ClienteCelular = OrdemServico.Cliente?.Celular,

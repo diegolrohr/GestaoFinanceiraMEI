@@ -79,7 +79,7 @@ namespace Fly01.Compras.BL
 
                 bool isNfeImportacao = (entity.NFeImportacaoId != null && entity.NFeImportacaoId != default(Guid));
                 bool freteEmpresa = (
-                    (entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario) && exibirTransportadora
+                    (entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente) && exibirTransportadora
                 );
                 entity.Fail(freteEmpresa && !isNfeImportacao && (entity.TransportadoraId == null || entity.TransportadoraId == default(Guid)), new Error("Se configurou o frete por conta da sua empresa, informe a transportadora"));
 

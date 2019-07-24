@@ -180,6 +180,10 @@
     <Compile Include="Migrations\201906051449487_AlterUnidadeMedida.Designer.cs">
       <DependentUpon>201906051449487_AlterUnidadeMedida.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201907232031230_DuracaoTempo.cs" />
+    <Compile Include="Migrations\201907232031230_DuracaoTempo.Designer.cs">
+      <DependentUpon>201907232031230_DuracaoTempo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
@@ -330,6 +334,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201906051449487_AlterUnidadeMedida.resx">
       <DependentUpon>201906051449487_AlterUnidadeMedida.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907232031230_DuracaoTempo.resx">
+      <DependentUpon>201907232031230_DuracaoTempo.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -453,7 +453,7 @@ namespace Fly01.OrdemServico.Controllers
             config.Elements.Add(new InputDateUI { Id = "dataEmissao", Class = "col s12 m3", Label = "Data de Emissão", Required = true });
             config.Elements.Add(new InputDateUI { Id = "dataEntrega", Class = "col s12 m3", Label = "Data de Entrega", Required = true, Value = dataEntrega });
             config.Elements.Add(new InputTimeUI { Id = "horaEntrega", Class = "col s12 m2", Label = "Horário Entrega", Required = true, Value = horarioEntrega });
-            config.Elements.Add(new InputTimeUI { Id = "duracao", Class = "col s12 m2", Label = "Duração", Required = true, Value = "01:00" });
+            config.Elements.Add(new InputCustommaskUI { Id = "duracao", Class = "col s12 m2", Label = "Duração", Required = true, Value = "01:00" });
 
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {

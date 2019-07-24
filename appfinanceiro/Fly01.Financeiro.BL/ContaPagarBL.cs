@@ -1,17 +1,15 @@
-﻿using Fly01.Core;
-using Fly01.Core.API;
-using Fly01.Core.BL;
+﻿using Fly01.Core.BL;
 using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
 using Fly01.Core.Notifications;
 using Fly01.Core.ServiceBus;
+using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.Financeiro.API.Models.DAL;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Fly01.Financeiro.BL
 {
@@ -162,6 +160,33 @@ namespace Fly01.Financeiro.BL
                 if (entity.StatusContaBancaria == StatusContaBancaria.Pago || entity.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente)
                     contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(itemContaPagarRepeticao);
             }
+        }
+
+        public List<ContaFinanceiraPorStatusVM> GetSaldoStatus(DateTime dataFinal, DateTime dataInicial)
+        {
+            List<ContaFinanceiraPorStatusVM> listaResult = new List<ContaFinanceiraPorStatusVM>();
+            int QtdTotal = All.AsNoTracking().Where(x => x.DataEmissao >= dataInicial && x.DataEmissao <= dataFinal).Count();
+
+            var result = All.AsNoTracking().Where(x => x.DataEmissao >= dataInicial && x.DataEmissao <= dataFinal)
+                                            .GroupBy(x => new { x.StatusContaBancaria })
+                                            .Select(x => new
+                                            {
+                                                x.Key.StatusContaBancaria,
+                                                Quantidade = x.Count()
+                                            })
+                                            .ToList();
+
+            result.ForEach(x =>
+            {
+                listaResult.Add(new ContaFinanceiraPorStatusVM
+                {
+                    Status = EnumHelper.GetValue(typeof(StatusContaBancaria), x.StatusContaBancaria.ToString()),
+                    Quantidade = x.Quantidade,
+                    QuantidadeTotal = QtdTotal
+                });
+            });
+
+            return listaResult;
         }
 
         public override void Update(ContaPagar entity)

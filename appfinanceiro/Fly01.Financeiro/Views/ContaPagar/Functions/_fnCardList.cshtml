@@ -4,19 +4,29 @@
         var date = new Date();
         var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
         var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+        var dataFinal = moment(lastDay).format('YYYY-MM-DD');
+        var dataInicial = moment(firstDay).format('YYYY-MM-DD');
+
 
         $.ajax({
-            url: '@Url.Action("GetDataCardTotais", "ContaPagar")?dataInicial=' + dataInicial + "&dataFinal=" + dataFinal,
+            url: '@Url.Action("LoadCards", "ContaPagar")' + '?dataFinal=' + dataFinal + "&dataInicial=" + dataInicial,
             type: "GET",
-            success: function (data) {
-                if (data.success) {
-                    
-                }
-                else {
-                    $$$.loading.stop();
-                    $$$.toast(data.message, 'error');
-                }
+            success: function (data) {               
+                $$$._.fly01cardEmAberto.info(data.emAberto);
+                $$$._.fly01cardPago.info(data.pago);
+                $$$._.fly01cardRenegociado.info(data.renegociado);
+                $$$._.fly01cardBPacrial.info(data.baixadoParcialmente);
+
+                lockSaldos("fly01cardEmAberto", false);
+                lockSaldos("fly01cardPago", false);
+                lockSaldos("fly01cardRenegociado", false);
+                lockSaldos("fly01cardBPacrial", false);
+                $$$.loading.stop();
             },
+            error: function (jXHR, textStatus) {
+                $$$.toast(textStatus, 'error');
+                $$$.loading.stop();
+            }
         });
     }
 </script>

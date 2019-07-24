@@ -199,5 +199,6 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 return recorrencias = unitOfWork.ContaPagarBL.All.Where(x => (x.ContaFinanceiraRepeticaoPaiId == entity.ContaFinanceiraRepeticaoPaiId) && x.StatusContaBancaria == StatusContaBancaria.EmAberto && x.Numero >= entity.Numero).ToList();
             }
         }
+
     }
 }

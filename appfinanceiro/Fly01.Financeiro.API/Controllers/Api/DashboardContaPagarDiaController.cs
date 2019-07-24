@@ -24,5 +24,14 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 return Ok(new PagedResult<ContasPagarDoDiaVM>(items, pageNo, pageSize, totalRecords));
             }
         }
+
+        [HttpGet]
+        public IHttpActionResult Get(DateTime dataFinal, DateTime dataInicial)
+        {
+            using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
+            {
+                return Ok(unitOfWork.ContaPagarBL.GetSaldoStatus(dataFinal, dataInicial));
+            }
+        }
     }
 }

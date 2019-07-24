@@ -964,9 +964,52 @@ namespace Fly01.Financeiro.Controllers
             return null;
         }
 
-        private JsonResult GetDataCardTotais()
+        public JsonResult LoadCards(DateTime? dataFinal = null, DateTime? dataInicial = null)
         {
-            return null;
+            try
+            {
+                Dictionary<string, string> queryString = new Dictionary<string, string>
+                {
+                    { "dataFinal", dataFinal.GetValueOrDefault(DateTime.Now).ToString("yyyy-MM-dd") },
+                    { "dataInicial", dataInicial.GetValueOrDefault(DateTime.Now).ToString("yyyy-MM-dd") }
+                };
+                var response = RestHelper.ExecuteGetRequest<List<ContaFinanceiraPorStatusVM>>("DashboardContaPagarDia", queryString);
+                var qtdTotal = 0;
+                var emAberto = "0/0";
+                var pago = "0/0";
+                var renegociado = "0/0";
+                var baixadoParcialmente = "0/0";
+
+                if (response.Any())
+                {
+                    qtdTotal = response.First().QuantidadeTotal;
+                    emAberto = "0/" + qtdTotal;
+                    pago = "0/" + qtdTotal;
+                    renegociado = "0/" + qtdTotal;
+                    baixadoParcialmente = "0/" + qtdTotal;
+                }
+
+                foreach (var item in response)
+                {
+                    if (item.Status == "Em Aberto") emAberto = item.Quantidade.ToString() + "/" + item.QuantidadeTotal.ToString();
+                    else if (item.Status == "pago") pago = item.Quantidade.ToString() + "/" + item.QuantidadeTotal.ToString();
+                    else if (item.Status == "Renegociado") renegociado = item.Quantidade.ToString() + "/" + item.QuantidadeTotal.ToString();
+                    else if (item.Status == "baixadoParcialmente") baixadoParcialmente = item.Quantidade.ToString() + "/" + item.QuantidadeTotal.ToString();
+                }
+                var responseToView = new
+                {
+                    emAberto,
+                    pago,
+                    renegociado,
+                    baixadoParcialmente
+                };
+
+                return Json(responseToView, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return JsonResponseStatus.GetFailure(ex.Message);
+            }
         }
 
         #endregion

@@ -24,7 +24,9 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public TimeSpan HoraEntrega { get; set; }
 
-        public TimeSpan Duracao { get; set; }
+        public TimeSpan Duracao { get; set;  }
+
+        public double? Tempo { get; set; }
 
         public Guid? ResponsavelId { get; set; }
 

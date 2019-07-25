@@ -27,7 +27,10 @@ namespace Fly01.OrdemServico.ViewModel
         public TimeSpan HoraEntrega { get; set; }
 
         [JsonProperty("duracao")]
-        public TimeSpan Duracao { get; set; }
+        public string Duracao { get; set; }
+
+        [JsonProperty("tempo")]
+        public double? Tempo { get; set; }
 
         [JsonProperty("responsavelId")]
         public Guid? ResponsavelId { get; set; }

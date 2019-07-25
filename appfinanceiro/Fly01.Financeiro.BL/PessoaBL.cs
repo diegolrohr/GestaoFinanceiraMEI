@@ -225,7 +225,8 @@ namespace Fly01.Financeiro.BL
                 "NomeComercial",
                 "Cliente",
                 "Fornecedor",
-                "Transportadora"
+                "Transportadora",
+                "Vendedor"
             };
         }
 

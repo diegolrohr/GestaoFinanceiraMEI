@@ -224,7 +224,8 @@ namespace Fly01.Faturamento.BL
                 "NomeComercial",
                 "Cliente",
                 "Fornecedor",
-                "Transportadora"
+                "Transportadora",
+                "Vendedor"
             };
         }
     }

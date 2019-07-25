@@ -197,6 +197,16 @@ namespace Fly01.Financeiro.BL
                 });
             });
 
+
+            if (!result.Where(x => x.StatusContaBancaria == StatusContaBancaria.EmAberto).Any() && result != null)
+            {
+                listaResult.Add(new ContaFinanceiraPorStatusVM()
+                {
+                    Status = "Em aberto",
+                    Valortotal = (double)resultDiferenca
+                });
+            }
+
             return listaResult;
         }
 

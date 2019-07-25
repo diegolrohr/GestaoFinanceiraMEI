@@ -14,12 +14,12 @@ namespace Fly01.Financeiro.API.Controllers.Api
         public AvaliacaoAppController()
             : base(ConfigurationManager.AppSettings["MongoDBAvaliacaoApp"], ConfigurationManager.AppSettings["MongoCollectionNameAvaliacaoApp"]) { }
 
-        public override Task<IHttpActionResult> Post(AvaliacaoApp entity)
+        public override async Task<IHttpActionResult> Post(AvaliacaoApp entity)
         {
             _mediaClient = new MediaClient();
             _mediaClient.PostNotificacaoAvaliacaoApp(entity.Id, Request.RequestUri.AbsoluteUri.Split('.')[1], entity.Descricao, PlataformaUrl);
 
-            return base.Post(entity);
+            return await base.Post(entity);
         }
     }
 }

@@ -239,6 +239,26 @@
         fnBindOverrideSubmit();
 
         fnSetInformacoes();
+        //Ajusta o formato da Duração
+        if (!isCreate()) {
+            var tempoM = $("#tempo").val();
+            var duracaoOs = $("#duracao").val();
+
+            if (tempoM != "") {
+                duracaoOs = (tempoM / 60).toFixed(2);
+                if (duracaoOs.toString().length < 3) {
+                    duracaoOs += ":00";
+                }
+                else {
+                    var minutes = duracaoOs.toString().split(".");
+                    duracaoOs = minutes[0] + ":" + Math.ceil((minutes[1] * 0.60)).toString();
+                    duracaoOs += (minutes[1] * 0.60).toString().length == 1 ? "0" : "";
+                }
+
+            }
+
+            $("#duracao").val(duracaoOs);
+        }
 
         function finalizarPreenchmento() {
             if (!isCreate() && $("form#fly01frm").valid()) {

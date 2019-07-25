@@ -46,22 +46,20 @@ namespace Fly01.EmissaoNFE.BL
                             var ibpt = All.FirstOrDefault(x => x.Codigo == codigoFilter && x.UF == empresaUF);
                             if (ibpt != null)
                             {
-                                impostoFederalItem = (
+                                impostoFederalItem = Math.Round((
                                     ((detalhe.Produto.Quantidade * detalhe.Produto.ValorUnitario)
                                       - (detalhe.Produto.ValorDesconto.HasValue ? detalhe.Produto.ValorDesconto.Value : 0))
-                                    * (ibpt.ImpostoNacional / 100.00));
+                                    * (ibpt.ImpostoNacional / 100.00)), 2);
                                 impostoFederalTotal += impostoFederalItem;
-
-                                impostoEstadualItem = (
+                                impostoEstadualItem = Math.Round((
                                     ((detalhe.Produto.Quantidade * detalhe.Produto.ValorUnitario)
                                       - (detalhe.Produto.ValorDesconto.HasValue ? detalhe.Produto.ValorDesconto.Value : 0))
-                                     * (ibpt.ImpostoEstadual / 100.00));
+                                     * (ibpt.ImpostoEstadual / 100.00)), 2);
                                 impostoEstadualTotal += impostoEstadualItem;
-
-                                impostoMunicipalItem = (
+                                impostoMunicipalItem = Math.Round((
                                     ((detalhe.Produto.Quantidade * detalhe.Produto.ValorUnitario)
                                       - (detalhe.Produto.ValorDesconto.HasValue ? detalhe.Produto.ValorDesconto.Value : 0))
-                                     * (ibpt.ImpostoMunicipal / 100.00));
+                                     * (ibpt.ImpostoMunicipal / 100.00)), 2);
                                 impostoMunicipalTotal += impostoMunicipalItem;
                                 detalhe.Imposto.TotalAprox += Math.Round((impostoFederalItem + impostoEstadualItem + impostoMunicipalItem), 2);
                             }
@@ -117,20 +115,18 @@ namespace Fly01.EmissaoNFE.BL
                     if (ibpt != null)
                     {
 
-                        impostoFederal += (
+                        impostoFederal += Math.Round((
                             ((servico.Quantidade * servico.ValorUnitario)
                               - (servico.DescontoCondicional))
-                            * (ibpt.ImpostoNacional / 100.00));
-
-                        impostoEstadual += (
+                            * (ibpt.ImpostoNacional / 100.00)), 2);
+                        impostoEstadual += Math.Round((
                             ((servico.Quantidade * servico.ValorUnitario)
                               - (servico.DescontoCondicional))
-                             * (ibpt.ImpostoEstadual / 100.00));
-
-                        impostoMunicipal += (
+                             * (ibpt.ImpostoEstadual / 100.00)), 2);
+                        impostoMunicipal += Math.Round((
                             ((servico.Quantidade * servico.ValorUnitario)
                               - (servico.DescontoCondicional))
-                             * (ibpt.ImpostoMunicipal / 100.00));
+                             * (ibpt.ImpostoMunicipal / 100.00)), 2);
                     }
                     //percentual 
 

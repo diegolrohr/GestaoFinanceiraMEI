@@ -30,7 +30,7 @@ namespace Fly01.OrdemServico.BL
                 {
                     TimeSpan horaFinal = item.HoraEntrega + TimeSpan.FromMinutes(item.Tempo.GetValueOrDefault());
                     TimeSpan horaEntrega = item.HoraEntrega;
-                    TimeSpan duracao = TimeSpan.FromMinutes(item.Tempo.GetValueOrDefault());
+                    TimeSpan duracao = (item.Tempo == null ? item.Duracao : (TimeSpan.FromMinutes(item.Tempo.GetValueOrDefault())));
 
                     var formatHoraInicial = string.Format("{0:00}:{1:00}", item.HoraEntrega.Hours, item.HoraEntrega.Minutes);
                     var formatHoraFinal = string.Format("{0:00}:{1:00}", horaFinal.Hours, horaFinal.Minutes);
@@ -56,7 +56,7 @@ namespace Fly01.OrdemServico.BL
                 {
                     TimeSpan horaFinal = item.HoraEntrega + TimeSpan.FromMinutes(item.Tempo.GetValueOrDefault());
                     TimeSpan horaEntrega = (item.HoraEntrega - new TimeSpan(2, 0, 0));
-                    TimeSpan duracao = (TimeSpan.FromMinutes(item.Tempo.GetValueOrDefault()) - new TimeSpan(2, 0, 0));
+                    TimeSpan duracao = (item.Tempo == null ? item.Duracao : (TimeSpan.FromMinutes(item.Tempo.GetValueOrDefault())) - new TimeSpan(2, 0, 0));
                     listaResult.Add(new AgendaVM
                     {
                         ClassName = EnumHelper.GetCSS(typeof(StatusOrdemServico), item.Status.ToString()),

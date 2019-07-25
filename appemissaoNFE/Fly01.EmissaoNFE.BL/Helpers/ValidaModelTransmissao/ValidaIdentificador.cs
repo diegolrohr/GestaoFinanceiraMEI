@@ -29,6 +29,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
                 ValidarFinalidadeEmissao(item, entity);
                 ValidarInformacaoConsumidorFinal(item, entity);
                 ValidarChaveNotaFiscalReferenciada(item, entity);
+                ValidarSerieEmissaoNormalRural(item, entity);
 
                 ValidarNFReferenciada(item, entity);
             }
@@ -45,6 +46,12 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
                 entity.Fail(item.Identificador.FinalidadeEmissaoNFe == TipoCompraVenda.Normal || item.Identificador.FinalidadeEmissaoNFe == TipoCompraVenda.Ajuste,
                     new Error("A chave da nota fiscal referenciada não deve ser informada para esse tipo de nota.", "Item.Identificador.NFReferenciada"));
             }
+        }
+
+        private static void ValidarSerieEmissaoNormalRural(ItemTransmissaoVM item, TransmissaoVM entity)
+        {
+            entity.Fail(item.Identificador.Serie < 920 && item.Identificador.FormaEmissao == TipoModalidade.Normal && item.Emitente.Cpf != null,
+                                new Error("Série inválida para a modalidade 1 (Emissão Produtor Rural). A série deve estar entre 920-969.", "Item.Identificador.Serie"));
         }
 
         private static void ValidarChaveNotaFiscalReferenciada(ItemTransmissaoVM item, TransmissaoVM entity)
@@ -109,7 +116,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
 
         private static void ValidarSerieEmissaoNormal(ItemTransmissaoVM item, TransmissaoVM entity)
         {
-            entity.Fail(item.Identificador.Serie > 889 && item.Identificador.FormaEmissao == TipoModalidade.Normal,
+            entity.Fail(item.Identificador.Serie > 889 && item.Identificador.FormaEmissao == TipoModalidade.Normal && item.Emitente.Cnpj != null,
                                 new Error("Série inválida para a modalidade 1 (Emissão Normal).", "Item.Identificador.Serie"));
         }
 

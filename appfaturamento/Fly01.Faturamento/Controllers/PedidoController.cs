@@ -799,7 +799,6 @@ namespace Fly01.Faturamento.Controllers
                 if (ordemvenda.TotalRetencoesServicos.HasValue) { ordemvenda.TotalRetencoesServicos = null; };
                 ordemvenda.TotalImpostosProdutosNaoAgrega = 0;
                 ordemvenda.TotalImpostosServicosNaoAgrega = 0;
-
                 var postResponse = RestHelper.ExecutePostRequest("OrdemVenda", JsonConvert.SerializeObject(ordemvenda, JsonSerializerSetting.Default));
 
                 List<OrdemVendaProdutoVM> produtos = GetProdutosPedido(id);
@@ -816,7 +815,7 @@ namespace Fly01.Faturamento.Controllers
                     item.OrdemVendaId = ordemvenda.Id;
                     var postResponseServicos = RestHelper.ExecutePostRequest<OrdemVendaServicoVM>("OrdemVendaServico", item, AppDefaults.GetQueryStringDefault());
                 }
-
+                
                 return Json(new
                 {
                     success = true,

@@ -148,7 +148,8 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
         {
             return new Emitente()
             {
-                Cnpj = Cabecalho.Empresa.CNPJ,
+                Cnpj = Cabecalho.Empresa.CNPJ.Length == 14 ? Cabecalho.Empresa.CNPJ : null,
+                Cpf = Cabecalho.Empresa.CNPJ.Length == 11 ? Cabecalho.Empresa.CNPJ : null,
                 Nome = Cabecalho.Empresa.RazaoSocial,
                 NomeFantasia = Cabecalho.Empresa.NomeFantasia,
                 InscricaoEstadual = Cabecalho.Empresa.InscricaoEstadual,

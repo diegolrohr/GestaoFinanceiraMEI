@@ -127,7 +127,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
 
         private static void ValidarCPF(ItemTransmissaoVM item, EntitiesBLToValidate entitiesBLToValidate, TransmissaoVM entity)
         {
-            entity.Fail(item.Emitente.Cpf != null && (!entitiesBLToValidate._empresaBL.ValidaCPF(item.Emitente.Cpf) || item.Emitente.Cnpj.Length != 11),
+            entity.Fail(item.Emitente.Cpf != null && (!entitiesBLToValidate._empresaBL.ValidaCPF(item.Emitente.Cpf) || item.Emitente.Cpf.Length != 11),
                                 new Error("CPF do emitente inválido.", "Item.Emitente.Cpf"));
         }
 

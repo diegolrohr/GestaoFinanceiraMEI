@@ -446,6 +446,7 @@
     <Content Include="Views\AssistenciaRemota\Functions\_fnAssistenciaRemotaFormReady.cshtml" />
     <Content Include="Views\ContaBancaria\Functions\_fnChangeCheckInicializa.cshtml" />
     <Content Include="Views\ContaPagar\Functions\_fnCardList.cshtml" />
+    <Content Include="Views\ContaReceber\Functions\_fnCardList.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

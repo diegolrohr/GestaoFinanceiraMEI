@@ -1,32 +1,40 @@
 ﻿<script>
     function fnCardList() {
-        debugger;
         var date = new Date();
         var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
         var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
         var dataFinal = moment(lastDay).format('YYYY-MM-DD');
         var dataInicial = moment(firstDay).format('YYYY-MM-DD');
 
-
         $.ajax({
             url: '@Url.Action("LoadCards", "ContaPagar")' + '?dataFinal=' + dataFinal + "&dataInicial=" + dataInicial,
             type: "GET",
-            success: function (data) {               
-                $$$._.fly01cardEmAberto.info(data.emAberto);
-                $$$._.fly01cardPago.info(data.pago);
-                $$$._.fly01cardRenegociado.info(data.renegociado);
-                $$$._.fly01cardBPacrial.info(data.baixadoParcialmente);
+            success: function (data) {
 
-                lockSaldos("fly01cardEmAberto", false);
-                lockSaldos("fly01cardPago", false);
-                lockSaldos("fly01cardRenegociado", false);
-                lockSaldos("fly01cardBPacrial", false);
+                $('#fly01cardEmAberto span')[0].innerHTML = data.emAberto;
+                $('#fly01cardPago span')[0].innerHTML = data.pago;
+                $('#fly01cardRenegociado span')[0].innerHTML = data.renegociado;
+
                 $$$.loading.stop();
             },
             error: function (jXHR, textStatus) {
                 $$$.toast(textStatus, 'error');
                 $$$.loading.stop();
             }
+        });
+
+        $(".card-content .card-title").css({
+            "font-weight": "bold"
+        })
+
+        $('#fly01cardEmAberto h5').css({
+            "font-size": "13px"
+        });
+        $('#fly01cardPago h5').css({
+            "font-size": "13px"
+        });
+        $('#fly01cardRenegociado h5').css({
+            "font-size": "13px"
         });
     }
 </script>

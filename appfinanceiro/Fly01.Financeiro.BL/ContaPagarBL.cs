@@ -168,13 +168,19 @@ namespace Fly01.Financeiro.BL
             int QtdTotal = All.AsNoTracking().Where(x => x.DataEmissao >= dataInicial && x.DataEmissao <= dataFinal).Count();
 
             var result = All.AsNoTracking().Where(x => x.DataEmissao >= dataInicial && x.DataEmissao <= dataFinal)
-                                            .GroupBy(x => new { x.StatusContaBancaria })
+                                            .Select(x => new { x.ValorPrevisto , x.StatusContaBancaria, x.ValorPago })    
+                                            .GroupBy(x => new { x.StatusContaBancaria})
                                             .Select(x => new
                                             {
                                                 x.Key.StatusContaBancaria,
-                                                Quantidade = x.Count()
+                                                Quantidade = x.Count(),
+                                                valorTotal = x.Sum(y => y.ValorPrevisto),
+                                                valorPago = x.Sum(y => y.ValorPago)
                                             })
                                             .ToList();
+
+            double? resultDiferenca = result.Where(x => x.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente).Select(x => x.valorTotal - x.valorPago).FirstOrDefault()?? 0;
+            double? valorPago = result.Where(x => x.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente).Select(x => x.valorPago).FirstOrDefault()?? 0;
 
             result.ForEach(x =>
             {
@@ -182,7 +188,12 @@ namespace Fly01.Financeiro.BL
                 {
                     Status = EnumHelper.GetValue(typeof(StatusContaBancaria), x.StatusContaBancaria.ToString()),
                     Quantidade = x.Quantidade,
-                    QuantidadeTotal = QtdTotal
+                    QuantidadeTotal = QtdTotal,
+                    Valortotal = (x.StatusContaBancaria.ToString() == "EmAberto")
+                         ?  x.valorTotal  + (double) resultDiferenca 
+                         : (x.StatusContaBancaria.ToString() == "Pago")
+                            ? x.valorTotal + (double)valorPago 
+                            : x.valorTotal
                 });
             });
 

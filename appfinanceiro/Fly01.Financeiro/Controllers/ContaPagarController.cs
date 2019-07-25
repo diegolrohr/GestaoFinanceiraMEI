@@ -215,55 +215,24 @@ namespace Fly01.Financeiro.Controllers
 
             cfg.Content.Add(new CardUI
             {
-                Class = "col s12 m3",
+                Class = "col s12 m4 center",
                 Color = "totvs-blue",
                 Id = "fly01cardEmAberto",
-                Title = "Em aberto",
-                Placeholder = "0",
-                Action = new LinkUI
-                {
-                    Label = "Ver mais",
-                    OnClick = @Url.Action("List", "Extrato")
-                }
+                Placeholder = "A pagar"
             });
             cfg.Content.Add(new CardUI
             {
-                Class = "col s12 m3",
+                Class = "col s12 m4 center",
                 Color = "totvs-blue",
                 Id = "fly01cardPago",
-                Title = "Pago",
-                Placeholder = "0",
-                Action = new LinkUI
-                {
-                    Label = "Ver mais",
-                    OnClick = @Url.Action("List", "ContaPagar")
-                }
+                Placeholder = "Pago"
             });
             cfg.Content.Add(new CardUI
             {
-                Class = "col s12 m3",
+                Class = "col s12 m4 center",
                 Color = "totvs-blue",
                 Id = "fly01cardRenegociado",
-                Title = "Renegociado",
-                Placeholder = "0",
-                Action = new LinkUI
-                {
-                    Label = "Ver mais",
-                    OnClick = @Url.Action("List", "ContaReceber")
-                }
-            });
-            cfg.Content.Add(new CardUI
-            {
-                Class = "col s12 m3",
-                Color = "totvs-blue",
-                Id = "fly01cardBPacrial",
-                Title = "Baixado Parcialmente",
-                Placeholder = "0",
-                Action = new LinkUI
-                {
-                    Label = "",
-                    OnClick = ""
-                }
+                Placeholder = "Renegociado"
             });
 
             if (gridLoad == "GridLoad")
@@ -974,28 +943,19 @@ namespace Fly01.Financeiro.Controllers
                     { "dataInicial", dataInicial.GetValueOrDefault(DateTime.Now).ToString("yyyy-MM-dd") }
                 };
                 var response = RestHelper.ExecuteGetRequest<List<ContaFinanceiraPorStatusVM>>("DashboardContaPagarDia", queryString);
-                var qtdTotal = 0;
-                var emAberto = "0/0";
-                var pago = "0/0";
-                var renegociado = "0/0";
-                var baixadoParcialmente = "0/0";
-
-                if (response.Any())
-                {
-                    qtdTotal = response.First().QuantidadeTotal;
-                    emAberto = "0/" + qtdTotal;
-                    pago = "0/" + qtdTotal;
-                    renegociado = "0/" + qtdTotal;
-                    baixadoParcialmente = "0/" + qtdTotal;
-                }
-
+                var emAberto = "R$ 0,00";
+                var pago = "R$ 0,00";
+                var renegociado = "R$ 0,00";
+                var baixadoParcialmente = "R$ 0,00";
+                
                 foreach (var item in response)
                 {
-                    if (item.Status == "Em Aberto") emAberto = item.Quantidade.ToString() + "/" + item.QuantidadeTotal.ToString();
-                    else if (item.Status == "pago") pago = item.Quantidade.ToString() + "/" + item.QuantidadeTotal.ToString();
-                    else if (item.Status == "Renegociado") renegociado = item.Quantidade.ToString() + "/" + item.QuantidadeTotal.ToString();
-                    else if (item.Status == "baixadoParcialmente") baixadoParcialmente = item.Quantidade.ToString() + "/" + item.QuantidadeTotal.ToString();
+                    if (item.Status == "Em aberto") emAberto = item.Valortotal.ToString("C", AppDefaults.CultureInfoDefault);
+                    else if (item.Status == "Pago") pago =  item.Valortotal.ToString("C", AppDefaults.CultureInfoDefault);
+                    else if (item.Status == "Renegociado") renegociado = item.Valortotal.ToString("C", AppDefaults.CultureInfoDefault);
+                    else if (item.Status == "Baixado Parcialmente") baixadoParcialmente = item.Valortotal.ToString("C", AppDefaults.CultureInfoDefault);
                 }
+
                 var responseToView = new
                 {
                     emAberto,

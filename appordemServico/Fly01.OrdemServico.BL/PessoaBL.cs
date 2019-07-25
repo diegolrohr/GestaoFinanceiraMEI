@@ -215,7 +215,8 @@ namespace Fly01.OrdemServico.BL
                 "NomeComercial",
                 "Cliente",
                 "Fornecedor",
-                "Transportadora"
+                "Transportadora",
+                "Vendedor"
             };
         }
     }

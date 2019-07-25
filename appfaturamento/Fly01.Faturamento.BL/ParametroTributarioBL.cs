@@ -114,6 +114,7 @@ namespace Fly01.Faturamento.BL
 
         public override void ValidaModel(ParametroTributario entity)
         {
+            if ((int)entity.TipoCRT < 1) { entity.TipoCRT = TipoCRT.SimplesNacional; }
             GetOrUpdateEmpresa();
             entity.Cnpj = empresa.CNPJ;
             entity.UF = empresa.Cidade != null ? (empresa.Cidade.Estado != null ? empresa.Cidade.Estado.Sigla : string.Empty) : string.Empty;

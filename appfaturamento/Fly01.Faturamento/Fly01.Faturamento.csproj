@@ -85,6 +85,7 @@
     <Compile Include="Controllers\NotaFiscalController.cs" />
     <Compile Include="Controllers\CertificadoDigitalController.cs" />
     <Compile Include="Controllers\EmpresaAtualizaIEController.cs" />
+    <Compile Include="Controllers\VendedorController.cs" />
     <Compile Include="Controllers\SerieNotaFiscalController.cs" />
     <Compile Include="Controllers\TransportadoraController.cs" />
     <Compile Include="Controllers\OrdemVendaServicoController.cs" />
@@ -399,6 +400,12 @@
     <Content Include="Views\AssistenciaRemota\Functions\_fnAssistenciaRemotaFormReady.cshtml" />
     <Content Include="Views\CertificadoDigital\Functions\_fnRemoveCertificado.cshtml" />
     <Content Include="Views\EmpresaAtualizaIE\Functions\_fnStateSelect.cshtml" />
+    <Content Include="Views\Vendedor\Functions\_fnCarregarArquivo.cshtml" />
+    <Content Include="Views\Vendedor\Functions\_fnCitySelect.cshtml" />
+    <Content Include="Views\Vendedor\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\Vendedor\Functions\_fnImportaCadastroFormReady.cshtml" />
+    <Content Include="Views\Vendedor\Functions\_fnStateSelect.cshtml" />
+    <Content Include="Views\Vendedor\ImportaCadastro.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -419,7 +426,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Fly01.uiJS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Fly01.uiJS.2.0.5.7\lib\net452\Fly01.uiJS.dll</HintPath>
+      <HintPath>..\..\packages\Fly01.uiJS.2.0.5.8\lib\net452\Fly01.uiJS.dll</HintPath>
     </Reference>
     <Reference Include="HtmlRenderer, Version=1.5.0.5, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\HtmlRenderer.Core.1.5.0.5\lib\net45\HtmlRenderer.dll</HintPath>

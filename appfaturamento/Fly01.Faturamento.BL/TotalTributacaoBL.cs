@@ -112,7 +112,7 @@ namespace Fly01.Faturamento.BL
                 {
                     throw new BusinessException(string.Format("Informe um Grupo Tributário válido no produto {0}.", num));
                 }
-                if(parametros.TipoCRT != TipoCRT.RegimeNormal && entity.TipoVenda != TipoCompraVenda.Devolucao && ((int)item?.GrupoTributario?.TipoTributacaoICMS >= 0 && (int)item?.GrupoTributario.TipoTributacaoICMS <= 90))
+                if (parametros.TipoCRT != TipoCRT.RegimeNormal && entity.TipoVenda != TipoCompraVenda.Devolucao && ((int)item?.GrupoTributario?.TipoTributacaoICMS >= 0 && (int)item?.GrupoTributario.TipoTributacaoICMS <= 90))
                 {
                     throw new BusinessException(string.Format("Seu regime tributário configurado, é Simples Nacional e no grupo tributário do produto {0}, foi configurado CST nas configurações de ICMS, altere para CSOSN.", num));
                 }
@@ -199,7 +199,7 @@ namespace Fly01.Faturamento.BL
                 if (entidade != null)
                 {
                     var certificado = CertificadoDigitalBL.CertificadoAtualValido();
-                    if(certificado != null && !certificado.CertificadoValidoNFS)
+                    if (certificado != null && !certificado.CertificadoValidoNFS)
                     {
                         throw new BusinessException("Para transmitir NFS, reenvie o seu Certificado Digital em Configurações");
                     }
@@ -368,7 +368,7 @@ namespace Fly01.Faturamento.BL
                     if (grupoTributario.CalculaCSLL || grupoTributario.RetemCSLL)
                     {
                         tributacao.Csll = new Csll()
-                        {                             
+                        {
                             Aliquota = parametros != null ? parametros.AliquotaCSLL : 0,
                             CalculaCsll = grupoTributario.CalculaCSLL,
                             RetemCsll = grupoTributario.RetemCSLL

@@ -1,0 +1,7 @@
+﻿@section scripts {
+    <script>
+        $().ready(function () {
+            $$$.go("@Url.Action("FormImportacao", "" + ViewContext.Controller.ValueProvider.GetValue("controller").RawValue)");
+        });
+    </script>
+}

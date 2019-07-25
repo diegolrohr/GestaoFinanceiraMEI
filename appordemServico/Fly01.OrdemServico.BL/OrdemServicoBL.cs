@@ -58,6 +58,8 @@ namespace Fly01.OrdemServico.BL
         {
             entity.Status = StatusOrdemServico.EmPreenchimento;
 
+            entity.Tempo = entity.Duracao.TotalMinutes;
+
             base.Insert(entity);
 
             //Só obtém próximo número depois que tudo foi validado, para poupar sequenciais no caso defalha

@@ -4,6 +4,7 @@ using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
 using Fly01.Core.Notifications;
 using Fly01.Core.ServiceBus;
+using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.Financeiro.API.Models.DAL;
 using System;
 using System.Collections.Generic;
@@ -214,6 +215,53 @@ namespace Fly01.Financeiro.BL
             }
 
             return false;
+        }
+
+        public List<ContaFinanceiraPorStatusVM> GetSaldoStatus(DateTime dataFinal, DateTime dataInicial)
+        {
+            List<ContaFinanceiraPorStatusVM> listaResult = new List<ContaFinanceiraPorStatusVM>();
+            int QtdTotal = All.AsNoTracking().Where(x => x.DataEmissao >= dataInicial && x.DataEmissao <= dataFinal).Count();
+
+            var result = All.AsNoTracking().Where(x => x.DataEmissao >= dataInicial && x.DataEmissao <= dataFinal)
+                                            .Select(x => new { x.ValorPrevisto, x.StatusContaBancaria, x.ValorPago })
+                                            .GroupBy(x => new { x.StatusContaBancaria })
+                                            .Select(x => new
+                                            {
+                                                x.Key.StatusContaBancaria,
+                                                Quantidade = x.Count(),
+                                                valorTotal = x.Sum(y => y.ValorPrevisto),
+                                                valorPago = x.Sum(y => y.ValorPago)
+                                            })
+                                            .ToList();
+
+            double? resultDiferenca = result.Where(x => x.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente).Select(x => x.valorTotal - x.valorPago)?.FirstOrDefault()?? 0;
+            double? valorPago = result.Where(x => x.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente).Select(x => x.valorPago)?.FirstOrDefault()?? 0;
+
+            result.ForEach(x =>
+            {
+                listaResult.Add(new ContaFinanceiraPorStatusVM
+                {
+                    Status = EnumHelper.GetValue(typeof(StatusContaBancaria), x.StatusContaBancaria.ToString()),
+                    Quantidade = x.Quantidade,
+                    QuantidadeTotal = QtdTotal,
+                    Valortotal = (x.StatusContaBancaria.ToString() == "EmAberto")
+                         ? x.valorTotal + (double)resultDiferenca
+                         : (x.StatusContaBancaria.ToString() == "Pago")
+                            ? x.valorTotal + (double)valorPago
+                            : x.valorTotal
+                });
+            });
+
+            if (!result.Where(x => x.StatusContaBancaria == StatusContaBancaria.EmAberto).Any() && result != null)
+            {
+                listaResult.Add(new ContaFinanceiraPorStatusVM()
+                {
+                    Status = "Em aberto",
+                    Valortotal = (double)resultDiferenca
+                });
+            }
+
+            return listaResult;
         }
 
         public static Error RepeticoesInvalidas = new Error("Número de repetições inválido. Somente até 48 Meses (4 Anos / 208 Semanas).");

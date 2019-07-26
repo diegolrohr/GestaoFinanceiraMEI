@@ -213,27 +213,30 @@ namespace Fly01.Financeiro.Controllers
                 Functions = { "fnRowCallbackContasFinanceiras"}
             };
 
-            cfg.Content.Add(new CardUI
+            if (Request.QueryString["action"] != "GridLoadNoFilter")
             {
-                Class = "col s12 m4 center",
-                Color = "totvs-blue",
-                Id = "fly01cardEmAberto",
-                Placeholder = "A pagar"
-            });
-            cfg.Content.Add(new CardUI
-            {
-                Class = "col s12 m4 center",
-                Color = "totvs-blue",
-                Id = "fly01cardPago",
-                Placeholder = "Pago"
-            });
-            cfg.Content.Add(new CardUI
-            {
-                Class = "col s12 m4 center",
-                Color = "totvs-blue",
-                Id = "fly01cardRenegociado",
-                Placeholder = "Renegociado"
-            });
+                cfg.Content.Add(new CardUI
+                {
+                    Class = "col s12 m4 center",
+                    Color = "totvs-blue",
+                    Id = "fly01cardEmAberto",
+                    Placeholder = "A pagar"
+                });
+                cfg.Content.Add(new CardUI
+                {
+                    Class = "col s12 m4 center",
+                    Color = "totvs-blue",
+                    Id = "fly01cardPago",
+                    Placeholder = "Pago"
+                });
+                cfg.Content.Add(new CardUI
+                {
+                    Class = "col s12 m4 center",
+                    Color = "totvs-blue",
+                    Id = "fly01cardRenegociado",
+                    Placeholder = "Renegociado"
+                });
+            }
 
             if (gridLoad == "GridLoad")
             {

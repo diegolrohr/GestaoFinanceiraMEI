@@ -189,7 +189,7 @@ namespace Fly01.Financeiro.Controllers
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 Functions = { "fnCardList" },
-                ReadyFn = "fnCardList"
+                ReadyFn = (Request.QueryString["action"] != "GridLoadNoFilter") ? "fnCardList" : ""
             };
 
             var cfgForm = new FormUI

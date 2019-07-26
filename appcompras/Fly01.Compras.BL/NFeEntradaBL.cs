@@ -217,7 +217,9 @@ namespace Fly01.Compras.BL
                     #region Emitente
                     itemTransmissao.Emitente = new Emitente()
                     {
-                        Cnpj = empresa.CNPJ,
+                        //Cnpj = empresa.CNPJ,
+                        Cnpj = empresa.CNPJ.Length == 14 ? empresa.CNPJ : null,
+                        Cpf = empresa.CNPJ.Length == 11 ? empresa.CNPJ : null,
                         Nome = empresa.RazaoSocial,
                         NomeFantasia = empresa.NomeFantasia,
                         InscricaoEstadual = empresa.InscricaoEstadual,

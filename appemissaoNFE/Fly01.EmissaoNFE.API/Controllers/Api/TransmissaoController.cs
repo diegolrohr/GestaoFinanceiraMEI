@@ -33,7 +33,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                                     item.Identificador.CodigoUF.ToString(),
                                     item.Identificador.Emissao.Year.ToString(),
                                     item.Identificador.Emissao.Month.ToString(),
-                                    item.Emitente.Cnpj,
+                                    item.Emitente.Cnpj ?? item.Emitente.Cpf,
                                     item.Identificador.ModeloDocumentoFiscal.ToString(),
                                     item.Identificador.Serie.ToString(),
                                     item.Identificador.NumeroDocumentoFiscal.ToString(),

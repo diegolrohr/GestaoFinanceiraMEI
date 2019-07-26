@@ -319,7 +319,7 @@ namespace Fly01.Compras.BL
 
             rpc = new RpcClient();
             numero = int.Parse(rpc.Call($"plataformaid={PlataformaUrl},tipoordemcompra={(int)TipoOrdemCompra.Pedido}"));
-            //numero = All.Max(x => x.Numero) + 1;
+            // numero = All.Max(x => x.Numero) + 1;
             entity.Numero = numero;
 
             ValidaModel(entity);

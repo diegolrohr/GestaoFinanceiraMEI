@@ -122,9 +122,9 @@ namespace Fly01.EmissaoNFE.BL
             return dv;
         }
 
-        public string GeraChave(string UF, string ano, string mes, string cnpj, string modelo, string serie, string numeroNota, string tipoEmissao, string codigoNF)
+        public string GeraChave(string UF, string ano, string mes, string cpfcnpj, string modelo, string serie, string numeroNota, string tipoEmissao, string codigoNF)
         {
-            var retorno = UF + ano[2] + ano[3] + mes.PadLeft(2, '0') + cnpj.PadLeft(14, '0') + modelo.PadLeft(2, '0') +
+            var retorno = UF + ano[2] + ano[3] + mes.PadLeft(2, '0') + cpfcnpj.PadLeft(14, '0') + modelo.PadLeft(2, '0') +
                             serie.PadLeft(3, '0') + numeroNota.PadLeft(9, '0') + tipoEmissao + codigoNF.PadLeft(8, '0');
 
             int dv = 0;

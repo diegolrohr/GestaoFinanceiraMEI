@@ -187,7 +187,9 @@ namespace Fly01.Financeiro.Controllers
                     Title = "Contas a Pagar",
                     Buttons = new List<HtmlUIButton>(GetListButtonsOnHeaderCustom(buttonLabel, buttonOnClick))
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                Functions = { "fnCardList" },
+                ReadyFn = (Request.QueryString["action"] != "GridLoadNoFilter") ? "fnCardList" : ""
             };
 
             var cfgForm = new FormUI
@@ -208,8 +210,33 @@ namespace Fly01.Financeiro.Controllers
                         Name = "dataInicial"
                     }
                 },
-                Functions = { "fnRowCallbackContasFinanceiras" }
+                Functions = { "fnRowCallbackContasFinanceiras"}
             };
+
+            if (Request.QueryString["action"] != "GridLoadNoFilter")
+            {
+                cfg.Content.Add(new CardUI
+                {
+                    Class = "col s12 m4 center",
+                    Color = "totvs-blue",
+                    Id = "fly01cardEmAberto",
+                    Placeholder = "A pagar"
+                });
+                cfg.Content.Add(new CardUI
+                {
+                    Class = "col s12 m4 center",
+                    Color = "totvs-blue",
+                    Id = "fly01cardPago",
+                    Placeholder = "Pago"
+                });
+                cfg.Content.Add(new CardUI
+                {
+                    Class = "col s12 m4 center",
+                    Color = "totvs-blue",
+                    Id = "fly01cardRenegociado",
+                    Placeholder = "Renegociado"
+                });
+            }
 
             if (gridLoad == "GridLoad")
             {
@@ -907,6 +934,45 @@ namespace Fly01.Financeiro.Controllers
             }
 
             return null;
+        }
+
+        public JsonResult LoadCards(DateTime? dataFinal = null, DateTime? dataInicial = null)
+        {
+            try
+            {
+                Dictionary<string, string> queryString = new Dictionary<string, string>
+                {
+                    { "dataFinal", dataFinal.GetValueOrDefault(DateTime.Now).ToString("yyyy-MM-dd") },
+                    { "dataInicial", dataInicial.GetValueOrDefault(DateTime.Now).ToString("yyyy-MM-dd") }
+                };
+                var response = RestHelper.ExecuteGetRequest<List<ContaFinanceiraPorStatusVM>>("DashboardContaPagarDia", queryString);
+                var emAberto = "R$ 0,00";
+                var pago = "R$ 0,00";
+                var renegociado = "R$ 0,00";
+                var baixadoParcialmente = "R$ 0,00";
+                
+                foreach (var item in response)
+                {
+                    if (item.Status == "Em aberto") emAberto = item.Valortotal.ToString("C", AppDefaults.CultureInfoDefault);
+                    else if (item.Status == "Pago") pago =  item.Valortotal.ToString("C", AppDefaults.CultureInfoDefault);
+                    else if (item.Status == "Renegociado") renegociado = item.Valortotal.ToString("C", AppDefaults.CultureInfoDefault);
+                    else if (item.Status == "Baixado Parcialmente") baixadoParcialmente = item.Valortotal.ToString("C", AppDefaults.CultureInfoDefault);
+                }
+
+                var responseToView = new
+                {
+                    emAberto,
+                    pago,
+                    renegociado,
+                    baixadoParcialmente
+                };
+
+                return Json(responseToView, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return JsonResponseStatus.GetFailure(ex.Message);
+            }
         }
 
         #endregion

@@ -72,7 +72,10 @@ namespace Fly01.OrdemServico.Controllers
                 {
                     EventLimit = true,
                     Selectable = true,
-                    Editable = false
+                    Editable = false,
+                    MinTime = "00:00:00",
+                    MaxTime = "23:00:00"
+                
                 },
                 Callbacks = new CalendarUICallbacks()
                 {

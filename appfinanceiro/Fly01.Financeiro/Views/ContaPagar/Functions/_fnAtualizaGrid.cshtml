@@ -7,6 +7,8 @@
         if ($("form#fly01mdlfrm").valid()) {
             $("form#fly01mdlfrm").submit();
         }
+
+        fnAtualizaCards();
     }
 
     function fnOverrideSubmit() {
@@ -53,5 +55,32 @@
         });
     };
 
+    function fnAtualizaCards() {
+        let date = $$$._.mesPicker.pickamonth("picker").get("select");
+        var firstDay = new Date(date.year, date.month, 1);
+        let lastDay = new Date(date.year, date.month + 1, 0);
+        $("#dataInicial").val(moment(firstDay).format('YYYY-MM-DD'));
+        $("#dataFinal").val(moment(lastDay).format('YYYY-MM-DD'));
+        $$$._.fly01dt.refresh();
 
+        var dataFinal = moment(lastDay).format('YYYY-MM-DD');
+        var dataInicial = moment(firstDay).format('YYYY-MM-DD');
+
+        $.ajax({
+            url: '@Url.Action("LoadCards", "ContaPagar")' + '?dataFinal=' + dataFinal + "&dataInicial=" + dataInicial,
+            type: "GET",
+            success: function (data) {
+
+                $('#fly01cardEmAberto span')[0].innerHTML = data.emAberto;
+                $('#fly01cardPago span')[0].innerHTML = data.pago;
+                $('#fly01cardRenegociado span')[0].innerHTML = data.renegociado;
+                
+                $$$.loading.stop();
+            },
+            error: function (jXHR, textStatus) {
+                $$$.toast(textStatus, 'error');
+                $$$.loading.stop();
+            }
+        }); 
+    }
 </script>

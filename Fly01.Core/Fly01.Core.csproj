@@ -61,6 +61,7 @@
     <Compile Include="ViewModels\Presentation\Commons\ContaFinanceiraVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\ContaPagarVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\ContaReceberVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\ContaFinanceiraPorStatusVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\PaisVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\MinhaContaConfiguracaoVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\MinhaContaCodigoBarrasResponseVM.cs" />

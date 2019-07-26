@@ -55,14 +55,14 @@ namespace Fly01.OrdemServico.BL
                 foreach (var item in response)
                 {
                     TimeSpan horaFinal = item.HoraEntrega + TimeSpan.FromMinutes(item.Tempo.GetValueOrDefault());
-                    TimeSpan horaEntrega = (item.HoraEntrega - new TimeSpan(2, 0, 0));
-                    TimeSpan duracao = (item.Tempo == null ? item.Duracao : (TimeSpan.FromMinutes(item.Tempo.GetValueOrDefault())) - new TimeSpan(2, 0, 0));
+                    TimeSpan horaEntrega = item.HoraEntrega;
+                    TimeSpan duracao = (item.Tempo == null ? item.Duracao : (TimeSpan.FromMinutes(item.Tempo.GetValueOrDefault())));
                     listaResult.Add(new AgendaVM
                     {
                         ClassName = EnumHelper.GetCSS(typeof(StatusOrdemServico), item.Status.ToString()),
                         Title = item.Cliente?.Nome,
                         Start = item.DataEntrega + horaEntrega,
-                        End = item.DataEntrega + (horaFinal - new TimeSpan(2, 0, 0)),
+                        End = item.DataEntrega + horaFinal,
                         Url = item.Status.Equals(StatusOrdemServico.Concluido) || item.Status.Equals(StatusOrdemServico.Cancelado) ? "" : $"OrdemServico/Edit/{item.Id.ToString()}"
                     });
                 }

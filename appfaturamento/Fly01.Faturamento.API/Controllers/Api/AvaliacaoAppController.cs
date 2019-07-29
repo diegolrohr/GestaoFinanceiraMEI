@@ -13,13 +13,5 @@ namespace Fly01.Faturamento.API.Controllers.Api
         protected MediaClient _mediaClient;
         public AvaliacaoAppController()
             : base(ConfigurationManager.AppSettings["MongoDBAvaliacaoApp"], ConfigurationManager.AppSettings["MongoCollectionNameAvaliacaoApp"]) { }
-
-        public override Task<IHttpActionResult> Post(AvaliacaoApp entity)
-        {
-            _mediaClient = new MediaClient();
-            _mediaClient.PostNotificacaoAvaliacaoApp(entity.Id, Request.RequestUri.AbsoluteUri.Split('.')[1], entity.Descricao, PlataformaUrl);
-
-            return base.Post(entity);
-        }
     }
 }

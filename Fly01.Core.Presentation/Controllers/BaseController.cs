@@ -1050,81 +1050,85 @@ namespace Fly01.Core.Presentation
             DataTable dt = new DataTable();
             dt.Clear();
 
-            param.Columns.ForEach(x =>
-            {
-                if (!string.IsNullOrWhiteSpace(x.Name))
-                    dt.Columns.Add(x.Name);
-            });
-
-            var data = responseGrid.Data.Select(GetDisplayData()).ToList();
-            Type o = data.FirstOrDefault().GetType();
-            data.ForEach(x =>
-            {
-                DataRow dtr = dt.NewRow();
-                param.Columns.ForEach(y =>
-                {
-                    if (!string.IsNullOrWhiteSpace(y.Name))
-                        dtr[y.Name] = o.GetProperty(y.Data.Replace("/", "_")).GetValue(x, null);
-                });
-                dt.Rows.Add(dtr);
-            });
-            dt.Columns.Cast<DataColumn>().ToList().ForEach(column =>
-            {
-                if (dt.AsEnumerable().All(dr => dr.IsNull(column) || dr[column].ToString().Equals("")))
-                    dt.Columns.Remove(column);
-            });
-
-            //dynamic conta;
-            //if (fileType == "csv" && fileType == "xls")
+            //param.Columns.ForEach(x =>
             //{
-            //    if (true)
-            //        conta = (List<ContaPagarVM>)Convert.ChangeType(responseGrid.Data, typeof(List<ContaPagarVM>));
-            //    else
-            //        conta = (List<ContaReceberVM>)Convert.ChangeType(responseGrid.Data, typeof(List<ContaReceberVM>));
+            //    if (!string.IsNullOrWhiteSpace(x.Name))
+            //        dt.Columns.Add(x.Name);
+            //});
 
-
-            //    var data = responseGrid.Data.Select(GetDisplayData()).ToList();
-            //    Type o = data.FirstOrDefault().GetType();
-
-
-            //    for (int i = 0; i < conta; i++)
+            //var data = responseGrid.Data.Select(GetDisplayData()).ToList();
+            //Type o = data.FirstOrDefault().GetType();
+            //data.ForEach(x =>
+            //{
+            //    DataRow dtr = dt.NewRow();
+            //    param.Columns.ForEach(y =>
             //    {
-            //        DataRow dtr = dt.NewRow();
-            //        dtr[conta[i][0]] = conta[i][1].Replace("/","_");
-            //        dt.Rows.Add(dtr);
-            //        //dtr[conta[i][0]] = o.GetProperty(y.Data.Replace("/", "_")).GetValue(x, null);
-            //    }
-            //    dt.Columns.Cast<DataColumn>().ToList().ForEach(column =>
-            //    {
-            //        if (dt.AsEnumerable().All(dr => dr.IsNull(column) || dr[column].ToString().Equals("")))
-            //            dt.Columns.Remove(column);
+            //        if (!string.IsNullOrWhiteSpace(y.Name))
+            //            dtr[y.Name] = o.GetProperty(y.Data.Replace("/", "_")).GetValue(x, null);
             //    });
-            //}
-            //else {
-            //    param.Columns.ForEach(x =>
-            //    {
-            //        if (!string.IsNullOrWhiteSpace(x.Name))
-            //            dt.Columns.Add(x.Name);
-            //    });
+            //    dt.Rows.Add(dtr);
+            //});
+            //dt.Columns.Cast<DataColumn>().ToList().ForEach(column =>
+            //{
+            //    if (dt.AsEnumerable().All(dr => dr.IsNull(column) || dr[column].ToString().Equals("")))
+            //        dt.Columns.Remove(column);
+            //});
 
-            //    var data = responseGrid.Data.Select(GetDisplayData()).ToList();
-            //    Type o = data.FirstOrDefault().GetType();
-            //    data.ForEach(x =>
-            //    {
-            //        DataRow dtr = dt.NewRow();
-            //        param.Columns.ForEach(y =>
-            //        {
-            //            if (!string.IsNullOrWhiteSpace(y.Name))
-            //                dtr[y.Name] = o.GetProperty(y.Data.Replace("/", "_")).GetValue(x, null);
-            //        });
-            //        dt.Rows.Add(dtr);
-            //    });
-            //    dt.Columns.Cast<DataColumn>().ToList().ForEach(column =>
-            //    {
-            //        if (dt.AsEnumerable().All(dr => dr.IsNull(column) || dr[column].ToString().Equals("")))
-            //            dt.Columns.Remove(column);
-            //    });
-            //}
+            dynamic conta;
+            if (fileType == "csv" || fileType == "xls")
+            {
+                if (true)
+                    conta = (List<ContaPagarVM>)Convert.ChangeType(responseGrid.Data, typeof(List<ContaPagarVM>));
+                else
+                    conta = (List<ContaReceberVM>)Convert.ChangeType(responseGrid.Data, typeof(List<ContaReceberVM>));
+
+
+                var data = responseGrid.Data.Select(GetDisplayData()).ToList();
+                Type o = data.FirstOrDefault().GetType();
+
+
+                for (int i = 0; i < conta; i++)
+                {
+                    PropertyInfo[] myPropertyInfo;
+                    myPropertyInfo = data.GetType().GetProperties();
+
+                    DataRow dtr = dt.NewRow();
+                    dtr[conta[i][0]] = conta[i][1].Replace("/", "_");
+                    dt.Rows.Add(dtr);
+                    //dtr[conta[i][0]] = o.GetProperty(y.Data.Replace("/", "_")).GetValue(x, null);
+                }
+                dt.Columns.Cast<DataColumn>().ToList().ForEach(column =>
+                {
+                    if (dt.AsEnumerable().All(dr => dr.IsNull(column) || dr[column].ToString().Equals("")))
+                        dt.Columns.Remove(column);
+                });
+            }
+            else
+            {
+                param.Columns.ForEach(x =>
+                {
+                    if (!string.IsNullOrWhiteSpace(x.Name))
+                        dt.Columns.Add(x.Name);
+                });
+
+                var data = responseGrid.Data.Select(GetDisplayData()).ToList();
+                Type o = data.FirstOrDefault().GetType();
+                data.ForEach(x =>
+                {
+                    DataRow dtr = dt.NewRow();
+                    param.Columns.ForEach(y =>
+                    {
+                        if (!string.IsNullOrWhiteSpace(y.Name))
+                            dtr[y.Name] = o.GetProperty(y.Data.Replace("/", "_")).GetValue(x, null);
+                    });
+                    dt.Rows.Add(dtr);
+                });
+                dt.Columns.Cast<DataColumn>().ToList().ForEach(column =>
+                {
+                    if (dt.AsEnumerable().All(dr => dr.IsNull(column) || dr[column].ToString().Equals("")))
+                        dt.Columns.Remove(column);
+                });
+            }
 
             return dt;
         }

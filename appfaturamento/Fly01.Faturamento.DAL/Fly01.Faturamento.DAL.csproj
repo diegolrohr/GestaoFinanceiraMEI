@@ -548,6 +548,10 @@
     <Compile Include="Migrations\201907152036081_CreateTotalOrdemVenda.Designer.cs">
       <DependentUpon>201907152036081_CreateTotalOrdemVenda.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201907302040552_rollbackNotaFiscal.cs" />
+    <Compile Include="Migrations\201907302040552_rollbackNotaFiscal.Designer.cs">
+      <DependentUpon>201907302040552_rollbackNotaFiscal.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\AliquotaSimplesNacionalDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
@@ -955,6 +959,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201907152036081_CreateTotalOrdemVenda.resx">
       <DependentUpon>201907152036081_CreateTotalOrdemVenda.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907302040552_rollbackNotaFiscal.resx">
+      <DependentUpon>201907302040552_rollbackNotaFiscal.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

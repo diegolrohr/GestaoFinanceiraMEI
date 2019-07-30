@@ -632,12 +632,79 @@ namespace Fly01.Faturamento.BL
 
         public override void Delete(OrdemVenda entityToDelete)
         {
-            entityToDelete.Fail(entityToDelete.Status != Status.Aberto, new Error("Somente venda em aberto pode ser deletada", "status"));
+            var notasVinculadas = VerificaNotasFiscaisVinculadas(entityToDelete.Id);
+            var ehPedido = entityToDelete.TipoOrdemVenda;
+            var ehfinalizado = entityToDelete.Status == Status.Finalizado;
+
+            entityToDelete.Fail(ehfinalizado && ehPedido == TipoOrdemVenda.Pedido && notasVinculadas, new Error("Vendas com Notas Fiscais não é possivel excluir", "status"));
+
+            if (
+                (!notasVinculadas && ehPedido == TipoOrdemVenda.Pedido && ehfinalizado) &&
+                //((entityToDelete.MovimentaEstoque && entityToDelete.RollbackMovimentaEstoque) || (entityToDelete.GeraFinanceiro && entityToDelete.RollbackGeraFinanceiro) || entityToDelete.GeraNotaFiscal)
+                ( true || (entityToDelete.GeraFinanceiro && entityToDelete.RollbackGeraFinanceiro) || entityToDelete.GeraNotaFiscal)
+               )
+            {
+                RollbackExcluirPedido(entityToDelete);
+            }
 
             if (!entityToDelete.IsValid())
                 throw new BusinessException(entityToDelete.Notification.Get());
 
             base.Delete(entityToDelete);
+        }
+
+        private void RollbackExcluirPedido(OrdemVenda entityToDelete)
+        {
+            if (entityToDelete.GeraNotaFiscal)
+            {
+                var nfe = NFeBL.All.FirstOrDefault(x => (x.OrdemVendaOrigemId.HasValue && x.OrdemVendaOrigemId == entityToDelete.Id));
+                if (nfe != null) { NFeBL.Delete(nfe); }
+                var nfse = NFSeBL.All.FirstOrDefault(x => (x.OrdemVendaOrigemId.HasValue && x.OrdemVendaOrigemId == entityToDelete.Id));
+                if (nfse != null) { NFSeBL.Delete(nfse); }
+            }
+
+            //if (entityToDelete.MovimentaEstoque && entityToDelete.RollbackMovimentaEstoque)
+            if(true)
+            {
+                //aproveitado a Movimentação de Estoque já existente, porém invertando a operação na hora da exclusão para ser realizada a movimentação contraria do pedido
+                var produtos = OrdemVendaProdutoBL.All.Where(e => e.OrdemVendaId == entityToDelete.Id && e.Ativo).ToList();
+                if (
+                (entityToDelete.TipoVenda == TipoCompraVenda.Normal
+                 || entityToDelete.TipoVenda == TipoCompraVenda.Devolucao
+                 || (entityToDelete.TipoVenda == TipoCompraVenda.Complementar && entityToDelete.TipoNfeComplementar == TipoNfeComplementar.ComplPrecoQtd)
+                ))
+                {
+                    var movimentos = (from ordemVendaProduto in produtos
+                                      group ordemVendaProduto by ordemVendaProduto.ProdutoId into groupResult
+                                      select new
+                                      {
+                                          ProdutoId = groupResult.Key,
+                                          Total = groupResult.Sum(f => f.Quantidade)
+                                      })
+                        .Select(x => new MovimentoOrdemVenda
+                        {
+                            Quantidade = (x.Total),
+                            PedidoNumero = entityToDelete.Numero,
+                            ProdutoId = x.ProdutoId,
+                            UsuarioInclusao = entityToDelete.UsuarioAlteracao ?? entityToDelete.UsuarioInclusao,
+                            TipoVenda = (entityToDelete.TipoVenda == TipoCompraVenda.Normal || (entityToDelete.TipoVenda == TipoCompraVenda.Complementar && !entityToDelete.NFeRefComplementarIsDevolucao)) ? TipoCompraVenda.Devolucao : TipoCompraVenda.Normal,
+                            TipoNfeComplementar = entityToDelete.TipoNfeComplementar,
+                            PlataformaId = PlataformaUrl,
+                            NFeRefComplementarIsDevolucao = entityToDelete.NFeRefComplementarIsDevolucao //? false : true
+                        }).ToList();
+
+                    foreach (var movimento in movimentos)
+                        Producer<MovimentoOrdemVenda>.Send(routePrefixNameMovimentoOrdemVenda, AppUser, PlataformaUrl, movimento, RabbitConfig.EnHttpVerb.POST);
+                }
+            }
+        }
+
+        private bool VerificaNotasFiscaisVinculadas(Guid ordemVendaId)
+        {
+            return
+                NFeBL.All.Any(x => (x.OrdemVendaOrigemId.HasValue && x.OrdemVendaOrigemId == ordemVendaId) && (x.Status == StatusNotaFiscal.Autorizada || x.Status == StatusNotaFiscal.Cancelada || x.Status == StatusNotaFiscal.Transmitida || x.Status == StatusNotaFiscal.EmCancelamento || x.Status == StatusNotaFiscal.UsoDenegado))
+                ||
+                NFSeBL.All.Any(x => (x.OrdemVendaOrigemId.HasValue && x.OrdemVendaOrigemId == ordemVendaId) && (x.Status == StatusNotaFiscal.Autorizada || x.Status == StatusNotaFiscal.Cancelada || x.Status == StatusNotaFiscal.Transmitida || x.Status == StatusNotaFiscal.EmCancelamento || x.Status == StatusNotaFiscal.UsoDenegado));
         }
 
         public override void AfterSave(OrdemVenda entity)
@@ -875,7 +942,7 @@ namespace Fly01.Faturamento.BL
         public TotalPedidoNotaFiscal CalculaTotalOrdemVenda(Guid ordemVendaId, Guid clienteId, bool geraNotaFiscal, string tipoNfeComplementar = "NaoComplementar", string tipoFrete = "SemFrete", double? valorFrete = 0, bool onList = false)
         {
             var tipoFreteEnum = (TipoFrete)Enum.Parse(typeof(TipoFrete), tipoFrete, true);
-            if (tipoFreteEnum != TipoFrete.FOB) { valorFrete = 0;}
+            if (tipoFreteEnum != TipoFrete.FOB) { valorFrete = 0; }
             var tipoNfeComplementarEnum = (TipoNfeComplementar)Enum.Parse(typeof(TipoNfeComplementar), tipoNfeComplementar, true);
 
             var ordemVenda = All.Where(x => x.Id == ordemVendaId).FirstOrDefault();
@@ -935,7 +1002,7 @@ namespace Fly01.Faturamento.BL
             return result;
         }
 
-        
+
 
         public void UtilizarKitOrdemVenda(UtilizarKitVM entity)
         {

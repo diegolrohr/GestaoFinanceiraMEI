@@ -330,6 +330,8 @@ namespace Fly01.Financeiro.Controllers
             if (Request.QueryString["dataInicial"] != "")
                 filters.Add(" and dataVencimento ge ", Request.QueryString["dataInicial"]);
 
+            //Request.QueryString
+
             return base.GridLoad(filters);
         }
 

@@ -360,7 +360,7 @@ namespace Fly01.Estoque.Controllers
                 {
                     if (responseGrid.Total.Equals(0))
                         throw new Exception("Não existem registros para exportar");
-                    DataTable dataTable = GridToDataTable(responseGrid, param);
+                    DataTable dataTable = GridToDataTable(responseGrid, param, ResourceName, fileType);
                     switch (fileType.ToLower())
                     {
                         case "pdf":

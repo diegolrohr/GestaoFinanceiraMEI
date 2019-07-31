@@ -548,9 +548,9 @@
     <Compile Include="Migrations\201907152036081_CreateTotalOrdemVenda.Designer.cs">
       <DependentUpon>201907152036081_CreateTotalOrdemVenda.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201907302040552_rollbackNotaFiscal.cs" />
-    <Compile Include="Migrations\201907302040552_rollbackNotaFiscal.Designer.cs">
-      <DependentUpon>201907302040552_rollbackNotaFiscal.cs</DependentUpon>
+    <Compile Include="Migrations\201907312036319_ReabrirPedidoFinalizado.cs" />
+    <Compile Include="Migrations\201907312036319_ReabrirPedidoFinalizado.Designer.cs">
+      <DependentUpon>201907312036319_ReabrirPedidoFinalizado.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\AliquotaSimplesNacionalDataInitializer.cs" />
@@ -960,8 +960,8 @@
     <EmbeddedResource Include="Migrations\201907152036081_CreateTotalOrdemVenda.resx">
       <DependentUpon>201907152036081_CreateTotalOrdemVenda.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201907302040552_rollbackNotaFiscal.resx">
-      <DependentUpon>201907302040552_rollbackNotaFiscal.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201907312036319_ReabrirPedidoFinalizado.resx">
+      <DependentUpon>201907312036319_ReabrirPedidoFinalizado.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -122,9 +122,7 @@ namespace Fly01.Core.Entities.Domains.Commons
         [StringLength(60)]
         public string LocalDespacho { get; set; }
 
-        public bool RollbackMovimentaEstoque { get; set; }
-
-        public bool RollbackGeraFinanceiro { get; set; }
+        public DateTime? DataReabertura { get; set; }
 
         public virtual Pessoa Cliente { get; set; }
 

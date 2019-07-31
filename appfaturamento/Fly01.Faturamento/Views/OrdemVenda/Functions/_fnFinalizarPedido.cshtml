@@ -1,6 +1,6 @@
 ﻿<script>
     function fnFinalizarPedido(idRecord) {
-        $$$.confirm("Confirmar Finalização", "Deseja realmente finalizar este pedido? Se marcado, irá movimentar o estoque e gerar financeiro. Não será mais possível editar/excluir", "fnFinalizarPedidoConfirmed(\"" + idRecord + "\")");
+        $$$.confirm("Confirmar Finalização", "Deseja realmente finalizar este pedido? Se marcado, irá movimentar o estoque e gerar financeiro. Não será mais possível editar", "fnFinalizarPedidoConfirmed(\"" + idRecord + "\")");
     }
     function fnFinalizarPedidoConfirmed(idRecord) {
         $$$.loading.start();

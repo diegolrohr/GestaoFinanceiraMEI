@@ -630,22 +630,26 @@ namespace Fly01.Faturamento.BL
             }
         }
 
-        public override void Delete(OrdemVenda entityToDelete)
+        private void ReabrirPedido(OrdemVenda entity)
         {
-            var notasVinculadas = VerificaNotasFiscaisVinculadas(entityToDelete.Id);
-            var ehPedido = entityToDelete.TipoOrdemVenda;
-            var ehfinalizado = entityToDelete.Status == Status.Finalizado;
+            var notasVinculadas = VerificaNotasFiscaisVinculadas(entity.Id);
+            var ehPedido = entity.TipoOrdemVenda == TipoOrdemVenda.Pedido;
+            var ehfinalizado = entity.Status == Status.Finalizado;
 
-            entityToDelete.Fail(ehfinalizado && ehPedido == TipoOrdemVenda.Pedido && notasVinculadas, new Error("Vendas com Notas Fiscais não é possivel excluir", "status"));
+            entity.Fail(ehfinalizado && ehPedido  && notasVinculadas, new Error("Vendas com Notas Fiscais autorizadas não é possivel excluir"));
 
             if (
-                (!notasVinculadas && ehPedido == TipoOrdemVenda.Pedido && ehfinalizado) &&
-                //((entityToDelete.MovimentaEstoque && entityToDelete.RollbackMovimentaEstoque) || (entityToDelete.GeraFinanceiro && entityToDelete.RollbackGeraFinanceiro) || entityToDelete.GeraNotaFiscal)
-                ( true || (entityToDelete.GeraFinanceiro && entityToDelete.RollbackGeraFinanceiro) || entityToDelete.GeraNotaFiscal)
-               )
+                (!notasVinculadas && ehPedido && ehfinalizado) &&
+                (entity.MovimentaEstoque || (entity.GeraFinanceiro || entity.GeraNotaFiscal)
+               ))
             {
-                RollbackExcluirPedido(entityToDelete);
+                RolbackReabrirPedido(entity);
             }
+        }
+
+        public override void Delete(OrdemVenda entityToDelete)
+        {
+            entityToDelete.Fail(entityToDelete.Status != Status.Aberto, new Error("Somente venda em aberto pode ser deletada", "status"));
 
             if (!entityToDelete.IsValid())
                 throw new BusinessException(entityToDelete.Notification.Get());
@@ -653,7 +657,7 @@ namespace Fly01.Faturamento.BL
             base.Delete(entityToDelete);
         }
 
-        private void RollbackExcluirPedido(OrdemVenda entityToDelete)
+        private void RolbackReabrirPedido(OrdemVenda entityToDelete)
         {
             if (entityToDelete.GeraNotaFiscal)
             {
@@ -664,7 +668,7 @@ namespace Fly01.Faturamento.BL
             }
 
             //if (entityToDelete.MovimentaEstoque && entityToDelete.RollbackMovimentaEstoque)
-            if(true)
+            if (true)
             {
                 //aproveitado a Movimentação de Estoque já existente, porém invertando a operação na hora da exclusão para ser realizada a movimentação contraria do pedido
                 var produtos = OrdemVendaProdutoBL.All.Where(e => e.OrdemVendaId == entityToDelete.Id && e.Ativo).ToList();

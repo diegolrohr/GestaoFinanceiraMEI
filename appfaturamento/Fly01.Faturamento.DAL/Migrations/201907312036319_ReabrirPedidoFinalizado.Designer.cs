@@ -7,13 +7,13 @@ namespace Fly01.Faturamento.DAL.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class rollbackNotaFiscal : IMigrationMetadata
+    public sealed partial class ReabrirPedidoFinalizado : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(rollbackNotaFiscal));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(ReabrirPedidoFinalizado));
         
         string IMigrationMetadata.Id
         {
-            get { return "201907302040552_rollbackNotaFiscal"; }
+            get { return "201907312036319_ReabrirPedidoFinalizado"; }
         }
         
         string IMigrationMetadata.Source

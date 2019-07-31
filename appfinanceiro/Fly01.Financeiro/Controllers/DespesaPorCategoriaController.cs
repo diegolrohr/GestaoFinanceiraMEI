@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using Fly01.Core.Rest;
 using Fly01.Core.Presentation;
 using Fly01.uiJS.Classes;
+using Fly01.Core.Presentation.JQueryDataTable;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -67,5 +68,10 @@ namespace Fly01.Financeiro.Controllers
         public override ContentResult List() { throw new NotImplementedException(); }
 
         protected override ContentUI FormJson() { throw new NotImplementedException(); }
+
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

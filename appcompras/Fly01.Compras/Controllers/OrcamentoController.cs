@@ -20,6 +20,7 @@ using Fly01.Core.Presentation;
 using Fly01.uiJS.Enums;
 using Fly01.uiJS.Classes.Helpers;
 using Fly01.Core.ViewModels;
+using Fly01.Core.Presentation.JQueryDataTable;
 
 namespace Fly01.Compras.Controllers
 {
@@ -633,6 +634,11 @@ namespace Fly01.Compras.Controllers
                 return "J";
 
             return null;
+        }
+
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

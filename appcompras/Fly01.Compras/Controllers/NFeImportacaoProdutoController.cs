@@ -5,6 +5,7 @@ using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
 using Fly01.Core.Presentation;
 using Fly01.Core.Presentation.Commons;
+using Fly01.Core.Presentation.JQueryDataTable;
 using Fly01.Core.Rest;
 using Fly01.Core.ViewModels;
 using Fly01.uiJS.Classes;
@@ -291,5 +292,9 @@ namespace Fly01.Compras.Controllers
             }
         }
 
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

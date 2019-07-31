@@ -15,6 +15,7 @@ using Fly01.Core.Rest;
 using Fly01.Core.Helpers;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using System.Linq;
+using Fly01.Core.Presentation.JQueryDataTable;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -323,6 +324,11 @@ namespace Fly01.Faturamento.Controllers
                 var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
                 return JsonResponseStatus.GetFailure(error.Message);
             }
+        }
+
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        {
+            throw new NotImplementedException();
         }
     }
 }

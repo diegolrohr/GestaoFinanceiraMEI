@@ -1,6 +1,7 @@
 ﻿using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
 using Fly01.Core.Presentation.Commons;
+using Fly01.Core.Presentation.JQueryDataTable;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
@@ -411,5 +412,10 @@ namespace Fly01.Core.Presentation.Controllers
 
         protected virtual List<InputCheckboxUI> GetCheckBboxes() 
             => null;
+
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

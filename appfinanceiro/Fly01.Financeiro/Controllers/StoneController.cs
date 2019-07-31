@@ -19,6 +19,7 @@ using Fly01.Core.Helpers;
 using Fly01.uiJS.Classes.Helpers;
 using Fly01.uiJS.Enums;
 using System.Linq;
+using Fly01.Core.Presentation.JQueryDataTable;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -680,6 +681,11 @@ namespace Fly01.Financeiro.Controllers
             throw new NotImplementedException();
         }
         public override Func<DomainBaseVM, object> GetDisplayData()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
         {
             throw new NotImplementedException();
         }

@@ -698,5 +698,9 @@ namespace Fly01.Financeiro.Controllers
             }
         }
 
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

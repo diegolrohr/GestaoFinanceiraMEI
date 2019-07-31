@@ -1,5 +1,6 @@
 ﻿using Fly01.Core;
 using Fly01.Core.Presentation;
+using Fly01.Core.Presentation.JQueryDataTable;
 using Fly01.Estoque.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
@@ -123,6 +124,11 @@ namespace Fly01.Estoque.Controllers
         }
 
         protected override ContentUI FormJson()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
         {
             throw new NotImplementedException();
         }

@@ -1,33 +1,33 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Web.Mvc;
-using Fly01.Core.Rest;
-using Newtonsoft.Json;
-using System.Reflection;
+﻿using Fly01.Core.Config;
 using Fly01.Core.Helpers;
-using Fly01.uiJS.Defaults;
-using Fly01.Core.SOAManager;
-using System.Collections.Generic;
 using Fly01.Core.Helpers.Attribute;
 using Fly01.Core.Presentation.Commons;
-using System.Web.Script.Serialization;
-using Fly01.Core.ViewModels.Presentation;
+using Fly01.Core.Presentation.Controllers;
 using Fly01.Core.Presentation.JQueryDataTable;
-using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.Core.Rest;
+using Fly01.Core.SOAManager;
 using Fly01.Core.ViewModels;
-using Fly01.Core.Config;
+using Fly01.Core.ViewModels.Presentation;
+using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
-using System.Web.Configuration;
-using Fly01.Core.Presentation.Controllers;
+using Fly01.uiJS.Defaults;
 using Fly01.uiJS.Enums;
-using System.Data;
-using System.Web.UI.WebControls;
-using System.Web.UI;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Web.Configuration;
+using System.Web.Mvc;
+using System.Web.Script.Serialization;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace Fly01.Core.Presentation
 {
@@ -1044,91 +1044,52 @@ namespace Fly01.Core.Presentation
             Response.End();
         }
 
-        protected DataTable GridToDataTable(ResultBase<T> responseGrid, JQueryDataTableParams param, string ResourceName, string fileType)
+        protected abstract List<JQueryDataTableParamsColumn> GetParamsColumns();
+
+        private List<JQueryDataTableParamsColumn> ParamsColumns(JQueryDataTableParams param, string fileType = "")
         {
 
+            if (fileType == "csv" || fileType == "xls")
+            {
+                try
+                {
+                    return GetParamsColumns();
+                }
+                catch { return param.Columns; }
+            }
+            else
+                return param.Columns;
+        }
+
+        protected DataTable GridToDataTable(ResultBase<T> responseGrid, JQueryDataTableParams param, string ResourceName, string fileType)
+        {
             DataTable dt = new DataTable();
             dt.Clear();
 
-            //param.Columns.ForEach(x =>
-            //{
-            //    if (!string.IsNullOrWhiteSpace(x.Name))
-            //        dt.Columns.Add(x.Name);
-            //});
+            var data = responseGrid.Data.Select(GetDisplayData()).ToList();
+            Type o = data.FirstOrDefault().GetType();
 
-            //var data = responseGrid.Data.Select(GetDisplayData()).ToList();
-            //Type o = data.FirstOrDefault().GetType();
-            //data.ForEach(x =>
-            //{
-            //    DataRow dtr = dt.NewRow();
-            //    param.Columns.ForEach(y =>
-            //    {
-            //        if (!string.IsNullOrWhiteSpace(y.Name))
-            //            dtr[y.Name] = o.GetProperty(y.Data.Replace("/", "_")).GetValue(x, null);
-            //    });
-            //    dt.Rows.Add(dtr);
-            //});
-            //dt.Columns.Cast<DataColumn>().ToList().ForEach(column =>
-            //{
-            //    if (dt.AsEnumerable().All(dr => dr.IsNull(column) || dr[column].ToString().Equals("")))
-            //        dt.Columns.Remove(column);
-            //});
-
-            dynamic conta;
-            if (fileType == "csv" || fileType == "xls")
+            ParamsColumns(param, fileType).ForEach(x =>
             {
-                if (true)
-                    conta = (List<ContaPagarVM>)Convert.ChangeType(responseGrid.Data, typeof(List<ContaPagarVM>));
-                else
-                    conta = (List<ContaReceberVM>)Convert.ChangeType(responseGrid.Data, typeof(List<ContaReceberVM>));
+                if (!string.IsNullOrWhiteSpace(x.Name))
+                    dt.Columns.Add(x.Name);
+            });
 
-
-                var data = responseGrid.Data.Select(GetDisplayData()).ToList();
-                Type o = data.FirstOrDefault().GetType();
-
-
-                for (int i = 0; i < conta; i++)
-                {
-                    PropertyInfo[] myPropertyInfo;
-                    myPropertyInfo = data.GetType().GetProperties();
-
-                    DataRow dtr = dt.NewRow();
-                    dtr[conta[i][0]] = conta[i][1].Replace("/", "_");
-                    dt.Rows.Add(dtr);
-                    //dtr[conta[i][0]] = o.GetProperty(y.Data.Replace("/", "_")).GetValue(x, null);
-                }
-                dt.Columns.Cast<DataColumn>().ToList().ForEach(column =>
-                {
-                    if (dt.AsEnumerable().All(dr => dr.IsNull(column) || dr[column].ToString().Equals("")))
-                        dt.Columns.Remove(column);
-                });
-            }
-            else
+            data.ForEach(x =>
             {
-                param.Columns.ForEach(x =>
+                DataRow dtr = dt.NewRow();
+                ParamsColumns(param, fileType).ForEach(y =>
                 {
-                    if (!string.IsNullOrWhiteSpace(x.Name))
-                        dt.Columns.Add(x.Name);
+                    if (!string.IsNullOrWhiteSpace(y.Name))
+                        dtr[y.Name] = o.GetProperty(y.Data.Replace("/", "_")).GetValue(x, null);
                 });
-
-                var data = responseGrid.Data.Select(GetDisplayData()).ToList();
-                Type o = data.FirstOrDefault().GetType();
-                data.ForEach(x =>
-                {
-                    DataRow dtr = dt.NewRow();
-                    param.Columns.ForEach(y =>
-                    {
-                        if (!string.IsNullOrWhiteSpace(y.Name))
-                            dtr[y.Name] = o.GetProperty(y.Data.Replace("/", "_")).GetValue(x, null);
-                    });
-                    dt.Rows.Add(dtr);
-                });
-                dt.Columns.Cast<DataColumn>().ToList().ForEach(column =>
-                {
-                    if (dt.AsEnumerable().All(dr => dr.IsNull(column) || dr[column].ToString().Equals("")))
-                        dt.Columns.Remove(column);
-                });
-            }
+                dt.Rows.Add(dtr);
+            });
+            dt.Columns.Cast<DataColumn>().ToList().ForEach(column =>
+            {
+                if (dt.AsEnumerable().All(dr => dr.IsNull(column) || dr[column].ToString().Equals("")))
+                    dt.Columns.Remove(column);
+            });
 
             return dt;
         }

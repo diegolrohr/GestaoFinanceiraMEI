@@ -401,5 +401,9 @@ namespace Fly01.Estoque.Controllers
             }
         }
 
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -31,7 +31,7 @@ namespace Fly01.Financeiro.Controllers
     {
         public ContaReceberController()
         {
-            ExpandProperties = "condicaoParcelamento($select=descricao,qtdParcelas,condicoesParcelamento),pessoa($select=nome),categoria($select=descricao),formaPagamento($select=descricao,tipoFormaPagamento),centroCusto";
+            ExpandProperties = "centroCusto($select=descricao),condicaoParcelamento($select=descricao,qtdParcelas,condicoesParcelamento),pessoa($select=nome),categoria($select=descricao),formaPagamento($select=descricao,tipoFormaPagamento),centroCusto";
         }
 
         public override ActionResult ImprimirRecibo(Guid id)
@@ -323,14 +323,11 @@ namespace Fly01.Financeiro.Controllers
         {
             if (filters == null)
                 filters = new Dictionary<string, string>();
-            
 
             if (Request.QueryString["dataFinal"] != "")
                 filters.Add("dataVencimento le ", Request.QueryString["dataFinal"]);
             if (Request.QueryString["dataInicial"] != "")
                 filters.Add(" and dataVencimento ge ", Request.QueryString["dataInicial"]);
-
-            //Request.QueryString
 
             return base.GridLoad(filters);
         }

@@ -13,6 +13,7 @@ using Fly01.uiJS.Enums;
 using Fly01.Core.Rest;
 using Fly01.Core;
 using System.Linq;
+using Fly01.Core.Presentation.JQueryDataTable;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -296,6 +297,11 @@ namespace Fly01.Financeiro.Controllers
             var emiteBoleto = RestHelper.ExecuteGetRequest<ResultBase<BancoVM>>("Banco", queryString).Data.First().EmiteBoleto;
 
             return Json(new { emiteBoleto }, JsonRequestBehavior.AllowGet);
+        }
+
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        {
+            throw new NotImplementedException();
         }
     }
 }

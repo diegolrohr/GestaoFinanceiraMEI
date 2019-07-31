@@ -15,6 +15,7 @@ using Fly01.Core.Presentation;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.ViewModels;
+using Fly01.Core.Presentation.JQueryDataTable;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -216,6 +217,11 @@ namespace Fly01.Financeiro.Controllers
                 Observacao = "",
                 TipoContaFinanceira = TipoContaFinanceira.ContaReceber.ToString()
             };
+        }
+
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        {
+            throw new NotImplementedException();
         }
     }
 }

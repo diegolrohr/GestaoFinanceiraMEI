@@ -13,6 +13,7 @@ using Fly01.uiJS.Classes.Helpers;
 using Fly01.Core.Rest;
 using Fly01.Core.Presentation;
 using Fly01.Core.ViewModels;
+using Fly01.Core.Presentation.JQueryDataTable;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -186,6 +187,11 @@ namespace Fly01.Financeiro.Controllers
         }
 
         public override ContentResult List()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
         {
             throw new NotImplementedException();
         }

@@ -3,6 +3,7 @@ using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
 using Fly01.Core.Presentation;
 using Fly01.Core.Presentation.Commons;
+using Fly01.Core.Presentation.JQueryDataTable;
 using Fly01.Core.Rest;
 using Fly01.Core.ViewModels;
 using Fly01.Faturamento.ViewModel;
@@ -243,6 +244,11 @@ namespace Fly01.Faturamento.Controllers
                 var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
                 return JsonResponseStatus.GetFailure(error.Message);
             }
+        }
+
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        {
+            throw new NotImplementedException();
         }
     }
 }

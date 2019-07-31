@@ -20,6 +20,7 @@ using System.IO;
 using System.Text;
 using System.IO.Compression;
 using System.Linq;
+using Fly01.Core.Presentation.JQueryDataTable;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -532,6 +533,11 @@ namespace Fly01.Faturamento.Controllers
             {
                 streamIn.CopyTo(zipStream);
             }
+        }
+
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -185,5 +185,10 @@ namespace Fly01.Core.Presentation.Controllers
                 }, JsonRequestBehavior.AllowGet);
             }
         }
+
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

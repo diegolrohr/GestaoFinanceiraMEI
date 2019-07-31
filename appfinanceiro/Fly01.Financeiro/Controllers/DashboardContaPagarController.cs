@@ -127,6 +127,11 @@ namespace Fly01.Financeiro.Controllers
                 return JsonResponseStatus.GetFailure(error.Message);
             }
         }
+
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        {
+            throw new NotImplementedException();
+        }
     }
 
     

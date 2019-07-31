@@ -3,6 +3,7 @@ using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
 using Fly01.Core.Presentation;
 using Fly01.Core.Presentation.Commons;
+using Fly01.Core.Presentation.JQueryDataTable;
 using Fly01.Core.Rest;
 using Fly01.Financeiro.Controllers.Base;
 using Fly01.Financeiro.ViewModel;
@@ -367,6 +368,11 @@ namespace Fly01.Financeiro.Controllers
         public JsonResult GridLoadNoFilter()
         {
             return GridLoad();
+        }
+
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        {
+            throw new NotImplementedException();
         }
     }
 }

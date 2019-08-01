@@ -8,6 +8,7 @@ using Fly01.uiJS.Classes.Helpers;
 using Fly01.Core.Presentation;
 using Fly01.Core.Presentation.Commons;
 using Fly01.uiJS.Enums;
+using Fly01.Core.Presentation.JQueryDataTable;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -150,6 +151,11 @@ namespace Fly01.Financeiro.Controllers
             cfg.Content.Add(dtcfg);
 
             return cfg;
+        }
+
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        {
+            throw new NotImplementedException();
         }
     }
 }

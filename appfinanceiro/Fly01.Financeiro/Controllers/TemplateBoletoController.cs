@@ -13,6 +13,7 @@ using Newtonsoft.Json;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Defaults;
 using Fly01.uiJS.Classes.Helpers;
+using Fly01.Core.Presentation.JQueryDataTable;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -147,5 +148,9 @@ namespace Fly01.Financeiro.Controllers
             }
         }
 
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

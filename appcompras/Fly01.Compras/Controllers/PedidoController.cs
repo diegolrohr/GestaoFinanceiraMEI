@@ -24,6 +24,7 @@ using Fly01.Core.ViewModels;
 using Fly01.Core.Mensageria;
 using System.IO;
 using Fly01.Compras.Helpers;
+using Fly01.Core.Presentation.JQueryDataTable;
 
 namespace Fly01.Compras.Controllers
 {
@@ -1469,6 +1470,11 @@ namespace Fly01.Compras.Controllers
                 var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
                 return JsonResponseStatus.GetFailure(error.Message);
             }
+        }
+
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        {
+            throw new NotImplementedException();
         }
         #endregion
     }

@@ -1,33 +1,33 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Web.Mvc;
-using Fly01.Core.Rest;
-using Newtonsoft.Json;
-using System.Reflection;
+﻿using Fly01.Core.Config;
 using Fly01.Core.Helpers;
-using Fly01.uiJS.Defaults;
-using Fly01.Core.SOAManager;
-using System.Collections.Generic;
 using Fly01.Core.Helpers.Attribute;
 using Fly01.Core.Presentation.Commons;
-using System.Web.Script.Serialization;
-using Fly01.Core.ViewModels.Presentation;
+using Fly01.Core.Presentation.Controllers;
 using Fly01.Core.Presentation.JQueryDataTable;
-using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.Core.Rest;
+using Fly01.Core.SOAManager;
 using Fly01.Core.ViewModels;
-using Fly01.Core.Config;
+using Fly01.Core.ViewModels.Presentation;
+using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
-using System.Web.Configuration;
-using Fly01.Core.Presentation.Controllers;
+using Fly01.uiJS.Defaults;
 using Fly01.uiJS.Enums;
-using System.Data;
-using System.Web.UI.WebControls;
-using System.Web.UI;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Web.Configuration;
+using System.Web.Mvc;
+using System.Web.Script.Serialization;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace Fly01.Core.Presentation
 {
@@ -611,7 +611,7 @@ namespace Fly01.Core.Presentation
                 {
                     if (responseGrid.Total.Equals(0))
                         throw new Exception("Não existem registros para exportar");
-                    DataTable dataTable = GridToDataTable(responseGrid, param);
+                    DataTable dataTable = GridToDataTable(responseGrid, param, ResourceName, fileType);
                     switch (fileType.ToLower())
                     {
                         case "pdf":
@@ -1044,23 +1044,41 @@ namespace Fly01.Core.Presentation
             Response.End();
         }
 
-        protected DataTable GridToDataTable(ResultBase<T> responseGrid, JQueryDataTableParams param)
+        protected abstract List<JQueryDataTableParamsColumn> GetParamsColumns();
+
+        private List<JQueryDataTableParamsColumn> ParamsColumns(JQueryDataTableParams param, string fileType = "")
+        {
+
+            if (fileType == "csv" || fileType == "xls")
+            {
+                try
+                {
+                    return GetParamsColumns();
+                }
+                catch { return param.Columns; }
+            }
+            else
+                return param.Columns;
+        }
+
+        protected DataTable GridToDataTable(ResultBase<T> responseGrid, JQueryDataTableParams param, string ResourceName, string fileType)
         {
             DataTable dt = new DataTable();
             dt.Clear();
 
-            param.Columns.ForEach(x =>
+            var data = responseGrid.Data.Select(GetDisplayData()).ToList();
+            Type o = data.FirstOrDefault().GetType();
+
+            ParamsColumns(param, fileType).ForEach(x =>
             {
                 if (!string.IsNullOrWhiteSpace(x.Name))
                     dt.Columns.Add(x.Name);
             });
 
-            var data = responseGrid.Data.Select(GetDisplayData()).ToList();
-            Type o = data.FirstOrDefault().GetType();
             data.ForEach(x =>
             {
                 DataRow dtr = dt.NewRow();
-                param.Columns.ForEach(y =>
+                ParamsColumns(param, fileType).ForEach(y =>
                 {
                     if (!string.IsNullOrWhiteSpace(y.Name))
                         dtr[y.Name] = o.GetProperty(y.Data.Replace("/", "_")).GetValue(x, null);

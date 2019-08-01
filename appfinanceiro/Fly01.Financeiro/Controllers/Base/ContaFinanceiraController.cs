@@ -1,9 +1,20 @@
-﻿using Fly01.Financeiro.ViewModel;
+﻿using Fly01.Core;
+using Fly01.Core.Config;
+using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Helpers;
+using Fly01.Core.Presentation;
+using Fly01.Core.Presentation.Commons;
+using Fly01.Core.Presentation.JQueryDataTable;
+using Fly01.Core.Rest;
+using Fly01.Core.ViewModels;
+using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.EmissaoNFE.Domain.Enums;
+using Fly01.Financeiro.Models.Reports;
+using Fly01.Financeiro.Models.ViewModel;
+using Fly01.Financeiro.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
-using Fly01.Core;
-using Fly01.Core.Helpers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -11,16 +22,6 @@ using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
-using Fly01.Core.Rest;
-using Fly01.Core.Presentation.Commons;
-using Fly01.Financeiro.Models.ViewModel;
-using Fly01.Financeiro.Models.Reports;
-using Fly01.Core.Config;
-using Fly01.Core.Entities.Domains.Enum;
-using Fly01.EmissaoNFE.Domain.Enums;
-using Fly01.Core.Presentation;
-using Fly01.Core.ViewModels;
-using Fly01.Core.ViewModels.Presentation.Commons;
 
 namespace Fly01.Financeiro.Controllers.Base
 {
@@ -36,6 +37,27 @@ namespace Fly01.Financeiro.Controllers.Base
         /// no grid de listagem
         /// </summary>
         /// <returns></returns>
+        [OperationRole(NotApply = true)]
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        {
+            return new List<JQueryDataTableParamsColumn>()
+            {
+                new JQueryDataTableParamsColumn { Name = "Saldo", Data = "saldo"},
+                new JQueryDataTableParamsColumn { Name = "Data Emissao", Data = "dataEmissao"},
+                new JQueryDataTableParamsColumn { Name = "Numero", Data = "numero"},
+                new JQueryDataTableParamsColumn { Name = "Descricao", Data = "descricao"},
+                new JQueryDataTableParamsColumn { Name = "Fornecedor", Data = "pessoa_nome"},
+                new JQueryDataTableParamsColumn { Name = "Forma Pagamento", Data = "formaPagamento_descricao"},
+                new JQueryDataTableParamsColumn { Name = "Valor", Data = "valorPago"},
+                new JQueryDataTableParamsColumn { Name = "Emissao", Data = "dataEmissao"},
+                new JQueryDataTableParamsColumn { Name = "Vencimento", Data = "dataVencimento"},
+                new JQueryDataTableParamsColumn { Name = "Categoria Financeira", Data = "categoria_descricao"},
+                new JQueryDataTableParamsColumn { Name = "Condicao Parcelamento", Data = "condicaoParcelamento_descricao"},
+                new JQueryDataTableParamsColumn { Name = "Observacao", Data = "observacao"},
+                new JQueryDataTableParamsColumn { Name = "Centro custo", Data = "centroCusto"}
+            };
+        }
+
         [OperationRole(NotApply = true)]
         public override Func<TEntity, object> GetDisplayData()
         {
@@ -73,6 +95,7 @@ namespace Fly01.Financeiro.Controllers.Base
                 dataVencimentoObject = x.DataVencimento,
                 repeticaoPai = x.ContaFinanceiraRepeticaoPaiId == null && x.Repetir,
                 repeticaoFilha = x.ContaFinanceiraRepeticaoPaiId != null && x.Repetir,
+                centroCusto = x.CentroCusto?.Descricao
             };
         }
         [OperationRole(NotApply = true)]

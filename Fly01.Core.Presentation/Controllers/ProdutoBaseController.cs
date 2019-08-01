@@ -1,6 +1,7 @@
 ﻿using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
 using Fly01.Core.Presentation.Commons;
+using Fly01.Core.Presentation.JQueryDataTable;
 using Fly01.Core.Rest;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.EmissaoNFE.Domain.Enums;
@@ -555,6 +556,11 @@ namespace Fly01.Core.Presentation.Controllers
                 });
             }
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
+        }
+
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        {
+            throw new NotImplementedException();
         }
         #endregion
     }

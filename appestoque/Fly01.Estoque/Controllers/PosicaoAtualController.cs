@@ -10,6 +10,7 @@ using Fly01.Core.Rest;
 using Fly01.Core.Presentation;
 using Fly01.uiJS.Enums;
 using Fly01.Core.ViewModels;
+using Fly01.Core.Presentation.JQueryDataTable;
 
 namespace Fly01.Estoque.Controllers
 {
@@ -137,6 +138,11 @@ namespace Fly01.Estoque.Controllers
         protected override ContentUI FormJson() { throw new NotImplementedException(); }
 
         public override Func<PosicaoAtualVM, object> GetDisplayData()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
         {
             throw new NotImplementedException();
         }

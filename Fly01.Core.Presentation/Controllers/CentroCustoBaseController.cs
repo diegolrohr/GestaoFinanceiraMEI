@@ -1,4 +1,5 @@
-﻿using Fly01.Core.ViewModels.Presentation.Commons;
+﻿using Fly01.Core.Presentation.JQueryDataTable;
+using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
@@ -129,6 +130,11 @@ namespace Fly01.Core.Presentation.Controllers
             config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12 m6", Label = "Descrição", Required = true, MaxLength = 100 });
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
+        }
+
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        {
+            throw new NotImplementedException();
         }
     }
 }

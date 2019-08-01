@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using Fly01.Core.Presentation;
 using Fly01.uiJS.Classes;
+using Fly01.Core.Presentation.JQueryDataTable;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -42,6 +43,11 @@ namespace Fly01.Faturamento.Controllers
                 { "notaFiscalId eq", string.IsNullOrEmpty(id) ? Guid.NewGuid().ToString() : id }
             };
             return GridLoad(filters);
+        }
+
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        {
+            throw new NotImplementedException();
         }
     }
 }

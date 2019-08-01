@@ -11,6 +11,7 @@ using System.Linq;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.uiJS.Classes.Helpers;
+using Fly01.Core.Presentation.JQueryDataTable;
 
 namespace Fly01.Core.Presentation.Controllers
 {
@@ -285,6 +286,11 @@ namespace Fly01.Core.Presentation.Controllers
             });
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Default), "application/json");
+        }
+
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        {
+            throw new NotImplementedException();
         }
     }
 }

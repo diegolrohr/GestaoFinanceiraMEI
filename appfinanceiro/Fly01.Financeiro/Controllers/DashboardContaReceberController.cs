@@ -1,4 +1,5 @@
 ﻿using Fly01.Core.Presentation;
+using Fly01.Core.Presentation.JQueryDataTable;
 using Fly01.Core.Rest;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.uiJS.Classes;
@@ -95,5 +96,9 @@ namespace Fly01.Financeiro.Controllers
             return response;
         }
 
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

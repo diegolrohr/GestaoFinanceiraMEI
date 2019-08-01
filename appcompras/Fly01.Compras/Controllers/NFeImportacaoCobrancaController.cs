@@ -1,6 +1,7 @@
 ﻿using Fly01.Compras.ViewModel;
 using Fly01.Core;
 using Fly01.Core.Presentation;
+using Fly01.Core.Presentation.JQueryDataTable;
 using Fly01.uiJS.Classes;
 using System;
 using System.Collections.Generic;
@@ -39,6 +40,11 @@ namespace Fly01.Compras.Controllers
                 { "nFeImportacaoId eq", string.IsNullOrEmpty(id) ? Guid.NewGuid().ToString() : id }
             };
             return GridLoad(filters);
+        }
+
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -6,6 +6,7 @@ using Fly01.uiJS.Classes;
 using Newtonsoft.Json;
 using Fly01.uiJS.Defaults;
 using Fly01.Core.Presentation;
+using Fly01.Core.Presentation.JQueryDataTable;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -58,6 +59,11 @@ namespace Fly01.Financeiro.Controllers
             cfg.Content.Add(config);
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
+        }
+
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        {
+            throw new NotImplementedException();
         }
     }
 }

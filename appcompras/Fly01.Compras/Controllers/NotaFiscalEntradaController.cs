@@ -21,6 +21,7 @@ using System.Linq;
 using System.Text;
 using Fly01.Core.Mensageria;
 using Fly01.Compras.Helpers;
+using Fly01.Core.Presentation.JQueryDataTable;
 
 namespace Fly01.Compras.Controllers
 {
@@ -480,5 +481,9 @@ namespace Fly01.Compras.Controllers
             }
         }
 
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

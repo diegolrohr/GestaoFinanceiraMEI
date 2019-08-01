@@ -1,6 +1,7 @@
 ﻿using Fly01.Core.Config;
 using Fly01.Core.Helpers;
 using Fly01.Core.Presentation.Commons;
+using Fly01.Core.Presentation.JQueryDataTable;
 using Fly01.Core.Rest;
 using Fly01.Core.ValueObjects;
 using Fly01.Core.ViewModels;
@@ -189,6 +190,11 @@ namespace Fly01.Core.Presentation.Controllers
             {
                 return new JsonResult { Data = new { success = false, message = ex } };
             }
+        }
+
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        {
+            throw new NotImplementedException();
         }
     }
 }

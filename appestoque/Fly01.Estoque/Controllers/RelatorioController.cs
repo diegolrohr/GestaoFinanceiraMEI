@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Fly01.Core.Presentation;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using System.Collections.Generic;
+using Fly01.Core.Presentation.JQueryDataTable;
 
 namespace Fly01.Estoque.Controllers
 {
@@ -64,6 +65,11 @@ namespace Fly01.Estoque.Controllers
         }
 
         protected override ContentUI FormJson()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
         {
             throw new NotImplementedException();
         }

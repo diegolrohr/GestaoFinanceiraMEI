@@ -13,6 +13,7 @@ using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.ViewModels;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using System.Linq;
+using Fly01.Core.Presentation.JQueryDataTable;
 
 namespace Fly01.Core.Presentation.Controllers
 {
@@ -269,6 +270,11 @@ namespace Fly01.Core.Presentation.Controllers
                 filters.Add(" and data ge ", Request.QueryString["dataInicial"]);
 
             return base.GridLoad(filters);
+        }
+
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        {
+            throw new NotImplementedException();
         }
     }
 }

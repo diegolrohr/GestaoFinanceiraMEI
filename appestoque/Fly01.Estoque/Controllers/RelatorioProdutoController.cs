@@ -15,6 +15,7 @@ using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Classes.Helpers;
 using System.Linq;
 using Fly01.Core.Helpers;
+using Fly01.Core.Presentation.JQueryDataTable;
 
 namespace Fly01.Estoque.Controllers
 {
@@ -203,6 +204,11 @@ namespace Fly01.Estoque.Controllers
 
             var reportViewer = new WebReportViewer<RelatorioProdutoVM>(ReportProduto.Instance);
             return File(reportViewer.Print(response.Data, SessionManager.Current.UserData.PlatformUrl), "application/pdf");        
+        }
+
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        {
+            throw new NotImplementedException();
         }
     }
 }

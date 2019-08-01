@@ -5,6 +5,7 @@ using Fly01.Core.Helpers;
 using Fly01.Core.Mensageria;
 using Fly01.Core.Presentation;
 using Fly01.Core.Presentation.Commons;
+using Fly01.Core.Presentation.JQueryDataTable;
 using Fly01.Core.Rest;
 using Fly01.Core.ViewModels;
 using Fly01.Core.ViewModels.Presentation.Commons;
@@ -1199,6 +1200,11 @@ namespace Fly01.OrdemServico.Controllers
                 return "J";
 
             return null;
+        }
+
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        {
+            throw new NotImplementedException();
         }
         #endregion
     }

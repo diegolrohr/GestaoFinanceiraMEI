@@ -1,5 +1,7 @@
-﻿using System.Web.Mvc;
+﻿using System.Collections.Generic;
+using System.Web.Mvc;
 using Fly01.Core.Presentation;
+using Fly01.Core.Presentation.JQueryDataTable;
 using Fly01.uiJS.Classes;
 
 namespace Fly01.Financeiro.Controllers
@@ -14,6 +16,11 @@ namespace Fly01.Financeiro.Controllers
             var RelatorioJson = base.FormRelatorioJson(url, scheme);
 
             return RelatorioJson;
+        }
+
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        {
+            throw new System.NotImplementedException();
         }
     }
 

@@ -1,4 +1,5 @@
 ﻿using Fly01.Core.Presentation;
+using Fly01.Core.Presentation.JQueryDataTable;
 using Fly01.Estoque.ViewModel;
 using Fly01.uiJS.Classes;
 using System;
@@ -42,6 +43,11 @@ namespace Fly01.Estoque.Controllers
                 { "inventarioId eq", string.IsNullOrEmpty(id) ? Guid.NewGuid().ToString() : id }
             };
             return GridLoad(filters);
+        }
+
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        {
+            throw new NotImplementedException();
         }
     }
 }

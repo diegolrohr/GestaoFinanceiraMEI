@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using System.Linq;
+using Fly01.Core.Presentation.JQueryDataTable;
 
 namespace Fly01.Core.Presentation.Controllers
 {
@@ -363,6 +364,11 @@ namespace Fly01.Core.Presentation.Controllers
             cfg.Content.Add(config);
 
             return cfg;
+        }
+
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        {
+            throw new NotImplementedException();
         }
     }
 }

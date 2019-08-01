@@ -11,6 +11,7 @@ using Fly01.Core.Helpers;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Presentation;
 using Fly01.uiJS.Enums;
+using Fly01.Core.Presentation.JQueryDataTable;
 
 namespace Fly01.Estoque.Controllers
 {
@@ -133,6 +134,11 @@ namespace Fly01.Estoque.Controllers
             cfg.Content.Add(config);
 
             return cfg;
+        }
+
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        {
+            throw new NotImplementedException();
         }
     }
 }

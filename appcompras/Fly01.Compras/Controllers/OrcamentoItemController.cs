@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using Fly01.Core.Presentation;
 using Fly01.Core.Presentation.Commons;
+using Fly01.Core.Presentation.JQueryDataTable;
 
 namespace Fly01.Compras.Controllers
 {
@@ -138,6 +139,11 @@ namespace Fly01.Compras.Controllers
         }
 
         protected override ContentUI FormJson()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
         {
             throw new NotImplementedException();
         }

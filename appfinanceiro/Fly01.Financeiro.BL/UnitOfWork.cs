@@ -157,6 +157,9 @@ namespace Fly01.Financeiro.BL
         private ConfiguracaoPersonalizacaoBL configuracaoPersonalizacaoBL;
         public ConfiguracaoPersonalizacaoBL ConfiguracaoPersonalizacaoBL => configuracaoPersonalizacaoBL ?? (configuracaoPersonalizacaoBL = new ConfiguracaoPersonalizacaoBL(Context));
 
+        private RollbackFinanceiroCompraVendaBL rollbackFinanceiroCompraVendaBL;
+        public RollbackFinanceiroCompraVendaBL RollbackFinanceiroCompraVendaBL => rollbackFinanceiroCompraVendaBL ?? (rollbackFinanceiroCompraVendaBL = new RollbackFinanceiroCompraVendaBL(Context, ContaReceberBL, ContaPagarBL));
+        
         #endregion
     }
 }

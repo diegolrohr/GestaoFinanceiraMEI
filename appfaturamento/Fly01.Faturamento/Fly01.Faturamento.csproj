@@ -406,6 +406,7 @@
     <Content Include="Views\Vendedor\Functions\_fnImportaCadastroFormReady.cshtml" />
     <Content Include="Views\Vendedor\Functions\_fnStateSelect.cshtml" />
     <Content Include="Views\Vendedor\ImportaCadastro.cshtml" />
+    <Content Include="Views\OrdemVenda\Functions\_fnReabrir.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

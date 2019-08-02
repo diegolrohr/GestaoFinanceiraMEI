@@ -611,7 +611,7 @@ namespace Fly01.Faturamento.BL
                 GeraNotasFiscais(entity);
             }
 
-            if (entity.Status == Status.Aberto && entity.DataReabertura.HasValue && previous.Status == Status.Finalizado)
+            if (entity.Status == Status.Aberto && entity.DataReabertura.HasValue && previous.Status == Status.Finalizado && entity.TipoOrdemVenda == TipoOrdemVenda.Pedido)
             {
                 ReabrirPedido(entity);
             }
@@ -637,13 +637,11 @@ namespace Fly01.Faturamento.BL
         private void ReabrirPedido(OrdemVenda entity)
         {
             var notasVinculadas = VerificaNotasFiscaisVinculadas(entity.Id);
-            var ehPedido = entity.TipoOrdemVenda == TipoOrdemVenda.Pedido;
-            var ehfinalizado = entity.Status == Status.Finalizado;
-
-            entity.Fail(ehfinalizado && ehPedido && notasVinculadas, new Error("Vendas com Notas Fiscais autorizadas não é possivel excluir"));
+            
+            entity.Fail(notasVinculadas, new Error("Só é possível reabrir pedidos que possuam NF-e/NFS-e com status Não Autorizada, Não Transmitida ou Falha na Transmissão"));
 
             if (
-                (!notasVinculadas && ehPedido && ehfinalizado) &&
+                (!notasVinculadas) &&
                 (entity.MovimentaEstoque || (entity.GeraFinanceiro || entity.GeraNotaFiscal)
                ))
             {
@@ -720,15 +718,17 @@ namespace Fly01.Faturamento.BL
                     NumeroPedido = entity.Numero
                 };
                Producer<RollbackFinanceiroCompraVenda>.Send("RollbackFinanceiroCompraVenda", AppUser, PlataformaUrl, financeiro, RabbitConfig.EnHttpVerb.POST);
+                entity.ContaFinanceiraParcelaPaiIdProdutos = default(Guid);
+                entity.ContaFinanceiraParcelaPaiIdServicos = default(Guid);
             }
         }
 
         private bool VerificaNotasFiscaisVinculadas(Guid ordemVendaId)
         {
             return
-                NFeBL.All.Any(x => (x.OrdemVendaOrigemId.HasValue && x.OrdemVendaOrigemId == ordemVendaId) && (x.Status == StatusNotaFiscal.Autorizada || x.Status == StatusNotaFiscal.Cancelada || x.Status == StatusNotaFiscal.Transmitida || x.Status == StatusNotaFiscal.EmCancelamento || x.Status == StatusNotaFiscal.UsoDenegado))
+                NFeBL.All.Any(x => (x.OrdemVendaOrigemId.HasValue && x.OrdemVendaOrigemId == ordemVendaId) && (x.Status == StatusNotaFiscal.Autorizada || x.Status == StatusNotaFiscal.Cancelada || x.Status == StatusNotaFiscal.Transmitida || x.Status == StatusNotaFiscal.EmCancelamento || x.Status == StatusNotaFiscal.UsoDenegado || x.Status == StatusNotaFiscal.FalhaNoCancelamento  || x.Status == StatusNotaFiscal.CanceladaForaPrazo))
                 ||
-                NFSeBL.All.Any(x => (x.OrdemVendaOrigemId.HasValue && x.OrdemVendaOrigemId == ordemVendaId) && (x.Status == StatusNotaFiscal.Autorizada || x.Status == StatusNotaFiscal.Cancelada || x.Status == StatusNotaFiscal.Transmitida || x.Status == StatusNotaFiscal.EmCancelamento || x.Status == StatusNotaFiscal.UsoDenegado));
+                NFSeBL.All.Any(x => (x.OrdemVendaOrigemId.HasValue && x.OrdemVendaOrigemId == ordemVendaId) && (x.Status == StatusNotaFiscal.Autorizada || x.Status == StatusNotaFiscal.Cancelada || x.Status == StatusNotaFiscal.Transmitida || x.Status == StatusNotaFiscal.EmCancelamento || x.Status == StatusNotaFiscal.UsoDenegado || x.Status == StatusNotaFiscal.FalhaNoCancelamento || x.Status == StatusNotaFiscal.CanceladaForaPrazo));
         }
 
         public override void AfterSave(OrdemVenda entity)

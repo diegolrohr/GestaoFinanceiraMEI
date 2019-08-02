@@ -1,6 +1,6 @@
 ﻿<script>
     function fnReabrir(idRecord) {
-        $$$.confirm("Confirmar Reabertura do Pedido", "Deseja realmente reabrir este pedido? Todas as movimentações de estoque serão desfeitas, Contas Financeiras e Nota Fiscal serão excluidos", "fnReabrirConfirmed(\"" + idRecord + "\")");
+        $$$.confirm("Confirmar Reabertura do Pedido", "Deseja realmente reabrir este pedido? Se marcado, todas as movimentações de estoque serão desfeitas, contas financeiras e notas fiscais serão excluidas", "fnReabrirConfirmed(\"" + idRecord + "\")");
     }
     function fnReabrirConfirmed(idRecord) {
         $$$.loading.start();

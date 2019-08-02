@@ -21,6 +21,7 @@ namespace Fly01.Financeiro.BL
 
         public override void Insert(RollbackFinanceiroCompraVenda entity)
         {
+            var observacaoPedido = $"venda nº {entity.NumeroPedido}";
             var contasPagar =
             ContaPagarBL.All.Where(x =>
                 x.Id == (entity.ContaFinanceiraParcelaPaiIdProdutos.HasValue ? entity.ContaFinanceiraParcelaPaiIdProdutos.Value : default(Guid))
@@ -32,11 +33,11 @@ namespace Fly01.Financeiro.BL
                 x.Id == (entity.ContaFinanceiraParcelaPaiIdServicos.HasValue ? entity.ContaFinanceiraParcelaPaiIdServicos.Value : default(Guid))
             )).Union(
             ContaPagarBL.All.Where(x =>
-                x.ContaFinanceiraParcelaPaiId == (entity.ContaFinanceiraParcelaPaiIdServicos.HasValue ? entity.ContaFinanceiraParcelaPaiIdServicos.Value : default(Guid))
+                x.ContaFinanceiraParcelaPaiId == (entity.ContaFinanceiraParcelaPaiIdServicos.HasValue ? entity.ContaFinanceiraParcelaPaiIdServicos.Value : default(Guid)
             )).Union(
             ContaPagarBL.All.Where(x =>
-                x.Observacao.Contains($"venda nº {entity.NumeroPedido}") && x.PessoaId == (entity.TransportadoraId.HasValue ? entity.TransportadoraId.Value : default(Guid))
-            ));
+                x.Observacao.Contains(observacaoPedido) && x.PessoaId == (entity.TransportadoraId.HasValue ? entity.TransportadoraId.Value : default(Guid))
+            )));
 
             foreach (var contaPagar in contasPagar)
             {

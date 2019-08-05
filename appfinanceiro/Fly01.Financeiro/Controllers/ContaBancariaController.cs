@@ -299,7 +299,7 @@ namespace Fly01.Financeiro.Controllers
             return Json(new { emiteBoleto }, JsonRequestBehavior.AllowGet);
         }
 
-        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns(string ResourceName = "")
         {
             throw new NotImplementedException();
         }

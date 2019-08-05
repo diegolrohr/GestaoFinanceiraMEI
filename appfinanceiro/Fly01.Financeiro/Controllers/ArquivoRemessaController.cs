@@ -395,7 +395,7 @@ namespace Fly01.Financeiro.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
-        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns(string ResourceName = "")
         {
             throw new NotImplementedException();
         }

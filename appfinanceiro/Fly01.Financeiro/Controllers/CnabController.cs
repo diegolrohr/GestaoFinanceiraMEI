@@ -381,7 +381,7 @@ namespace Fly01.Financeiro.Controllers
             return GridLoad();
         }
 
-        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns(string ResourceName = "")
         {
             throw new NotImplementedException();
         }

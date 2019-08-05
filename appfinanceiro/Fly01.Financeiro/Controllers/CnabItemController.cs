@@ -35,11 +35,12 @@ namespace Fly01.Estoque.Controllers
                 descricaoParcela = string.IsNullOrEmpty(x.DescricaoParcela) ? "" : x.DescricaoParcela,
                 nossoNumero = x.Numero,
                 valorPago = x.ValorPago,
-                email = x.Pessoa?.Email
+                email = x.Pessoa?.Email,
+                //dataEmissao = x.DataEmissao
             };
         }
 
-        public JsonResult GridLoadContaCnabItem(string pessoaId)
+        public JsonResult GridLoadContaCnabItem(string pessoaId, string dataPickerInicio, string dataPickerFim)
         {
             try
             {
@@ -49,6 +50,22 @@ namespace Fly01.Estoque.Controllers
                         "pessoaId", $" eq {pessoaId} and ativo and (statusContaBancaria ne {AppDefaults.APIEnumResourceName}StatusContaBancaria'Pago')"
                     }
                 };
+
+                if ((dataPickerInicio != null && dataPickerInicio != "undefined") && (dataPickerFim != null && dataPickerFim != "undefined"))
+                {
+                    filters = new Dictionary<string, string>()
+                    {
+                        {
+                            "pessoaId", $" eq {pessoaId} and ativo and (statusContaBancaria ne {AppDefaults.APIEnumResourceName}StatusContaBancaria'Pago')"
+                        },
+                        {
+                            " and dataEmissao le ", dataPickerFim
+                        },
+                        {
+                            " and dataEmissao ge ", dataPickerInicio
+                        },
+                    };
+                }
 
                 return base.GridLoad(filters);
             }

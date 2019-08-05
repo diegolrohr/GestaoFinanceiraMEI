@@ -3,10 +3,11 @@
 
     function fnShowListCnab() {
         if ($('#pessoaId').val().length != "" && $('#bancoNome').val().length != "") {
-            $('#dtCnabItem').show();
-            $$$._.dtCnabItem.selected = [];
-            $$$._.dtCnabItem.refresh();
-            $('#save').removeAttr('disabled');
+
+                $('#dtCnabItem').show();
+                $$$._.dtCnabItem.selected = [];
+                $$$._.dtCnabItem.refresh();
+                $('#save').removeAttr('disabled');
         }
     };
 </script>

@@ -92,7 +92,7 @@ namespace Fly01.Financeiro.Controllers
             configCnab.Elements.Add(new AutoCompleteUI
             {
                 Id = "bancoId",
-                Class = "col s12 m6 l6",
+                Class = "col s12 m12 l12",
                 Label = "Conta bancária cedente",
                 Required = true,
                 DataUrl = @Url.Action("ContaBancariaBancoEmiteBoleto", "AutoComplete") + "?emiteBoleto=true",
@@ -109,6 +109,15 @@ namespace Fly01.Financeiro.Controllers
                 DataUrlPost = Url.Action("PostCliente", "Cliente")
             }, ResourceHashConst.FinanceiroCadastrosClientes));
 
+            configCnab.Elements.Add(new PeriodPickerUI()
+            {
+                Label = "Selecione o período",
+                Id = "dataPicker",
+                Name = "dataPicker",
+                Class = "col s12 m6 l6",
+                Selectable = true
+            });
+
             configCnab.Elements.Add(new ButtonUI
             {
                 Id = "btnListarContas",
@@ -116,7 +125,7 @@ namespace Fly01.Financeiro.Controllers
                 Value = "Listar contas",
                 DomEvents = new List<DomEventUI>() {
                     new DomEventUI() { DomEvent = "click", Function = "fnShowListCnab" }
-                }
+    }
             });
             cfg.Content.Add(configCnab);
 
@@ -131,7 +140,9 @@ namespace Fly01.Financeiro.Controllers
                 Functions = new List<string>() { "fnRenderEnum" },
                 Parameters = new List<DataTableUIParameter>
                 {
-                    new DataTableUIParameter { Id = "pessoaId", Required = true, Value = "PessoaId" }
+                    new DataTableUIParameter { Id = "pessoaId", Required = true, Value = "PessoaId" },
+                    new DataTableUIParameter { Id = "dataPickerFim", Value = "DataPickerFim" },
+                    new DataTableUIParameter { Id = "dataPickerInicio", Value = "DataPickerInicio" }
                 }
             };
 
@@ -305,7 +316,7 @@ namespace Fly01.Financeiro.Controllers
                 ReadyFn = "fnFormReadyModal"
             };
 
-            config.Elements.Add(new InputHiddenUI { Id = "ids" , Value = ids });
+            config.Elements.Add(new InputHiddenUI { Id = "ids", Value = ids });
             config.Elements.Add(new InputHiddenUI { Id = "idContaReceber", Value = contaReceberId });
             config.Elements.Add(new InputHiddenUI { Id = "idContaBancaria", Value = contaBancariaId });
             config.Elements.Add(new InputTextUI { Id = "email", Class = "col s12 l12", Label = "E-mail", Value = email, Required = true, MaxLength = 50 });

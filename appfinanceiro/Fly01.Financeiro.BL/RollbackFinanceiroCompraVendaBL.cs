@@ -4,6 +4,7 @@ using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Notifications;
 using System.Linq;
 using System;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Financeiro.BL
 {
@@ -11,12 +12,45 @@ namespace Fly01.Financeiro.BL
     {
         protected ContaReceberBL ContaReceberBL;
         protected ContaPagarBL ContaPagarBL;
-        
-        public RollbackFinanceiroCompraVendaBL(AppDataContext context, ContaReceberBL contaReceberBL, ContaPagarBL contaPagarBL) : base(context)
+        protected RenegociacaoContaFinanceiraOrigemBL RenegociacaoContaFinanceiraOrigemBL;
+        protected ContaFinanceiraRenegociacaoBL ContaFinanceiraRenegociacaoBL;
+        protected RenegociacaoContaFinanceiraRenegociadaBL RenegociacaoContaFinanceiraRenegociadaBL;
+
+        public RollbackFinanceiroCompraVendaBL(AppDataContext context, ContaReceberBL contaReceberBL, ContaPagarBL contaPagarBL, RenegociacaoContaFinanceiraOrigemBL renegociacaoContaFinanceiraOrigemBL, ContaFinanceiraRenegociacaoBL contaFinanceiraRenegociacaoBL) : base(context)
         {
             ContaReceberBL = contaReceberBL;
             ContaPagarBL = contaPagarBL;
+            RenegociacaoContaFinanceiraOrigemBL = renegociacaoContaFinanceiraOrigemBL;
+            ContaFinanceiraRenegociacaoBL = contaFinanceiraRenegociacaoBL;
             MustConsumeMessageServiceBus = true;
+        }
+
+        private void DeleteRenegociadasRecursivo(Guid contaFinanceiraId)
+        {
+            var renegociacaoId = RenegociacaoContaFinanceiraOrigemBL.All.Where(x => x.ContaFinanceiraId == contaFinanceiraId)?.FirstOrDefault()?.ContaFinanceiraRenegociacaoId;
+            var renegociacao = ContaFinanceiraRenegociacaoBL.All.Where(x => x.Id == renegociacaoId)?.FirstOrDefault();
+
+            var recordsIds = (from c in RenegociacaoContaFinanceiraRenegociadaBL.AllIncluding(x => x.ContaFinanceira)
+                              where c.ContaFinanceiraRenegociacaoId == renegociacaoId
+                              select new
+                              {
+                                  c.ContaFinanceiraId,
+                                  c.ContaFinanceira.TipoContaFinanceira
+                              }).ToList();
+
+            //Recursividade de uma possivel renegociação de renegociação...
+            foreach (var item in recordsIds)
+            {
+                DeleteRenegociadasRecursivo(item.ContaFinanceiraId);
+                if(item.TipoContaFinanceira == TipoContaFinanceira.ContaPagar)
+                {
+                    ContaPagarBL.Delete(item.ContaFinanceiraId);
+                }
+                else
+                {
+                    ContaReceberBL.Delete(item.ContaFinanceiraId);
+                }
+            }
         }
 
         public override void Insert(RollbackFinanceiroCompraVenda entity)
@@ -41,6 +75,7 @@ namespace Fly01.Financeiro.BL
 
             foreach (var contaPagar in contasPagar)
             {
+                DeleteRenegociadasRecursivo(contaPagar.Id);
                 ContaPagarBL.Delete(contaPagar);
             }
 
@@ -60,6 +95,7 @@ namespace Fly01.Financeiro.BL
 
             foreach (var contaReceber in contasReceber)
             {
+                DeleteRenegociadasRecursivo(contaReceber.Id);
                 ContaReceberBL.Delete(contaReceber);
             }
         }

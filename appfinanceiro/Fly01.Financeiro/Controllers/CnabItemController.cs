@@ -51,7 +51,7 @@ namespace Fly01.Estoque.Controllers
                     }
                 };
 
-                if ((dataPickerInicio != null && dataPickerInicio != "undefined") && (dataPickerFim != null && dataPickerFim != "undefined"))
+                if (!string.IsNullOrEmpty(dataPickerInicio) && !string.IsNullOrEmpty(dataPickerFim))
                 {
                     filters = new Dictionary<string, string>()
                     {

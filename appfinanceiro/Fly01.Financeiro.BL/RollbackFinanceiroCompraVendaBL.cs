@@ -25,38 +25,32 @@ namespace Fly01.Financeiro.BL
             MustConsumeMessageServiceBus = true;
         }
 
-        private void DeleteRenegociadasRecursivo(Guid contaFinanceiraId)
+        public override void Insert(RollbackFinanceiroCompraVenda entity)
         {
-            var renegociacaoId = RenegociacaoContaFinanceiraOrigemBL.All.Where(x => x.ContaFinanceiraId == contaFinanceiraId)?.FirstOrDefault()?.ContaFinanceiraRenegociacaoId;
-            var renegociacao = ContaFinanceiraRenegociacaoBL.All.Where(x => x.Id == renegociacaoId)?.FirstOrDefault();
-
-            var recordsIds = (from c in RenegociacaoContaFinanceiraRenegociadaBL.AllIncluding(x => x.ContaFinanceira)
-                              where c.ContaFinanceiraRenegociacaoId == renegociacaoId
-                              select new
-                              {
-                                  c.ContaFinanceiraId,
-                                  c.ContaFinanceira.TipoContaFinanceira
-                              }).ToList();
-
-            //Recursividade de uma possivel renegociação de renegociação...
-            foreach (var item in recordsIds)
+            foreach (var contaPagar in GetContasPagar(entity))
             {
-                DeleteRenegociadasRecursivo(item.ContaFinanceiraId);
-                if(item.TipoContaFinanceira == TipoContaFinanceira.ContaPagar)
-                {
-                    ContaPagarBL.Delete(item.ContaFinanceiraId);
-                }
-                else
-                {
-                    ContaReceberBL.Delete(item.ContaFinanceiraId);
-                }
+                ContaPagarBL.Delete(contaPagar);
+            }            
+
+            foreach (var contaReceber in GetContasReceber(entity))
+            {                
+                ContaReceberBL.Delete(contaReceber);
             }
         }
 
-        public override void Insert(RollbackFinanceiroCompraVenda entity)
+        public bool VerificaContasRenegociadas(RollbackFinanceiroCompraVenda entity)
+        {
+            var contasPagar = GetContasPagar(entity);
+            var contasReceber = GetContasPagar(entity);
+
+            return (contasPagar != null && contasPagar.Any(x => x.StatusContaBancaria == StatusContaBancaria.Renegociado)) ||
+            (contasReceber != null && contasReceber.Any(x => x.StatusContaBancaria == StatusContaBancaria.Renegociado));
+        }
+
+        public IQueryable<ContaPagar> GetContasPagar(RollbackFinanceiroCompraVenda entity)
         {
             var observacaoPedido = $"venda nº {entity.NumeroPedido}";
-            var contasPagar =
+            return
             ContaPagarBL.All.Where(x =>
                 x.Id == (entity.ContaFinanceiraParcelaPaiIdProdutos.HasValue ? entity.ContaFinanceiraParcelaPaiIdProdutos.Value : default(Guid))
             ).Union(
@@ -72,14 +66,11 @@ namespace Fly01.Financeiro.BL
             ContaPagarBL.All.Where(x =>
                 x.Observacao.Contains(observacaoPedido) && x.PessoaId == (entity.TransportadoraId.HasValue ? entity.TransportadoraId.Value : default(Guid))
             )));
+        }
 
-            foreach (var contaPagar in contasPagar)
-            {
-                DeleteRenegociadasRecursivo(contaPagar.Id);
-                ContaPagarBL.Delete(contaPagar);
-            }
-
-            var contasReceber =
+        public IQueryable<ContaReceber> GetContasReceber(RollbackFinanceiroCompraVenda entity)
+        {
+            return
             ContaReceberBL.All.Where(x =>
                 x.Id == (entity.ContaFinanceiraParcelaPaiIdProdutos.HasValue ? entity.ContaFinanceiraParcelaPaiIdProdutos.Value : default(Guid))
             ).Union(
@@ -91,13 +82,7 @@ namespace Fly01.Financeiro.BL
             )).Union(
             ContaReceberBL.All.Where(x =>
                 x.ContaFinanceiraParcelaPaiId == (entity.ContaFinanceiraParcelaPaiIdServicos.HasValue ? entity.ContaFinanceiraParcelaPaiIdServicos.Value : default(Guid))
-            )); 
-
-            foreach (var contaReceber in contasReceber)
-            {
-                DeleteRenegociadasRecursivo(contaReceber.Id);
-                ContaReceberBL.Delete(contaReceber);
-            }
+            ));
         }
 
         public override void Update(RollbackFinanceiroCompraVenda entity)

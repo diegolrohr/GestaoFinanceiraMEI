@@ -26,7 +26,7 @@ namespace Fly01.Faturamento.Controllers
             {
                new InputCheckboxUI { Id = "cliente", Class = "col s12 l3", Label = "É Cliente" },
                new InputCheckboxUI { Id = "transportadora", Class = "col s12 l3", Label = "É Transportadora" },
-               new InputCheckboxUI { Id = "vendedor", Class = "col s12 l3", Label = "É Vendedor" },
+               new InputCheckboxUI { Id = "vendedor", Class = "col s12 l3", Label = "É Vendedor/Resp. Técnico" },
                new InputCheckboxUI { Id = "consumidorFinal", Class = "col s12 l3", Label = "É Consumidor Final" }
            };
         }

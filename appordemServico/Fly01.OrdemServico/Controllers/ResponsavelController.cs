@@ -14,7 +14,7 @@ namespace Fly01.OrdemServico.Controllers
     public class ResponsavelController : PessoaBaseController<PessoaVM>
     {
         protected override string ResourceTitle => "Responsável";
-        protected override string LabelTitle => "Responsáveis";
+        protected override string LabelTitle => "Responsáveis Técnicos";
         protected override string Filter => "vendedor eq true";
 
         protected override void NormarlizarEntidade(ref PessoaVM entityVM)

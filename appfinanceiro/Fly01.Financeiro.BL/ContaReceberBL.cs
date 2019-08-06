@@ -220,9 +220,9 @@ namespace Fly01.Financeiro.BL
         public List<ContaFinanceiraPorStatusVM> GetSaldoStatus(DateTime dataFinal, DateTime dataInicial)
         {
             List<ContaFinanceiraPorStatusVM> listaResult = new List<ContaFinanceiraPorStatusVM>();
-            int QtdTotal = All.AsNoTracking().Where(x => x.DataEmissao >= dataInicial && x.DataEmissao <= dataFinal).Count();
+            int QtdTotal = All.AsNoTracking().Where(x => x.DataVencimento >= dataInicial && x.DataVencimento <= dataFinal).Count();
 
-            var result = All.AsNoTracking().Where(x => x.DataEmissao >= dataInicial && x.DataEmissao <= dataFinal)
+            var result = All.AsNoTracking().Where(x => x.DataVencimento >= dataInicial && x.DataVencimento <= dataFinal)
                                             .Select(x => new { x.ValorPrevisto, x.StatusContaBancaria, x.ValorPago })
                                             .GroupBy(x => new { x.StatusContaBancaria })
                                             .Select(x => new
@@ -250,7 +250,7 @@ namespace Fly01.Financeiro.BL
                             ? x.valorTotal + (double)valorPago
                             : x.valorTotal
                 });
-            });
+            }); 
 
             if (!result.Where(x => x.StatusContaBancaria == StatusContaBancaria.EmAberto).Any() && result != null)
             {

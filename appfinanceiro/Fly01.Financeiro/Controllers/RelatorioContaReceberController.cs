@@ -18,7 +18,7 @@ namespace Fly01.Financeiro.Controllers
             return RelatorioJson;
         }
 
-        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns(string ResourceName = "")
         {
             throw new System.NotImplementedException();
         }

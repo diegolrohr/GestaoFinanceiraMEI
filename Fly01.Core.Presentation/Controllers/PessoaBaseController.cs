@@ -413,7 +413,7 @@ namespace Fly01.Core.Presentation.Controllers
         protected virtual List<InputCheckboxUI> GetCheckBboxes() 
             => null;
 
-        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns(string ResourceName = "")
         {
             throw new NotImplementedException();
         }

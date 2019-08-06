@@ -237,7 +237,7 @@ namespace Fly01.Financeiro.Controllers
 
         public override Func<DemonstrativoResultadoExercicioVM, object> GetDisplayData() { throw new NotImplementedException(); }
 
-        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns(string ResourceName = "")
         {
             throw new NotImplementedException();
         }

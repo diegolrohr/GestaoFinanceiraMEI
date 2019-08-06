@@ -38,18 +38,21 @@ namespace Fly01.Financeiro.Controllers.Base
         /// </summary>
         /// <returns></returns>
         [OperationRole(NotApply = true)]
-        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns(string ResourceName = "")
         {
+
+            var namePessoa = ResourceName == "ContaPagar" ? "Fornecedor" : "Cliente";
+
             return new List<JQueryDataTableParamsColumn>()
             {
+                new JQueryDataTableParamsColumn { Name = "Status", Data = "statusContaBancariaNomeCompleto"},
                 new JQueryDataTableParamsColumn { Name = "Saldo", Data = "saldo"},
                 new JQueryDataTableParamsColumn { Name = "Data Emissao", Data = "dataEmissao"},
                 new JQueryDataTableParamsColumn { Name = "Numero", Data = "numero"},
                 new JQueryDataTableParamsColumn { Name = "Descricao", Data = "descricao"},
-                new JQueryDataTableParamsColumn { Name = "Fornecedor", Data = "pessoa_nome"},
+                new JQueryDataTableParamsColumn { Name = namePessoa.ToString() , Data = "pessoa_nome"},
                 new JQueryDataTableParamsColumn { Name = "Forma Pagamento", Data = "formaPagamento_descricao"},
                 new JQueryDataTableParamsColumn { Name = "Valor", Data = "valorPago"},
-                new JQueryDataTableParamsColumn { Name = "Emissao", Data = "dataEmissao"},
                 new JQueryDataTableParamsColumn { Name = "Vencimento", Data = "dataVencimento"},
                 new JQueryDataTableParamsColumn { Name = "Categoria Financeira", Data = "categoria_descricao"},
                 new JQueryDataTableParamsColumn { Name = "Condicao Parcelamento", Data = "condicaoParcelamento_descricao"},

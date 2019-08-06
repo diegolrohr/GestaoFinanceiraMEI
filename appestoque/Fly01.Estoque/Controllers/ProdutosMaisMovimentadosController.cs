@@ -40,7 +40,7 @@ namespace Fly01.Estoque.Controllers
         public override ContentResult List() { throw new NotImplementedException(); }
         protected override ContentUI FormJson() { throw new NotImplementedException(); }
 
-        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns(string ResourceName = "")
         {
             throw new NotImplementedException();
         }

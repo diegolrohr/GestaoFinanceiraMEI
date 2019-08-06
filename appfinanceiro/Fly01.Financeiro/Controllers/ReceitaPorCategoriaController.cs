@@ -69,7 +69,7 @@ namespace Fly01.Financeiro.Controllers
 
         protected override ContentUI FormJson() { throw new NotImplementedException(); }
 
-        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns(string ResourceName = "")
         {
             throw new NotImplementedException();
         }

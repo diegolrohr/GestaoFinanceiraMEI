@@ -10,6 +10,9 @@ using Fly01.Core.Notifications;
 using Fly01.Core.ServiceBus;
 using Fly01.Core.Helpers.Attribute;
 using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.Core.Rest;
+using Newtonsoft.Json.Linq;
+using Fly01.Core;
 
 namespace Fly01.Faturamento.BL
 {
@@ -637,7 +640,6 @@ namespace Fly01.Faturamento.BL
         private void ReabrirPedido(OrdemVenda entity)
         {
             var notasVinculadas = VerificaNotasFiscaisVinculadas(entity.Id);
-            
             entity.Fail(notasVinculadas, new Error("Só é possível reabrir pedidos que possuam NF-e/NFS-e com status Não Autorizada, Não Transmitida ou Falha na Transmissão"));
 
             if (
@@ -649,6 +651,17 @@ namespace Fly01.Faturamento.BL
             }
         }
 
+        private bool VerificaContasRenegociadas(OrdemVenda entity)
+        {
+            var header = new Dictionary<string, string>()
+            {
+                { "PlataformaUrl", PlataformaUrl },
+                { "AppUser", AppUser }
+            };
+            var response  = RestHelper.ExecutePostRequest<JObject>(AppDefaults.UrlFinanceiroApi, "certificado", RollbackFinanceiroCompraVenda(entity), null, header);
+            return response.Value<bool>("value");            
+        }
+        
         public override void Delete(OrdemVenda entityToDelete)
         {
             entityToDelete.Fail(entityToDelete.Status != Status.Aberto, new Error("Somente venda em aberto pode ser deletada", "status"));
@@ -710,17 +723,21 @@ namespace Fly01.Faturamento.BL
 
             if(entity.GeraFinanceiro)
             {
-                var financeiro = new RollbackFinanceiroCompraVenda
-                {
-                    ContaFinanceiraParcelaPaiIdProdutos = entity?.ContaFinanceiraParcelaPaiIdProdutos,
-                    ContaFinanceiraParcelaPaiIdServicos = entity?.ContaFinanceiraParcelaPaiIdServicos,
-                    TransportadoraId = entity?.TransportadoraId,
-                    NumeroPedido = entity.Numero
-                };
-               Producer<RollbackFinanceiroCompraVenda>.Send("RollbackFinanceiroCompraVenda", AppUser, PlataformaUrl, financeiro, RabbitConfig.EnHttpVerb.POST);
+               Producer<RollbackFinanceiroCompraVenda>.Send("RollbackFinanceiroCompraVenda", AppUser, PlataformaUrl, RollbackFinanceiroCompraVenda(entity), RabbitConfig.EnHttpVerb.POST);
                 entity.ContaFinanceiraParcelaPaiIdProdutos = default(Guid);
                 entity.ContaFinanceiraParcelaPaiIdServicos = default(Guid);
             }
+        }
+
+        private RollbackFinanceiroCompraVenda RollbackFinanceiroCompraVenda(OrdemVenda entity)
+        {
+            return new RollbackFinanceiroCompraVenda
+            {
+                ContaFinanceiraParcelaPaiIdProdutos = entity?.ContaFinanceiraParcelaPaiIdProdutos,
+                ContaFinanceiraParcelaPaiIdServicos = entity?.ContaFinanceiraParcelaPaiIdServicos,
+                TransportadoraId = entity?.TransportadoraId,
+                NumeroPedido = entity.Numero
+            };
         }
 
         private bool VerificaNotasFiscaisVinculadas(Guid ordemVendaId)

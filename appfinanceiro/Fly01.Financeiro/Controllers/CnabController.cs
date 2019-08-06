@@ -103,7 +103,6 @@ namespace Fly01.Financeiro.Controllers
                 Id = "pessoaId",
                 Class = "col s12 m6 l6",
                 Label = "Cliente",
-                Required = true,
                 DataUrl = @Url.Action("Cliente", "AutoComplete"),
                 LabelId = "pessoaNome",
                 DataUrlPost = Url.Action("PostCliente", "Cliente")
@@ -140,7 +139,7 @@ namespace Fly01.Financeiro.Controllers
                 Functions = new List<string>() { "fnRenderEnum" },
                 Parameters = new List<DataTableUIParameter>
                 {
-                    new DataTableUIParameter { Id = "pessoaId", Required = true, Value = "PessoaId" },
+                    new DataTableUIParameter { Id = "pessoaId", Value = "PessoaId" },
                     new DataTableUIParameter { Id = "dataPickerFim", Value = "DataPickerFim" },
                     new DataTableUIParameter { Id = "dataPickerInicio", Value = "DataPickerInicio" }
                 }

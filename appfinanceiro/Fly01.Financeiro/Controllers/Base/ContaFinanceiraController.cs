@@ -40,7 +40,9 @@ namespace Fly01.Financeiro.Controllers.Base
         [OperationRole(NotApply = true)]
         protected override List<JQueryDataTableParamsColumn> GetParamsColumns(string ResourceName = "")
         {
+
             var namePessoa = ResourceName == "ContaPagar" ? "Fornecedor" : "Cliente";
+
             return new List<JQueryDataTableParamsColumn>()
             {
                 new JQueryDataTableParamsColumn { Name = "Status", Data = "statusContaBancariaNomeCompleto"},

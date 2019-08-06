@@ -96,7 +96,7 @@ namespace Fly01.OrdemServico.Controllers
         {
             return new List<InputCheckboxUI>
             {
-               new InputCheckboxUI { Id = "vendedor", Class = "col s12 l3", Label = "É Responsável" },
+               new InputCheckboxUI { Id = "vendedor", Class = "col s12 l3", Label = "É Vendedor/Resp. Técnico" },
            };
         }
     }

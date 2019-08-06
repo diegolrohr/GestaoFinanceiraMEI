@@ -43,7 +43,6 @@ namespace Fly01.Financeiro.Controllers.Base
             var namePessoa = ResourceName == "ContaPagar" ? "Fornecedor" : "Cliente";
             return new List<JQueryDataTableParamsColumn>()
             {
-
                 new JQueryDataTableParamsColumn { Name = "Status", Data = "statusContaBancariaNomeCompleto"},
                 new JQueryDataTableParamsColumn { Name = "Saldo", Data = "saldo"},
                 new JQueryDataTableParamsColumn { Name = "Data Emissao", Data = "dataEmissao"},

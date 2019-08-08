@@ -8,6 +8,5 @@ namespace Fly01.Core.Entities.Domains.Commons
         public Guid? ContaFinanceiraParcelaPaiIdServicos { get; set; }
         public Guid? TransportadoraId { get; set; }
         public int NumeroPedido { get; set; }
-
     }
 }

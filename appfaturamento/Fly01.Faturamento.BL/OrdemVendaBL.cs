@@ -640,10 +640,13 @@ namespace Fly01.Faturamento.BL
         private void ReabrirPedido(OrdemVenda entity)
         {
             var notasVinculadas = VerificaNotasFiscaisVinculadas(entity.Id);
+            var contasRenegociadas = VerificaContasRenegociadas(entity);
             entity.Fail(notasVinculadas, new Error("Só é possível reabrir pedidos que possuam NF-e/NFS-e com status Não Autorizada, Não Transmitida ou Falha na Transmissão"));
+            entity.Fail(contasRenegociadas, new Error("Só é possível reabrir pedidos que não possuam contas financeiras renegociadas"));
 
             if (
                 (!notasVinculadas) &&
+                (!contasRenegociadas) &&
                 (entity.MovimentaEstoque || (entity.GeraFinanceiro || entity.GeraNotaFiscal)
                ))
             {
@@ -653,13 +656,20 @@ namespace Fly01.Faturamento.BL
 
         private bool VerificaContasRenegociadas(OrdemVenda entity)
         {
-            var header = new Dictionary<string, string>()
+            try
             {
-                { "PlataformaUrl", PlataformaUrl },
-                { "AppUser", AppUser }
-            };
-            var response  = RestHelper.ExecutePostRequest<JObject>(AppDefaults.UrlFinanceiroApi, "certificado", RollbackFinanceiroCompraVenda(entity), null, header);
-            return response.Value<bool>("value");            
+                var header = new Dictionary<string, string>()
+                {
+                    { "PlataformaUrl", PlataformaUrl },
+                    { "AppUser", AppUser }
+                };
+                var response = RestHelper.ExecutePostRequest<JObject>(AppDefaults.UrlFinanceiroApi, "verificaRenegociacaoPedidoCompraVenda", RollbackFinanceiroCompraVenda(entity), null, header);
+                return response.Value<bool>("value");
+            }
+            catch(Exception ex)
+            {
+                return true;
+            }
         }
         
         public override void Delete(OrdemVenda entityToDelete)
@@ -1042,9 +1052,7 @@ namespace Fly01.Faturamento.BL
 
             return result;
         }
-
-
-
+        
         public void UtilizarKitOrdemVenda(UtilizarKitVM entity)
         {
             try

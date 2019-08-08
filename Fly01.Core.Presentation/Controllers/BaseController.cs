@@ -1044,16 +1044,16 @@ namespace Fly01.Core.Presentation
             Response.End();
         }
 
-        protected abstract List<JQueryDataTableParamsColumn> GetParamsColumns();
+        protected abstract List<JQueryDataTableParamsColumn> GetParamsColumns(string ResourceName = "");
 
-        private List<JQueryDataTableParamsColumn> ParamsColumns(JQueryDataTableParams param, string fileType = "")
+        private List<JQueryDataTableParamsColumn> ParamsColumns(JQueryDataTableParams param, string fileType = "", string ResourceName = "")
         {
 
             if (fileType == "csv" || fileType == "xls")
             {
                 try
                 {
-                    return GetParamsColumns();
+                    return GetParamsColumns(ResourceName);
                 }
                 catch { return param.Columns; }
             }
@@ -1069,7 +1069,7 @@ namespace Fly01.Core.Presentation
             var data = responseGrid.Data.Select(GetDisplayData()).ToList();
             Type o = data.FirstOrDefault().GetType();
 
-            ParamsColumns(param, fileType).ForEach(x =>
+            ParamsColumns(param, fileType, ResourceName).ForEach(x =>
             {
                 if (!string.IsNullOrWhiteSpace(x.Name))
                     dt.Columns.Add(x.Name);
@@ -1078,7 +1078,7 @@ namespace Fly01.Core.Presentation
             data.ForEach(x =>
             {
                 DataRow dtr = dt.NewRow();
-                ParamsColumns(param, fileType).ForEach(y =>
+                ParamsColumns(param, fileType, ResourceName).ForEach(y =>
                 {
                     if (!string.IsNullOrWhiteSpace(y.Name))
                         dtr[y.Name] = o.GetProperty(y.Data.Replace("/", "_")).GetValue(x, null);

@@ -44,7 +44,7 @@ namespace Fly01.Compras.Controllers
             return GridLoad(filters);
         }
 
-        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns(string ResourceName = "")
         {
             throw new NotImplementedException();
         }

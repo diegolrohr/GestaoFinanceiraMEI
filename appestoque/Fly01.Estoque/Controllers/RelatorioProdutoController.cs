@@ -206,7 +206,7 @@ namespace Fly01.Estoque.Controllers
             return File(reportViewer.Print(response.Data, SessionManager.Current.UserData.PlatformUrl), "application/pdf");        
         }
 
-        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns(string ResourceName = "")
         {
             throw new NotImplementedException();
         }

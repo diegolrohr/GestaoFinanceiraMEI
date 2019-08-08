@@ -45,7 +45,7 @@ namespace Fly01.Estoque.Controllers
             return GridLoad(filters);
         }
 
-        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns(string ResourceName = "")
         {
             throw new NotImplementedException();
         }

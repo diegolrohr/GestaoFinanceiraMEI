@@ -239,7 +239,7 @@ namespace Fly01.Core.Presentation.Controllers
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
         }
 
-        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns(string ResourceName = "")
         {
             throw new NotImplementedException();
         }

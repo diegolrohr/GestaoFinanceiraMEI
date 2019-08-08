@@ -2,11 +2,17 @@
     @Html.Partial("Functions/_fnMain");
 
     function fnShowListCnab() {
-        if ($('#pessoaId').val().length != "" && $('#bancoNome').val().length != "") {
-            $('#dtCnabItem').show();
-            $$$._.dtCnabItem.selected = [];
-            $$$._.dtCnabItem.refresh();
-            $('#save').removeAttr('disabled');
+        if ($('#bancoNome').val().length != "") {
+            if ($('#pessoaId').val().length != "" || $('#dataPicker').val().length != "") {
+                $('#dtCnabItem').show();
+                $('#dtCnabItem_wrapper').show()
+                $$$._.dtCnabItem.selected = [];
+                $$$._.dtCnabItem.refresh();
+                $('#save').removeAttr('disabled');
+            }
+            else {
+                $$$.toast("Informe um Cliente ou Período!", "error");
+            }
         }
     };
 </script>

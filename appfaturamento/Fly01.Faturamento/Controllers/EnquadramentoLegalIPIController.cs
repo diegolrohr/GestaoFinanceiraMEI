@@ -17,7 +17,7 @@ namespace Fly01.Faturamento.Controllers
 
         public override ContentResult List() { throw new NotImplementedException(); }
 
-        protected override List<JQueryDataTableParamsColumn> GetParamsColumns()
+        protected override List<JQueryDataTableParamsColumn> GetParamsColumns(string ResourceName = "")
         {
             throw new NotImplementedException();
         }

@@ -35,20 +35,52 @@ namespace Fly01.Estoque.Controllers
                 descricaoParcela = string.IsNullOrEmpty(x.DescricaoParcela) ? "" : x.DescricaoParcela,
                 nossoNumero = x.Numero,
                 valorPago = x.ValorPago,
-                email = x.Pessoa?.Email
+                email = x.Pessoa?.Email,
+                //dataEmissao = x.DataEmissao
             };
         }
 
-        public JsonResult GridLoadContaCnabItem(string pessoaId)
+        public JsonResult GridLoadContaCnabItem(string pessoaId, string dataPickerInicio, string dataPickerFim)
         {
             try
             {
-                var filters = new Dictionary<string, string>()
+
+                var filters = new Dictionary<string, string>();
+
+                if (!string.IsNullOrEmpty(pessoaId))
                 {
+                    
+
+                    if (!string.IsNullOrEmpty(dataPickerInicio) && !string.IsNullOrEmpty(dataPickerFim) && !string.IsNullOrEmpty(pessoaId))
                     {
-                        "pessoaId", $" eq {pessoaId} and ativo and (statusContaBancaria ne {AppDefaults.APIEnumResourceName}StatusContaBancaria'Pago')"
+                        filters = new Dictionary<string, string>()
+                        {
+                            {
+                                "pessoaId", $" eq {pessoaId} and ativo and (statusContaBancaria ne {AppDefaults.APIEnumResourceName}StatusContaBancaria'Pago')"
+                            },
+                            {
+                                " and dataEmissao le ", dataPickerFim
+                            },
+                            {
+                                " and dataEmissao ge ", dataPickerInicio
+                            },
+                        };
                     }
-                };
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(dataPickerInicio) && !string.IsNullOrEmpty(dataPickerFim))
+                    {
+                        filters = new Dictionary<string, string>()
+                        {
+                            {
+                                "dataEmissao", $" le {dataPickerFim} and dataEmissao ge {dataPickerInicio} and ativo and (statusContaBancaria ne {AppDefaults.APIEnumResourceName}StatusContaBancaria'Pago')"
+                            }
+                        };
+                    }
+                }
+
+
 
                 return base.GridLoad(filters);
             }

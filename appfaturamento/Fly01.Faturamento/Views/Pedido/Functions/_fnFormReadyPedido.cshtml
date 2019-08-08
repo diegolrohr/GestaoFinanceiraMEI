@@ -202,6 +202,7 @@
             $('input#numero').removeAttr('disabled');
             $('input#chaveNFeReferenciada').removeAttr('disabled');
             $('select#tipoNfeComplementar').removeAttr('disabled');
+            $('input#nFeRefComplementarIsDevolucao').removeAttr('disabled');
             $('select#tipoNfeComplementar').material_select();
 
             var jsonData = $(this).serializeObject();
@@ -212,6 +213,7 @@
             $('input#numero').attr('disabled', 'disabled');
             $('input#orcamentoOrigemNumero').attr('disabled', 'disabled');
             $('select#tipoNfeComplementar').attr('disabled', 'disabled');
+            $('input#nFeRefComplementarIsDevolucao').attr('disabled', 'disabled');
             $('select#tipoNfeComplementar').material_select();
             $$$.fn.updateTextFields();
 

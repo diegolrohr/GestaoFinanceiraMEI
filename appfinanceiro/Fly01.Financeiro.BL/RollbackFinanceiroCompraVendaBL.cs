@@ -41,7 +41,7 @@ namespace Fly01.Financeiro.BL
         public bool VerificaContasRenegociadas(RollbackFinanceiroCompraVenda entity)
         {
             var contasPagar = GetContasPagar(entity);
-            var contasReceber = GetContasPagar(entity);
+            var contasReceber = GetContasReceber(entity);
 
             return (contasPagar != null && contasPagar.Any(x => x.StatusContaBancaria == StatusContaBancaria.Renegociado)) ||
             (contasReceber != null && contasReceber.Any(x => x.StatusContaBancaria == StatusContaBancaria.Renegociado));

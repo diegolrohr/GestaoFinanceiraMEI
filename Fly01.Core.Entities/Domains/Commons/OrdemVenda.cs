@@ -122,6 +122,8 @@ namespace Fly01.Core.Entities.Domains.Commons
         [StringLength(60)]
         public string LocalDespacho { get; set; }
 
+        public DateTime? DataReabertura { get; set; }
+
         public virtual Pessoa Cliente { get; set; }
 
         public virtual GrupoTributario GrupoTributarioPadrao { get; set; }
@@ -139,6 +141,7 @@ namespace Fly01.Core.Entities.Domains.Commons
         public virtual CentroCusto CentroCusto { get; set; }
 
         public virtual Estado UFSaidaPais { get; set; }
+
 
     }
 }

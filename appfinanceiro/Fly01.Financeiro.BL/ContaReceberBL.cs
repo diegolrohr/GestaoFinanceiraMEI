@@ -74,10 +74,11 @@ namespace Fly01.Financeiro.BL
 
         private void GravaParcelamentoRepeticoes(ContaReceber entity, bool repetir, List<CondicaoParcelamentoParcela> condicoesParcelamento, Guid contaFinanceiraPrincipal)
         {
-            //numero = All.Max(x => x.Numero) + 1;
+
             rpc = new RpcClient();
             var numero = default(int);
             numero = int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaReceber},add={condicoesParcelamento.Count}"));
+            //numero = All.Max(x => x.Numero) + 1;
             numero -= condicoesParcelamento.Count;
 
             for (int iParcela = 0; iParcela < condicoesParcelamento.Count; iParcela++)
@@ -127,6 +128,7 @@ namespace Fly01.Financeiro.BL
         {
             rpc = new RpcClient();
             var numero = default(int);
+            //numero = All.Max(x => x.Numero) + 1;
             numero = int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaReceber},add={entity.NumeroRepeticoes ?? 1}"));
             numero -= entity.NumeroRepeticoes ?? numero;
 

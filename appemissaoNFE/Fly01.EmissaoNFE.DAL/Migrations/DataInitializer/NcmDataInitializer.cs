@@ -10112,6 +10112,7 @@ namespace Fly01.EmissaoNFE.DAL.Migrations.DataInitializer
                 context.Ncms.AddOrUpdate(new Ncm() { Id = Guid.Parse("C439ACA0-FD17-4750-8805-FFFC2A644E72"), DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true, Codigo = "29215133", Descricao = "N", AliquotaIPI = 0 });
                 context.Ncms.AddOrUpdate(new Ncm() { Id = Guid.Parse("90E7E670-5594-4F5D-93A5-68A369C45A50"), DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true, Codigo = "94069090", Descricao = "MÓVEIS,MOBILIÁRIO MÉDICO-CIRÚRGICO,COLCHÕES,ALMOFADAS E SEMELHANTES,APARELHOS DE ILUMINAÇÃO NÃO ESPECIFIC.,ANÚNCIOS,CARTAZES E PLACAS INDICADORAS,LUMINOSOS E ART. SEMELHANTES,CONSTRU. PRÉ-FABRICADAS", AliquotaIPI = 0 });
                 context.Ncms.AddOrUpdate(new Ncm() { Id = Guid.Parse("6A75DDE4-7ACB-4BCB-9BF1-8B7935622A05"), DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true, Codigo = "85395000", Descricao = "LÂMPADAS E TUBOS DE DIODOS EMISSORES DE LUZ (LED)", AliquotaIPI = 0 });
+                context.Ncms.AddOrUpdate(new Ncm() { Id = Guid.Parse("6A7A3355-AC46-4FF6-A78B-BFB82D7391F8"), DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true, Codigo = "40118090", Descricao = "OUTROS PNEUMÁTICOS NOVOS DE BORRACHA DO TIPO UTILIZADO EM VEÍCULOS E MÁQUINAS PARA CONSTRUÇÃO CIVIL, DE MINERAÇÃO E DE MANUTENÇÃO INDUSTRIA", AliquotaIPI = 0 });
 
                 context.SaveChanges();
             }

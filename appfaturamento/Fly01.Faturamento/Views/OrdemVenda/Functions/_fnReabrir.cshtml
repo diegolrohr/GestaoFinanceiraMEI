@@ -1,18 +1,18 @@
 ﻿<script>
-    function fnFinalizarPedido(idRecord) {
-        $$$.confirm("Confirmar Finalização", "Deseja realmente finalizar este pedido? Se marcado, irá movimentar o estoque e gerar financeiro.", "fnFinalizarPedidoConfirmed(\"" + idRecord + "\")");
+    function fnReabrir(idRecord) {
+        $$$.confirm("Confirmar Reabertura do Pedido", "Deseja realmente reabrir este pedido? Se marcado, todas as movimentações de estoque serão desfeitas, contas financeiras e notas fiscais serão excluidas", "fnReabrirConfirmed(\"" + idRecord + "\")");
     }
-    function fnFinalizarPedidoConfirmed(idRecord) {
+    function fnReabrirConfirmed(idRecord) {
         $$$.loading.start();
         $.ajax({
             type: "POST",
-            url: "@Url.Action("FinalizarPedido", "Pedido")",
+            url: "@Url.Action("ReabrirPedido", "Pedido")",
             dataType: 'json',
-            data: { id: idRecord, faturar: false },
+            data: { id: idRecord },
             success: function (data) {
                 $$$.loading.stop();
                 if (data.success) {
-                    $$$.toast("Pedido finalizado com sucesso", "success");
+                    $$$.toast("Pedido Reaberto com sucesso", "success");
                     $$$._.fly01dt.refresh();
                 }
                 else {

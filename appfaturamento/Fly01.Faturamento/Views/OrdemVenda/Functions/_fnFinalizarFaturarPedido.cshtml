@@ -1,6 +1,7 @@
 ﻿<script>
     function fnFinalizarFaturarPedido(idRecord) {
-        $$$.confirm("Confirmar Faturamento", "Deseja realmente finalizar e faturar este pedido? Irá gerar as notas fiscais e se marcado, irá movimentar o estoque e gerar financeiro. Não será mais possível editar/excluir", "fnFinalizarFaturarPedidoConfirmed(\"" + idRecord + "\")");
+        $$$.confirm("Confirmar Faturamento", "Deseja realmente finalizar e faturar este pedido? Irá gerar as notas fiscais e se marcado, irá movimentar o estoque e gerar financeiro.", "fnFinalizarFaturarPedidoConfirmed(\"" + idRecord + "\")");
+
     }
     function fnFinalizarFaturarPedidoConfirmed(idRecord) {
         $$$.loading.start();

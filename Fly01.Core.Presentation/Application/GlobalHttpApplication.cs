@@ -137,6 +137,7 @@ namespace Fly01.Core.Presentation.Application
             if (!string.IsNullOrWhiteSpace(instrumentationKeyAppInsights))
                 TelemetryConfiguration.Active.InstrumentationKey = instrumentationKeyAppInsights;
 
+            AppDefaults.MPNUIVersion = ConfigurationManager.AppSettings["MPNUIVersion"];
             AppDefaults.MashupClientId = ConfigurationManager.AppSettings["MashupClientId"];
             AppDefaults.MashupPassword = ConfigurationManager.AppSettings["MashupPassword"];
             AppDefaults.MashupUser = ConfigurationManager.AppSettings["MashupUser"];

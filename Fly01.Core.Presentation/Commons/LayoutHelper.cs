@@ -5,9 +5,10 @@ namespace Fly01.Core.Presentation.Commons
 {
     public static class LayoutHelper
     {
-
-        //private static string cdnVersion = "0.1.8"; /*
-        private static string cdnVersion = "stage"; /* */
+        private static string cdnVersion =
+            (string.IsNullOrEmpty(AppDefaults.MPNUIVersion)
+            ? "0.1.9"
+            : AppDefaults.MPNUIVersion);
 
         private static string serverUrl = $"https://mpn.azureedge.net/lib"; /*
         private static string serverUrl = $"http://10.51.5.33:8000"; /* */

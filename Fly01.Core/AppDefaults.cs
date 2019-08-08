@@ -26,6 +26,8 @@ namespace Fly01.Core
 
         public const string SeparadorSubjectEmailMensageria = "#!#";
 
+        public static string MPNUIVersion { get; set; }
+
         public static string MashupClientId { get; set; }
         public static string MashupPassword { get; set; }
         public static string MashupUser { get; set; }

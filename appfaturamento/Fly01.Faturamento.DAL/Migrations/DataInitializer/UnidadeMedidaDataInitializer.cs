@@ -37,7 +37,8 @@ namespace Fly01.Faturamento.DAL.Migrations.DataInitializer
                     new UnidadeMedida { Id = Guid.Parse("11F91C21-05BB-45F7-A374-E266C59DF94E"), DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true, Abreviacao = "PC", Descricao = "PECA" },
                     new UnidadeMedida { Id = Guid.Parse("DF311088-0C0C-4117-9232-E64D30E295F9"), DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true, Abreviacao = "M3", Descricao = "METRO CUBICO" },
                     new UnidadeMedida { Id = Guid.Parse("C2DF1FD5-375D-4F6B-B110-E8EDA1B57F24"), DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true, Abreviacao = "MI", Descricao = "MILHEIRO" },
-                    new UnidadeMedida { Id = Guid.Parse("AF0DB71B-65E0-4D6F-9DFB-9D34E49CACB8"), DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true, Abreviacao = "PCT", Descricao = "PACOTE" }
+                    new UnidadeMedida { Id = Guid.Parse("AF0DB71B-65E0-4D6F-9DFB-9D34E49CACB8"), DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true, Abreviacao = "PCT", Descricao = "PACOTE" },
+                    new UnidadeMedida { Id = Guid.Parse("EB995D7F-FCC3-4EC7-81FF-12C042AA20C6"), DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true, Abreviacao = "CT", Descricao = "QUILATE" }
                 };
                 context.UnidadeMedidas.AddOrUpdate(x => x.Id, lista.ToArray());
 

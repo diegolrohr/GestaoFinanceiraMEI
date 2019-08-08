@@ -43,7 +43,16 @@ namespace Fly01.Financeiro.Controllers
             double total = 0;
             string valorTituloTotalFormatado = itemContaPagar.ValorPrevisto.ToString("C", AppDefaults.CultureInfoDefault);
             var managerEmpresaVM = GetDadosEmpresa();
-            total = itemContaPagar.ValorPago.Value;
+
+            if (itemContaPagar.StatusContaBancaria == StatusContaBancaria.Pago.ToString())
+            {
+                total = itemContaPagar.ValorPago.Value;
+            }
+            else
+            {
+                total = itemContaPagar.ValorPrevisto;
+            }
+
             string valorTituloFormatado = total.ToString("C", AppDefaults.CultureInfoDefault);
 
             StringBuilder assinatura = new StringBuilder();
@@ -55,7 +64,7 @@ namespace Fly01.Financeiro.Controllers
             {
                 Id = itemContaPagar.Id.ToString(),
                 //Conteudo = String.Format("Recebemos de {0} o pagamento de {1} ({2}) referente à:", branchVM.Name, valorTituloTotalFormatado, itemBankTransac.Value.toExtenso()),
-                Conteudo = String.Format("Recebemos de {0} o pagamento de {1} ({2}) referente à:", managerEmpresaVM.RazaoSocial, valorTituloTotalFormatado, itemContaPagar.ValorPago.Value.toExtenso()),
+                Conteudo = String.Format("Recebemos de {0} o pagamento de {1} ({2}) referente à:", managerEmpresaVM.RazaoSocial, valorTituloTotalFormatado, itemContaPagar.StatusContaBancaria == StatusContaBancaria.Pago.ToString() ? itemContaPagar.ValorPago.Value.toExtenso() : itemContaPagar.ValorPrevisto.toExtenso()),
                 DescricaoTitulo = !String.IsNullOrWhiteSpace(itemContaPagar.Descricao) ? itemContaPagar.Descricao : itemContaPagar.Categoria.Descricao,
                 ValorTitulo = valorTituloFormatado,
                 DataAtual = String.Format("{0}, {1} de {2} de {3}", managerEmpresaVM.Cidade != null ? managerEmpresaVM.Cidade.Nome : "", DateTime.Now.Day, AppDefaults.CultureInfoDefault.DateTimeFormat.GetMonthName(DateTime.Now.Month), DateTime.Now.Year),
@@ -66,7 +75,7 @@ namespace Fly01.Financeiro.Controllers
                 ValorDesconto = string.Format("(-) {0}", discount.ToString("C", AppDefaults.CultureInfoDefault)),
                 DescricaoTituloTotal = "TOTAL",
                 ValorTituloTotal = valorTituloTotalFormatado,
-                Observacao = itemContaPagar.Observacao,
+                Observacao = itemContaPagar.Observacao == null ? "" : itemContaPagar.Observacao,
                 Numero = itemContaPagar.Numero.ToString()
             };
 
@@ -289,7 +298,7 @@ namespace Fly01.Financeiro.Controllers
                 new DataTableUIAction { OnClickFn = "fnExcluirRecorrencias", Label = "Excluir", ShowIf = "(row.statusEnum == 'EmAberto' && (row.repeticaoPai == true || row.repeticaoFilha == true))" },
                 new DataTableUIAction { OnClickFn = "fnNovaBaixa", Label = "Nova baixa", ShowIf = "row.statusEnum == 'EmAberto' || row.statusEnum == 'BaixadoParcialmente'" },
                 new DataTableUIAction { OnClickFn = "fnCancelarBaixas", Label = "Cancelar baixas", ShowIf = "row.statusEnum == 'Pago' || row.statusEnum == 'BaixadoParcialmente'" },
-                new DataTableUIAction { OnClickFn = "fnImprimirRecibo", Label = "Emitir recibo", ShowIf = "row.statusEnum == 'Pago'" }
+                new DataTableUIAction { OnClickFn = "fnImprimirRecibo", Label = "Emitir recibo"/*, ShowIf = "row.statusEnum == 'Pago'"*/ }
             }));
 
             config.Columns.Add(new DataTableUIColumn

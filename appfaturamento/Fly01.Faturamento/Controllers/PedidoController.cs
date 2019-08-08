@@ -848,6 +848,30 @@ namespace Fly01.Faturamento.Controllers
 
             return RestHelper.ExecuteGetRequest<ResultBase<OrdemVendaServicoVM>>("OrdemVendaServico", queryString).Data;
         }
+
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
+        [HttpPost]
+        public JsonResult ReabrirPedido(Guid id)
+        {
+            try
+            {
+                dynamic Pedido = new
+                {
+                    status = "Aberto",
+                    dataReabertura = DateTime.Now                    
+                };
+
+                var resourceNamePut = $"{"OrdemVenda"}/{id}";
+                RestHelper.ExecutePutRequest(resourceNamePut, JsonConvert.SerializeObject(Pedido));
+
+                return JsonResponseStatus.GetSuccess("Pedido Reaberto com sucesso");
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
         #region OnDemmand
 
         public JsonResult PostCliente(string term)

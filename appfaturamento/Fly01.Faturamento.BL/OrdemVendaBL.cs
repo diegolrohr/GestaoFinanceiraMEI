@@ -10,6 +10,9 @@ using Fly01.Core.Notifications;
 using Fly01.Core.ServiceBus;
 using Fly01.Core.Helpers.Attribute;
 using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.Core.Rest;
+using Newtonsoft.Json.Linq;
+using Fly01.Core;
 
 namespace Fly01.Faturamento.BL
 {
@@ -597,11 +600,10 @@ namespace Fly01.Faturamento.BL
 
             ValidaModel(entity);
 
-            GeraIdContaFinanceiraRecuperarDadosParcela(entity);
-
             //se estava marcado, mas desabilitou depois via personalização, desmarcar
             if (entity.Status == Status.Finalizado)
             {
+                GeraIdContaFinanceiraRecuperarDadosParcela(entity);
                 entity.GeraNotaFiscal = entity.GeraNotaFiscal ? (entity.GeraNotaFiscal && emiteNotaFiscal) : false;
                 entity.MovimentaEstoque = entity.MovimentaEstoque ? (entity.MovimentaEstoque && exibirProdutos) : false;
                 entity.ValorFrete = exibirTransportadora ? entity.ValorFrete : 0.0;
@@ -610,6 +612,11 @@ namespace Fly01.Faturamento.BL
             if (entity.Status == Status.Finalizado && entity.TipoOrdemVenda == TipoOrdemVenda.Pedido && (entity.GeraNotaFiscal && emiteNotaFiscal) && entity.IsValid())
             {
                 GeraNotasFiscais(entity);
+            }
+
+            if (entity.Status == Status.Aberto && entity.DataReabertura.HasValue && previous.Status == Status.Finalizado && entity.TipoOrdemVenda == TipoOrdemVenda.Pedido)
+            {
+                ReabrirPedido(entity);
             }
 
             base.Update(entity);
@@ -630,6 +637,41 @@ namespace Fly01.Faturamento.BL
             }
         }
 
+        private void ReabrirPedido(OrdemVenda entity)
+        {
+            var notasVinculadas = VerificaNotasFiscaisVinculadas(entity.Id);
+            var contasRenegociadas = VerificaContasRenegociadas(entity);
+            entity.Fail(notasVinculadas, new Error("Só é possível reabrir pedidos que possuam NF-e/NFS-e com status Não Autorizada, Não Transmitida ou Falha na Transmissão"));
+            entity.Fail(contasRenegociadas, new Error("Só é possível reabrir pedidos que não possuam contas financeiras renegociadas"));
+
+            if (
+                (!notasVinculadas) &&
+                (!contasRenegociadas) &&
+                (entity.MovimentaEstoque || (entity.GeraFinanceiro || entity.GeraNotaFiscal)
+               ))
+            {
+                RolbackReabrirPedido(entity);
+            }
+        }
+
+        private bool VerificaContasRenegociadas(OrdemVenda entity)
+        {
+            try
+            {
+                var header = new Dictionary<string, string>()
+                {
+                    { "PlataformaUrl", PlataformaUrl },
+                    { "AppUser", AppUser }
+                };
+                var response = RestHelper.ExecutePostRequest<JObject>(AppDefaults.UrlFinanceiroApi, "verificaRenegociacaoPedidoCompraVenda", RollbackFinanceiroCompraVenda(entity), null, header);
+                return response.Value<bool>("value");
+            }
+            catch(Exception ex)
+            {
+                return true;
+            }
+        }
+        
         public override void Delete(OrdemVenda entityToDelete)
         {
             entityToDelete.Fail(entityToDelete.Status != Status.Aberto, new Error("Somente venda em aberto pode ser deletada", "status"));
@@ -638,6 +680,82 @@ namespace Fly01.Faturamento.BL
                 throw new BusinessException(entityToDelete.Notification.Get());
 
             base.Delete(entityToDelete);
+        }
+
+        private void RolbackReabrirPedido(OrdemVenda entity)
+        {
+            if (entity.GeraNotaFiscal)
+            {
+                var nfe = NFeBL.All.FirstOrDefault(x => (x.OrdemVendaOrigemId.HasValue && x.OrdemVendaOrigemId == entity.Id));
+                if (nfe != null) { NFeBL.Delete(nfe); }
+                var nfse = NFSeBL.All.FirstOrDefault(x => (x.OrdemVendaOrigemId.HasValue && x.OrdemVendaOrigemId == entity.Id));
+                if (nfse != null) { NFSeBL.Delete(nfse); }
+            }
+
+            if (entity.TotalImpostosProdutos.HasValue) { entity.TotalImpostosProdutos = null; };
+            if (entity.TotalRetencoesServicos.HasValue) { entity.TotalRetencoesServicos = null; };
+            entity.TotalImpostosProdutosNaoAgrega = 0;
+            entity.TotalImpostosServicosNaoAgrega = 0;
+
+            if (entity.MovimentaEstoque)
+            {
+                //aproveitado a Movimentação de Estoque já existente, porém invertando a operação na hora da exclusão para ser realizada a movimentação contraria do pedido
+                var produtos = OrdemVendaProdutoBL.All.Where(e => e.OrdemVendaId == entity.Id && e.Ativo).ToList();
+                if (
+                (entity.TipoVenda == TipoCompraVenda.Normal
+                 || entity.TipoVenda == TipoCompraVenda.Devolucao
+                 || (entity.TipoVenda == TipoCompraVenda.Complementar && entity.TipoNfeComplementar == TipoNfeComplementar.ComplPrecoQtd)
+                ))
+                {
+                    var movimentos = (from ordemVendaProduto in produtos
+                                      group ordemVendaProduto by ordemVendaProduto.ProdutoId into groupResult
+                                      select new
+                                      {
+                                          ProdutoId = groupResult.Key,
+                                          Total = groupResult.Sum(f => f.Quantidade)
+                                      })
+                         .Select(x => new MovimentoOrdemVenda
+                         {
+                             Quantidade = (x.Total),
+                             PedidoNumero = entity.Numero,
+                             ProdutoId = x.ProdutoId,
+                             UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao,
+                             TipoVenda = (entity.TipoVenda == TipoCompraVenda.Normal || (entity.TipoVenda == TipoCompraVenda.Complementar && !entity.NFeRefComplementarIsDevolucao)) ? TipoCompraVenda.Devolucao : TipoCompraVenda.Normal,
+                             TipoNfeComplementar = entity.TipoNfeComplementar,
+                             PlataformaId = PlataformaUrl,
+                             NFeRefComplementarIsDevolucao = entity.NFeRefComplementarIsDevolucao
+                         }).ToList();
+
+                    foreach (var movimento in movimentos)
+                        Producer<MovimentoOrdemVenda>.Send(routePrefixNameMovimentoOrdemVenda, AppUser, PlataformaUrl, movimento, RabbitConfig.EnHttpVerb.POST);
+                }
+            }
+
+            if(entity.GeraFinanceiro)
+            {
+               Producer<RollbackFinanceiroCompraVenda>.Send("RollbackFinanceiroCompraVenda", AppUser, PlataformaUrl, RollbackFinanceiroCompraVenda(entity), RabbitConfig.EnHttpVerb.POST);
+                entity.ContaFinanceiraParcelaPaiIdProdutos = default(Guid);
+                entity.ContaFinanceiraParcelaPaiIdServicos = default(Guid);
+            }
+        }
+
+        private RollbackFinanceiroCompraVenda RollbackFinanceiroCompraVenda(OrdemVenda entity)
+        {
+            return new RollbackFinanceiroCompraVenda
+            {
+                ContaFinanceiraParcelaPaiIdProdutos = entity?.ContaFinanceiraParcelaPaiIdProdutos,
+                ContaFinanceiraParcelaPaiIdServicos = entity?.ContaFinanceiraParcelaPaiIdServicos,
+                TransportadoraId = entity?.TransportadoraId,
+                NumeroPedido = entity.Numero
+            };
+        }
+
+        private bool VerificaNotasFiscaisVinculadas(Guid ordemVendaId)
+        {
+            return
+                NFeBL.All.Any(x => (x.OrdemVendaOrigemId.HasValue && x.OrdemVendaOrigemId == ordemVendaId) && (x.Status == StatusNotaFiscal.Autorizada || x.Status == StatusNotaFiscal.Cancelada || x.Status == StatusNotaFiscal.Transmitida || x.Status == StatusNotaFiscal.EmCancelamento || x.Status == StatusNotaFiscal.UsoDenegado || x.Status == StatusNotaFiscal.FalhaNoCancelamento  || x.Status == StatusNotaFiscal.CanceladaForaPrazo))
+                ||
+                NFSeBL.All.Any(x => (x.OrdemVendaOrigemId.HasValue && x.OrdemVendaOrigemId == ordemVendaId) && (x.Status == StatusNotaFiscal.Autorizada || x.Status == StatusNotaFiscal.Cancelada || x.Status == StatusNotaFiscal.Transmitida || x.Status == StatusNotaFiscal.EmCancelamento || x.Status == StatusNotaFiscal.UsoDenegado || x.Status == StatusNotaFiscal.FalhaNoCancelamento || x.Status == StatusNotaFiscal.CanceladaForaPrazo));
         }
 
         public override void AfterSave(OrdemVenda entity)
@@ -875,7 +993,7 @@ namespace Fly01.Faturamento.BL
         public TotalPedidoNotaFiscal CalculaTotalOrdemVenda(Guid ordemVendaId, Guid clienteId, bool geraNotaFiscal, string tipoNfeComplementar = "NaoComplementar", string tipoFrete = "SemFrete", double? valorFrete = 0, bool onList = false)
         {
             var tipoFreteEnum = (TipoFrete)Enum.Parse(typeof(TipoFrete), tipoFrete, true);
-            if (tipoFreteEnum != TipoFrete.FOB) { valorFrete = 0;}
+            if (tipoFreteEnum != TipoFrete.FOB) { valorFrete = 0; }
             var tipoNfeComplementarEnum = (TipoNfeComplementar)Enum.Parse(typeof(TipoNfeComplementar), tipoNfeComplementar, true);
 
             var ordemVenda = All.Where(x => x.Id == ordemVendaId).FirstOrDefault();
@@ -934,9 +1052,7 @@ namespace Fly01.Faturamento.BL
 
             return result;
         }
-
         
-
         public void UtilizarKitOrdemVenda(UtilizarKitVM entity)
         {
             try

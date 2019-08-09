@@ -19,10 +19,12 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web.Configuration;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
@@ -1030,18 +1032,35 @@ namespace Fly01.Core.Presentation
 
             StringBuilder sb = new StringBuilder();
             foreach (DataColumn v in data.Columns)
-                sb.Append(v.ColumnName + ',');
-
+                sb.Append("'" + v.ColumnName + "',");
+            
             sb.Append("\r\n");
             foreach (DataRow v1 in data.Rows)
             {
-                for (int k = 0; k < data.Columns.Count; k++)
-                    sb.Append(v1[k].ToString().Replace(",", ";") + ',');
+                for (int k = 0; k < data.Columns.Count; k++) {
+
+                    string result = RemoveAccents(v1[k].ToString());
+
+                    sb.Append("'" + result.Replace(",", ".") + "',");
+                }
                 sb.Append("\r\n");
             }
             Response.Output.Write(sb.ToString());
             Response.Flush();
             Response.End();
+        }
+
+        public static string RemoveAccents(string text)
+        {
+            StringBuilder sbReturn = new StringBuilder();
+            var arrayText = text.Normalize(NormalizationForm.FormD).ToCharArray();
+            foreach (char letter in arrayText)
+            {
+                if (CharUnicodeInfo.GetUnicodeCategory(letter) != UnicodeCategory.NonSpacingMark)
+                    sbReturn.Append(letter);
+            }
+
+            return sbReturn.ToString();
         }
 
         protected abstract List<JQueryDataTableParamsColumn> GetParamsColumns(string ResourceName = "");

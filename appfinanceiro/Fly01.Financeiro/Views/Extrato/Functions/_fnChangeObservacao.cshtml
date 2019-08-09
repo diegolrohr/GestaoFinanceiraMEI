@@ -1,0 +1,7 @@
+﻿<script>
+    function fnChangeObservacao() {
+        $$$.fn.updateTextFields();
+        $("#descricao").val('Transf. para ' + $('#fly01frmNovaTransf #contaBancariaDestinoNomeContaTransf').val() + ' ' + $('#fly01frmNovaTransf #observacao').val());
+        $("#descricaoDestino").val('Transf. de ' + $('#fly01frmNovaTransf #contaBancariaOrigemNomeContaTransf').val() + ' ' + $('#fly01frmNovaTransf #observacao').val());
+    }
+</script>

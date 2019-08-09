@@ -1,7 +1,14 @@
 ﻿<script>
     function fnChangeObservacao() {
-        $$$.fn.updateTextFields();
-        $("#descricao").val('Transf. para ' + $('#fly01frmNovaTransf #contaBancariaDestinoNomeContaTransf').val() + ' ' + $('#fly01frmNovaTransf #observacao').val());
-        $("#descricaoDestino").val('Transf. de ' + $('#fly01frmNovaTransf #contaBancariaOrigemNomeContaTransf').val() + ' ' + $('#fly01frmNovaTransf #observacao').val());
+        if ($('#fly01frmNovaTransf #observacao').val() != "") {
+            $$$.fn.updateTextFields();
+            $("#descricao").val('Transf. para ' + $('#fly01frmNovaTransf #contaBancariaDestinoNomeContaTransf').val() + ' - ' + $('#fly01frmNovaTransf #observacao').val());
+            $("#descricaoDestino").val('Transf. de ' + $('#fly01frmNovaTransf #contaBancariaOrigemNomeContaTransf').val() + ' - ' + $('#fly01frmNovaTransf #observacao').val());
+        } else {
+            $$$.fn.updateTextFields();
+            $("#descricao").val('Transf. para ' + $('#fly01frmNovaTransf #contaBancariaDestinoNomeContaTransf').val() + ' ' + $('#fly01frmNovaTransf #observacao').val());
+            $("#descricaoDestino").val('Transf. de ' + $('#fly01frmNovaTransf #contaBancariaOrigemNomeContaTransf').val() + ' ' + $('#fly01frmNovaTransf #observacao').val());
+        }
+        
     }
 </script>

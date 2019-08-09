@@ -572,7 +572,6 @@ namespace Fly01.Financeiro.Controllers
                 Id = "observacao",
                 Class = "col s12",
                 Label = "Descrição",
-                Required = true,
                 Name = "observacao",
                 MaxLength = 200,
                 DomEvents = new List<DomEventUI>

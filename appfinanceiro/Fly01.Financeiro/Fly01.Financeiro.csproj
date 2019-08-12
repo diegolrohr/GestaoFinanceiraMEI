@@ -447,6 +447,7 @@
     <Content Include="Views\ContaBancaria\Functions\_fnChangeCheckInicializa.cshtml" />
     <Content Include="Views\ContaPagar\Functions\_fnCardList.cshtml" />
     <Content Include="Views\ContaReceber\Functions\_fnCardList.cshtml" />
+    <Content Include="Views\Extrato\Functions\_fnChangeObservacao.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -458,11 +458,11 @@ namespace Fly01.Financeiro.Controllers
                 Columns = new List<DataTableUIColumn>
                 {
                     new DataTableUIColumn { DataField = "data", DisplayName = "Data", Priority = 1, Orderable = false, Searchable = false, Type = "date" },
-                    new DataTableUIColumn { DataField = "descricaoLancamento", DisplayName = "Lançamento", Priority = 3, Orderable = false, Searchable = false },
-                    new DataTableUIColumn { DataField = "pessoaNome", DisplayName = "Cliente/Fornecedor", Priority = 4, Orderable = false, Searchable = false },
-                    new DataTableUIColumn { DataField = "contaBancariaDescricao", DisplayName = "Conta Bancária", Priority = 5, Orderable = false, Searchable = false },
-                    new DataTableUIColumn { DataField = "valorLancamento", DisplayName = "Valor", Priority = 2, Orderable = false, Searchable = false, Type = "currency" }
-                }
+                    new DataTableUIColumn { DataField = "pessoaNome", DisplayName = "Cliente/Fornecedor", Priority = 2, Orderable = false, Searchable = false },
+                    new DataTableUIColumn { DataField = "contaBancariaDescricao", DisplayName = "Conta Bancária", Priority = 3, Orderable = false, Searchable = false },
+                    new DataTableUIColumn { DataField = "valorLancamento", DisplayName = "Valor", Priority = 4, Orderable = false, Searchable = false, Type = "currency" },
+                    new DataTableUIColumn { DataField = "descricaoLancamento", DisplayName = "Lançamento", Priority = 5, Orderable = false, Searchable = false },           
+        }
             });
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
         }
@@ -566,6 +566,18 @@ namespace Fly01.Financeiro.Controllers
             });
 
             config.Elements.Add(new InputCurrencyUI { Id = "valorTransf", Class = "col s12 m6", Label = "Valor", Required = true, Name = "valor" });
+
+            config.Elements.Add(new TextAreaUI {
+                Id = "observacao",
+                Class = "col s12",
+                Label = "Descrição",
+                Name = "observacao",
+                MaxLength = 200,
+                DomEvents = new List<DomEventUI>
+                {
+                    new DomEventUI { DomEvent = "change", Function = "fnChangeObservacao" }
+                }
+            });
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }

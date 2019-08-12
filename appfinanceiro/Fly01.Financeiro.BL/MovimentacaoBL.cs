@@ -39,6 +39,7 @@ namespace Fly01.Financeiro.BL
             movimentacao.PlataformaId = PlataformaUrl;
             movimentacao.DataInclusao = DateTime.Now;
             movimentacao.Ativo = true;
+            movimentacao.Descricao = movimentacao.Descricao.Substring(0, movimentacao.Descricao.Length > 200 ? 200 : movimentacao.Descricao.Length);
 
             base.ValidaModel(movimentacao);
 
@@ -139,7 +140,7 @@ namespace Fly01.Financeiro.BL
             Insert(transferencia.MovimentacaoDestino);
         }
 
-        private MovimentacaoFinanceira Debito(DateTime data, double valor, Guid contaBancariaId, Guid? contaFinanceiraId = null, string descricao = null, Guid? categoriaId = null)
+        private MovimentacaoFinanceira Debito(DateTime data, double valor, Guid contaBancariaId, Guid? contaFinanceiraId = null, string descricao = null , Guid? categoriaId = null)
         {
             var mov = new MovimentacaoFinanceira()
             {

@@ -568,6 +568,7 @@ namespace Fly01.Financeiro.Controllers
             });
 
             config.Elements.Add(new InputCurrencyUI { Id = "valorTransf", Class = "col s12 m6", Label = "Valor", Required = true, Name = "valor" });
+
             config.Elements.Add(new TextAreaUI {
                 Id = "observacao",
                 Class = "col s12",

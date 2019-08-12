@@ -461,9 +461,7 @@ namespace Fly01.Financeiro.Controllers
                     new DataTableUIColumn { DataField = "pessoaNome", DisplayName = "Cliente/Fornecedor", Priority = 2, Orderable = false, Searchable = false },
                     new DataTableUIColumn { DataField = "contaBancariaDescricao", DisplayName = "Conta Bancária", Priority = 3, Orderable = false, Searchable = false },
                     new DataTableUIColumn { DataField = "valorLancamento", DisplayName = "Valor", Priority = 4, Orderable = false, Searchable = false, Type = "currency" },
-                    new DataTableUIColumn { DataField = "descricaoLancamento", DisplayName = "Lançamento", Priority = 5, Orderable = false, Searchable = false },
-
-                    //config.Columns.Add(new DataTableUIColumn() { Priority = 7, Orderable = false, DataField = "observacao", DisplayName = "Observação:" , Searchable = false});
+                    new DataTableUIColumn { DataField = "descricaoLancamento", DisplayName = "Lançamento", Priority = 5, Orderable = false, Searchable = false },           
         }
             });
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");

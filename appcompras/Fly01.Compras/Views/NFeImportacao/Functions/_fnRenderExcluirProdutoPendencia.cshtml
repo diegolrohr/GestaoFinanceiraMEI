@@ -24,18 +24,21 @@
                 url: "@Url.Action("Delete", "NFeImportacaoProduto")",
                 data: { id: idRecord },
                 success: function (data) {
-                    $('#dtProdutosPendencias').loading('stop');
                     if (data.success) {
                         $$$.toast("Excluído com sucesso.", "success");
-                        $(`#btnExcluirProdutoPendencia${idRecord}`).parent().parent().remove();
+                        //$(`#btnExcluirProdutoPendencia${idRecord}`).parent().parent().remove();
+                        //TODO: Diego ver por que o loading não para..  nem na paginação
                         $$$._.dtProdutosPendencias.ajax.json().recordsTotal -= 1;
+                        $$$._.dtProdutosPendencias.refresh();
                         if (!verificaPendencias()) {
                             $('#stepProdutosPendencias').hide();
                             $('li#stepProdutos > div.step-content > div.step-actions > button.btn.previous-step').click();
                         }
+                        $('#dtProdutosPendencias').loading('stop');
                     }
                     else {
                         $$$.fn.submitErrorHandler(null, data.message);
+                        $('#dtProdutosPendencias').loading('stop');
                     }
                 },
                 error: function (jXHR, textStatus, errorThrown) {

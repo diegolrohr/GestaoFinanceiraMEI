@@ -407,7 +407,6 @@
     <Content Include="Views\NFeImportacao\Functions\_fnFooterCallbackProdutos.cshtml" />
     <Content Include="Views\NFeImportacao\Functions\_fnChkGeraContasXml.cshtml" />
     <Content Include="Views\NFeImportacao\Functions\_fnExcluirCobranca.cshtml" />
-    <Content Include="Views\NFeImportacao\Functions\_fnFooterCallbackProdutos.cshtml" />
     <Content Include="Views\NFeImportacao\Functions\_fnVisualizar.cshtml" />
     <Content Include="Views\NFeImportacao\Functions\_fnFormReadyVisualizarImportacao.cshtml" />
     <Content Include="Views\NFeImportacao\Functions\_fnExcluirNFeImportacao.cshtml" />

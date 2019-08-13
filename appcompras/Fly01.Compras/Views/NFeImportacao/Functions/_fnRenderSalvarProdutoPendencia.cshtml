@@ -95,7 +95,7 @@
     };
 
     function fnRenderSalvarProdutoPendencia(data, type, row, meta) {
-        return createForm(row).outerHTML;
+            return createForm(row).outerHTML;
     };
 
     function fnSubmitForm(id) {
@@ -138,19 +138,24 @@
                         var strMsg = "Atualizado com sucesso.";
                         if (data.message !== "")
                             strMsg = data.message;
-                        $$$.toast(strMsg, "success");
                         that.loading("stop");
-                        $(`#btnSalvarPendencia${data.id}`).parent().parent().parent().remove();
+                        $$$.toast(strMsg, "success");
+                        //$(`#btnSalvarPendencia${data.id}`).parent().parent().parent().remove();
+                        //TODO: Diego
                         $$$._.dtProdutosPendencias.ajax.json().recordsTotal -= 1;
+                        $$$._.dtProdutosPendencias.refresh();
+                        debugger;
                         if (!verificaPendencias()) {
                             $('#stepProdutosPendencias').hide();
                             $('li#stepProdutos > div.step-content > div.step-actions > button.btn.previous-step').click();
                         }
+                        $('#dtProdutosPendencias').loading('stop');
                     } else {
                         that.loading("stop");
                         $$$.fn.submitErrorHandler(null, data.message);
                     }
                     that.loading("stop");
+                    $('#dtProdutosPendencias').loading('stop');
                 },
                 error: function error(jXHR, textStatus) {
                     $$$.toast(textStatus, "error");

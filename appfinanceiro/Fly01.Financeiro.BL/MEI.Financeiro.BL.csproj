@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E292EA68-56CE-4D3F-BA97-06DA892174F9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Fly01.Financeiro.BL</RootNamespace>
+    <AssemblyName>Fly01.Financeiro.BL</AssemblyName>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>6</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>6</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Homologacao|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Homologacao\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <LangVersion>6</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="ArquivoBL.cs" />
+    <Compile Include="ArquivoRemessaBL.cs" />
+    <Compile Include="ArquivoRetornoBL.cs" />
+    <Compile Include="BoletoBL.cs" />
+    <Compile Include="CentroCustoBL.cs" />
+    <Compile Include="ConfiguracaoPersonalizacaoBL.cs" />
+    <Compile Include="PaisBL.cs" />
+    <Compile Include="CnabBL.cs" />
+    <Compile Include="ConfiguracaoNotificacaoBL.cs" />
+    <Compile Include="CategoriaBL.cs" />
+    <Compile Include="ConciliacaoBancariaBuscarExistentesBL.cs" />
+    <Compile Include="ConciliacaoBancariaTransacaoBL.cs" />
+    <Compile Include="ConciliacaoBancariaItemContaFinanceiraBL.cs" />
+    <Compile Include="ConciliacaoBancariaItemBL.cs" />
+    <Compile Include="ContaFinanceiraBaixaMultiplaBL.cs" />
+    <Compile Include="DashboardBL.cs" />
+    <Compile Include="RollbackFinanceiroCompraVendaBL.cs" />
+    <Compile Include="StoneBL.cs" />
+    <Compile Include="DespesaPorCategoriaBL.cs" />
+    <Compile Include="MovimentacaoPorCategoriaBL.cs" />
+    <Compile Include="ReceitaPorCategoriaBL.cs" />
+    <Compile Include="RenegociacaoContaFinanceiraRenegociadaBL.cs" />
+    <Compile Include="RenegociacaoContaFinanceiraOrigemBL.cs" />
+    <Compile Include="ContaFinanceiraRenegociacaoBL.cs" />
+    <Compile Include="ExtratoBL.cs" />
+    <Compile Include="FluxoCaixaBL.cs" />
+    <Compile Include="FormaPagamentoBL.cs" />
+    <Compile Include="CidadeBL.cs" />
+    <Compile Include="ContaFinanceiraBaixaBL.cs" />
+    <Compile Include="ContaFinanceiraBL.cs" />
+    <Compile Include="MovimentacaoBL.cs" />
+    <Compile Include="SaldoHistoricoBL.cs" />
+    <Compile Include="ConciliacaoBancariaBL.cs" />
+    <Compile Include="EstadoBL.cs" />
+    <Compile Include="CondicaoParcelamentoBL.cs" />
+    <Compile Include="ContaBancariaBL.cs" />
+    <Compile Include="ContaReceberBL.cs" />
+    <Compile Include="ContaPagarBL.cs" />
+    <Compile Include="FeriadoBL.cs" />
+    <Compile Include="PessoaBL.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="BancoBL.cs" />
+    <Compile Include="StoneAntecipacaoRecebiveisBL.cs" />
+    <Compile Include="TemplateBoletoBL.cs" />
+    <Compile Include="TipoCarteiraBL.cs" />
+    <Compile Include="TransferenciaBL.cs" />
+    <Compile Include="UnitOfWork.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Boleto2Net, Version=2.0.2.5, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Boleto2.Net.2.0.2.7\lib\Boleto2Net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Web" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Fly01.Core.API\Fly01.Core.API.csproj">
+      <Project>{24148D87-4211-43B6-9C02-CD6E0D03EE0A}</Project>
+      <Name>Fly01.Core.API</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Fly01.Core.BL\Fly01.Core.BL.csproj">
+      <Project>{E491B024-3E82-40F3-9108-F402D8023A19}</Project>
+      <Name>Fly01.Core.BL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Fly01.Core.Entities\Fly01.Core.Entities.csproj">
+      <Project>{E6AA22E4-887E-4AE3-8834-E92ED4142A4C}</Project>
+      <Name>Fly01.Core.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Fly01.Core.Entities\Fly01.Core.Entities.csproj">
+      <Project>{26E9896F-EDF5-4E59-9E0F-627C70E2E59E}</Project>
+      <Name>Fly01.Core.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Fly01.Core.Helpers\Fly01.Core.Helpers.csproj">
+      <Project>{D3EE1325-9A1D-4620-853B-822D88105147}</Project>
+      <Name>Fly01.Core.Helpers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Fly01.Core.Notifications\Fly01.Core.Notifications.csproj">
+      <Project>{89c80f58-c490-4c34-b04e-7c43f5f09951}</Project>
+      <Name>Fly01.Core.Notifications</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Fly01.Core.Rest\Fly01.Core.Rest.csproj">
+      <Project>{8B4C697E-B194-4AA1-9BA5-7AD8C2D19AE7}</Project>
+      <Name>Fly01.Core.Rest</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Fly01.Core.ServiceBus\Fly01.Core.ServiceBus.csproj">
+      <Project>{321E2009-C06C-4848-9DF5-1EF9D17AD61C}</Project>
+      <Name>Fly01.Core.ServiceBus</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Fly01.Core\Fly01.Core.csproj">
+      <Project>{d848bbbd-61a9-4843-a16d-14a2b6ebec85}</Project>
+      <Name>Fly01.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fly01.Financeiro.DAL\MEI.Financeiro.DAL.csproj">
+      <Project>{599fc6f5-a443-4d81-81cb-6dfd2abff728}</Project>
+      <Name>MEI.Financeiro.DAL</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+</Project>

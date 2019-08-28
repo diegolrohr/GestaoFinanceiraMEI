@@ -24,13 +24,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fly01.Core.Notifications", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fly01.Core.SOAManager", "Fly01.Core.SOAManager\Fly01.Core.SOAManager.csproj", "{A9FA1417-88A1-41A6-91AC-22F8E434F7F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fly01.Financeiro.BL", "appfinanceiro\Fly01.Financeiro.BL\Fly01.Financeiro.BL.csproj", "{E292EA68-56CE-4D3F-BA97-06DA892174F9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MEI.Financeiro.BL", "appfinanceiro\Fly01.Financeiro.BL\MEI.Financeiro.BL.csproj", "{E292EA68-56CE-4D3F-BA97-06DA892174F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fly01.Financeiro.DAL", "appfinanceiro\Fly01.Financeiro.DAL\Fly01.Financeiro.DAL.csproj", "{599FC6F5-A443-4D81-81CB-6DFD2ABFF728}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MEI.Financeiro.DAL", "appfinanceiro\Fly01.Financeiro.DAL\MEI.Financeiro.DAL.csproj", "{599FC6F5-A443-4D81-81CB-6DFD2ABFF728}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fly01.Financeiro", "appfinanceiro\Fly01.Financeiro\Fly01.Financeiro.csproj", "{74F85E28-C4B7-434D-A9A7-0AED58789137}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MEI.Financeiro", "appfinanceiro\Fly01.Financeiro\MEI.Financeiro.csproj", "{74F85E28-C4B7-434D-A9A7-0AED58789137}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fly01.Financeiro.API", "appfinanceiro\Fly01.Financeiro.API\Fly01.Financeiro.API.csproj", "{6FED4A1F-1A7D-49B8-AED7-7E0BBF4F899D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MEI.Financeiro.API", "appfinanceiro\Fly01.Financeiro.API\MEI.Financeiro.API.csproj", "{6FED4A1F-1A7D-49B8-AED7-7E0BBF4F899D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fly01.Core.API", "Fly01.Core.API\Fly01.Core.API.csproj", "{24148D87-4211-43B6-9C02-CD6E0D03EE0A}"
 EndProject

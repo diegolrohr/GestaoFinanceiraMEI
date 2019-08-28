@@ -8,7 +8,6 @@ using Fly01.Core.Presentation.JQueryDataTable;
 using Fly01.Core.Rest;
 using Fly01.Core.ViewModels;
 using Fly01.Core.ViewModels.Presentation.Commons;
-using Fly01.EmissaoNFE.Domain.Enums;
 using Fly01.Financeiro.Models.Reports;
 using Fly01.Financeiro.Models.ViewModel;
 using Fly01.Financeiro.ViewModel;

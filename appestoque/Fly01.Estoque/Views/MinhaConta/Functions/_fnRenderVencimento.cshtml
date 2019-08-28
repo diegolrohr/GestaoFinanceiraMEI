@@ -1,5 +1,0 @@
-﻿<script>
-    function fnRenderVencimento(data, type, row, meta) {
-        return createElem("span", { "class": `${(row.boletoVencido && row.situacao == 'PENDENTE') ? "red-text" : ""}` }, row.vencimento).outerHTML;
-    };
-</script>

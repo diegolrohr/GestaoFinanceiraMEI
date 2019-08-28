@@ -1,9 +1,0 @@
-﻿<script>
-    function fnSalvarModalFatorConversao(tipo) {
-        var id = $('form#fly01mdlfrmFatorConversao #id').val();
-        $("input#fatorConversao" + `${id}`).val(parseFloat(noComma($('form#fly01mdlfrmFatorConversao #fatorConversao').val())));
-        $("input#tipoFatorConversao" + `${id}`).val($('form#fly01mdlfrmFatorConversao #tipoFatorConversao').val());
-        $$$._.fly01mdlfrmFatorConversao.close();
-        $('div#fly01mdlfrmFatorConversao').remove();
-    }
-</script>

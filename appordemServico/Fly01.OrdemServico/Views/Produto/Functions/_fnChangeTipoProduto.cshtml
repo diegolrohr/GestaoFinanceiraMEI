@@ -1,8 +1,0 @@
-﻿<script>
-    function fnChangeTipoProduto(event) {
-        $("#grupoProdutoDescricao").val("");
-        $("#grupoProdutoId").val("");
-        if ($("#grupoProdutoDescricao").data("url-post"))
-    		$("#grupoProdutoDescricao").data("url-post", "@Url.Action("NovoGrupoProduto")?tipo=" + $("#tipoProduto").val());
-	}
-</script>

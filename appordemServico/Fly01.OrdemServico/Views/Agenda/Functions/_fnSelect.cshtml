@@ -1,8 +1,0 @@
-<script>
-    function fnSelect(startDate, endDate) {
-        if (startDate.format("YYYY-MM-DD") != endDate.format("YYYY-MM-DD")) {
-            endDate._isUTC = false;
-            $$$.go("@Url.Action("ListOrdemServico", "OrdemServico")" + "?dtInicio=" + startDate.format().toString() + "&dtFinal=" + endDate.format().toString());
-        }
-    }
-</script>

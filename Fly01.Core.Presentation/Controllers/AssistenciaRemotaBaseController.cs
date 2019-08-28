@@ -1,19 +1,10 @@
-﻿using Fly01.Core.Entities.Domains.Enum;
-using Fly01.Core.Helpers;
-using Fly01.Core.Presentation.Commons;
-using Fly01.Core.Presentation.JQueryDataTable;
-using Fly01.Core.Rest;
+﻿using Fly01.Core.Presentation.JQueryDataTable;
 using Fly01.Core.ViewModels.Presentation.Commons;
-using Fly01.EmissaoNFE.Domain.Enums;
 using Fly01.uiJS.Classes;
-using Fly01.uiJS.Classes.Elements;
-using Fly01.uiJS.Classes.Helpers;
 using Fly01.uiJS.Defaults;
-using Fly01.uiJS.Enums;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
 
 namespace Fly01.Core.Presentation.Controllers

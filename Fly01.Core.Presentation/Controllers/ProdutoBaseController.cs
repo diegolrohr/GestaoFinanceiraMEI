@@ -4,7 +4,6 @@ using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Presentation.JQueryDataTable;
 using Fly01.Core.Rest;
 using Fly01.Core.ViewModels.Presentation.Commons;
-using Fly01.EmissaoNFE.Domain.Enums;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Classes.Helpers;

@@ -195,10 +195,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\appemissaoNFE\Fly01.EmissaoNFE.Domain\Fly01.EmissaoNFE.Domain.csproj">
-      <Project>{279B3A0C-4549-4B8C-9EF9-90E35A5255D6}</Project>
-      <Name>Fly01.EmissaoNFE.Domain</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Fly01.Core.Helpers\Fly01.Core.Helpers.csproj">
       <Project>{D3EE1325-9A1D-4620-853B-822D88105147}</Project>
       <Name>Fly01.Core.Helpers</Name>

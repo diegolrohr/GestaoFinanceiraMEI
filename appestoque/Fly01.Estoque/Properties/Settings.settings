@@ -1,9 +1,0 @@
-﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Fly01.Estoque.Properties" GeneratedClassName="Settings">
-  <Profiles />
-  <Settings>
-    <Setting Name="Fly01_Estoque_SOAManager_SOAManager" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://localhost:8055/TotvsSOA.Host/SOAManager.svc</Value>
-    </Setting>
-  </Settings>
-</SettingsFile>

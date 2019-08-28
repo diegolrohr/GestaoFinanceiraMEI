@@ -105,6 +105,7 @@
     <Compile Include="Domains\Enum\TipoEspecie.cs" />
     <Compile Include="Domains\Enum\TipoFaixaReceitaBruta.cs" />
     <Compile Include="Domains\Enum\SocketMessageType.cs" />
+    <Compile Include="Domains\Enum\TipoContaFinanceiraVM.cs" />
     <Compile Include="Domains\Enum\TipoNfeComplementar.cs" />
     <Compile Include="Domains\Commons\NFeEntrada.cs" />
     <Compile Include="Domains\Commons\NFeProdutoEntrada.cs" />

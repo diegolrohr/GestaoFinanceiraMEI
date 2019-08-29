@@ -518,17 +518,17 @@
     <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Fly01.Core.BL\Fly01.Core.BL.csproj">
+    <ProjectReference Include="..\..\Fly01.Core.BL\MEI.Core.BL.csproj">
       <Project>{E491B024-3E82-40F3-9108-F402D8023A19}</Project>
-      <Name>Fly01.Core.BL</Name>
+      <Name>MEI.Core.BL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Fly01.Core.Entities\Fly01.Core.Entities.csproj">
-      <Project>{E6AA22E4-887E-4AE3-8834-E92ED4142A4C}</Project>
-      <Name>Fly01.Core.Entities</Name>
+    <ProjectReference Include="..\..\Fly01.Core.Entities\MEI.Core.Entities.csproj">
+      <Project>{26E9896F-EDF5-4E59-9E0F-627C70E2E59E}</Project>
+      <Name>MEI.Core.Entities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Fly01.Core\Fly01.Core.csproj">
+    <ProjectReference Include="..\..\Fly01.Core\MEI.Core.csproj">
       <Project>{d848bbbd-61a9-4843-a16d-14a2b6ebec85}</Project>
-      <Name>Fly01.Core</Name>
+      <Name>MEI.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

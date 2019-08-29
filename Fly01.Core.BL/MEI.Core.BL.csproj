@@ -85,21 +85,21 @@
     <Compile Include="UnitOfWorkBase.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Fly01.Core.Entities\Fly01.Core.Entities.csproj">
+    <ProjectReference Include="..\Fly01.Core.Entities\MEI.Core.Entities.csproj">
       <Project>{26e9896f-edf5-4e59-9e0f-627c70e2e59e}</Project>
-      <Name>Fly01.Core.Entities</Name>
+      <Name>MEI.Core.Entities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Fly01.Core.Helpers\Fly01.Core.Helpers.csproj">
+    <ProjectReference Include="..\Fly01.Core.Helpers\MEI.Core.Helpers.csproj">
       <Project>{D3EE1325-9A1D-4620-853B-822D88105147}</Project>
-      <Name>Fly01.Core.Helpers</Name>
+      <Name>MEI.Core.Helpers</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Fly01.Core.Notifications\Fly01.Core.Notifications.csproj">
+    <ProjectReference Include="..\Fly01.Core.Notifications\MEI.Core.Notifications.csproj">
       <Project>{89c80f58-c490-4c34-b04e-7c43f5f09951}</Project>
-      <Name>Fly01.Core.Notifications</Name>
+      <Name>MEI.Core.Notifications</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Fly01.Core.ServiceBus\Fly01.Core.ServiceBus.csproj">
+    <ProjectReference Include="..\Fly01.Core.ServiceBus\MEI.Core.ServiceBus.csproj">
       <Project>{321E2009-C06C-4848-9DF5-1EF9D17AD61C}</Project>
-      <Name>Fly01.Core.ServiceBus</Name>
+      <Name>MEI.Core.ServiceBus</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

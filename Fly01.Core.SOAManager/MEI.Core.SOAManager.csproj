@@ -121,13 +121,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Fly01.Core.Helpers\Fly01.Core.Helpers.csproj">
+    <ProjectReference Include="..\Fly01.Core.Helpers\MEI.Core.Helpers.csproj">
       <Project>{D3EE1325-9A1D-4620-853B-822D88105147}</Project>
-      <Name>Fly01.Core.Helpers</Name>
+      <Name>MEI.Core.Helpers</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Fly01.Core\Fly01.Core.csproj">
+    <ProjectReference Include="..\Fly01.Core\MEI.Core.csproj">
       <Project>{D848BBBD-61A9-4843-A16D-14A2B6EBEC85}</Project>
-      <Name>Fly01.Core</Name>
+      <Name>MEI.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

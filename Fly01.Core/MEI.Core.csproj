@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D848BBBD-61A9-4843-A16D-14A2B6EBEC85}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Fly01.Core</RootNamespace>
+    <AssemblyName>Fly01.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>6</LangVersion>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>6</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="AppDefaults.cs" />
+    <Compile Include="Base\ContextInitialize.cs" />
+    <Compile Include="Config\NotificationVM.cs" />
+    <Compile Include="Config\ProxyConfig.cs" />
+    <Compile Include="Config\SessionManager.cs" />
+    <Compile Include="Config\StoneDataVM.cs" />
+    <Compile Include="Config\TokenDataVM.cs" />
+    <Compile Include="Config\UserDataVM.cs" />
+    <Compile Include="Defaults\JsonSerializerSetting.cs" />
+    <Compile Include="ResolveMessageType.cs" />
+    <Compile Include="ValueObjects\InscricaoEstadualHelper.cs" />
+    <Compile Include="ValueObjects\Interfaces\IDocumento.cs" />
+    <Compile Include="ResultBase.cs" />
+    <Compile Include="ValueObjects\CNPJ.cs" />
+    <Compile Include="ValueObjects\CPF.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\DadosArquivoRemessaVM.cs" />
+    <Compile Include="ViewModels\EPermissionValue.cs" />
+    <Compile Include="ViewModels\PermissionResponseVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\AgendaVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\CentroCustoVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\AliquotaSimplesNacionalVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\ContaFinanceiraVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\ContaPagarVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\ContaReceberVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\ContaFinanceiraPorStatusVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\PaisVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\MinhaContaConfiguracaoVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\MinhaContaCodigoBarrasResponseVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\MinhaContaResponseVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\MinhaContaCodigoBarrasVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\MinhaContaVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\ConfiguracaoPersonalizacaoVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\UtilizarKitVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\ProdutoServicoVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\ISSVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\KitItemVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\KitVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\NBSVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\ServicoVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\StoneAntecipacaoBaseVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\StoneAntecipacaoEfetivarVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\StoneAutenticacaoVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\AutenticacaoStoneVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\StoneAntecipacaoVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\StoneDadosBancariosVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\StoneConfiguracaoVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\StoneErrorVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\StoneTotaisVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\StoneAntecipacaoEfetivarPostVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\StoneTokenBaseVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\CertificadoDigitalVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\OrdemServicosPorDiaVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\OrdemServicoPorStatusVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\StoneAntecipacaoSimularVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\TopServicosProdutosOrdemServicoVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\ComprasPagamentosVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\ContasPagarDoDiaVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\ContasReceberDoDiaVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\DashboardFinanceiroVM.cs" />
+    <Compile Include="ViewModels\BoletoVM.cs" />
+    <Compile Include="ViewModels\BuscaCepVM.cs" />
+    <Compile Include="ViewModels\Presentation\AppsInstaladoslataformaVM.cs" />
+    <Compile Include="ViewModels\Presentation\AppsInstaladosVM.cs" />
+    <Compile Include="ViewModels\Presentation\ArquivoVM.cs" />
+    <Compile Include="ViewModels\Presentation\AvaliacaoAppVM.cs" />
+    <Compile Include="ViewModels\Presentation\BatchDataVM.cs" />
+    <Compile Include="ViewModels\Presentation\BatchEntryVM.cs" />
+    <Compile Include="ViewModels\Presentation\BatchItemVM.cs" />
+    <Compile Include="ViewModels\Presentation\BatchReturnVM.cs" />
+    <Compile Include="ViewModels\Presentation\BatchVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\CategoriaVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\CestVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\CfopVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\CidadeVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\ComprasFormasPagamentoVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\DashboardComprasVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\CondicaoParcelamentoVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\CondicaoParcelamentoParcelaVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\DomainBaseVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\EnquadramentoLegalIpiVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\EstadoVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\FormaPagamentoVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\GrupoProdutoVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\GrupoTributarioVM.cs" />
+    <Compile Include="ViewModels\ManagerEmpresaVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\NcmVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\NotaFiscalInutilizadaVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\ParametroTributarioVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\PessoaVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\MaioresFornecedoresVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\ProdutosMaisCompradosVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\ProdutoVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\ResponseSimulacaoVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\SerieNotaFiscalVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\SubstituicaoTributariaVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\TotalPedidoNotaFiscalVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\UnidadeMedidaVM.cs" />
+    <Compile Include="ViewModels\Presentation\FileVM.cs" />
+    <Compile Include="ViewModels\Presentation\KeyValueVM.cs" />
+    <Compile Include="ViewModels\Presentation\SystemValueVM.cs" />
+    <Compile Include="ViewModels\UserDataCookieVM.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Boleto2Net, Version=2.0.2.5, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Boleto2.Net.2.0.2.7\lib\Boleto2Net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.13\lib\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ViewModels\Api\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Fly01.Core.Entities\MEI.Core.Entities.csproj">
+      <Project>{26E9896F-EDF5-4E59-9E0F-627C70E2E59E}</Project>
+      <Name>MEI.Core.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fly01.Core.Helpers\MEI.Core.Helpers.csproj">
+      <Project>{d3ee1325-9a1d-4620-853b-822d88105147}</Project>
+      <Name>MEI.Core.Helpers</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+</Project>

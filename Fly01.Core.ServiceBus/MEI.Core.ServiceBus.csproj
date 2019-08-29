@@ -70,25 +70,25 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Fly01.Core.Entities\Fly01.Core.Entities.csproj">
+    <ProjectReference Include="..\Fly01.Core.Entities\MEI.Core.Entities.csproj">
       <Project>{26E9896F-EDF5-4E59-9E0F-627C70E2E59E}</Project>
-      <Name>Fly01.Core.Entities</Name>
+      <Name>MEI.Core.Entities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Fly01.Core.Helpers\Fly01.Core.Helpers.csproj">
+    <ProjectReference Include="..\Fly01.Core.Helpers\MEI.Core.Helpers.csproj">
       <Project>{D3EE1325-9A1D-4620-853B-822D88105147}</Project>
-      <Name>Fly01.Core.Helpers</Name>
+      <Name>MEI.Core.Helpers</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Fly01.Core.Mensageria\Fly01.Core.Mensageria.csproj">
+    <ProjectReference Include="..\Fly01.Core.Mensageria\MEI.Core.Mensageria.csproj">
       <Project>{2a0fd4c0-cded-410f-8f09-ee85154679e3}</Project>
-      <Name>Fly01.Core.Mensageria</Name>
+      <Name>MEI.Core.Mensageria</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Fly01.Core.Notifications\Fly01.Core.Notifications.csproj">
+    <ProjectReference Include="..\Fly01.Core.Notifications\MEI.Core.Notifications.csproj">
       <Project>{89c80f58-c490-4c34-b04e-7c43f5f09951}</Project>
-      <Name>Fly01.Core.Notifications</Name>
+      <Name>MEI.Core.Notifications</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Fly01.Core\Fly01.Core.csproj">
+    <ProjectReference Include="..\Fly01.Core\MEI.Core.csproj">
       <Project>{D848BBBD-61A9-4843-A16D-14A2B6EBEC85}</Project>
-      <Name>Fly01.Core</Name>
+      <Name>MEI.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

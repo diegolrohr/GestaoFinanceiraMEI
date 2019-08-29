@@ -124,41 +124,41 @@
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Fly01.Core.API\Fly01.Core.API.csproj">
+    <ProjectReference Include="..\..\Fly01.Core.API\MEI.Core.API.csproj">
       <Project>{24148D87-4211-43B6-9C02-CD6E0D03EE0A}</Project>
-      <Name>Fly01.Core.API</Name>
+      <Name>MEI.Core.API</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Fly01.Core.BL\Fly01.Core.BL.csproj">
+    <ProjectReference Include="..\..\Fly01.Core.BL\MEI.Core.BL.csproj">
       <Project>{E491B024-3E82-40F3-9108-F402D8023A19}</Project>
-      <Name>Fly01.Core.BL</Name>
+      <Name>MEI.Core.BL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Fly01.Core.Entities\Fly01.Core.Entities.csproj">
-      <Project>{E6AA22E4-887E-4AE3-8834-E92ED4142A4C}</Project>
-      <Name>Fly01.Core.Entities</Name>
+    <ProjectReference Include="..\..\Fly01.Core.Entities\MEI.Core.Entities.csproj">
+      <Project>{26E9896F-EDF5-4E59-9E0F-627C70E2E59E}</Project>
+      <Name>MEI.Core.Entities</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Fly01.Core.Entities\Fly01.Core.Entities.csproj">
       <Project>{26E9896F-EDF5-4E59-9E0F-627C70E2E59E}</Project>
       <Name>Fly01.Core.Entities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Fly01.Core.Helpers\Fly01.Core.Helpers.csproj">
+    <ProjectReference Include="..\..\Fly01.Core.Helpers\MEI.Core.Helpers.csproj">
       <Project>{D3EE1325-9A1D-4620-853B-822D88105147}</Project>
-      <Name>Fly01.Core.Helpers</Name>
+      <Name>MEI.Core.Helpers</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Fly01.Core.Notifications\Fly01.Core.Notifications.csproj">
+    <ProjectReference Include="..\..\Fly01.Core.Notifications\MEI.Core.Notifications.csproj">
       <Project>{89c80f58-c490-4c34-b04e-7c43f5f09951}</Project>
-      <Name>Fly01.Core.Notifications</Name>
+      <Name>MEI.Core.Notifications</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Fly01.Core.Rest\Fly01.Core.Rest.csproj">
+    <ProjectReference Include="..\..\Fly01.Core.Rest\MEI.Core.Rest.csproj">
       <Project>{8B4C697E-B194-4AA1-9BA5-7AD8C2D19AE7}</Project>
-      <Name>Fly01.Core.Rest</Name>
+      <Name>MEI.Core.Rest</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Fly01.Core.ServiceBus\Fly01.Core.ServiceBus.csproj">
+    <ProjectReference Include="..\..\Fly01.Core.ServiceBus\MEI.Core.ServiceBus.csproj">
       <Project>{321E2009-C06C-4848-9DF5-1EF9D17AD61C}</Project>
-      <Name>Fly01.Core.ServiceBus</Name>
+      <Name>MEI.Core.ServiceBus</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Fly01.Core\Fly01.Core.csproj">
+    <ProjectReference Include="..\..\Fly01.Core\MEI.Core.csproj">
       <Project>{d848bbbd-61a9-4843-a16d-14a2b6ebec85}</Project>
-      <Name>Fly01.Core</Name>
+      <Name>MEI.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Fly01.Financeiro.DAL\MEI.Financeiro.DAL.csproj">
       <Project>{599fc6f5-a443-4d81-81cb-6dfd2abff728}</Project>

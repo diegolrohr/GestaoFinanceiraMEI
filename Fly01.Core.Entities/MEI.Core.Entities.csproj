@@ -1,0 +1,283 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{26E9896F-EDF5-4E59-9E0F-627C70E2E59E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Fly01.Core.Entities</RootNamespace>
+    <AssemblyName>Fly01.Core.Entities</AssemblyName>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>6</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>6</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MongoDB.Bson, Version=2.4.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MongoDB.Bson.2.4.4\lib\net45\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver, Version=2.4.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MongoDB.Driver.2.4.4\lib\net45\MongoDB.Driver.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver.Core, Version=2.4.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MongoDB.Driver.Core.2.4.4\lib\net45\MongoDB.Driver.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation">
+      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.0.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Domains\Commons\AjusteManual.cs" />
+    <Compile Include="Domains\Commons\AliquotaSimplesNacional.cs" />
+    <Compile Include="Domains\Commons\RollbackFinanceiroCompraVenda.cs" />
+    <Compile Include="Domains\Commons\Pais.cs" />
+    <Compile Include="Domains\Commons\KitItem.cs" />
+    <Compile Include="Domains\Commons\Kit.cs" />
+    <Compile Include="Domains\Commons\Ncm.cs" />
+    <Compile Include="Domains\Commons\NFeImportacao.cs" />
+    <Compile Include="Domains\Commons\NFeImportacaoCobranca.cs" />
+    <Compile Include="Domains\Commons\NFeImportacaoProduto.cs" />
+    <Compile Include="Domains\Commons\CentroCusto.cs" />
+    <Compile Include="Domains\Commons\ConfiguracaoPersonalizacao.cs" />
+    <Compile Include="Domains\Commons\ResponseDadosBancariosStone.cs" />
+    <Compile Include="Domains\Commons\ResponseConfiguracaoStone.cs" />
+    <Compile Include="Domains\Commons\ResponseConsultaTotalStone.cs" />
+    <Compile Include="Domains\Commons\ResponseAutenticacaoStone.cs" />
+    <Compile Include="Domains\Commons\ResponseAntecipacaoStone.cs" />
+    <Compile Include="Domains\Commons\Arquivo.cs" />
+    <Compile Include="Domains\Commons\ArquivoRetornoCnab.cs" />
+    <Compile Include="Domains\Commons\AntecipacaoStone.cs" />
+    <Compile Include="Domains\Commons\StoneTokenBase.cs" />
+    <Compile Include="Domains\Commons\MovimentoPedidoCompra.cs" />
+    <Compile Include="Domains\Commons\OrdemServicoItemBase.cs" />
+    <Compile Include="Domains\Commons\OrdemServicoItem.cs" />
+    <Compile Include="Domains\Commons\OrdemServicoItemServico.cs" />
+    <Compile Include="Domains\Commons\ParametroOrdemServico.cs" />
+    <Compile Include="Domains\Commons\StoneAntecipacaoRecebiveis.cs" />
+    <Compile Include="Domains\Commons\TemplateBoleto.cs" />
+    <Compile Include="Domains\Commons\TotalOrdemServico.cs" />
+    <Compile Include="Domains\Enum\TipoCRT.cs" />
+    <Compile Include="Domains\Enum\ObjetoDeManutencao.cs" />
+    <Compile Include="Domains\Enum\OrigemMercadoria.cs" />
+    <Compile Include="Domains\Enum\StatusCartaCorrecao.cs" />
+    <Compile Include="Domains\Enum\TipoAtualizacaoValor.cs" />
+    <Compile Include="Domains\Enum\TipoEnquadramentoEmpresa.cs" />
+    <Compile Include="Domains\Enum\TipoFatorConversao.cs" />
+    <Compile Include="Domains\Enum\StatusOrdemServico.cs" />
+    <Compile Include="Domains\Commons\OrdemServico.cs" />
+    <Compile Include="Domains\Commons\OrdemServicoManutencao.cs" />
+    <Compile Include="Domains\Commons\OrdemServicoItemProduto.cs" />
+    <Compile Include="Domains\Enum\TipoEspecie.cs" />
+    <Compile Include="Domains\Enum\TipoFaixaReceitaBruta.cs" />
+    <Compile Include="Domains\Enum\SocketMessageType.cs" />
+    <Compile Include="Domains\Enum\TipoContaFinanceiraVM.cs" />
+    <Compile Include="Domains\Enum\TipoNfeComplementar.cs" />
+    <Compile Include="Domains\Commons\NFeEntrada.cs" />
+    <Compile Include="Domains\Commons\NFeProdutoEntrada.cs" />
+    <Compile Include="Domains\Commons\NotaFiscalCartaCorrecaoEntrada.cs" />
+    <Compile Include="Domains\Commons\NotaFiscalEntrada.cs" />
+    <Compile Include="Domains\Commons\NotaFiscalItemEntrada.cs" />
+    <Compile Include="Domains\Commons\NotaFiscalItemTributacaoEntrada.cs" />
+    <Compile Include="Domains\Enum\TipoItem.cs" />
+    <Compile Include="Domains\Enum\TipoSituacaoEspecialNFS.cs" />
+    <Compile Include="Domains\Enum\TipoTributacaoNFS.cs" />
+    <Compile Include="Domains\NoSQL\AvaliacaoApp.cs" />
+    <Compile Include="Domains\Commons\ArquivoRemessa.cs" />
+    <Compile Include="Domains\Commons\Banco.cs" />
+    <Compile Include="Domains\Commons\NotaFiscalCartaCorrecao.cs" />
+    <Compile Include="Domains\Commons\Categoria.cs" />
+    <Compile Include="Domains\Commons\CertificadoDigital.cs" />
+    <Compile Include="Domains\Commons\Cest.cs" />
+    <Compile Include="Domains\Commons\Cfop.cs" />
+    <Compile Include="Domains\Commons\Cidade.cs" />
+    <Compile Include="Domains\Commons\Cnab.cs" />
+    <Compile Include="Domains\Commons\ConciliacaoBancaria.cs" />
+    <Compile Include="Domains\Commons\ConciliacaoBancariaItem.cs" />
+    <Compile Include="Domains\Commons\ConciliacaoBancariaItemContaFinanceira.cs" />
+    <Compile Include="Domains\Commons\ConciliacaoBancariaTransacao.cs" />
+    <Compile Include="Domains\Commons\CondicaoParcelamento.cs" />
+    <Compile Include="Domains\Commons\CondicaoParcelamentoParcela.cs" />
+    <Compile Include="Domains\Commons\CondicaoParcelamentoSimulacao.cs" />
+    <Compile Include="Domains\Commons\ConfiguracaoNotificacaoFinanceiro.cs" />
+    <Compile Include="Domains\Commons\ContaBancaria.cs" />
+    <Compile Include="Domains\Commons\ContaFinanceira.cs" />
+    <Compile Include="Domains\Commons\ContaFinanceiraBaixaMultipla.cs" />
+    <Compile Include="Domains\Commons\ContaFinanceiraBaixa.cs" />
+    <Compile Include="Domains\Commons\ContaFinanceiraRenegociacao.cs" />
+    <Compile Include="Domains\Commons\ContaPagar.cs" />
+    <Compile Include="Domains\Commons\ContaReceber.cs" />
+    <Compile Include="Domains\Commons\DadosContato.cs" />
+    <Compile Include="Domains\Commons\DadosEndereco.cs" />
+    <Compile Include="Domains\Commons\EnquadramentoLegalIPI.cs" />
+    <Compile Include="Domains\Commons\Entidade.cs" />
+    <Compile Include="Domains\Commons\Estado.cs" />
+    <Compile Include="Domains\Commons\Extrato.cs" />
+    <Compile Include="Domains\Commons\ExtratoContaSaldo.cs" />
+    <Compile Include="Domains\Commons\ExtratoDetalhe.cs" />
+    <Compile Include="Domains\Commons\ExtratoHistoricoSaldo.cs" />
+    <Compile Include="Domains\Commons\Feriado.cs" />
+    <Compile Include="Domains\Commons\FluxoCaixa.cs" />
+    <Compile Include="Domains\Commons\FluxoCaixaProjecao.cs" />
+    <Compile Include="Domains\Commons\FluxoCaixaSaldo.cs" />
+    <Compile Include="Domains\Commons\FormaPagamento.cs" />
+    <Compile Include="Domains\Commons\GrupoProduto.cs" />
+    <Compile Include="Domains\Commons\GrupoTributario.cs" />
+    <Compile Include="Domains\Commons\Inventario.cs" />
+    <Compile Include="Domains\Commons\InventarioItem.cs" />
+    <Compile Include="Domains\Commons\Iss.cs" />
+    <Compile Include="Domains\Commons\MonitorNF.cs" />
+    <Compile Include="Domains\Commons\MovimentacaoFinanceira.cs" />
+    <Compile Include="Domains\Commons\MovimentacaoFinanceiraPorCategoria.cs" />
+    <Compile Include="Domains\Commons\MovimentoEstoque.cs" />
+    <Compile Include="Domains\Commons\MovimentoOrdemVenda.cs" />
+    <Compile Include="Domains\Commons\Nbs.cs" />
+    <Compile Include="Domains\Commons\Agenda.cs" />
+    <Compile Include="Domains\Commons\NFe.cs" />
+    <Compile Include="Domains\Commons\NFeProduto.cs" />
+    <Compile Include="Domains\Commons\NFSe.cs" />
+    <Compile Include="Domains\Commons\NFSeServico.cs" />
+    <Compile Include="Domains\Commons\NotaFiscal.cs" />
+    <Compile Include="Domains\Commons\NotaFiscalItem.cs" />
+    <Compile Include="Domains\Commons\NotaFiscalItemTributacao.cs" />
+    <Compile Include="Domains\Commons\Orcamento.cs" />
+    <Compile Include="Domains\Commons\OrcamentoItem.cs" />
+    <Compile Include="Domains\Commons\OrdemCompra.cs" />
+    <Compile Include="Domains\Commons\OrdemCompraItem.cs" />
+    <Compile Include="Domains\Commons\OrdemVenda.cs" />
+    <Compile Include="Domains\Commons\OrdemVendaItem.cs" />
+    <Compile Include="Domains\Commons\OrdemVendaProduto.cs" />
+    <Compile Include="Domains\Commons\OrdemVendaServico.cs" />
+    <Compile Include="Domains\Commons\ParametroTributario.cs" />
+    <Compile Include="Domains\Commons\Pedido.cs" />
+    <Compile Include="Domains\Commons\PedidoItem.cs" />
+    <Compile Include="Domains\Commons\PedidoProdutoEstoqueNegativo.cs" />
+    <Compile Include="Domains\Commons\Pessoa.cs" />
+    <Compile Include="Domains\Commons\PosicaoAtual.cs" />
+    <Compile Include="Domains\Commons\Produto.cs" />
+    <Compile Include="Domains\Commons\ProdutoMovimentado.cs" />
+    <Compile Include="Domains\Commons\RenegociacaoContaFinanceira.cs" />
+    <Compile Include="Domains\Commons\RenegociacaoContaFinanceiraOrigem.cs" />
+    <Compile Include="Domains\Commons\RenegociacaoContaFinanceiraRenegociada.cs" />
+    <Compile Include="Domains\Commons\SaldoHistorico.cs" />
+    <Compile Include="Domains\Commons\NotaFiscalInutilizada.cs" />
+    <Compile Include="Domains\Commons\SerieNotaFiscal.cs" />
+    <Compile Include="Domains\Commons\Servico.cs" />
+    <Compile Include="Domains\Commons\SubstituicaoTributaria.cs" />
+    <Compile Include="Domains\Commons\TipoMovimento.cs" />
+    <Compile Include="Domains\Commons\TotalPedidoNotaFiscal.cs" />
+    <Compile Include="Domains\Commons\TotalTributacao.cs" />
+    <Compile Include="Domains\Commons\TransferenciaFinanceira.cs" />
+    <Compile Include="Domains\Commons\UnidadeMedida.cs" />
+    <Compile Include="Domains\DomainBase.cs" />
+    <Compile Include="Domains\Enum\DateGroupType.cs" />
+    <Compile Include="Domains\Enum\InventarioStatus.cs" />
+    <Compile Include="Domains\Enum\StatusArquivoRemessa.cs" />
+    <Compile Include="Domains\Enum\StatusCnab.cs" />
+    <Compile Include="Domains\Enum\StatusConciliado.cs" />
+    <Compile Include="Domains\Enum\StatusBoletoBancaria.cs" />
+    <Compile Include="Domains\Enum\StatusContaBancaria.cs" />
+    <Compile Include="Domains\Enum\StatusNFSTSS.cs" />
+    <Compile Include="Domains\Enum\StatusNotaFiscal.cs" />
+    <Compile Include="Domains\Enum\StatusOrdemCompra.cs" />
+    <Compile Include="Domains\Enum\Status.cs" />
+    <Compile Include="Domains\Enum\HorarioVerao.cs" />
+    <Compile Include="Domains\Enum\TipoAmbiente.cs" />
+    <Compile Include="Domains\Enum\TipoCodigoBanco.cs" />
+    <Compile Include="Domains\Enum\TipoCarteira.cs" />
+    <Compile Include="Domains\Enum\TipoCfop.cs" />
+    <Compile Include="Domains\Enum\TipoCFPS.cs" />
+    <Compile Include="Domains\Enum\TipoContaFinanceira.cs" />
+    <Compile Include="Domains\Enum\TipoEntradaSaida.cs" />
+    <Compile Include="Domains\Enum\TipoCompraVenda.cs" />
+    <Compile Include="Domains\Enum\TipoFormaPagamento.cs" />
+    <Compile Include="Domains\Enum\TipoFrete.cs" />
+    <Compile Include="Domains\Enum\TipoIndicacaoInscricaoEstadual.cs" />
+    <Compile Include="Domains\Enum\TipoLayoutNFSE.cs" />
+    <Compile Include="Domains\Enum\TipoMensagemNFSE.cs" />
+    <Compile Include="Domains\Enum\TipoModalidade.cs" />
+    <Compile Include="Domains\Enum\TipoHorarioTSS.cs" />
+    <Compile Include="Domains\Enum\TipoNotaFiscal.cs" />
+    <Compile Include="Domains\Enum\TipoOperacaoSerieNotaFiscal.cs" />
+    <Compile Include="Domains\Enum\TipoOrdemCompra.cs" />
+    <Compile Include="Domains\Enum\TipoOrdemVenda.cs" />
+    <Compile Include="Domains\Enum\TipoPagamentoImpostoISS.cs" />
+    <Compile Include="Domains\Enum\TipoPeriodicidade.cs" />
+    <Compile Include="Domains\Enum\TipoPessoa.cs" />
+    <Compile Include="Domains\Enum\TipoPresencaComprador.cs" />
+    <Compile Include="Domains\Enum\TipoProduto.cs" />
+    <Compile Include="Domains\Enum\TipoRegimeEspecialTributacao.cs" />
+    <Compile Include="Domains\Enum\TipoRenegociacaoCalculo.cs" />
+    <Compile Include="Domains\Enum\TipoRenegociacaoValorDiferenca.cs" />
+    <Compile Include="Domains\Enum\TipoServico.cs" />
+    <Compile Include="Domains\Enum\TipoSimulacao.cs" />
+    <Compile Include="Domains\Enum\TipoSubstituicaoTributaria.cs" />
+    <Compile Include="Domains\Enum\TipoTributacaoICMS.cs" />
+    <Compile Include="Domains\Enum\TipoTributacaoIPI.cs" />
+    <Compile Include="Domains\Enum\TipoTributacaoISS.cs" />
+    <Compile Include="Domains\Enum\TipoTributacaoPISCOFINS.cs" />
+    <Compile Include="Domains\Enum\TipoVersaoNFe.cs" />
+    <Compile Include="Domains\NoSQL\LogIntegracaoRabbitMQ.cs" />
+    <Compile Include="Domains\NoSQL\LogRecordEvent.cs" />
+    <Compile Include="Domains\NoSQL\LogServiceBusEvent.cs" />
+    <Compile Include="Domains\NoSQL\RecordBaseMongoDB.cs" />
+    <Compile Include="Domains\PlataformaBase.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Fly01.Core.Helpers\MEI.Core.Helpers.csproj">
+      <Project>{D3EE1325-9A1D-4620-853B-822D88105147}</Project>
+      <Name>MEI.Core.Helpers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fly01.Core.Notifications\MEI.Core.Notifications.csproj">
+      <Project>{89c80f58-c490-4c34-b04e-7c43f5f09951}</Project>
+      <Name>MEI.Core.Notifications</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+</Project>

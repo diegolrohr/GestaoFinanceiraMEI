@@ -94,17 +94,17 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Fly01.Core.Entities\Fly01.Core.Entities.csproj">
+    <ProjectReference Include="..\Fly01.Core.Entities\MEI.Core.Entities.csproj">
       <Project>{26E9896F-EDF5-4E59-9E0F-627C70E2E59E}</Project>
-      <Name>Fly01.Core.Entities</Name>
+      <Name>MEI.Core.Entities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Fly01.Core.Helpers\Fly01.Core.Helpers.csproj">
+    <ProjectReference Include="..\Fly01.Core.Helpers\MEI.Core.Helpers.csproj">
       <Project>{D3EE1325-9A1D-4620-853B-822D88105147}</Project>
-      <Name>Fly01.Core.Helpers</Name>
+      <Name>MEI.Core.Helpers</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Fly01.Core.Notifications\Fly01.Core.Notifications.csproj">
+    <ProjectReference Include="..\Fly01.Core.Notifications\MEI.Core.Notifications.csproj">
       <Project>{89c80f58-c490-4c34-b04e-7c43f5f09951}</Project>
-      <Name>Fly01.Core.Notifications</Name>
+      <Name>MEI.Core.Notifications</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

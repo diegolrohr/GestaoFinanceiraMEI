@@ -71,7 +71,6 @@
     <Compile Include="Domains\Commons\NFeImportacao.cs" />
     <Compile Include="Domains\Commons\NFeImportacaoCobranca.cs" />
     <Compile Include="Domains\Commons\NFeImportacaoProduto.cs" />
-    <Compile Include="Domains\Commons\ConfiguracaoPersonalizacao.cs" />
     <Compile Include="Domains\Commons\MovimentoPedidoCompra.cs" />
     <Compile Include="Domains\Commons\OrdemServicoItemBase.cs" />
     <Compile Include="Domains\Commons\OrdemServicoItem.cs" />

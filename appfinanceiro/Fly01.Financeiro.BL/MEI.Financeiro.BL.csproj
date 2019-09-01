@@ -47,7 +47,6 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ConfiguracaoPersonalizacaoBL.cs" />
     <Compile Include="CategoriaBL.cs" />
     <Compile Include="ConciliacaoBancariaBuscarExistentesBL.cs" />
     <Compile Include="ConciliacaoBancariaTransacaoBL.cs" />

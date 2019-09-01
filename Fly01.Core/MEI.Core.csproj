@@ -65,7 +65,6 @@
     <Compile Include="ViewModels\Presentation\Commons\MinhaContaResponseVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\MinhaContaCodigoBarrasVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\MinhaContaVM.cs" />
-    <Compile Include="ViewModels\Presentation\Commons\ConfiguracaoPersonalizacaoVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\UtilizarKitVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\ProdutoServicoVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\ISSVM.cs" />

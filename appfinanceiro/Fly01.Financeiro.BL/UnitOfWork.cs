@@ -122,10 +122,7 @@ namespace Fly01.Financeiro.BL
         public MovimentacaoPorCategoriaBL MovimentacaoPorCategoriaBL => movimentacaoPorCategoriaBL ?? (movimentacaoPorCategoriaBL = new MovimentacaoPorCategoriaBL(ReceitaPorCategoriaBL, DespesaPorCategoriaBL));
         
         private DashboardBL dashboardBL;
-        public DashboardBL DashboardBL => dashboardBL ?? (dashboardBL = new DashboardBL(Context, ContaFinanceiraBL, ContaFinanceiraBaixaBL));
-
-        private ConfiguracaoPersonalizacaoBL configuracaoPersonalizacaoBL;
-        public ConfiguracaoPersonalizacaoBL ConfiguracaoPersonalizacaoBL => configuracaoPersonalizacaoBL ?? (configuracaoPersonalizacaoBL = new ConfiguracaoPersonalizacaoBL(Context));
+        public DashboardBL DashboardBL => dashboardBL ?? (dashboardBL = new DashboardBL(Context, ContaFinanceiraBL, ContaFinanceiraBaixaBL));       
 
         private RollbackFinanceiroCompraVendaBL rollbackFinanceiroCompraVendaBL;
         public RollbackFinanceiroCompraVendaBL RollbackFinanceiroCompraVendaBL => rollbackFinanceiroCompraVendaBL ?? (rollbackFinanceiroCompraVendaBL = new RollbackFinanceiroCompraVendaBL(Context, ContaReceberBL, ContaPagarBL, RenegociacaoContaFinanceiraOrigemBL, ContaFinanceiraRenegociacaoBL));

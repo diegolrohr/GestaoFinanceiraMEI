@@ -59,7 +59,6 @@
     <Compile Include="Controllers\Api\ApiDomainController.cs" />
     <Compile Include="Controllers\Api\ApiPlataformaController.cs" />
     <Compile Include="Controllers\Api\VerificaRenegociacaoPedidoCompraVendaController.cs" />
-    <Compile Include="Controllers\Api\ConfiguracaoPersonalizacaoController.cs" />
     <Compile Include="Controllers\Api\DashboardContaReceberDiaController.cs" />
     <Compile Include="Controllers\Api\FluxoCaixaRecalcularSaldosController.cs" />
     <Compile Include="Controllers\Api\RelatorioContaFinanceiraController.cs" />

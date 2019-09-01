@@ -134,7 +134,6 @@
     <Compile Include="Application\WebAPIConfig.cs" />
     <Compile Include="Commons\AppVM.cs" />
     <Compile Include="Commons\ElementUIHelper.cs" />
-    <Compile Include="Controllers\ConfiguracaoPersonalizacaoBaseController.cs" />
     <Compile Include="Controllers\AssertionResponseVM.cs" />
     <Compile Include="Controllers\CertificadoDigitalBaseController.cs" />
     <Compile Include="Controllers\AliquotaSimplesNacionalBaseController.cs" />
@@ -157,7 +156,6 @@
     <Compile Include="Controllers\CondicaoParcelamentoBaseController.cs" />
     <Compile Include="Controllers\FormaPagamentoBaseController.cs" />
     <Compile Include="Controllers\PrimitiveBaseController.cs" />
-    <Compile Include="Controllers\ProdutoBaseController.cs" />
     <Compile Include="Controllers\GrupoProdutoBaseController.cs" />
     <Compile Include="Controllers\GrupoTributarioBaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />

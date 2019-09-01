@@ -19,8 +19,6 @@
 
         public const string FinanceiroCobranca = "85B55038-1BD1-42B7-81C5-12D3CF6E7AD3";
         public const string FinanceiroCobrancaBoletos = "B4787890-4341-46E7-B19A-BAC6D3E62739";
-        public const string FinanceiroCobrancaArquivosRemessa = "45A31DCC-0C21-4AD7-BFBF-799E13501684";
-        public const string FinanceiroCobrancaArquivoRetorno = "31F5A98D-11AB-4502-A5AE-A0751719F37B";
 
         public const string FinanceiroCadastros = "911D340C-BFCA-46B1-88B1-1E277375F3CE";
         public const string FinanceiroCadastrosClientes = "5BE563F6-034D-497E-B59A-89A128D9A374";

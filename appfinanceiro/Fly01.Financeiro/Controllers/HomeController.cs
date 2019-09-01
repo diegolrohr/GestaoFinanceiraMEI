@@ -304,17 +304,6 @@ namespace Fly01.Financeiro.Controllers
 
                 new SidebarUIMenu()
                 {
-                    Class = ResourceHashConst.FinanceiroCobranca,
-                    Label = "Cobrança",
-                    Items = new List<LinkUI>
-                    {
-                        new LinkUI() { Class = ResourceHashConst.FinanceiroCobrancaBoletos, Label = "Boletos", OnClick = @Url.Action("List", "Cnab")},
-                        new LinkUI() { Class = ResourceHashConst.FinanceiroCobrancaArquivosRemessa, Label = "Arquivos de remessa", OnClick = @Url.Action("List", "ArquivoRemessa")},
-                        new LinkUI() { Class = ResourceHashConst.FinanceiroCobrancaArquivoRetorno, Label = "Arquivo de retorno", OnClick = @Url.Action("Form", "ArquivoRetorno")}
-                    }
-                },
-                new SidebarUIMenu()
-                {
                     Class = ResourceHashConst.FinanceiroCadastros,
                     Label = "Cadastros",
                     Items = new List<LinkUI>

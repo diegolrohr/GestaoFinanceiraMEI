@@ -44,9 +44,6 @@ namespace Fly01.Financeiro.API
             builder.EntitySet<MovimentacaoFinanceiraPorCategoria>("movimentacaoporcategoria");
             builder.EntitySet<ConfiguracaoNotificacaoFinanceiro>("configuracaonotificacao");
             builder.EntityType<ConfiguracaoNotificacaoFinanceiro>().Property(c => c.HoraEnvio).AsTimeOfDay();
-            builder.EntitySet<Cnab>("cnab");
-            builder.EntitySet<ArquivoRemessa>("arquivoremessa");
-            builder.EntitySet<TemplateBoleto>("templateboleto");
             builder.EntitySet<StoneAntecipacaoRecebiveis>("stoneantecipacaorecebiveis");
             builder.EntitySet<CentroCusto>("centrocusto");
             builder.EntitySet<Pais>("pais");

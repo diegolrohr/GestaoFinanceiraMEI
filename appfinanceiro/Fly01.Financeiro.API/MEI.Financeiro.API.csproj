@@ -58,20 +58,16 @@
   <ItemGroup>
     <Compile Include="Controllers\Api\ApiDomainController.cs" />
     <Compile Include="Controllers\Api\ApiPlataformaController.cs" />
-    <Compile Include="Controllers\Api\ArquivoRemessaController.cs" />
     <Compile Include="Controllers\Api\VerificaRenegociacaoPedidoCompraVendaController.cs" />
     <Compile Include="Controllers\Api\ConfiguracaoPersonalizacaoController.cs" />
     <Compile Include="Controllers\Api\DashboardContaReceberDiaController.cs" />
     <Compile Include="Controllers\Api\PaisController.cs" />
     <Compile Include="Controllers\Api\FluxoCaixaRecalcularSaldosController.cs" />
     <Compile Include="Controllers\Api\RelatorioContaFinanceiraController.cs" />
-    <Compile Include="Controllers\Api\ArquivoRetornoController.cs" />
-    <Compile Include="Controllers\Api\BoletoController.cs" />
     <Compile Include="Controllers\Api\CentroCustoController.cs" />
     <Compile Include="Controllers\Api\MinhaContaController.cs" />
     <Compile Include="Controllers\Api\StoneAntecipacaoRecebiveisController.cs" />
     <Compile Include="Controllers\Api\StoneController.cs" />
-    <Compile Include="Controllers\Api\CnabController.cs" />
     <Compile Include="Controllers\Api\AvaliacaoAppController.cs" />
     <Compile Include="Controllers\Api\ContaFinanceiraBaixaMultiplaController.cs" />
     <Compile Include="Controllers\Api\ContaPagarParcelasController.cs" />
@@ -84,7 +80,6 @@
     <Compile Include="Controllers\Api\DashboardCategoriaController.cs" />
     <Compile Include="Controllers\Api\DashboardStatusController.cs" />
     <Compile Include="Controllers\Api\SendTaskController.cs" />
-    <Compile Include="Controllers\Api\TemplateBoletoController.cs" />
     <Compile Include="Controllers\Api\TipoIndicacaoInscricaoEstadualController .cs" />
     <Compile Include="Controllers\Api\CategoriaController.cs" />
     <Compile Include="Controllers\Api\CidadeApiController.cs" />

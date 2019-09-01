@@ -34,9 +34,6 @@ namespace Fly01.Financeiro.BL
         private PessoaBL pessoaBL;
         public PessoaBL PessoaBL => pessoaBL ?? (pessoaBL = new PessoaBL(Context, EstadoBL, CidadeBL));
 
-        private TemplateBoletoBL templateBoletoBL;
-        public TemplateBoletoBL TemplateBoletoBL => templateBoletoBL ?? (templateBoletoBL = new TemplateBoletoBL(Context));
-
         private ContaBancariaBL contaBancariaBL;
         public ContaBancariaBL ContaBancariaBL => contaBancariaBL ?? (contaBancariaBL = new ContaBancariaBL(Context, SaldoHistoricoBL, BancoBL));
 
@@ -126,12 +123,6 @@ namespace Fly01.Financeiro.BL
 
         private ConfiguracaoNotificacaoBL configuracaoNotificacaoBL;
         public ConfiguracaoNotificacaoBL ConfiguracaoNotificacaoBL => configuracaoNotificacaoBL ?? (configuracaoNotificacaoBL = new ConfiguracaoNotificacaoBL(Context));
-
-        private CnabBL cnabBL;
-        public CnabBL CnabBL => cnabBL ?? (cnabBL = new CnabBL(Context, ContaReceberBL, ContaBancariaBL));
-
-        private ArquivoRemessaBL arquivoRemessa;
-        public ArquivoRemessaBL ArquivoRemessaBL => arquivoRemessa ?? (arquivoRemessa = new ArquivoRemessaBL(Context));
         
         private DashboardBL dashboardBL;
         public DashboardBL DashboardBL => dashboardBL ?? (dashboardBL = new DashboardBL(Context, ContaFinanceiraBL, ContaFinanceiraBaixaBL));

@@ -55,18 +55,14 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="Views\CnabItem\Functions\" />
     <Folder Include="Views\RelatorioContaPagar\Functions\" />
     <Folder Include="Views\RelatorioContaReceber\Functions\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\ArquivoRetornoController.cs" />
-    <Compile Include="Controllers\ArquivoRemessaController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AssistenciaRemotaController.cs" />
     <Compile Include="Controllers\AutoCompleteController.cs" />
     <Compile Include="Controllers\AvaliacaoAppController.cs" />
-    <Compile Include="Controllers\Base\BoletoController.cs" />
     <Compile Include="Controllers\Base\ContaFinanceiraController.cs" />
     <Compile Include="Controllers\CentroCustoController.cs" />
     <Compile Include="Controllers\ConfiguracaoPersonalizacaoController.cs" />
@@ -75,7 +71,6 @@
     <Compile Include="Controllers\RelatorioContaFinanceiraController.cs" />
     <Compile Include="Controllers\RelatorioController.cs" />
     <Compile Include="Controllers\MinhaContaController.cs" />
-    <Compile Include="Controllers\CnabController.cs" />
     <Compile Include="Controllers\ContaFinanceiraBaixaMultiplaController.cs" />
     <Compile Include="Controllers\ContaFinanceiraBaixaMultiplaCPController.cs" />
     <Compile Include="Controllers\ContaFinanceiraBaixaMultiplaCRController.cs" />
@@ -85,7 +80,6 @@
     <Compile Include="Controllers\DashboardContaPagarController.cs" />
     <Compile Include="Controllers\DashboardContaReceberController.cs" />
     <Compile Include="Controllers\DespesaPorCategoriaController.cs" />
-    <Compile Include="Controllers\CnabItemController.cs" />
     <Compile Include="Controllers\ReceitaPorCategoriaController.cs" />
     <Compile Include="Controllers\CategoriaController.cs" />
     <Compile Include="Controllers\DemonstrativoResultadoExercicioController.cs" />
@@ -101,7 +95,6 @@
     <Compile Include="Controllers\FornecedorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\StoneController.cs" />
-    <Compile Include="Controllers\TemplateBoletoController.cs" />
     <Compile Include="Controllers\TransportadoraController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -136,10 +129,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="SqlServerTypes\Loader.cs" />
-    <Compile Include="ViewModel\ArquivoRetornoCnabVM.cs" />
-    <Compile Include="ViewModel\ArquivoRemessaVM.cs" />
     <Compile Include="ViewModel\BancoVM.cs" />
-    <Compile Include="ViewModel\CnabVM.cs" />
     <Compile Include="ViewModel\ConciliacaoBancariaItemContaFinanceiraVM.cs" />
     <Compile Include="ViewModel\ConciliacaoBancariaItemVM.cs" />
     <Compile Include="ViewModel\ConciliacaoBancariaTransacaoVM.cs" />
@@ -163,7 +153,6 @@
     <Compile Include="ViewModel\MovimentacaoVM.cs" />
     <Compile Include="ViewModel\PlatformEnvironmentVM.cs" />
     <Compile Include="ViewModel\ReceitaPorCategoriaVM.cs" />
-    <Compile Include="ViewModel\TemplateBoletoVM.cs" />
     <Compile Include="ViewModel\TransferenciaCadastroVM.cs" />
     <Compile Include="ViewModel\TransferenciaVM.cs" />
   </ItemGroup>
@@ -348,9 +337,6 @@
     <Content Include="Views\ContaFinanceiraBaixaMultiplaCP\Functions\_fnCancelar.cshtml" />
     <Content Include="Views\ContaPagar\Functions\_fnBaixaMultipla.cshtml" />
     <Content Include="Views\Extrato\Functions\_fnImprimirExtrato.cshtml" />
-    <Content Include="Views\ArquivoRemessa\Functions\_fnFormReadyRemessa.cshtml" />
-    <Content Include="Views\Cnab\Functions\_fnShowListCnab.cshtml" />
-    <Content Include="Views\Cnab\Functions\_fnGerarArquivoRemessa.cshtml" />
     <Content Include="Views\ContaBancaria\Functions\_fnChangeBanco.cshtml" />
     <Content Include="Views\ContaBancaria\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\ContaBancaria\Functions\_fnAfterLoad.cshtml" />
@@ -358,29 +344,18 @@
     <Content Include="Views\Shared\Functions\_fnSelectsAllClick.cshtml" />
     <Content Include="Views\DashboardContaReceber\Functions\_fnUpdateData.cshtml" />
     <Content Include="Views\DashboardContaPagar\Functions\_fnUpdateData.cshtml" />
-    <Content Include="Views\ArquivoRetorno\Functions\_fnImportarArquivo.cshtml" />
-    <Content Include="Views\ArquivoRetorno\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\Cliente\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\Shared\Functions\_fnImprimirBoleto.cshtml" />
     <Content Include="Views\Shared\Functions\_fnRenderEnum.cshtml" />
     <Content Include="Views\Shared\Functions\_fnBuscaCEP.cshtml" />
-    <Content Include="Views\ArquivoRemessa\Functions\_fnFormReady.cshtml" />
-    <Content Include="Views\Cnab\Functions\_fnFormReadyCnab.cshtml" />
-    <Content Include="Views\ArquivoRemessa\Functions\_fnListContasArquivo.cshtml" />
-    <Content Include="Views\Cnab\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\ContaReceber\Functions\_fnModalImprimeBoleto.cshtml" />
     <Content Include="Views\ContaBancaria\Functions\_fnChangeCheckCedende.cshtml" />
     <Content Include="Views\Transportadora\Functions\_fnCarregarArquivo.cshtml" />
     <Content Include="Views\Transportadora\Functions\_fnImportaCadastroFormReady.cshtml" />
     <Content Include="Views\Transportadora\ImportaCadastro.cshtml" />
     <Content Include="Views\Shared\Functions\_fnChangeEstado.cshtml" />
-    <Content Include="Views\Cnab\Functions\_fnModalEmail.cshtml" />
-    <Content Include="Views\Cnab\Functions\_fnEnviarEmail.cshtml" />
-    <Content Include="Views\ArquivoRetorno\Functions\_fnBaixarContas.cshtml" />
     <Content Include="Views\ContaReceber\Functions\_fnFormModalContaBancaria.cshtml" />
     <Content Include="Views\ContaReceber\Functions\_fnImprimirBoletoDeContasReceber.cshtml" />
-    <Content Include="Views\Cnab\Functions\_fnImprimirBoletoCnab.cshtml" />
-    <Content Include="Views\ArquivoRemessa\Functions\_fnGerarArquivo.cshtml" />
     <Content Include="Views\Extrato\Functions\_fnContaBancariaDrawCB.cshtml" />
     <Content Include="Views\Shared\NotAllow.cshtml" />
     <Content Include="Views\ContaPagar\Functions\_fnChkBaixar.cshtml" />
@@ -401,17 +376,8 @@
     <Content Include="Views\Fornecedor\Functions\_fnCitySelect.cshtml" />
     <Content Include="Views\ContaPagar\Functions\_fnSalvarEnovo.cshtml" />
     <Content Include="Views\ContaReceber\Functions\_fnSalvarEnovo.cshtml" />
-    <Content Include="Views\Cnab\Functions\_fnSendManyMails.cshtml" />
-    <Content Include="Views\TemplateBoleto\Functions\_fnFormReady.cshtml" />
-    <Content Include="Views\TemplateBoleto\Functions\_fnSalvaTemplate.cshtml" />
-    <Content Include="Views\Cnab\Functions\_fnFormReadyModal.cshtml" />
-    <Content Include="Views\Cnab\Functions\_fnCancelarEnvioEmail.cshtml" />
     <Content Include="Views\ContaPagar\Functions\_fnChangeInput.cshtml" />
     <Content Include="Views\ContaReceber\Functions\_fnChangeInput.cshtml" />
-    <Content Include="Views\Cnab\Functions\_fnChangeInput.cshtml" />
-    <Content Include="Views\Cnab\Functions\_fnAddFilter.cshtml" />
-    <Content Include="Views\Cnab\Functions\_fnRemoveFilter.cshtml" />
-    <Content Include="Views\Cnab\Functions\_fnUpdateDataFinal.cshtml" />
     <Content Include="Views\Stone\Functions\_fnGetToken.cshtml" />
     <Content Include="Views\Stone\Functions\_fnReadyRecebiveis.cshtml" />
     <Content Include="Views\Stone\Functions\_fnRangeChange.cshtml" />
@@ -435,7 +401,6 @@
     <Content Include="Views\ContaReceber\Functions\_fnSimulaParcelamento.cshtml" />
     <Content Include="Views\CondicaoParcelamento\Functions\_fnFormReadyOnDemandContaReceber.cshtml" />
     <Content Include="Views\Shared\Functions\_fnImprimirRelatorioCPCR.cshtml" />
-    <Content Include="Views\ArquivoRemessa\Functions\_fnDownloadArquivo.cshtml" />
     <Content Include="Views\Relatorio\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\ConfiguracaoPersonalizacao\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\ConfiguracaoPersonalizacao\Index.cshtml" />

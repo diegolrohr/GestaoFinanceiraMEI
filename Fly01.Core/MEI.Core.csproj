@@ -96,7 +96,6 @@
     <Compile Include="ViewModels\Presentation\Commons\ContasPagarDoDiaVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\ContasReceberDoDiaVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\DashboardFinanceiroVM.cs" />
-    <Compile Include="ViewModels\BoletoVM.cs" />
     <Compile Include="ViewModels\BuscaCepVM.cs" />
     <Compile Include="ViewModels\Presentation\AppsInstaladoslataformaVM.cs" />
     <Compile Include="ViewModels\Presentation\AppsInstaladosVM.cs" />

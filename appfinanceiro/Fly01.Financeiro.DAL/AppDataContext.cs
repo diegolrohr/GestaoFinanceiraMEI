@@ -89,9 +89,6 @@ namespace Fly01.Financeiro.API.Models.DAL
         public DbSet<RenegociacaoContaFinanceiraOrigem> RenegociacaoContasFinanceirasOrigem { get; set; }
         public DbSet<RenegociacaoContaFinanceiraRenegociada> RenegociacaoContasFinanceirasRenegociadas { get; set; }
         public DbSet<ConfiguracaoNotificacaoFinanceiro> ConfiguracaoNotificacao { get; set; }
-        public DbSet<Cnab> Cnab { get; set; }
-        public DbSet<ArquivoRemessa> ArquivoRemessa { get; set; }
-        public DbSet<TemplateBoleto> TemplateBoleto { get; set; }
         public DbSet<StoneAntecipacaoRecebiveis> StoneAntecipacaoRecebiveis { get; set; }
         public DbSet<CentroCusto> CentroCustos { get; set; }
         public DbSet<Pais> Paises { get; set; }

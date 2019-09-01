@@ -79,7 +79,6 @@
     <Compile Include="Domains\Commons\ResponseConsultaTotalStone.cs" />
     <Compile Include="Domains\Commons\ResponseAutenticacaoStone.cs" />
     <Compile Include="Domains\Commons\ResponseAntecipacaoStone.cs" />
-    <Compile Include="Domains\Commons\ArquivoRetornoCnab.cs" />
     <Compile Include="Domains\Commons\AntecipacaoStone.cs" />
     <Compile Include="Domains\Commons\StoneTokenBase.cs" />
     <Compile Include="Domains\Commons\MovimentoPedidoCompra.cs" />
@@ -88,7 +87,6 @@
     <Compile Include="Domains\Commons\OrdemServicoItemServico.cs" />
     <Compile Include="Domains\Commons\ParametroOrdemServico.cs" />
     <Compile Include="Domains\Commons\StoneAntecipacaoRecebiveis.cs" />
-    <Compile Include="Domains\Commons\TemplateBoleto.cs" />
     <Compile Include="Domains\Commons\TotalOrdemServico.cs" />
     <Compile Include="Domains\Enum\TipoCRT.cs" />
     <Compile Include="Domains\Enum\ObjetoDeManutencao.cs" />
@@ -116,7 +114,6 @@
     <Compile Include="Domains\Enum\TipoSituacaoEspecialNFS.cs" />
     <Compile Include="Domains\Enum\TipoTributacaoNFS.cs" />
     <Compile Include="Domains\NoSQL\AvaliacaoApp.cs" />
-    <Compile Include="Domains\Commons\ArquivoRemessa.cs" />
     <Compile Include="Domains\Commons\Banco.cs" />
     <Compile Include="Domains\Commons\NotaFiscalCartaCorrecao.cs" />
     <Compile Include="Domains\Commons\Categoria.cs" />
@@ -124,7 +121,6 @@
     <Compile Include="Domains\Commons\Cest.cs" />
     <Compile Include="Domains\Commons\Cfop.cs" />
     <Compile Include="Domains\Commons\Cidade.cs" />
-    <Compile Include="Domains\Commons\Cnab.cs" />
     <Compile Include="Domains\Commons\ConciliacaoBancaria.cs" />
     <Compile Include="Domains\Commons\ConciliacaoBancariaItem.cs" />
     <Compile Include="Domains\Commons\ConciliacaoBancariaItemContaFinanceira.cs" />
@@ -205,7 +201,6 @@
     <Compile Include="Domains\Enum\DateGroupType.cs" />
     <Compile Include="Domains\Enum\InventarioStatus.cs" />
     <Compile Include="Domains\Enum\StatusArquivoRemessa.cs" />
-    <Compile Include="Domains\Enum\StatusCnab.cs" />
     <Compile Include="Domains\Enum\StatusConciliado.cs" />
     <Compile Include="Domains\Enum\StatusBoletoBancaria.cs" />
     <Compile Include="Domains\Enum\StatusContaBancaria.cs" />

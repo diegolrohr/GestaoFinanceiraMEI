@@ -1,10 +1,8 @@
-﻿using Microsoft.ApplicationInsights.Extensibility;
-using Microsoft.OData.Edm;
+﻿using Microsoft.OData.Edm;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using System.Configuration;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
@@ -14,8 +12,6 @@ namespace Fly01.Core.API.Application
     public abstract class GlobalWebAPIApplication : HttpApplication
     {
         protected abstract IEdmModel GetEdmModel();
-        protected abstract string GetInstrumentationKeyAppInsights();
-        protected abstract Task RunServiceBusApps();
 
         protected virtual void SetAppDefaults()
         {
@@ -67,11 +63,6 @@ namespace Fly01.Core.API.Application
                 WebAPIConfig.Register(config);
             });
 
-            string instrumentationKeyAppInsights = GetInstrumentationKeyAppInsights();
-            if(!string.IsNullOrWhiteSpace(instrumentationKeyAppInsights))
-                TelemetryConfiguration.Active.InstrumentationKey = instrumentationKeyAppInsights;
-
-            RunServiceBusApps();
             SetAppDefaults();
         }
     }

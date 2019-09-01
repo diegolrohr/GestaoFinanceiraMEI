@@ -9,7 +9,6 @@ namespace Fly01.Financeiro.API.Controllers.Api
     {
         public FormaPagamentoController()
         {
-            MustProduceMessageServiceBus = true;
         }
     }
 }

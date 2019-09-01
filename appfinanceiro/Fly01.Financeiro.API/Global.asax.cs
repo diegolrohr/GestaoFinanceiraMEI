@@ -1,12 +1,7 @@
 ﻿using Fly01.Core.API.Application;
 using Microsoft.OData.Edm;
-using System.Configuration;
-using System.Threading.Tasks;
 using System.Web.OData.Builder;
-using Fly01.Core;
 using Fly01.Core.Entities.Domains.Commons;
-using Fly01.Core.ServiceBus;
-using System.Reflection;
 
 namespace Fly01.Financeiro.API
 {
@@ -46,15 +41,5 @@ namespace Fly01.Financeiro.API
             builder.EnableLowerCamelCase();
             return builder.GetEdmModel();
         }
-
-        protected override string GetInstrumentationKeyAppInsights() => ConfigurationManager.AppSettings["InstrumentationKeyAppInsights"];
-
-        protected override Task RunServiceBusApps() => Task.Factory.StartNew(() =>
-        {
-            SetupEnvironment.Create(RabbitConfig.VirtualHostApps);
-            SetupEnvironment.Create(RabbitConfig.VirtualHostIntegracao);
-
-            new Consumer(Assembly.Load("Fly01.Financeiro.BL").GetType("Fly01.Financeiro.BL.UnitOfWork")).Consume();
-        });
     }
 }

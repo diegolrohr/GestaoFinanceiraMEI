@@ -3,7 +3,6 @@ using System.Web.OData.Routing;
 using Fly01.Core.Entities.Domains.Commons;
 using System.Threading.Tasks;
 using System.Web.Http;
-using Fly01.Core.ServiceBus;
 
 namespace Fly01.Financeiro.API.Controllers.Api
 {
@@ -29,9 +28,6 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 UnitOfWork.ContaFinanceiraBaixaBL.Insert(baixa);
                 await UnitSave();
             }
-
-            if (MustProduceMessageServiceBus)
-                Producer<ContaFinanceiraBaixaMultipla>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity, RabbitConfig.EnHttpVerb.POST);
 
             return Created(entity);
         }

@@ -268,10 +268,6 @@
       <Project>{8B4C697E-B194-4AA1-9BA5-7AD8C2D19AE7}</Project>
       <Name>MEI.Core.Rest</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Fly01.Core.ServiceBus\MEI.Core.ServiceBus.csproj">
-      <Project>{321E2009-C06C-4848-9DF5-1EF9D17AD61C}</Project>
-      <Name>MEI.Core.ServiceBus</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Fly01.Core.Entities\MEI.Core.Entities.csproj">
       <Project>{26E9896F-EDF5-4E59-9E0F-627C70E2E59E}</Project>
       <Name>MEI.Core.Entities</Name>

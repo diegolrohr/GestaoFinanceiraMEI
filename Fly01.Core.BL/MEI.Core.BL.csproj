@@ -97,10 +97,6 @@
       <Project>{89c80f58-c490-4c34-b04e-7c43f5f09951}</Project>
       <Name>MEI.Core.Notifications</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Fly01.Core.ServiceBus\MEI.Core.ServiceBus.csproj">
-      <Project>{321E2009-C06C-4848-9DF5-1EF9D17AD61C}</Project>
-      <Name>MEI.Core.ServiceBus</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

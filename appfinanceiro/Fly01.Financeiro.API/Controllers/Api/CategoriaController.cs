@@ -11,8 +11,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
     public class CategoriaController : ApiPlataformaController<Categoria, CategoriaBL>
     {
         public CategoriaController()
-        {
-            MustProduceMessageServiceBus = true;
+        {            
         }
 
         [EnableQuery(EnsureStableOrdering = false)]

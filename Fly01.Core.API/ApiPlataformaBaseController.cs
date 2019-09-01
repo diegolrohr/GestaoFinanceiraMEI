@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Fly01.Core.Notifications;
 using System.Web.OData.Routing;
 using System.Web.Http.ModelBinding;
-using Fly01.Core.ServiceBus;
 using System.Data.Entity.Infrastructure;
 
 namespace Fly01.Core.API
@@ -22,7 +21,6 @@ namespace Fly01.Core.API
         protected abstract TEntity Find(object id);
         protected abstract void AfterSave(TEntity entity);
 
-        public bool MustProduceMessageServiceBus { get; set; }
         public bool MustExecuteAfterSave { get; set; }
 
         [EnableQuery(PageSize = 50, MaxTop = 50, MaxExpansionDepth = 10)]
@@ -61,9 +59,6 @@ namespace Fly01.Core.API
 
             await UnitSave();
 
-            if (MustProduceMessageServiceBus)
-                Producer<TEntity>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity, RabbitConfig.EnHttpVerb.POST);
-
             if (MustExecuteAfterSave)
                 AfterSave(entity);
 
@@ -95,9 +90,6 @@ namespace Fly01.Core.API
             try
             {
                 await UnitSave();
-
-                if (MustProduceMessageServiceBus)
-                    Producer<TEntity>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity, RabbitConfig.EnHttpVerb.PUT);
 
                 if (MustExecuteAfterSave)
                     AfterSave(entity);
@@ -133,11 +125,6 @@ namespace Fly01.Core.API
                 AddErrorModelState(ModelState);
 
             await UnitSave();
-
-            if (MustProduceMessageServiceBus)
-                Producer<TEntity>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity, RabbitConfig.EnHttpVerb.DELETE);
-
-            
 
             return StatusCode(HttpStatusCode.NoContent);
         }

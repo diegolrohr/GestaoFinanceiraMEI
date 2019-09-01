@@ -3,7 +3,6 @@ using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
 using Fly01.Core.Notifications;
-using Fly01.Core.ServiceBus;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.Financeiro.API.Models.DAL;
 using System;
@@ -52,9 +51,7 @@ namespace Fly01.Financeiro.BL
                 //post bemacash ignorando condicao parcelamento
                 if (entity.Id == default(Guid)) entity.Id = Guid.NewGuid();
 
-                rpc = new RpcClient();
-                numero = int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaReceber}"));
-                //numero = All.Max(x => x.Numero) + 1;
+                numero = All.Max(x => x.Numero) + 1;
                 entity.Numero = numero;
 
                 base.Insert(entity);
@@ -74,11 +71,8 @@ namespace Fly01.Financeiro.BL
 
         private void GravaParcelamentoRepeticoes(ContaReceber entity, bool repetir, List<CondicaoParcelamentoParcela> condicoesParcelamento, Guid contaFinanceiraPrincipal)
         {
-
-            rpc = new RpcClient();
             var numero = default(int);
-            numero = int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaReceber},add={condicoesParcelamento.Count}"));
-            //numero = All.Max(x => x.Numero) + 1;
+            numero = All.Max(x => x.Numero) + 1;
             numero -= condicoesParcelamento.Count;
 
             for (int iParcela = 0; iParcela < condicoesParcelamento.Count; iParcela++)
@@ -125,11 +119,9 @@ namespace Fly01.Financeiro.BL
         }
 
         private void GravaRepeticoes(ContaReceber entity, Guid contaFinanceiraPrincipal, ContaReceber itemContaReceber)
-        {
-            rpc = new RpcClient();
+        {             
             var numero = default(int);
-            //numero = All.Max(x => x.Numero) + 1;
-            numero = int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaReceber},add={entity.NumeroRepeticoes ?? 1}"));
+            numero = All.Max(x => x.Numero) + 1;
             numero -= entity.NumeroRepeticoes ?? numero;
 
             for (int iRepeticao = 1; iRepeticao <= entity.NumeroRepeticoes; iRepeticao++)

@@ -1,7 +1,6 @@
 ﻿using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Notifications;
-using Fly01.Core.ServiceBus;
 using Fly01.Financeiro.BL;
 using System;
 using System.Collections.Generic;
@@ -21,7 +20,6 @@ namespace Fly01.Financeiro.API.Controllers.Api
     {
         public ContaReceberController()
         {
-            MustProduceMessageServiceBus = true;
         }
 
         [EnableQuery(PageSize = 1000, MaxTop = 1000, MaxExpansionDepth = 10)]
@@ -64,8 +62,6 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 {
                     Delete(child);
                     await unitOfWork.Save();
-                    if (MustProduceMessageServiceBus)
-                        Producer<ContaReceber>.Send(child.GetType().Name, AppUser, PlataformaUrl, child, RabbitConfig.EnHttpVerb.DELETE);
                 }
             }
 
@@ -111,9 +107,6 @@ namespace Fly01.Financeiro.API.Controllers.Api
             try
             {
                 await UnitSave();
-
-                if (MustProduceMessageServiceBus)
-                    Producer<ContaReceber>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity, RabbitConfig.EnHttpVerb.PUT);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -150,9 +143,6 @@ namespace Fly01.Financeiro.API.Controllers.Api
                     Update(item);
 
                     await unitOfWork.Save();
-
-                    if (MustProduceMessageServiceBus)
-                        Producer<ContaReceber>.Send(item.GetType().Name, AppUser, PlataformaUrl, item, RabbitConfig.EnHttpVerb.PUT);
                 }
             }
             return Ok();

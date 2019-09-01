@@ -8,13 +8,13 @@ namespace Fly01.Financeiro.API.Models.DAL
 {
     public class AppDataContext : AppDataContextBase
     {
-        public AppDataContext(ContextInitialize initialize) : base("FinanceiroConnection")
+        public AppDataContext(ContextInitialize initialize) : base("GestaoFinanceiraMEIConnection")
         {
             AppUser = initialize.AppUser;
             PlataformaUrl = initialize.PlataformaUrl;
         }
 
-        public AppDataContext() : base("FinanceiroConnection")
+        public AppDataContext() : base("GestaoFinanceiraMEIConnection")
         {
             
         }

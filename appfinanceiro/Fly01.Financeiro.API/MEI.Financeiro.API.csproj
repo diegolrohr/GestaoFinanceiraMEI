@@ -65,8 +65,6 @@
     <Compile Include="Controllers\Api\FluxoCaixaRecalcularSaldosController.cs" />
     <Compile Include="Controllers\Api\RelatorioContaFinanceiraController.cs" />
     <Compile Include="Controllers\Api\MinhaContaController.cs" />
-    <Compile Include="Controllers\Api\StoneAntecipacaoRecebiveisController.cs" />
-    <Compile Include="Controllers\Api\StoneController.cs" />
     <Compile Include="Controllers\Api\AvaliacaoAppController.cs" />
     <Compile Include="Controllers\Api\ContaFinanceiraBaixaMultiplaController.cs" />
     <Compile Include="Controllers\Api\ContaPagarParcelasController.cs" />

@@ -92,7 +92,6 @@
     <Compile Include="Controllers\FormaPagamentoController.cs" />
     <Compile Include="Controllers\FornecedorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\StoneController.cs" />
     <Compile Include="Controllers\TransportadoraController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -372,15 +371,6 @@
     <Content Include="Views\ContaReceber\Functions\_fnSalvarEnovo.cshtml" />
     <Content Include="Views\ContaPagar\Functions\_fnChangeInput.cshtml" />
     <Content Include="Views\ContaReceber\Functions\_fnChangeInput.cshtml" />
-    <Content Include="Views\Stone\Functions\_fnGetToken.cshtml" />
-    <Content Include="Views\Stone\Functions\_fnReadyRecebiveis.cshtml" />
-    <Content Include="Views\Stone\Functions\_fnRangeChange.cshtml" />
-    <Content Include="Views\Stone\Functions\_fnSimular.cshtml" />
-    <Content Include="Views\Stone\Functions\_fnEfetivar.cshtml" />
-    <Content Include="Views\Stone\AntecipacaoEfetivar.cshtml" />
-    <Content Include="Views\Stone\Functions\_fnLogout.cshtml" />
-    <Content Include="Views\Stone\Functions\_fnReadyLogin.cshtml" />
-    <Content Include="Views\Stone\Functions\_fnExcluir.cshtml" />
     <Content Include="Views\Account\LoginSSO.cshtml" />
     <Content Include="Views\MinhaConta\Functions\_fnAtualizar.cshtml" />
     <Content Include="Views\MinhaConta\Functions\_fnRenderBoletos.cshtml" />

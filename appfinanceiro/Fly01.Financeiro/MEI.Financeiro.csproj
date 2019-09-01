@@ -96,7 +96,6 @@
     <Compile Include="Controllers\ContaReceberController.cs" />
     <Compile Include="Controllers\EmailNotificationController.cs" />
     <Compile Include="Controllers\ExtratoController.cs" />
-    <Compile Include="Controllers\FeriadoController.cs" />
     <Compile Include="Controllers\FluxoCaixaController.cs" />
     <Compile Include="Controllers\FormaPagamentoController.cs" />
     <Compile Include="Controllers\FornecedorController.cs" />
@@ -156,7 +155,6 @@
     <Compile Include="ViewModel\ExtratoContaSaldoVM.cs" />
     <Compile Include="ViewModel\ExtratoDetalheVM.cs" />
     <Compile Include="ViewModel\ExtratoHistoricoSaldoVM.cs" />
-    <Compile Include="ViewModel\FeriadoVM.cs" />
     <Compile Include="ViewModel\FluxoCaixaProjecaoVM.cs" />
     <Compile Include="ViewModel\FluxoCaixaSaldoVM.cs" />
     <Compile Include="ViewModel\ImprimirExtratoBancarioVM.cs" />

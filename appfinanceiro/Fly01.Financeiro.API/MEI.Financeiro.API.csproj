@@ -121,7 +121,6 @@
     <Compile Include="Controllers\Api\ContaBancariaController.cs" />
     <Compile Include="Controllers\Api\ContaReceberController.cs" />
     <Compile Include="Controllers\Api\ContaPagarController.cs" />
-    <Compile Include="Controllers\Api\FeriadoController.cs" />
     <Compile Include="Controllers\Api\BancoController.cs" />
     <Compile Include="Controllers\Api\PessoaController.cs" />
     <Compile Include="Controllers\Api\TransferenciaController.cs" />

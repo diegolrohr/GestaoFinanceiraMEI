@@ -40,9 +40,6 @@ namespace Fly01.Financeiro.BL
         private ContaBancariaBL contaBancariaBL;
         public ContaBancariaBL ContaBancariaBL => contaBancariaBL ?? (contaBancariaBL = new ContaBancariaBL(Context, SaldoHistoricoBL, BancoBL));
 
-        private FeriadoBL feriadoBL;
-        public FeriadoBL FeriadoBL => feriadoBL ?? (feriadoBL = new FeriadoBL(Context));
-
         private CategoriaBL categoriaBL;
         public CategoriaBL CategoriaBL => categoriaBL ?? (categoriaBL = new CategoriaBL(Context, ContaFinanceiraBL));
 

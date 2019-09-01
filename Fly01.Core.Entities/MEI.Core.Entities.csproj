@@ -150,7 +150,6 @@
     <Compile Include="Domains\Commons\ExtratoContaSaldo.cs" />
     <Compile Include="Domains\Commons\ExtratoDetalhe.cs" />
     <Compile Include="Domains\Commons\ExtratoHistoricoSaldo.cs" />
-    <Compile Include="Domains\Commons\Feriado.cs" />
     <Compile Include="Domains\Commons\FluxoCaixa.cs" />
     <Compile Include="Domains\Commons\FluxoCaixaProjecao.cs" />
     <Compile Include="Domains\Commons\FluxoCaixaSaldo.cs" />

@@ -22,7 +22,6 @@ namespace Fly01.Financeiro.API
             builder.EntitySet<Pessoa>("pessoa");
             builder.EntitySet<Arquivo>("arquivo");
             builder.EntitySet<ContaBancaria>("contabancaria");
-            builder.EntitySet<Feriado>("feriado");
             builder.EntitySet<Categoria>("categoria");
             builder.EntitySet<Banco>("banco");
             builder.EntitySet<ContaPagar>("contapagar");

@@ -47,7 +47,6 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ArquivoBL.cs" />
     <Compile Include="ArquivoRemessaBL.cs" />
     <Compile Include="ArquivoRetornoBL.cs" />
     <Compile Include="BoletoBL.cs" />

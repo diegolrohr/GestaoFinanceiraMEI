@@ -148,7 +148,6 @@
     <Compile Include="Controllers\AssistenciaRemotaBaseController.cs" />
     <Compile Include="Controllers\SerieNotaFiscalBaseController.cs" />
     <Compile Include="OperationRoleAttribute.cs" />
-    <Compile Include="Commons\ImportacaoArquivoHelper.cs" />
     <Compile Include="Commons\LayoutHelper.cs" />
     <Compile Include="Commons\AutoCompleteHelper.cs" />
     <Compile Include="Commons\ImportHelper.cs" />

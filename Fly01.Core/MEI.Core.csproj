@@ -100,7 +100,6 @@
     <Compile Include="ViewModels\BuscaCepVM.cs" />
     <Compile Include="ViewModels\Presentation\AppsInstaladoslataformaVM.cs" />
     <Compile Include="ViewModels\Presentation\AppsInstaladosVM.cs" />
-    <Compile Include="ViewModels\Presentation\ArquivoVM.cs" />
     <Compile Include="ViewModels\Presentation\AvaliacaoAppVM.cs" />
     <Compile Include="ViewModels\Presentation\BatchDataVM.cs" />
     <Compile Include="ViewModels\Presentation\BatchEntryVM.cs" />

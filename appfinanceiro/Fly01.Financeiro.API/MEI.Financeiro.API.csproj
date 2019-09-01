@@ -88,7 +88,6 @@
     <Compile Include="Controllers\Api\TipoIndicacaoInscricaoEstadualController .cs" />
     <Compile Include="Controllers\Api\CategoriaController.cs" />
     <Compile Include="Controllers\Api\CidadeApiController.cs" />
-    <Compile Include="Controllers\Api\ArquivoController.cs" />
     <Compile Include="Controllers\Api\ConciliacaoBancariaItemContaFinanceiraController.cs" />
     <Compile Include="Controllers\Api\ConciliacaoBancariaItemController.cs" />
     <Compile Include="Controllers\Api\ConciliacaoBancariaBuscarExistentesController.cs" />

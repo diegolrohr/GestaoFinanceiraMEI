@@ -353,21 +353,6 @@ namespace Fly01.Core.Presentation.Controllers
             return target;
         }
 
-        public JsonResult ImportaArquivo(string pConteudo)
-        {
-            try
-            {
-                var arquivoVM = ImportacaoArquivoHelper.ImportaProduto($"Cadastro de Produtos", pConteudo);
-                return JsonResponseStatus.GetJson(arquivoVM);
-
-            }
-            catch (Exception ex)
-            {
-                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
-                return JsonResponseStatus.GetFailure(error.Message);
-            }
-        }
-
         public virtual ActionResult ImportarProduto()
         {
             return View();

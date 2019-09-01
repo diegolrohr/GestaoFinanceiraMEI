@@ -16,7 +16,6 @@ namespace Fly01.Financeiro.BL
     {
         protected EstadoBL EstadoBL;
         protected CidadeBL CidadeBL;
-        protected ArquivoBL ArquivoBL;
 
         public PessoaBL(AppDataContext context, EstadoBL uFBL, CidadeBL cidadeBL) : base(context)
         {
@@ -195,39 +194,6 @@ namespace Fly01.Financeiro.BL
             }
 
             base.Insert(entity);
-        }
-
-        public string Importa(Guid id)
-        {
-            var arquivo = ArquivoBL.All.FirstOrDefault(x => x.Id == id && x.Cadastro == "Pessoa");
-            var conteudo = arquivo?.Conteudo;
-
-            return conteudo;
-        }
-
-        public static List<string> ColunasParaImportacao()
-        {
-            return new List<string>
-            {
-                "Nome",
-                "TipoDocumento",
-                "CPFCNPJ",
-                "CEP",
-                "Endereco",
-                "Numero",
-                "Complemento",
-                "Bairro",
-                "Telefone",
-                "Celular",
-                "Contato",
-                "Observacao",
-                "Email",
-                "NomeComercial",
-                "Cliente",
-                "Fornecedor",
-                "Transportadora",
-                "Vendedor"
-            };
         }
 
         public void Persist()

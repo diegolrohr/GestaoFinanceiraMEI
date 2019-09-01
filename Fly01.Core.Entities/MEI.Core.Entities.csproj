@@ -79,7 +79,6 @@
     <Compile Include="Domains\Commons\ResponseConsultaTotalStone.cs" />
     <Compile Include="Domains\Commons\ResponseAutenticacaoStone.cs" />
     <Compile Include="Domains\Commons\ResponseAntecipacaoStone.cs" />
-    <Compile Include="Domains\Commons\Arquivo.cs" />
     <Compile Include="Domains\Commons\ArquivoRetornoCnab.cs" />
     <Compile Include="Domains\Commons\AntecipacaoStone.cs" />
     <Compile Include="Domains\Commons\StoneTokenBase.cs" />

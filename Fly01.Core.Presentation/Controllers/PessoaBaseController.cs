@@ -390,21 +390,6 @@ namespace Fly01.Core.Presentation.Controllers
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
         }
 
-        public JsonResult ImportaArquivo(string conteudo)
-        {
-            try
-            {
-                var arquivoVM = ImportacaoArquivoHelper.ImportaArquivo($"Cadastro de {LabelTitle}", conteudo);
-                return JsonResponseStatus.GetJson(arquivoVM);
-
-            }
-            catch (Exception ex)
-            {
-                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
-                return JsonResponseStatus.GetFailure(error.Message);
-            }
-
-        }
         protected virtual List<TooltipUI> GetHelpers()
         {
             return null;

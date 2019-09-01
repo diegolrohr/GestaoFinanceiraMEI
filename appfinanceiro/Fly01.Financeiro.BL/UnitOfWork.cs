@@ -52,9 +52,6 @@ namespace Fly01.Financeiro.BL
         private ContaReceberBL contaReceberBL;
         public ContaReceberBL ContaReceberBL => contaReceberBL ?? (contaReceberBL = new ContaReceberBL(Context, CondicaoParcelamentoBL, ContaFinanceiraBaixaBL, PessoaBL));
 
-        private ArquivoBL arquivoBL;
-        public ArquivoBL ArquivoBL => arquivoBL ?? (arquivoBL = new ArquivoBL(Context, PessoaBL));
-
         private EstadoBL estadoBL;
         public EstadoBL EstadoBL => estadoBL ?? (estadoBL = new EstadoBL(Context));
 

@@ -83,8 +83,6 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public TipoSituacaoEspecialNFS SituacaoEspecialNFS { get; set; }
 
-        public Guid? PaisId { get; set; }
-
         [StringLength(20)]
         public string IdEstrangeiro { get; set; }
 
@@ -93,7 +91,5 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         [JsonIgnore]
         public virtual Estado Estado { get; set; }
-
-        public virtual Pais Pais { get; set; }
     }
 }

@@ -48,7 +48,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ConfiguracaoPersonalizacaoBL.cs" />
-    <Compile Include="PaisBL.cs" />
     <Compile Include="CategoriaBL.cs" />
     <Compile Include="ConciliacaoBancariaBuscarExistentesBL.cs" />
     <Compile Include="ConciliacaoBancariaTransacaoBL.cs" />

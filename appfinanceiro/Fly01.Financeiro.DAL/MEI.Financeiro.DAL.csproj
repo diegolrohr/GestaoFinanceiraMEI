@@ -300,7 +300,6 @@
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer5.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer7.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer6.cs" />
-    <Compile Include="Migrations\DataInitializer\PaisDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\EstadoDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\BancoDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\Contract\IDataInitializer.cs" />

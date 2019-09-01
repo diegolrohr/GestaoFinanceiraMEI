@@ -42,7 +42,6 @@ namespace Fly01.Financeiro.API
             builder.EntitySet<MovimentacaoFinanceiraPorCategoria>("receitaporcategoria");
             builder.EntitySet<MovimentacaoFinanceiraPorCategoria>("despesaporcategoria");
             builder.EntitySet<MovimentacaoFinanceiraPorCategoria>("movimentacaoporcategoria");
-            builder.EntitySet<Pais>("pais");
             builder.EntitySet<ConfiguracaoPersonalizacao>("configuracaopersonalizacao");
 
             builder.EnableLowerCamelCase();

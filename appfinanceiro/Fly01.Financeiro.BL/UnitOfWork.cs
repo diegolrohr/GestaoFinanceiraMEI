@@ -124,9 +124,6 @@ namespace Fly01.Financeiro.BL
         private DashboardBL dashboardBL;
         public DashboardBL DashboardBL => dashboardBL ?? (dashboardBL = new DashboardBL(Context, ContaFinanceiraBL, ContaFinanceiraBaixaBL));
 
-        private PaisBL paisBL;
-        public PaisBL PaisBL => paisBL ?? (paisBL = new PaisBL(Context));
-
         private ConfiguracaoPersonalizacaoBL configuracaoPersonalizacaoBL;
         public ConfiguracaoPersonalizacaoBL ConfiguracaoPersonalizacaoBL => configuracaoPersonalizacaoBL ?? (configuracaoPersonalizacaoBL = new ConfiguracaoPersonalizacaoBL(Context));
 

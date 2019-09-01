@@ -136,7 +136,7 @@
       <Project>{26E9896F-EDF5-4E59-9E0F-627C70E2E59E}</Project>
       <Name>MEI.Core.Entities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Fly01.Core.Entities\Fly01.Core.Entities.csproj">
+    <ProjectReference Include="..\..\Fly01.Core.Entities\MEI.Core.Entities.csproj">
       <Project>{26E9896F-EDF5-4E59-9E0F-627C70E2E59E}</Project>
       <Name>Fly01.Core.Entities</Name>
     </ProjectReference>

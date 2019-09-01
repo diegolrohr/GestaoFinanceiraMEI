@@ -47,7 +47,6 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="CentroCustoBL.cs" />
     <Compile Include="ConfiguracaoPersonalizacaoBL.cs" />
     <Compile Include="PaisBL.cs" />
     <Compile Include="ConfiguracaoNotificacaoBL.cs" />

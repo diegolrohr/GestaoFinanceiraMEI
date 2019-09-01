@@ -31,7 +31,7 @@ namespace Fly01.Financeiro.Controllers
     {
         public ContaPagarController()
         {
-            ExpandProperties = "centroCusto($select=descricao),condicaoParcelamento($select=descricao,qtdParcelas,condicoesParcelamento),pessoa($select=nome),categoria($select=descricao),formaPagamento($select=descricao),centroCusto";
+            ExpandProperties = "condicaoParcelamento($select=descricao,qtdParcelas,condicoesParcelamento),pessoa($select=nome),categoria($select=descricao),formaPagamento($select=descricao)";
         }
 
         public override ActionResult ImprimirRecibo(Guid id)
@@ -508,17 +508,6 @@ namespace Fly01.Financeiro.Controllers
                 DataUrlPost = Url.Action("NovaCategoriaDespesa")
             }, ResourceHashConst.FinanceiroCadastrosCategoria));
 
-            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
-            {
-                Id = "centroCustoId",
-                Class = "col s12 m4",
-                Label = "Centro de Custo",
-                DataUrl = @Url.Action("CentroCusto", "AutoComplete"),
-                LabelId = "centroCustoDescricao",
-                DataUrlPostModal = Url.Action("FormModal", "CentroCusto"),
-                DataPostField = "descricao"
-            }, ResourceHashConst.FinanceiroCadastrosCentroCustos));
-
             config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
 
             config.Elements.Add(new InputCheckboxUI
@@ -806,17 +795,6 @@ namespace Fly01.Financeiro.Controllers
                 LabelId = "categoriaDescricao",
                 DataUrlPost = Url.Action("NovaCategoriaDespesa")
             }, ResourceHashConst.FinanceiroCadastrosCategoria));
-
-            config2.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
-            {
-                Id = "centroCustoId",
-                Class = "col s12 l6",
-                Label = "Centro de Custo",
-                DataUrl = @Url.Action("CentroCusto", "AutoComplete"),
-                LabelId = "centroCustoDescricao",
-                DataUrlPostModal = Url.Action("FormModal", "CentroCusto"),
-                DataPostField = "descricao"
-            }, ResourceHashConst.FinanceiroCadastrosCentroCustos));
 
             cfg.Content.Add(config2);
 

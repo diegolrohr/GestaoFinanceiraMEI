@@ -656,17 +656,6 @@ namespace Fly01.Financeiro.Controllers
                 DataUrlPost = tipoConta == "ContaPagar" ? Url.Action("NovaCategoriaDespesa") : Url.Action("NovaCategoriaReceita")
             }, ResourceHashConst.FinanceiroCadastrosCategoria));
 
-            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
-            {
-                Id = "centroCustoId",
-                Class = "col s12 m6",
-                Label = "Centro de Custo",
-                DataUrl = @Url.Action("CentroCusto", "AutoComplete"),
-                LabelId = "centroCustoDescricao",
-                DataUrlPostModal = Url.Action("FormModal", "CentroCusto"),
-                DataPostField = "descricao"
-            }, ResourceHashConst.FinanceiroCadastrosCentroCustos));
-
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
 

@@ -43,8 +43,5 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         [JsonProperty("tipoContaFinanceira")]
         public string TipoContaFinanceira { get; set; }
-
-        [JsonProperty("centroCustoId")]
-        public Guid? CentroCustoId { get; set; }
     }
 }

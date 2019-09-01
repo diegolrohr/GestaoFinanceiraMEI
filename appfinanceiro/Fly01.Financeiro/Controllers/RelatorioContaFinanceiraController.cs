@@ -147,15 +147,6 @@ namespace Fly01.Financeiro.Controllers
                 LabelId = "categoriaDescricao",
             }, ResourceHashConst.FinanceiroCadastrosCategoria));
 
-            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
-            {
-                Id = "centroCustoId",
-                Class = "col s12 m4",
-                Label = "Centro de Custo",
-                DataUrl = @Url.Action("CentroCusto", "AutoComplete"),
-                LabelId = "centroCustoDescricao",
-            }, ResourceHashConst.FinanceiroCadastrosCentroCustos));
-
             config.Helpers.Add(new TooltipUI
             {
                 Id = "descricao",
@@ -190,7 +181,6 @@ namespace Fly01.Financeiro.Controllers
                                      Guid? formaPagamentoId,
                                      Guid? condicaoParcelamentoId,
                                      Guid? categoriaId,
-                                     Guid? centroCustoId,
                                      string descricao)
         {
             try
@@ -205,7 +195,6 @@ namespace Fly01.Financeiro.Controllers
                 { "formaPagamentoId", formaPagamentoId.ToString()},
                 { "condicaoParcelamentoId", condicaoParcelamentoId.ToString()},
                 { "categoriaId", categoriaId.ToString()},
-                { "centroCustoId", centroCustoId.ToString()},
                 { "tipoConta", tipoConta.ToString()},
                 { "descricao", descricao},
             };
@@ -243,7 +232,6 @@ namespace Fly01.Financeiro.Controllers
                                      Guid? formaPagamentoId,
                                      Guid? condicaoParcelamentoId,
                                      Guid? categoriaId,
-                                     Guid? centroCustoId,
                                      string descricao)
         {
             try
@@ -257,8 +245,7 @@ namespace Fly01.Financeiro.Controllers
                 { "pessoaId", pessoaId.ToString()},
                 { "formaPagamentoId", formaPagamentoId.ToString()},
                 { "condicaoParcelamentoId", condicaoParcelamentoId.ToString()},
-                { "categoriaId", categoriaId.ToString()},
-                { "centroCustoId", centroCustoId.ToString()},
+                { "categoriaId", categoriaId.ToString()},                
                 { "tipoConta", tipoConta.ToString()},
                 { "descricao", descricao},
             };

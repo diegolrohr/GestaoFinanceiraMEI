@@ -42,8 +42,5 @@ namespace Fly01.Financeiro.Entities.ViewModel
 
         [JsonProperty("tipoContaFinanceira")]
         public string TipoContaFinanceira { get; set; }
-
-        [JsonProperty("centroCustoId")]
-        public Guid? CentroCustoId { get; set; }
     }
 }

@@ -81,8 +81,6 @@ namespace Fly01.Core.Entities.Domains.Commons
         [ForeignKey("Pedido")]
         public Guid? PedidoId { get; set; }
 
-        public Guid? CentroCustoId { get; set; }
-
         #region FKS
         public virtual Pedido Pedido { get; set; }
         public virtual Pessoa Fornecedor { get; set; }
@@ -90,7 +88,6 @@ namespace Fly01.Core.Entities.Domains.Commons
         public virtual CondicaoParcelamento CondicaoParcelamento { get; set; }
         public virtual FormaPagamento FormaPagamento { get; set; }
         public virtual Categoria Categoria { get; set; }
-        public virtual CentroCusto CentroCusto { get; set; }
         #endregion
     }
 }

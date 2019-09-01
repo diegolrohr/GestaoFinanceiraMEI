@@ -137,7 +137,6 @@
     <Compile Include="Controllers\ConfiguracaoPersonalizacaoBaseController.cs" />
     <Compile Include="Controllers\AssertionResponseVM.cs" />
     <Compile Include="Controllers\CertificadoDigitalBaseController.cs" />
-    <Compile Include="Controllers\CentroCustoBaseController.cs" />
     <Compile Include="Controllers\AliquotaSimplesNacionalBaseController.cs" />
     <Compile Include="Controllers\KitItemBaseController.cs" />
     <Compile Include="Controllers\NotaFiscalInutilizadaBaseController.cs" />

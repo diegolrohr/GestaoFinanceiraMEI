@@ -94,9 +94,6 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [JsonProperty("numero")]
         public int Numero { get; set; }
 
-        [JsonProperty("centroCustoId")]
-        public Guid? CentroCustoId { get; set; }
-
         [JsonProperty("contaFinanceiraRepeticaoPai")]
         public virtual ContaFinanceiraVM ContaFinanceiraRepeticaoPai { get; set; }
 
@@ -117,9 +114,6 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
 
         [JsonProperty("contaBancaria")]
         public virtual ContaBancaria ContaBancaria { get; set; }
-
-        [JsonProperty("centroCusto")]
-        public virtual CentroCustoVM CentroCusto { get; set; }
 
         [JsonIgnore]
         public string Titulo { get; set; }

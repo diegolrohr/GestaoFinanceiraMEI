@@ -64,7 +64,6 @@
     <Compile Include="Controllers\Api\PaisController.cs" />
     <Compile Include="Controllers\Api\FluxoCaixaRecalcularSaldosController.cs" />
     <Compile Include="Controllers\Api\RelatorioContaFinanceiraController.cs" />
-    <Compile Include="Controllers\Api\CentroCustoController.cs" />
     <Compile Include="Controllers\Api\MinhaContaController.cs" />
     <Compile Include="Controllers\Api\StoneAntecipacaoRecebiveisController.cs" />
     <Compile Include="Controllers\Api\StoneController.cs" />

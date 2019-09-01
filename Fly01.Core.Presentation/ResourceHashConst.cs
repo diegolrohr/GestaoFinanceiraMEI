@@ -28,7 +28,6 @@
         public const string FinanceiroCadastrosCategoria = "825866CE-C89E-4D3D-B593-BF898DEA7284";
         public const string FinanceiroCadastrosFormasPagamento = "D0D55E22-5885-4CB6-82C3-120501841417";
         public const string FinanceiroCadastrosContasBancarias = "32BA1FB4-E3A7-44D8-B16E-40227890BA15";
-        public const string FinanceiroCadastrosCentroCustos = "CB84DD4D-893D-4313-8F03-35DBCECB69B5";
 
         public const string FinanceiroConfiguracoes = "27C86F80-A8BF-4DD0-B7D2-CEDC39CDD39F";
         public const string FinanceiroConfiguracoesNotificacoes = "1F555A14-2C41-46E1-8AFF-05BE0552F93D";

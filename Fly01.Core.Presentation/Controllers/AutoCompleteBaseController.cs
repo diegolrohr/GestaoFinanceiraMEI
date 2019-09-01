@@ -384,20 +384,6 @@ namespace Fly01.Core.Presentation.Controllers
             return GetJson(filterObjects);
         }
 
-        public JsonResult CentroCusto(string term)
-        {
-            var resourceName = AppDefaults.GetResourceName(typeof(CentroCustoVM));
-            var queryString = AppDefaults.GetQueryStringDefault();
-
-            queryString.AddParam("$filter", $"contains(codigo, '{term}') or contains(descricao, '{term}')");
-            queryString.AddParam("$orderby", "descricao");
-
-            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<CentroCustoVM>>(resourceName, queryString).Data
-                                select new { id = item.Id, label = item.Descricao, detail = item.Codigo};
-
-            return GetJson(filterObjects);
-        }
-
         public JsonResult AliquotaSimplesNacional(string term, string prefilter)
         {
             var resourceName = AppDefaults.GetResourceName(typeof(AliquotaSimplesNacionalVM));

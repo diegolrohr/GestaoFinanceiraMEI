@@ -59,13 +59,10 @@ namespace Fly01.Core.Entities.Domains.Commons
         [StringLength(60)]
         public string NaturezaOperacao { get; set; }
 
-        public Guid? CentroCustoId { get; set; }
-
         public virtual Estado EstadoPlacaVeiculo { get; set; }
         public virtual CondicaoParcelamento CondicaoParcelamento { get; set; }
         public virtual FormaPagamento FormaPagamento { get; set; }
         public virtual Categoria Categoria { get; set; }
         public virtual GrupoTributario GrupoTributarioPadrao { get; set; }
-        public virtual CentroCusto CentroCusto { get; set; }
     }
 }

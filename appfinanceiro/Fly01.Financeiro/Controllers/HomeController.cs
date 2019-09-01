@@ -315,32 +315,8 @@ namespace Fly01.Financeiro.Controllers
                         new LinkUI() { Class = ResourceHashConst.FinanceiroCadastrosCategoria, Label = "Categoria", OnClick = @Url.Action("List", "Categoria")},
                         new LinkUI() { Class = ResourceHashConst.FinanceiroCadastrosFormasPagamento, Label = "Formas de Pagamento",OnClick = @Url.Action("List", "FormaPagamento")},
                         new LinkUI() { Class = ResourceHashConst.FinanceiroCadastrosContasBancarias, Label = "Contas Bancárias", OnClick = @Url.Action("List", "ContaBancaria")},
-                        new LinkUI() { Class = ResourceHashConst.FinanceiroCadastrosCentroCustos, Label = "Centro de Custos", OnClick = @Url.Action("List", "CentroCusto") }
                     }
-                },
-                new SidebarUIMenu()
-                {
-                    Class = ResourceHashConst.FinanceiroConfiguracoes,
-                    Label = "Configurações",
-                    Items = new List<LinkUI>
-                    {
-                        new LinkUI() { Class = ResourceHashConst.FinanceiroConfiguracoesNotificacoes, Label = "Notificações", OnClick = @Url.Action("Form", "ConfiguracaoNotificacao")},
-                        new LinkUI() { Class = ResourceHashConst.FinanceiroConfiguracoesTemplateBoleto, Label = "Template de E-mail", OnClick = @Url.Action("Form", "TemplateBoleto")},
-                        //Personalizar Sistema não vai ter hash especifico de permissão, segundo Fraga
-                        //new LinkUI() { Class = ResourceHashConst.FinanceiroConfiguracoes, Label = "Personalizar Sistema", OnClick = @Url.Action("Form", "ConfiguracaoPersonalizacao") }
-                    }
-                },
-                new SidebarUIMenu()
-                {
-                    Class = ResourceHashConst.FinanceiroAjuda,
-                    Label = "Ajuda",
-                    Items = new List<LinkUI>
-                    {
-                        new LinkUI() { Class = ResourceHashConst.FinanceiroAjudaAssistenciaRemota, Label =  "Assistência Remota", OnClick = @Url.Action("Form", "AssistenciaRemota") },
-                        new LinkUI() { Class = ResourceHashConst.FinanceiroAjuda,Label = "Manual do Usuário", Link = "https://centraldeatendimento.totvs.com/hc/pt-br/categories/360000364572" }
-                    }
-                },
-                new SidebarUIMenu() { Class = ResourceHashConst.FinanceiroAvalieAplicativo, Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp") }
+                }
             };
             config.MenuItems.AddRange(ProcessMenuRoles(menuItems));
             #endregion

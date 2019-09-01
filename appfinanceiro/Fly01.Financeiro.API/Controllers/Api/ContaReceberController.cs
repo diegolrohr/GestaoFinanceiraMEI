@@ -145,7 +145,6 @@ namespace Fly01.Financeiro.API.Controllers.Api
                     item.PessoaId = entity.PessoaId;
                     item.CategoriaId = entity.CategoriaId;
                     item.FormaPagamentoId = entity.FormaPagamentoId;
-                    item.CentroCustoId = entity.CentroCustoId;
                     item.Observacao = entity.Observacao;
 
                     Update(item);

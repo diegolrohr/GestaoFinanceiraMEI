@@ -14,7 +14,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
     public class RelatorioContaFinanceiraController : ApiBaseController
     {
         private Func<ContaFinanceira, ImprimirListContasVM> GetDisplayData(string tipoConta, DateTime? dataInicial, DateTime? dataFinal, DateTime? dataEmissaoInicial,
-            DateTime? dataEmissaoFinal, string fornecedor, string formaPagamento, string condicaoParcelamento, string categoria, string descricao, string centroCusto)
+            DateTime? dataEmissaoFinal, string fornecedor, string formaPagamento, string condicaoParcelamento, string categoria, string descricao)
 
         {
             var filtro = "";
@@ -27,14 +27,12 @@ namespace Fly01.Financeiro.API.Controllers.Api
             filtro = dataFinal.HasValue ? filtro + "Data Vencimento Final: " + dataFinal.ToString().Substring(0, 10) + " - " : filtro;
             filtro = condicaoParcelamento != "" ? filtro + "Condição Parcelamento: " + condicaoParcelamento + " - " : filtro;
             filtro = categoria != "" ? filtro + "Categoria: " + categoria + " - " : filtro;
-            filtro = centroCusto != "" ? filtro + "Centro Custo: " + centroCusto + " - " : filtro;
 
             return x => new ImprimirListContasVM()
             {
                 Id = x.Id,
                 Descricao = x.Descricao.Length > 15 ? x.Descricao.Substring(0, 15) : x.Descricao,
                 Categoria = x.Categoria.Descricao.Length > 15 ? x.Categoria.Descricao.Substring(0, 10) : x.Categoria.Descricao,
-                CentroCusto = x.CentroCusto == null ? "" : x.CentroCusto.Descricao.Length > 13 ? x.CentroCusto.Descricao.Substring(0, 13) : x.CentroCusto.Descricao,
                 Status = x.StatusContaBancaria.ToString() == "EmAberto" ? "Em Aberto" : x.StatusContaBancaria.ToString() == "BaixadoParcialmente" ? "Baixado Parcialmente" : x.StatusContaBancaria.ToString(),
                 Valor = x.ValorPrevisto,
                 FormaPagamento = x.FormaPagamento == null ? string.Empty : x.FormaPagamento.Descricao.Length > 13 ? x.FormaPagamento.Descricao.Substring(0, 13) : x.FormaPagamento.Descricao,
@@ -60,7 +58,6 @@ namespace Fly01.Financeiro.API.Controllers.Api
                              Guid? formaPagamentoId,
                              Guid? condicaoParcelamentoId,
                              Guid? categoriaId,
-                             Guid? centroCustoId,
                              string tipoConta,
                              string descricao)
         {
@@ -74,8 +71,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 ((!formaPagamentoId.HasValue) || (x.FormaPagamentoId == formaPagamentoId)) &&
                 ((!condicaoParcelamentoId.HasValue) || (x.CondicaoParcelamentoId == condicaoParcelamentoId)) &&
                 ((!categoriaId.HasValue) || (x.CategoriaId == categoriaId)) &&
-                ((!(descricao != null)) || (x.Descricao == descricao)) &&
-                ((!centroCustoId.HasValue) || (x.CentroCustoId == centroCustoId)))
+                ((!(descricao != null)) || (x.Descricao == descricao)))
             );
 
             using (var unitOfWork = new UnitOfWork(ContextInitialize))
@@ -87,7 +83,6 @@ namespace Fly01.Financeiro.API.Controllers.Api
                     var formaPagamento = "";
                     var condicaoParcelamento = "";
                     var categoria = "";
-                    var centroCusto = "";
 
                     if (pessoaId.HasValue)
                         fornecedor = unitOfWork.PessoaBL.All.Where(x => x.Id == pessoaId).FirstOrDefault().Nome.ToString();
@@ -96,9 +91,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                     if (condicaoParcelamentoId.HasValue)
                         condicaoParcelamento = unitOfWork.CondicaoParcelamentoBL.All.Where(x => x.Id == condicaoParcelamentoId).FirstOrDefault().Descricao.ToString();
                     if (categoriaId.HasValue)
-                        categoria = unitOfWork.CategoriaBL.All.Where(x => x.Id == categoriaId).FirstOrDefault().Descricao.ToString();
-                    if (centroCustoId.HasValue)
-                        centroCusto = unitOfWork.CentroCustoBL.All.Where(x => x.Id == centroCustoId).FirstOrDefault().Descricao.ToString();
+                        categoria = unitOfWork.CategoriaBL.All.Where(x => x.Id == categoriaId).FirstOrDefault().Descricao.ToString();                    
 
                     if (tipoConta == "ContaPagar")
                     {
@@ -106,13 +99,12 @@ namespace Fly01.Financeiro.API.Controllers.Api
                            .AllIncluding(
                                x => x.FormaPagamento,
                                x => x.Pessoa,
-                               x => x.CentroCusto,
                                x => x.CondicaoParcelamento,
                                x => x.Categoria
                            ).Where(filterPredicate)
                            .Take(2000)
                            .Select(GetDisplayData(tipoConta, dataInicial, dataFinal, dataEmissaoInicial, dataEmissaoFinal,
-                           fornecedor, formaPagamento, condicaoParcelamento, categoria, descricao, centroCusto)).ToList();
+                           fornecedor, formaPagamento, condicaoParcelamento, categoria, descricao)).ToList();
 
                         if (result.Count == 0)
                         {
@@ -127,14 +119,13 @@ namespace Fly01.Financeiro.API.Controllers.Api
                         .AllIncluding(
                             x => x.FormaPagamento,
                             x => x.Pessoa,
-                            x => x.CentroCusto,
                             x => x.CondicaoParcelamento,
                             x => x.Categoria
                         )
                         .Where(filterPredicate)
                         .Take(2000)
                         .Select(GetDisplayData(tipoConta, dataInicial, dataFinal, dataEmissaoInicial, dataEmissaoFinal,
-                           fornecedor, formaPagamento, condicaoParcelamento, categoria, descricao, centroCusto)).ToList();
+                           fornecedor, formaPagamento, condicaoParcelamento, categoria, descricao)).ToList();
 
                         if (result.Count == 0)
                         {

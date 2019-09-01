@@ -28,8 +28,6 @@ namespace Fly01.Financeiro.Models.ViewModel
         public DateTime? Emissao { get; set; }
         [JsonProperty("titulo")]
         public string Titulo { get; set; }
-        [JsonProperty("centroCusto")]
-        public string CentroCusto { get; set; }
         [JsonProperty("categoria")]
         public string Categoria { get; set; }
         [JsonProperty("conicaoParcelamento")]

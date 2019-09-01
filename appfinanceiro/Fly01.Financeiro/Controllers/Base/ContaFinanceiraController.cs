@@ -55,8 +55,7 @@ namespace Fly01.Financeiro.Controllers.Base
                 new JQueryDataTableParamsColumn { Name = "Vencimento", Data = "dataVencimento"},
                 new JQueryDataTableParamsColumn { Name = "Categoria Financeira", Data = "categoria_descricao"},
                 new JQueryDataTableParamsColumn { Name = "Condicao Parcelamento", Data = "condicaoParcelamento_descricao"},
-                new JQueryDataTableParamsColumn { Name = "Observacao", Data = "observacao"},
-                new JQueryDataTableParamsColumn { Name = "Centro custo", Data = "centroCusto"}
+                new JQueryDataTableParamsColumn { Name = "Observacao", Data = "observacao"}
             };
         }
 
@@ -96,8 +95,7 @@ namespace Fly01.Financeiro.Controllers.Base
                 Pessoa = x.Pessoa,
                 dataVencimentoObject = x.DataVencimento,
                 repeticaoPai = x.ContaFinanceiraRepeticaoPaiId == null && x.Repetir,
-                repeticaoFilha = x.ContaFinanceiraRepeticaoPaiId != null && x.Repetir,
-                centroCusto = x.CentroCusto?.Descricao
+                repeticaoFilha = x.ContaFinanceiraRepeticaoPaiId != null && x.Repetir
             };
         }
         [OperationRole(NotApply = true)]
@@ -635,16 +633,6 @@ namespace Fly01.Financeiro.Controllers.Base
                 Disabled = true,
                 DataUrl = @Url.Action("CondicaoParcelamento", "AutoComplete"),
                 LabelId = "condicaoParcelamentoDescricao"
-            });
-
-            config.Elements.Add(new AutoCompleteUI
-            {
-                Id = "centroCustoId",
-                Class = "col s12 m4",
-                Label = "Centro de Custo",
-                Disabled = true,
-                DataUrl = @Url.Action("CentroCusto", "AutoComplete"),
-                LabelId = "centroCustoDescricao"
             });
 
             config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", Disabled = true, MaxLength = 200 });

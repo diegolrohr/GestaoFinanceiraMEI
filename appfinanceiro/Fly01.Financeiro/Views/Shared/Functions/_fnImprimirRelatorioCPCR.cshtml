@@ -4,7 +4,7 @@
     function fnImprimirRelatorioCPCR() {
 
         var countValues = 0;
-        var valueItens = [$('input#dataEmissaoInicial').val(), $('input#dataEmissaoFinal').val(), $('input#dataInicial').val(), $('input#dataFinal').val(), $("#clienteId").val(), $("#formaPagamentoId").val(), $("#condicaoParcelamentoId").val(), $("#categoriaId").val(), $("#centroCustoId").val(), $('#descricao').val()];
+        var valueItens = [$('input#dataEmissaoInicial').val(), $('input#dataEmissaoFinal').val(), $('input#dataInicial').val(), $('input#dataFinal').val(), $("#clienteId").val(), $("#formaPagamentoId").val(), $("#condicaoParcelamentoId").val(), $("#categoriaId").val(), $('#descricao').val()];
         valueItens.forEach(function (item) {
             if (item !== "") {
                 countValues ++;
@@ -31,8 +31,7 @@
             var pessoaId = $("#pessoaId").val();
             var formaPagamentoId = $("#formaPagamentoId").val();
             var condicaoParcelamentoId = $("#condicaoParcelamentoId").val();
-            var categoriaId = $("#categoriaId").val();
-            var centroCustoId = $("#centroCustoId").val();
+            var categoriaId = $("#categoriaId").val();            
 
             var tipoUrl = "@Url.Action("Imprimir")";
             var url = tipoUrl+'?dataInicial=' + dataInicial +
@@ -43,7 +42,6 @@
                 "&formaPagamentoId=" + formaPagamentoId +
                 "&condicaoParcelamentoId=" + condicaoParcelamentoId +
                 "&categoriaId=" + categoriaId +
-                "&centroCustoId=" + centroCustoId +
                 "&descricao=" + descricao;
 
             $$$.loading.start();
@@ -56,7 +54,6 @@
                 "&formaPagamentoId=" + formaPagamentoId +
                 "&condicaoParcelamentoId=" + condicaoParcelamentoId +
                 "&categoriaId=" + categoriaId +
-                "&centroCustoId=" + centroCustoId +
                 "&descricao=" + descricao,
                 type: "GET",
                 success: function (data) {

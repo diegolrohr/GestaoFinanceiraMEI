@@ -45,7 +45,6 @@ namespace Fly01.Financeiro.API
             builder.EntitySet<ConfiguracaoNotificacaoFinanceiro>("configuracaonotificacao");
             builder.EntityType<ConfiguracaoNotificacaoFinanceiro>().Property(c => c.HoraEnvio).AsTimeOfDay();
             builder.EntitySet<StoneAntecipacaoRecebiveis>("stoneantecipacaorecebiveis");
-            builder.EntitySet<CentroCusto>("centrocusto");
             builder.EntitySet<Pais>("pais");
             builder.EntitySet<ConfiguracaoPersonalizacao>("configuracaopersonalizacao");
 

@@ -56,7 +56,6 @@
     <Compile Include="ViewModels\EPermissionValue.cs" />
     <Compile Include="ViewModels\PermissionResponseVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\AgendaVM.cs" />
-    <Compile Include="ViewModels\Presentation\Commons\CentroCustoVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\AliquotaSimplesNacionalVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\ContaFinanceiraVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\ContaPagarVM.cs" />

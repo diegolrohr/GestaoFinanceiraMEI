@@ -112,8 +112,6 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public Guid? ContaFinanceiraParcelaPaiIdServicos { get; set; }
 
-        public Guid? CentroCustoId { get; set; }
-
         public Guid? UFSaidaPaisId { get; set; }
 
         [StringLength(60)]
@@ -137,8 +135,6 @@ namespace Fly01.Core.Entities.Domains.Commons
         public virtual FormaPagamento FormaPagamento { get; set; }
 
         public virtual Categoria Categoria { get; set; }
-
-        public virtual CentroCusto CentroCusto { get; set; }
 
         public virtual Estado UFSaidaPais { get; set; }
 

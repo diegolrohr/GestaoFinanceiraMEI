@@ -55,7 +55,6 @@ namespace Fly01.Financeiro.BL
                 contaFinanceira.ValorPrevisto = entity.ValorPrevisto;
                 contaFinanceira.CategoriaId = entity.CategoriaId;
                 contaFinanceira.FormaPagamentoId = entity.FormaPagamentoId;
-                contaFinanceira.CentroCustoId = entity.CentroCustoId;
                 contaFinanceira.CondicaoParcelamentoId = entity.CondicaoParcelamentoId;
                 contaFinanceira.PessoaId = entity.PessoaId;
                 contaFinanceira.DataEmissao = DateTime.Now;

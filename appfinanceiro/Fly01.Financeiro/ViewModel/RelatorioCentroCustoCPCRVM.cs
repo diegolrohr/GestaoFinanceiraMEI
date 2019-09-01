@@ -37,9 +37,6 @@ namespace Fly01.Financeiro.ViewModel
         [JsonProperty("categoriaFinanceiraId")]
         public Guid? CategoriaFinanceiraId { get; set; }
 
-        [JsonProperty("centroCustoId")]
-        public Guid? CentroCustoId { get; set; }
-
         [JsonProperty("valor")]
         public double? Valor { get; set; }
 

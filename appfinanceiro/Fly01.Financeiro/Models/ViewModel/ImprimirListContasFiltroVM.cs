@@ -12,7 +12,6 @@ namespace Fly01.Financeiro.Models.ViewModel
         public string FornecedorFiltro { get; set; }
         public string FormaPagamentoFiltro { get; set; }
         public string CategoriaFiltro { get; set; }
-        public string CentroCustoFiltro { get; set; }
         public string DescricaoFiltro { get; set; }
         public string CondicaoParcelamentoFiltro { get; set; }
     }

@@ -127,7 +127,6 @@
     <Compile Include="Domains\Commons\CondicaoParcelamento.cs" />
     <Compile Include="Domains\Commons\CondicaoParcelamentoParcela.cs" />
     <Compile Include="Domains\Commons\CondicaoParcelamentoSimulacao.cs" />
-    <Compile Include="Domains\Commons\ConfiguracaoNotificacaoFinanceiro.cs" />
     <Compile Include="Domains\Commons\ContaBancaria.cs" />
     <Compile Include="Domains\Commons\ContaFinanceira.cs" />
     <Compile Include="Domains\Commons\ContaFinanceiraBaixaMultipla.cs" />

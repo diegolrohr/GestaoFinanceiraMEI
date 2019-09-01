@@ -78,7 +78,6 @@
     <Compile Include="Controllers\Api\DashboardFormaPagamentoController.cs" />
     <Compile Include="Controllers\Api\DashboardCategoriaController.cs" />
     <Compile Include="Controllers\Api\DashboardStatusController.cs" />
-    <Compile Include="Controllers\Api\SendTaskController.cs" />
     <Compile Include="Controllers\Api\TipoIndicacaoInscricaoEstadualController .cs" />
     <Compile Include="Controllers\Api\CategoriaController.cs" />
     <Compile Include="Controllers\Api\CidadeApiController.cs" />
@@ -87,7 +86,6 @@
     <Compile Include="Controllers\Api\ConciliacaoBancariaBuscarExistentesController.cs" />
     <Compile Include="Controllers\Api\ConciliacaoBancariaTransacaoController.cs" />
     <Compile Include="Controllers\Api\ConciliacaoBancariaItemSugestaoController.cs" />
-    <Compile Include="Controllers\Api\ConfiguracaoNotificacaoController.cs" />
     <Compile Include="Controllers\Api\HelloController.cs" />
     <Compile Include="Controllers\Api\MovimentacaoPorCategoriaController.cs" />
     <Compile Include="Controllers\Api\DespesaPorCategoriaController.cs" />

@@ -120,9 +120,6 @@ namespace Fly01.Financeiro.BL
 
         private MovimentacaoPorCategoriaBL movimentacaoPorCategoriaBL;
         public MovimentacaoPorCategoriaBL MovimentacaoPorCategoriaBL => movimentacaoPorCategoriaBL ?? (movimentacaoPorCategoriaBL = new MovimentacaoPorCategoriaBL(ReceitaPorCategoriaBL, DespesaPorCategoriaBL));
-
-        private ConfiguracaoNotificacaoBL configuracaoNotificacaoBL;
-        public ConfiguracaoNotificacaoBL ConfiguracaoNotificacaoBL => configuracaoNotificacaoBL ?? (configuracaoNotificacaoBL = new ConfiguracaoNotificacaoBL(Context));
         
         private DashboardBL dashboardBL;
         public DashboardBL DashboardBL => dashboardBL ?? (dashboardBL = new DashboardBL(Context, ContaFinanceiraBL, ContaFinanceiraBaixaBL));

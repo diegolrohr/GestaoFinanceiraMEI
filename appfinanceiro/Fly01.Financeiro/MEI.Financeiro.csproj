@@ -74,7 +74,6 @@
     <Compile Include="Controllers\ContaFinanceiraBaixaMultiplaCPController.cs" />
     <Compile Include="Controllers\ContaFinanceiraBaixaMultiplaCRController.cs" />
     <Compile Include="Controllers\ConciliacaoBancariaController.cs" />
-    <Compile Include="Controllers\ConfiguracaoNotificacaoController.cs" />
     <Compile Include="Controllers\DashboardContaFinanceiraController.cs" />
     <Compile Include="Controllers\DashboardContaPagarController.cs" />
     <Compile Include="Controllers\DashboardContaReceberController.cs" />
@@ -133,7 +132,6 @@
     <Compile Include="ViewModel\ConciliacaoBancariaItemVM.cs" />
     <Compile Include="ViewModel\ConciliacaoBancariaTransacaoVM.cs" />
     <Compile Include="ViewModel\ConciliacaoBancariaVM.cs" />
-    <Compile Include="ViewModel\ConfiguracaoNotificacaoVM.cs" />
     <Compile Include="ViewModel\ContaBancariaVM.cs" />
     <Compile Include="ViewModel\ContaFinanceiraBaixaVM.cs" />
     <Compile Include="ViewModel\ContaFinanceiraBaixaMultiplaVM.cs" />
@@ -316,9 +314,6 @@
     <Content Include="Views\DemonstrativoResultadoExercicio\Functions\_fnRenderGroup.cshtml" />
     <Content Include="Views\Categoria\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\ConciliacaoBancaria\Functions\_fnSalvarConciliacaoBancaria.cshtml" />
-    <Content Include="Views\ConfiguracaoNotificacao\Functions\_fnFormReady.cshtml" />
-    <Content Include="Views\ConfiguracaoNotificacao\Functions\_fnChangeCheckButton.cshtml" />
-    <Content Include="Views\ConfiguracaoNotificacao\Index.cshtml" />
     <Content Include="Views\ContaPagar\Functions\_fnUpdateDataFinal.cshtml" />
     <Content Include="Views\ContaReceber\Functions\_fnUpdateDataFinal.cshtml" />
     <Content Include="Views\ContaPagar\Functions\_fnImprimirListContas.cshtml" />

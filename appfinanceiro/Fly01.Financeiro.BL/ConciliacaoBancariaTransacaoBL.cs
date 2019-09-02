@@ -8,7 +8,7 @@ using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Financeiro.BL
 {
-    public class ConciliacaoBancariaTransacaoBL : PlataformaBaseBL<ConciliacaoBancariaTransacao>
+    public class ConciliacaoBancariaTransacaoBL : EmpresaBaseBL<ConciliacaoBancariaTransacao>
     {
         protected ConciliacaoBancariaItemContaFinanceiraBL conciliacaoBancariaItemContaFinanceiraBL { get; set; }
         protected ContaPagarBL contaPagarBL { get; set; }
@@ -31,7 +31,7 @@ namespace Fly01.Financeiro.BL
         {
             try
             {
-                entity.PlataformaId = PlataformaUrl;
+                entity.EmpresaId = EmpresaId;
                 entity.DataInclusao = DateTime.Now;
                 entity.DataAlteracao = null;
                 entity.DataExclusao = null;

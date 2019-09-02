@@ -10,7 +10,7 @@ using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Financeiro.BL
 {
-    public class ConciliacaoBancariaItemContaFinanceiraBL : PlataformaBaseBL<ConciliacaoBancariaItemContaFinanceira>
+    public class ConciliacaoBancariaItemContaFinanceiraBL : EmpresaBaseBL<ConciliacaoBancariaItemContaFinanceira>
     {
         protected ConciliacaoBancariaBL conciliacaoBancariaBL { get; set; }
         protected ConciliacaoBancariaItemBL conciliacaoBancariaItemBL { get; set; }
@@ -189,7 +189,7 @@ namespace Fly01.Financeiro.BL
         {
             entity.UsuarioInclusao = AppUser;
             entity.DataInclusao = DateTime.Now;
-            entity.PlataformaId = PlataformaUrl;
+            entity.EmpresaId = EmpresaId;
 
             var conciliacaoBancariaItem = conciliacaoBancariaItemBL.All.FirstOrDefault(x => x.Id == entity.Id);
 

@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {
-    public class Pessoa : PlataformaBase
+    public class Pessoa : EmpresaBase
     {
         [Required]
         [StringLength(180, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]

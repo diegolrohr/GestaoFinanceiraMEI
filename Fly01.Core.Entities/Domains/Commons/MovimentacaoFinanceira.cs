@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Fly01.Core.Entities.Domains.Commons
 {
     [Table("Movimentacao")]
-    public class MovimentacaoFinanceira : PlataformaBase
+    public class MovimentacaoFinanceira : EmpresaBase
     {
         [Required]
         [Column(TypeName = "date")]

@@ -17,7 +17,7 @@ namespace Fly01.Core.API
                 return _contextInitialize
                     ?? (_contextInitialize = new ContextInitialize
                     {
-                        PlataformaUrl = PlataformaUrl,
+                        EmpresaId = EmpresaId,
                         AppUser = AppUser
                     });
             }
@@ -28,15 +28,15 @@ namespace Fly01.Core.API
             }
         }
 
-        public string PlataformaUrl
+        public Guid EmpresaId
         {
             get
             {
                 IEnumerable<string> values;
-                if (Request.Headers.TryGetValues("PlataformaUrl", out values))
-                    return values.FirstOrDefault();
+                if (Request.Headers.TryGetValues("EmpresaId", out values))
+                    return Guid.Parse(values.FirstOrDefault());
 
-                throw new ArgumentException("PlataformaUrl não informada.");
+                throw new ArgumentException("EmpresaId não informada.");
             }
         }
 

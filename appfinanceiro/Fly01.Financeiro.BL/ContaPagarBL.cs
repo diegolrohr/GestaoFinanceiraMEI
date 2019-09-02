@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace Fly01.Financeiro.BL
 {
-    public class ContaPagarBL : PlataformaBaseBL<ContaPagar>
+    public class ContaPagarBL : EmpresaBaseBL<ContaPagar>
     {
         private CondicaoParcelamentoBL condicaoParcelamentoBL;
         private ContaFinanceiraBaixaBL contaFinanceiraBaixaBL;
@@ -31,7 +31,7 @@ namespace Fly01.Financeiro.BL
         {
             var numero = default(int);
 
-            entity.PlataformaId = PlataformaUrl;
+            entity.EmpresaId = EmpresaId;
             entity.UsuarioInclusao = AppUser;
 
             var repetir = RepeticaoValida(entity);

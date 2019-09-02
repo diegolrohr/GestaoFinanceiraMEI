@@ -222,13 +222,11 @@
     <Compile Include="AiHandleErrorAttribute.cs" />
     <Compile Include="SocketIOHelper.cs" />
     <Compile Include="MinhaContaBaseController.cs" />
-    <Compile Include="ProdutoServicoBaseController.cs" />
     <Compile Include="ApiBaseController.cs" />
     <Compile Include="ApiDomainBaseController.cs" />
     <Compile Include="ApiHelloBaseController.cs" />
     <Compile Include="ApiODataBaseController.cs" />
     <Compile Include="ApiPlataformaBaseController.cs" />
-    <Compile Include="ApiPlataformaMongoBaseController.cs" />
     <Compile Include="Application\GlobalWebAPIApplication.cs" />
     <Compile Include="Application\ODataConfig.cs" />
     <Compile Include="Application\StartupConfig.cs" />

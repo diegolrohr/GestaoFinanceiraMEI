@@ -79,7 +79,6 @@
     <Compile Include="Mensageria.cs" />
     <Compile Include="MessengerHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="MediaClient.cs" />
     <Compile Include="Slack\SlackAttachment.cs" />
     <Compile Include="Slack\SlackAction.cs" />
     <Compile Include="Slack\SlackField.cs" />

@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 namespace Fly01.Financeiro.BL
 {
-    public class ContaFinanceiraBaixaMultiplaBL : PlataformaBaseBL<ContaFinanceiraBaixaMultipla>
+    public class ContaFinanceiraBaixaMultiplaBL : EmpresaBaseBL<ContaFinanceiraBaixaMultipla>
     {
         private ContaFinanceiraBaixaBL ContaFinanceiraBaixaBL;
         private ContaFinanceiraBL ContaFinanceiraBL;
@@ -35,7 +35,7 @@ namespace Fly01.Financeiro.BL
 
         public override void Insert(ContaFinanceiraBaixaMultipla entity)
         {
-            entity.PlataformaId = PlataformaUrl;
+            entity.EmpresaId = EmpresaId;
             entity.DataInclusao = DateTime.Now;
             entity.DataAlteracao = null;
             entity.DataExclusao = null;

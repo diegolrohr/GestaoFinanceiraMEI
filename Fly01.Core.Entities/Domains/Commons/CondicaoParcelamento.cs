@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {
-    public class CondicaoParcelamento : PlataformaBase
+    public class CondicaoParcelamento : EmpresaBase
     {
         [Required]
         [JsonProperty("descricao")]

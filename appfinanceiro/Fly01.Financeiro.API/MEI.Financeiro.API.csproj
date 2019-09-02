@@ -58,12 +58,10 @@
   <ItemGroup>
     <Compile Include="Controllers\Api\ApiDomainController.cs" />
     <Compile Include="Controllers\Api\ApiPlataformaController.cs" />
-    <Compile Include="Controllers\Api\VerificaRenegociacaoPedidoCompraVendaController.cs" />
     <Compile Include="Controllers\Api\DashboardContaReceberDiaController.cs" />
     <Compile Include="Controllers\Api\FluxoCaixaRecalcularSaldosController.cs" />
     <Compile Include="Controllers\Api\RelatorioContaFinanceiraController.cs" />
     <Compile Include="Controllers\Api\MinhaContaController.cs" />
-    <Compile Include="Controllers\Api\AvaliacaoAppController.cs" />
     <Compile Include="Controllers\Api\ContaFinanceiraBaixaMultiplaController.cs" />
     <Compile Include="Controllers\Api\ContaPagarParcelasController.cs" />
     <Compile Include="Controllers\Api\ContaPagarPeriodoController.cs" />

@@ -80,7 +80,7 @@
     <Compile Include="DomainBaseBL.cs" />
     <Compile Include="GenericFinder.cs" />
     <Compile Include="GenericRepository.cs" />
-    <Compile Include="PlataformaBaseBL.cs" />
+    <Compile Include="EmpresaBaseBL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitOfWorkBase.cs" />
   </ItemGroup>

@@ -9,7 +9,7 @@ using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Financeiro.BL
 {
-    public class ContaFinanceiraRenegociacaoBL : PlataformaBaseBL<ContaFinanceiraRenegociacao>
+    public class ContaFinanceiraRenegociacaoBL : EmpresaBaseBL<ContaFinanceiraRenegociacao>
     {
         private RenegociacaoContaFinanceiraOrigemBL renegociacaoContaFinanceiraOrigemBL;
         private RenegociacaoContaFinanceiraRenegociadaBL renegociacaoContaFinanceiraRenegociadaBL;

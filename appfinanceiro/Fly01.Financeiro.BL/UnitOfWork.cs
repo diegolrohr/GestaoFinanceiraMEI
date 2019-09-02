@@ -123,9 +123,6 @@ namespace Fly01.Financeiro.BL
         
         private DashboardBL dashboardBL;
         public DashboardBL DashboardBL => dashboardBL ?? (dashboardBL = new DashboardBL(Context, ContaFinanceiraBL, ContaFinanceiraBaixaBL));       
-
-        private RollbackFinanceiroCompraVendaBL rollbackFinanceiroCompraVendaBL;
-        public RollbackFinanceiroCompraVendaBL RollbackFinanceiroCompraVendaBL => rollbackFinanceiroCompraVendaBL ?? (rollbackFinanceiroCompraVendaBL = new RollbackFinanceiroCompraVendaBL(Context, ContaReceberBL, ContaPagarBL, RenegociacaoContaFinanceiraOrigemBL, ContaFinanceiraRenegociacaoBL));
         
         #endregion
     }

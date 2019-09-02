@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {
-    public class ConciliacaoBancaria : PlataformaBase
+    public class ConciliacaoBancaria : EmpresaBase
     {
         [Required]
         public Guid ContaBancariaId { get; set; }

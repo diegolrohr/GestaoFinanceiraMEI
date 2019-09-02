@@ -8,7 +8,7 @@ using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Financeiro.BL
 {
-    public class ContaFinanceiraBaixaBL : PlataformaBaseBL<ContaFinanceiraBaixa>
+    public class ContaFinanceiraBaixaBL : EmpresaBaseBL<ContaFinanceiraBaixa>
     {
         private ContaFinanceiraBL contaFinanceiraBL;
         private ContaBancariaBL contaBancariaBL;
@@ -102,7 +102,7 @@ namespace Fly01.Financeiro.BL
             {
                 var bancoOutros = bancoBL.All.FirstOrDefault(x => x.Codigo == "999");
 
-                contaFinanceira.ContaBancariaId = contaBancariaBL.All.FirstOrDefault(x => x.BancoId == bancoOutros.Id && x.RegistroFixo == true).Id;
+                contaFinanceira.ContaBancariaId = contaBancariaBL.All.FirstOrDefault(x => x.BancoId == bancoOutros.Id).Id;
             }
 
             if (contaFinanceira.ContaBancaria == null && contaFinanceira.ContaBancariaId == null) throw new BusinessException("Conta bancária inválida.");

@@ -5,7 +5,7 @@ using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Financeiro.BL
 {
-    public class TransferenciaBL : PlataformaBaseBL<TransferenciaFinanceira>
+    public class TransferenciaBL : EmpresaBaseBL<TransferenciaFinanceira>
     {
         protected MovimentacaoBL movimentacaoBL { get; set; }
 

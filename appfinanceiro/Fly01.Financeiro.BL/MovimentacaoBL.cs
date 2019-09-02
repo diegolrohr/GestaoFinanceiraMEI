@@ -8,7 +8,7 @@ using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Financeiro.BL
 {
-    public class MovimentacaoBL : PlataformaBaseBL<MovimentacaoFinanceira>
+    public class MovimentacaoBL : EmpresaBaseBL<MovimentacaoFinanceira>
     {
         private CategoriaBL categoriaBL;
         private SaldoHistoricoBL saldoHistoricoBL;
@@ -36,7 +36,7 @@ namespace Fly01.Financeiro.BL
             }
 
             movimentacao.UsuarioInclusao = AppUser;
-            movimentacao.PlataformaId = PlataformaUrl;
+            movimentacao.EmpresaId = EmpresaId;
             movimentacao.DataInclusao = DateTime.Now;
             movimentacao.Ativo = true;
             movimentacao.Descricao = movimentacao.Descricao.Substring(0, movimentacao.Descricao.Length > 200 ? 200 : movimentacao.Descricao.Length);
@@ -83,7 +83,7 @@ namespace Fly01.Financeiro.BL
 
         public void NovaTransferencia(TransferenciaFinanceira transferencia)
         {
-            transferencia.PlataformaId = PlataformaUrl;
+            transferencia.EmpresaId = EmpresaId;
             transferencia.UsuarioInclusao = AppUser;
 
             var categoriaOrigem = categoriaBL

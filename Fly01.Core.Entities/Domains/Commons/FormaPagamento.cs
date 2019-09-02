@@ -7,7 +7,7 @@ using System;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {
-    public class FormaPagamento : PlataformaBase
+    public class FormaPagamento : EmpresaBase
     {
         [JsonProperty("descricao")]
         [Required(ErrorMessage = "O campo {0} é obrigatório.")]

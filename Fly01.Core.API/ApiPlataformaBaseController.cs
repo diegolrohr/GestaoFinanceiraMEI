@@ -14,7 +14,7 @@ namespace Fly01.Core.API
 {
     [CustomExceptionFilter]
     public abstract class ApiPlataformaBaseController<TEntity> : ApiDomainBaseController<TEntity>
-        where TEntity : PlataformaBase, new()
+        where TEntity : EmpresaBase, new()
     {
         protected abstract void Insert(TEntity entity);
         protected abstract void Delete(TEntity primaryKey);
@@ -75,9 +75,6 @@ namespace Fly01.Core.API
             if (entity == null || !entity.Ativo)
                 throw new BusinessException("Registro não encontrado ou já excluído");
 
-            if (entity.RegistroFixo)
-                throw new BusinessException("Registro não pode ser editado (RegistroFixo)");
-
             ModelState.Clear();
             model.Patch(entity);
             Update(entity);
@@ -114,9 +111,6 @@ namespace Fly01.Core.API
 
             if (entity == null || !entity.Ativo)
                 throw new BusinessException("Registro não encontrado ou já excluído");
-
-            if (entity.RegistroFixo)
-                throw new BusinessException("Registro não pode ser excluído (RegistroFixo)");
 
             ModelState.Clear();
             Delete(entity);

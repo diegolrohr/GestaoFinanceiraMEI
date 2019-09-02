@@ -8,23 +8,23 @@ using System.Linq.Expressions;
 
 namespace Fly01.Core.BL
 {
-    public class PlataformaBaseBL<TEntity> : DomainBaseBL<TEntity> where TEntity : PlataformaBase
+    public class EmpresaBaseBL<TEntity> : DomainBaseBL<TEntity> where TEntity : EmpresaBase
     {
         private static readonly string[] _exceptions = new[] { "DataInclusao", "UsuarioInclusao" };
-        private Expression<Func<TEntity, bool>> PredicatePlatform { get; set; }
-        private string _plataformaUrl;
-        public string PlataformaUrl
+        private Expression<Func<TEntity, bool>> PredicateEmpresa { get; set; }
+        private Guid _empresaId;
+        public Guid EmpresaId
         {
             get
             {
-                if (string.IsNullOrWhiteSpace(_plataformaUrl))
-                    throw new BusinessException("ERRO!PlataformaUrl não informado.");
+                if (string.IsNullOrWhiteSpace(_empresaId.ToString()))
+                    throw new BusinessException("ERRO!EmpresaId não informado.");
 
-                return _plataformaUrl;
+                return _empresaId;
             }
             set
             {
-                _plataformaUrl = value;
+                _empresaId = value;
             }
         }
         private string _appUser;
@@ -46,22 +46,22 @@ namespace Fly01.Core.BL
 
         public bool MustConsumeMessageServiceBus { get; set; }
 
-        public PlataformaBaseBL(AppDataContextBase context) : base(context)
+        public EmpresaBaseBL(AppDataContextBase context) : base(context)
         {
-            PredicatePlatform = x => x.PlataformaId == context.PlataformaUrl && x.Ativo;
+            PredicateEmpresa = x => x.EmpresaId == context.EmpresaId && x.Ativo;
             AppUser = context.AppUser;
-            PlataformaUrl = context.PlataformaUrl;
+            EmpresaId = context.EmpresaId;
         }
 
-        public override IQueryable<TEntity> All => base.All.Where(PredicatePlatform);
+        public override IQueryable<TEntity> All => base.All.Where(PredicateEmpresa);
 
-        public override IQueryable<TEntity> AllWithInactive => base.AllWithInactive.Where(x => x.PlataformaId == PlataformaUrl);
+        public override IQueryable<TEntity> AllWithInactive => base.AllWithInactive.Where(x => x.EmpresaId == EmpresaId);
 
         public virtual IQueryable<TEntity> AllWithoutPlatform => base.repository.All;
 
         public override IQueryable<TEntity> AllWithInactiveIncluding(params Expression<Func<TEntity, object>>[] includeProperties)
         {
-            return base.AllIncluding(includeProperties).Where(x => x.PlataformaId == PlataformaUrl);
+            return base.AllIncluding(includeProperties).Where(x => x.EmpresaId == EmpresaId);
         }
 
         public virtual void ValidaModel(TEntity entity)
@@ -72,7 +72,7 @@ namespace Fly01.Core.BL
 
         public virtual new void Insert(TEntity entity)
         {
-            entity.PlataformaId = PlataformaUrl;
+            entity.EmpresaId = EmpresaId;
             entity.DataInclusao = DateTime.Now;
             entity.DataAlteracao = null;
             entity.DataExclusao = null;
@@ -96,7 +96,7 @@ namespace Fly01.Core.BL
 
         public virtual new void Update(TEntity entity)
         {
-            entity.PlataformaId = PlataformaUrl;
+            entity.EmpresaId = EmpresaId;
             entity.DataAlteracao = DateTime.Now;
             entity.DataExclusao = null;
             entity.UsuarioAlteracao = AppUser;
@@ -132,7 +132,7 @@ namespace Fly01.Core.BL
 
         public override IQueryable<TEntity> AllIncluding(params Expression<Func<TEntity, object>>[] includeProperties)
         {
-            return base.AllIncluding(includeProperties).Where(PredicatePlatform);
+            return base.AllIncluding(includeProperties).Where(PredicateEmpresa);
         }
 
         public virtual void AfterSave(TEntity entity)

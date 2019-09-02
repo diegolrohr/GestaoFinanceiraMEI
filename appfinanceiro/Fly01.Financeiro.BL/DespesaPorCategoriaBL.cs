@@ -8,7 +8,7 @@ using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Financeiro.BL
 {
-    public class DespesaPorCategoriaBL : PlataformaBase
+    public class DespesaPorCategoriaBL : EmpresaBase
     {
         protected ContaPagarBL ContaPagarBL;
         protected CategoriaBL CategoriaBL;

@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {
-    public abstract class ContaFinanceira : PlataformaBase
+    public abstract class ContaFinanceira : EmpresaBase
     {
         public ContaFinanceira()
         {

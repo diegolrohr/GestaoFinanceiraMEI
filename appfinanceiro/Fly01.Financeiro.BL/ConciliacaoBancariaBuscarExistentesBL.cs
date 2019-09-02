@@ -6,7 +6,7 @@ using Fly01.Core.Notifications;
 
 namespace Fly01.Financeiro.BL
 {
-    public class ConciliacaoBancariaBuscarExistentesBL : PlataformaBaseBL<ConciliacaoBancariaItem>
+    public class ConciliacaoBancariaBuscarExistentesBL : EmpresaBaseBL<ConciliacaoBancariaItem>
     {
         protected ConciliacaoBancariaItemContaFinanceiraBL conciliacaoBancariaItemContaFinanceiraBL { get; set; }
 

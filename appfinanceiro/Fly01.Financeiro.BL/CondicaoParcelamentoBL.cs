@@ -8,7 +8,7 @@ using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Financeiro.BL
 {
-    public class CondicaoParcelamentoBL : PlataformaBaseBL<CondicaoParcelamento>
+    public class CondicaoParcelamentoBL : EmpresaBaseBL<CondicaoParcelamento>
     {
         public CondicaoParcelamentoBL(AppDataContext context) : base(context)
         {

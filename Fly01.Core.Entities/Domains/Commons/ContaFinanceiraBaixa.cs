@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {
-    public class ContaFinanceiraBaixa : PlataformaBase
+    public class ContaFinanceiraBaixa : EmpresaBase
     {
         [Required]
         [Column(TypeName = "date")]

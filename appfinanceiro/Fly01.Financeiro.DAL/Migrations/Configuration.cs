@@ -21,7 +21,7 @@ namespace Fly01.Financeiro.DAL.Migrations
               //  if (System.Diagnostics.Debugger.IsAttached == false)
               //      System.Diagnostics.Debugger.Launch();
 
-              //  new BancoDataInitializer().Initialize(context);
+                //new BancoDataInitializer().Initialize(context);
 
               //  var estados = new EstadoDataInitializer();
               //  estados.Initialize(context);
@@ -33,8 +33,6 @@ namespace Fly01.Financeiro.DAL.Migrations
               //  new CidadeDataInitializer5().Initialize(context, ufs);
               //  new CidadeDataInitializer6().Initialize(context, ufs);
               //  new CidadeDataInitializer7().Initialize(context, ufs);
-              //  new CnabDataInitializer().Initialize(context);
-              //  new PaisDataInitializer().Initialize(context);
 
             }
             catch (DbEntityValidationException ex)

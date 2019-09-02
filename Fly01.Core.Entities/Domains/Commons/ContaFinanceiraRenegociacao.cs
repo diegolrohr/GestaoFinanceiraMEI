@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {
-    public class ContaFinanceiraRenegociacao : PlataformaBase
+    public class ContaFinanceiraRenegociacao : EmpresaBase
     {
         [Required]
         public virtual List<Guid> ContasFinanceirasOrigemIds { get; set; }

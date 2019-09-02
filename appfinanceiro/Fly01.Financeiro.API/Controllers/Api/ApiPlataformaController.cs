@@ -8,8 +8,8 @@ using Fly01.Core.Entities.Domains;
 namespace Fly01.Financeiro.API.Controllers.Api
 {
     public class ApiPlataformaController<TEntity, TBL> : ApiPlataformaBaseController<TEntity>
-        where TEntity : PlataformaBase, new()
-        where TBL : PlataformaBaseBL<TEntity>
+        where TEntity : EmpresaBase, new()
+        where TBL : EmpresaBaseBL<TEntity>
     {
         private UnitOfWork _unitOfWork;
         protected UnitOfWork UnitOfWork

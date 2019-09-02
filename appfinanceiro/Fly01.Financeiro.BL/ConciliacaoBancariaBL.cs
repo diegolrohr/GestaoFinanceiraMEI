@@ -9,7 +9,7 @@ using Fly01.Core.Notifications;
 
 namespace Fly01.Financeiro.BL
 {
-    public class ConciliacaoBancariaBL : PlataformaBaseBL<ConciliacaoBancaria>
+    public class ConciliacaoBancariaBL : EmpresaBaseBL<ConciliacaoBancaria>
     {
         protected ContaBancariaBL contaBancariaBL { get; set; }
         protected ConciliacaoBancariaItemBL conciliacaoBancariaItemBL { get; set; }

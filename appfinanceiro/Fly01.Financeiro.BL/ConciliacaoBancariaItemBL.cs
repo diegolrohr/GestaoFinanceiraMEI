@@ -10,7 +10,7 @@ using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Financeiro.BL
 {
-    public class ConciliacaoBancariaItemBL : PlataformaBaseBL<ConciliacaoBancariaItem>
+    public class ConciliacaoBancariaItemBL : EmpresaBaseBL<ConciliacaoBancariaItem>
     {
         public ConciliacaoBancariaItemBL(AppDataContext context)
             : base(context)

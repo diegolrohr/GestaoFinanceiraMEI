@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Fly01.Core.Entities.Domains.Commons
 {
     [Table("MovimentacaoPorCategoria")]
-    public class MovimentacaoFinanceiraPorCategoria : PlataformaBase
+    public class MovimentacaoFinanceiraPorCategoria : EmpresaBase
     {
         public Guid CategoriaId { get; set; }
         public string Categoria { get; set; }

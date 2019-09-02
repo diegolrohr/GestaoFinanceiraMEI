@@ -12,7 +12,7 @@ using System.Data.Entity;
 
 namespace Fly01.Financeiro.BL
 {
-    public class PessoaBL : PlataformaBaseBL<Pessoa>
+    public class PessoaBL : EmpresaBaseBL<Pessoa>
     {
         protected EstadoBL EstadoBL;
         protected CidadeBL CidadeBL;
@@ -203,7 +203,7 @@ namespace Fly01.Financeiro.BL
 
         public Guid BuscaPessoaNome(string nomePessoa, bool cliente, bool fornecedor)
         {
-            var pessoaPadrao = All.AsNoTracking().FirstOrDefault(x => x.Nome == nomePessoa && x.Cliente == cliente && x.Fornecedor == fornecedor && x.Ativo == true && x.RegistroFixo == true);
+            var pessoaPadrao = All.AsNoTracking().FirstOrDefault(x => x.Nome == nomePessoa && x.Cliente == cliente && x.Fornecedor == fornecedor && x.Ativo == true);
 
             //Se Pessoa nao existe, insere
             if (pessoaPadrao == null)
@@ -217,8 +217,7 @@ namespace Fly01.Financeiro.BL
                     Fornecedor = fornecedor,
                     ConsumidorFinal = cliente,
                     TipoIndicacaoInscricaoEstadual = TipoIndicacaoInscricaoEstadual.ContribuinteIsento,
-                    CPFCNPJ = string.Empty,
-                    RegistroFixo = true
+                    CPFCNPJ = string.Empty
                 };
                 base.Insert(novaPessoa);
                 return novaPessoa.Id;

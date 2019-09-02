@@ -7,7 +7,7 @@ using System;
 
 namespace Fly01.Financeiro.BL
 {
-    public class ContaBancariaBL : PlataformaBaseBL<ContaBancaria>
+    public class ContaBancariaBL : EmpresaBaseBL<ContaBancaria>
     {
         private SaldoHistoricoBL saldoHistoricoBL;
         private BancoBL bancoBL;

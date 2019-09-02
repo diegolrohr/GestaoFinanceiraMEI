@@ -51,9 +51,6 @@ namespace Fly01.Financeiro.API.Controllers.Api
             if (entity == null || !entity.Ativo)
                 throw new BusinessException("Registro não encontrado ou já excluído");
 
-            if (entity.RegistroFixo)
-                throw new BusinessException("Registro não pode ser excluído (RegistroFixo)");
-
             using (var unitOfWork = new UnitOfWork(ContextInitialize))
             {
                 var recorrencias= GetRecorrencias(entity, unitOfWork); 
@@ -78,9 +75,6 @@ namespace Fly01.Financeiro.API.Controllers.Api
 
             if (entity == null || !entity.Ativo)
                 throw new BusinessException("Registro não encontrado ou já excluído");
-
-            if (entity.RegistroFixo)
-                throw new BusinessException("Registro não pode ser editado (RegistroFixo)");
 
             var numero = entity.Numero;
             ModelState.Clear();

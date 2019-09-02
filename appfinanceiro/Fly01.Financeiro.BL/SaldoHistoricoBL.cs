@@ -9,7 +9,7 @@ using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Financeiro.BL
 {
-    public class SaldoHistoricoBL : PlataformaBaseBL<SaldoHistorico>
+    public class SaldoHistoricoBL : EmpresaBaseBL<SaldoHistorico>
     {
         private const string labelTodasAsContas = "Todas as Contas";
 

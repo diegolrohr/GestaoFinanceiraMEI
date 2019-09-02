@@ -6,7 +6,7 @@ using System;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {
-    public class Categoria : PlataformaBase
+    public class Categoria : EmpresaBase
     {
         [Required]
         [StringLength(100)]

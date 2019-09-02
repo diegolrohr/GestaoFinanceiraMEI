@@ -10,7 +10,7 @@ namespace Fly01.Core.Entities.Domains.Commons
      * MigrationName: SaldoHistoricoCreateSP
      * (Follmann)
     */
-    public class SaldoHistorico : PlataformaBase
+    public class SaldoHistorico : EmpresaBase
     {
         [Required]
         [Column(TypeName = "date")]

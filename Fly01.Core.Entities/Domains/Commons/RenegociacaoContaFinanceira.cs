@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {
-    public abstract class RenegociacaoContaFinanceira : PlataformaBase
+    public abstract class RenegociacaoContaFinanceira : EmpresaBase
     {
         [Required]
         public Guid ContaFinanceiraRenegociacaoId { get; set; }

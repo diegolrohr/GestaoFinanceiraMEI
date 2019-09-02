@@ -9,7 +9,7 @@ using System.Data.Entity;
 
 namespace Fly01.Financeiro.BL
 {
-    public class CategoriaBL : PlataformaBaseBL<Categoria>
+    public class CategoriaBL : EmpresaBaseBL<Categoria>
     {
         //private ContaPagarBL contaPagarBL;
         //private ContaReceberBL contaReceberBL;
@@ -17,7 +17,6 @@ namespace Fly01.Financeiro.BL
 
         public CategoriaBL(AppDataContext context, ContaFinanceiraBL contaFinanceiraBL) : base(context)
         {
-            MustConsumeMessageServiceBus = true;
             //this.contaPagarBL = contaPagarBL;
             //this.contaReceberBL = contaReceberBL;
             this.contaFinanceiraBL = contaFinanceiraBL;

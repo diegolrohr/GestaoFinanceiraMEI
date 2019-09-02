@@ -6,7 +6,7 @@ using Fly01.Financeiro.API.Models.DAL;
 
 namespace Fly01.Financeiro.BL
 {
-    public class FormaPagamentoBL : PlataformaBaseBL<FormaPagamento>
+    public class FormaPagamentoBL : EmpresaBaseBL<FormaPagamento>
     {
         public FormaPagamentoBL(AppDataContext context) : base(context)
         {

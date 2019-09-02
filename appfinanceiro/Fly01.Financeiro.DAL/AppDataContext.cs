@@ -57,13 +57,10 @@ namespace Fly01.Financeiro.API.Models.DAL
 
             builder.Entity<ContaFinanceiraRenegociacao>().Ignore(m => m.ContasFinanceirasOrigemIds);
             builder.Entity<ContaFinanceira>().Ignore(m => m.Saldo);
-            builder.Entity<ContaFinanceira>().Ignore(m => m.NomePessoa);
             builder.Entity<ContaFinanceira>().Ignore(m => m.ContaBancariaId);
             builder.Entity<ContaFinanceira>().Ignore(m => m.ContaBancaria);
             builder.Entity<ConciliacaoBancaria>().Ignore(m => m.Arquivo);
             builder.Entity<ContaBancaria>().Ignore(m => m.CodigoBanco);
-            builder.Entity<Pessoa>().Ignore(m => m.CidadeCodigoIbge);
-            builder.Entity<Pessoa>().Ignore(m => m.EstadoCodigoIbge);
             builder.Entity<SaldoHistorico>().MapToStoredProcedures();
             //builder.Entity<ContaFinanceira>().MapToStoredProcedures();
         }

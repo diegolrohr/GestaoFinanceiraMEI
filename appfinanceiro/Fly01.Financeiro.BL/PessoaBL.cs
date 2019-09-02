@@ -37,14 +37,13 @@ namespace Fly01.Financeiro.BL
         {
             ValidaDefaultCPFCNPJTipoDocumento(entity);
             entity.Fail(string.IsNullOrWhiteSpace(entity.Nome), NomeInvalido);
-            entity.Fail(!entity.Transportadora && !entity.Cliente && !entity.Vendedor && !entity.Fornecedor, TipoCadastroInvalido);
+            entity.Fail(!entity.Cliente && !entity.Fornecedor, TipoCadastroInvalido);
             entity.Fail(entity.TipoDocumento != "J" && entity.TipoDocumento != "F", TipoDocumentoInvalido);
             ValidaFormatoDocumento(entity);
             ValidaFormatoCep(entity);
             entity.Fail(entity.Estado != null && !EstadoBL.All.Any(x => x.Sigla.Equals(entity.Estado.Sigla, StringComparison.CurrentCultureIgnoreCase)), SiglaEstadoInvalida);
             ValidaCidade(entity, entity.Estado);
             ValidaEmail(entity);
-            ValidaInscricaoEstadual(entity);
             ValidaCPFCNPJ(entity);
         }
 
@@ -85,24 +84,6 @@ namespace Fly01.Financeiro.BL
                 }
             }
 
-        }
-
-        protected void ValidaInscricaoEstadual(Pessoa entity)
-        {
-            if (string.IsNullOrWhiteSpace(entity.EstadoId.ToString()) && (!string.IsNullOrWhiteSpace(entity.InscricaoEstadual)))
-                throw new BusinessException("Preencha os campos Estado e Cidade para realizar a validação da Inscrição Estadual.");
-
-            if (string.IsNullOrWhiteSpace(entity.CidadeId.ToString()) && (!string.IsNullOrWhiteSpace(entity.InscricaoEstadual)))
-                throw new BusinessException("Preencha os campos Estado e Cidade para realizar a validação da Inscrição Estadual.");
-
-            if (!string.IsNullOrWhiteSpace(entity.InscricaoEstadual))
-            {
-                var siglaUF = CidadeBL.AllIncluding(x => x.Estado).FirstOrDefault(x => x.Id == entity.CidadeId).Estado.Sigla;
-                var msgErrorInscricaoEstadual = string.Empty;
-
-                if (!InscricaoEstadualHelper.IsValid(siglaUF, entity.InscricaoEstadual, out msgErrorInscricaoEstadual))
-                    throw new BusinessException("Inscrição Estadual inválida. (para este estado)");
-            }
         }
 
         protected void ValidaFormatoCep(Pessoa entity)
@@ -147,31 +128,8 @@ namespace Fly01.Financeiro.BL
 
         #endregion
 
-        public void GetIdEstadoCidade(Pessoa entity)
-        {
-            if (!entity.CidadeId.HasValue && !entity.EstadoId.HasValue && !string.IsNullOrEmpty(entity.CidadeCodigoIbge))
-            {
-                var dadosCidade = CidadeBL.All.AsNoTracking().FirstOrDefault(x => x.CodigoIbge == entity.CidadeCodigoIbge);
-                if (dadosCidade != null)
-                {
-                    entity.EstadoId = dadosCidade.EstadoId;
-                    entity.CidadeId = dadosCidade.Id;
-                }
-            }
-            else if (!entity.CidadeId.HasValue && !entity.EstadoId.HasValue && !string.IsNullOrEmpty(entity.EstadoCodigoIbge))
-            {
-                var dadosEstado = EstadoBL.All.AsNoTracking().FirstOrDefault(x => x.CodigoIbge == entity.EstadoCodigoIbge);
-                if (dadosEstado != null)
-                {
-                    entity.EstadoId = dadosEstado.Id;
-                }
-            }
-        }
-
         public override void Update(Pessoa entity)
         {
-            GetIdEstadoCidade(entity);
-
             ValidaModel(entity);
             if (!IsValid(entity))
             {
@@ -184,8 +142,6 @@ namespace Fly01.Financeiro.BL
 
         public override void Insert(Pessoa entity)
         {
-            GetIdEstadoCidade(entity);
-
             ValidaModel(entity);
             if (!IsValid(entity))
             {
@@ -215,8 +171,6 @@ namespace Fly01.Financeiro.BL
                     TipoDocumento = "F",
                     Cliente = cliente,
                     Fornecedor = fornecedor,
-                    ConsumidorFinal = cliente,
-                    TipoIndicacaoInscricaoEstadual = TipoIndicacaoInscricaoEstadual.ContribuinteIsento,
                     CPFCNPJ = string.Empty
                 };
                 base.Insert(novaPessoa);

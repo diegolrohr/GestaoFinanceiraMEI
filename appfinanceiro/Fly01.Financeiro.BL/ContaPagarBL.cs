@@ -43,10 +43,6 @@ namespace Fly01.Financeiro.BL
             if (entity.StatusContaBancaria == default(StatusContaBancaria))
                 entity.StatusContaBancaria = StatusContaBancaria.EmAberto;
 
-            //Se Cliente não informado, busca pelo nome ou Insere
-            if (!GuidHelper.IsValidGuid(entity.PessoaId) && !string.IsNullOrEmpty(entity.NomePessoa))
-                entity.PessoaId = pessoaBL.BuscaPessoaNome(entity.NomePessoa, false, true);
-
             if (!string.IsNullOrEmpty(entity.DescricaoParcela))
             {
                 //post bemacash ignorando condicao parcelamento

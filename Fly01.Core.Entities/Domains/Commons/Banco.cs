@@ -12,9 +12,5 @@ namespace Fly01.Core.Entities.Domains.Commons
         [Required]
         [JsonProperty("nome")]
         public string Nome { get; set; }
-
-        [Required]
-        [JsonProperty("emiteBoleto")]
-        public bool EmiteBoleto { get; set; }
     }
 }

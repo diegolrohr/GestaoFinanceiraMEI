@@ -42,31 +42,10 @@ namespace Fly01.Financeiro.BL
             if (entity.StatusContaBancaria == default(StatusContaBancaria))
                 entity.StatusContaBancaria = StatusContaBancaria.EmAberto;
 
-            //Se Cliente não informado, busca pelo nome ou Insere
-            if (!GuidHelper.IsValidGuid(entity.PessoaId) && !string.IsNullOrEmpty(entity.NomePessoa))
-                entity.PessoaId = pessoaBL.BuscaPessoaNome(entity.NomePessoa, true, false);
+            var condicoesParcelamento = condicaoParcelamentoBL.GetPrestacoes(entity.CondicaoParcelamentoId, entity.DataVencimento, entity.ValorPrevisto);
+            var contaFinanceiraPrincipal = entity.Id == default(Guid) ? Guid.NewGuid() : entity.Id;
 
-            if (!string.IsNullOrEmpty(entity.DescricaoParcela))
-            {
-                //post bemacash ignorando condicao parcelamento
-                if (entity.Id == default(Guid)) entity.Id = Guid.NewGuid();
-
-                numero = All.Max(x => x.Numero) + 1;
-                entity.Numero = numero;
-
-                base.Insert(entity);
-
-                if (entity.StatusContaBancaria == StatusContaBancaria.Pago || entity.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente)
-                    contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(entity);
-
-            }
-            else
-            {
-                var condicoesParcelamento = condicaoParcelamentoBL.GetPrestacoes(entity.CondicaoParcelamentoId, entity.DataVencimento, entity.ValorPrevisto);
-                var contaFinanceiraPrincipal = entity.Id == default(Guid) ? Guid.NewGuid() : entity.Id;
-
-                GravaParcelamentoRepeticoes(entity, repetir, condicoesParcelamento, contaFinanceiraPrincipal);
-            }
+            GravaParcelamentoRepeticoes(entity, repetir, condicoesParcelamento, contaFinanceiraPrincipal);
         }
 
         private void GravaParcelamentoRepeticoes(ContaReceber entity, bool repetir, List<CondicaoParcelamentoParcela> condicoesParcelamento, Guid contaFinanceiraPrincipal)
@@ -119,7 +98,7 @@ namespace Fly01.Financeiro.BL
         }
 
         private void GravaRepeticoes(ContaReceber entity, Guid contaFinanceiraPrincipal, ContaReceber itemContaReceber)
-        {             
+        {
             var numero = default(int);
             numero = All.Max(x => x.Numero) + 1;
             numero -= entity.NumeroRepeticoes ?? numero;
@@ -228,8 +207,8 @@ namespace Fly01.Financeiro.BL
                                             })
                                             .ToList();
 
-            double? resultDiferenca = result.Where(x => x.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente).Select(x => x.valorTotal - x.valorPago)?.FirstOrDefault()?? 0;
-            double? valorPago = result.Where(x => x.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente).Select(x => x.valorPago)?.FirstOrDefault()?? 0;
+            double? resultDiferenca = result.Where(x => x.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente).Select(x => x.valorTotal - x.valorPago)?.FirstOrDefault() ?? 0;
+            double? valorPago = result.Where(x => x.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente).Select(x => x.valorPago)?.FirstOrDefault() ?? 0;
 
             result.ForEach(x =>
             {
@@ -244,7 +223,7 @@ namespace Fly01.Financeiro.BL
                             ? x.valorTotal + (double)valorPago
                             : x.valorTotal
                 });
-            }); 
+            });
 
             if (!result.Where(x => x.StatusContaBancaria == StatusContaBancaria.EmAberto).Any() && result != null)
             {

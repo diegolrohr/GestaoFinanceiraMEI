@@ -78,12 +78,6 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public int Numero { get; set; }
 
-        [Column(TypeName = "date")]
-        public DateTime? DataDesconto { get; set; }
-
-        public double? ValorDesconto { get; set; }
-        public string NomePessoa { get; set; }
-
         public Guid ContaBancariaId { get; set; }
 
         public virtual ContaFinanceira ContaFinanceiraRepeticaoPai { get; set; }        

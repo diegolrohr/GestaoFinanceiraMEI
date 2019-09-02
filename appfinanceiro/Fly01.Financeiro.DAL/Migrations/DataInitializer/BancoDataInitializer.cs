@@ -193,15 +193,15 @@ namespace Fly01.Financeiro.DAL.Migrations.DataInitializer
                 context.SaveChanges();
             }
 
-            if (!context.Bancos.Any(x => x.Codigo == "001" && x.EmiteBoleto == true))
+            if (!context.Bancos.Any(x => x.Codigo == "001"))
             {
                 context.Bancos.AddOrUpdate(x => x.Codigo,
-                  new Banco() { Id = Guid.Parse("1054AB30-F04F-48DC-83A8-003C9EEE333B"), DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true, Codigo = "001", EmiteBoleto = true, Nome = "BANCO DO BRASIL S.A." }
-                , new Banco() { Id = Guid.Parse("FD92C367-17A8-4058-9F83-004119CAB10C"), DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true, Codigo = "033", EmiteBoleto = true, Nome = "BANCO SANTANDER (BRASIL) S.A." }
-                , new Banco() { Id = Guid.Parse("97FE9B8D-051F-4DAF-BCCD-005C7EF57BF2"), DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true, Codigo = "237", EmiteBoleto = true, Nome = "BANCO BRADESCO S.A." }
-                , new Banco() { Id = Guid.Parse("2D4D9C0D-E85F-460C-8955-005FC47525D4"), DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true, Codigo = "104", EmiteBoleto = true, Nome = "CAIXA ECONOMICA FEDERAL" }
-                , new Banco() { Id = Guid.Parse("D3EE0E84-2E7D-48B3-B5BE-00674E1089D0"), DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true, Codigo = "341", EmiteBoleto = true, Nome = "ITAU UNIBANCO S.A." }
-                , new Banco() { Id = Guid.Parse("401984C9-4762-4F7E-BAC2-006D99147725"), DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true, Codigo = "041", EmiteBoleto = true, Nome = "BANCO DO ESTADO DO RIO GRANDE DO SUL S.A" });
+                  new Banco() { Id = Guid.Parse("1054AB30-F04F-48DC-83A8-003C9EEE333B"), DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true, Codigo = "001", Nome = "BANCO DO BRASIL S.A." }
+                , new Banco() { Id = Guid.Parse("FD92C367-17A8-4058-9F83-004119CAB10C"), DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true, Codigo = "033", Nome = "BANCO SANTANDER (BRASIL) S.A." }
+                , new Banco() { Id = Guid.Parse("97FE9B8D-051F-4DAF-BCCD-005C7EF57BF2"), DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true, Codigo = "237", Nome = "BANCO BRADESCO S.A." }
+                , new Banco() { Id = Guid.Parse("2D4D9C0D-E85F-460C-8955-005FC47525D4"), DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true, Codigo = "104", Nome = "CAIXA ECONOMICA FEDERAL" }
+                , new Banco() { Id = Guid.Parse("D3EE0E84-2E7D-48B3-B5BE-00674E1089D0"), DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true, Codigo = "341", Nome = "ITAU UNIBANCO S.A." }
+                , new Banco() { Id = Guid.Parse("401984C9-4762-4F7E-BAC2-006D99147725"), DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true, Codigo = "041", Nome = "BANCO DO ESTADO DO RIO GRANDE DO SUL S.A" });
 
                 context.SaveChanges();
             }

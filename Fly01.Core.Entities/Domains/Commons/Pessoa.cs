@@ -1,5 +1,4 @@
-﻿using Fly01.Core.Entities.Domains.Enum;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -54,37 +53,11 @@ namespace Fly01.Core.Entities.Domains.Commons
         [StringLength(180, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
         public string NomeComercial { get; set; }
 
-        [StringLength(18, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
-        public string InscricaoEstadual { get; set; }
-
-        [StringLength(18, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
-        public string InscricaoMunicipal { get; set; }
-
-        public TipoIndicacaoInscricaoEstadual TipoIndicacaoInscricaoEstadual { get; set; }
-
-        [Required]
-        public bool ConsumidorFinal { get; set; }
-
-        [Required]
-        public bool Transportadora { get; set; }
-
         [Required]
         public bool Cliente { get; set; }
 
         [Required]
         public bool Fornecedor { get; set; }
-
-        [Required]
-        public bool Vendedor { get; set; }
-
-        public string EstadoCodigoIbge { get; set; }
-
-        public string CidadeCodigoIbge { get; set; }
-
-        public TipoSituacaoEspecialNFS SituacaoEspecialNFS { get; set; }
-
-        [StringLength(20)]
-        public string IdEstrangeiro { get; set; }
 
         [JsonIgnore]
         public virtual Cidade Cidade { get; set; }

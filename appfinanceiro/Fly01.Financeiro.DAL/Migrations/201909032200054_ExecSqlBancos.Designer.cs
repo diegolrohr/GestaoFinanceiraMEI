@@ -7,13 +7,13 @@ namespace Fly01.Financeiro.DAL.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class AlterTableCnabAddColumn : IMigrationMetadata
+    public sealed partial class ExecSqlBancos : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AlterTableCnabAddColumn));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(ExecSqlBancos));
         
         string IMigrationMetadata.Id
         {
-            get { return "201806151944144_AlterTableCnabAddColumn"; }
+            get { return "201909032200054_ExecSqlBancos"; }
         }
         
         string IMigrationMetadata.Source

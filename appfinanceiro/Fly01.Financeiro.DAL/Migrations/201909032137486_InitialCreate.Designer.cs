@@ -7,13 +7,13 @@ namespace Fly01.Financeiro.DAL.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class AddColumnCodigoCedenteContaFinanceira : IMigrationMetadata
+    public sealed partial class InitialCreate : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddColumnCodigoCedenteContaFinanceira));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialCreate));
         
         string IMigrationMetadata.Id
         {
-            get { return "201805301808442_AddColumnCodigoCedenteContaFinanceira"; }
+            get { return "201909032137486_InitialCreate"; }
         }
         
         string IMigrationMetadata.Source

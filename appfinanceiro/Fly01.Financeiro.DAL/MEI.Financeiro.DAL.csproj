@@ -48,17 +48,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AppDataContext.cs" />
+    <Compile Include="Migrations\201909032137486_InitialCreate.cs" />
+    <Compile Include="Migrations\201909032137486_InitialCreate.Designer.cs">
+      <DependentUpon>201909032137486_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909032200054_ExecSqlBancos.cs" />
+    <Compile Include="Migrations\201909032200054_ExecSqlBancos.Designer.cs">
+      <DependentUpon>201909032200054_ExecSqlBancos.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
-    <Compile Include="Migrations\DataInitializer\CidadeDataInitializer2.cs" />
-    <Compile Include="Migrations\DataInitializer\CidadeDataInitializer3.cs" />
-    <Compile Include="Migrations\DataInitializer\CidadeDataInitializer4.cs" />
-    <Compile Include="Migrations\DataInitializer\CidadeDataInitializer5.cs" />
-    <Compile Include="Migrations\DataInitializer\CidadeDataInitializer7.cs" />
-    <Compile Include="Migrations\DataInitializer\CidadeDataInitializer6.cs" />
-    <Compile Include="Migrations\DataInitializer\EstadoDataInitializer.cs" />
-    <Compile Include="Migrations\DataInitializer\BancoDataInitializer.cs" />
-    <Compile Include="Migrations\DataInitializer\Contract\IDataInitializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -97,6 +95,18 @@
       <Project>{d848bbbd-61a9-4843-a16d-14a2b6ebec85}</Project>
       <Name>MEI.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201909032137486_InitialCreate.resx">
+      <DependentUpon>201909032137486_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909032200054_ExecSqlBancos.resx">
+      <DependentUpon>201909032200054_ExecSqlBancos.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Migrations\SQLScripts\InsertBancos.sql" />
+    <Content Include="Migrations\SQLScripts\InsertEstados.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

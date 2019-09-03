@@ -65,7 +65,7 @@ namespace Fly01.Financeiro.API.Models.DAL
             //builder.Entity<ContaFinanceira>().MapToStoredProcedures();
         }
 
-        //public DbSet<Pessoa> Pessoas { get; set; }
+        public DbSet<Pessoa> Pessoas { get; set; }
         public DbSet<Banco> Bancos { get; set; }
         //public DbSet<ContaBancaria> ContasBancarias { get; set; }
         //public DbSet<Categoria> Categorias { get; set; }

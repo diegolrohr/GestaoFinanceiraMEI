@@ -20,8 +20,6 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public Guid BancoId { get; set; }
 
-        public string CodigoBanco { get; set; }
-
         public virtual Banco Banco { get; set; }
 
         public double? ValorInicial { get; set; }

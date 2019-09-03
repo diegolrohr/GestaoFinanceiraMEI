@@ -60,16 +60,15 @@ namespace Fly01.Financeiro.API.Models.DAL
             //builder.Entity<ContaFinanceira>().Ignore(m => m.ContaBancariaId);
             //builder.Entity<ContaFinanceira>().Ignore(m => m.ContaBancaria);
             //builder.Entity<ConciliacaoBancaria>().Ignore(m => m.Arquivo);
-            //builder.Entity<ContaBancaria>().Ignore(m => m.CodigoBanco);
             //builder.Entity<SaldoHistorico>().MapToStoredProcedures();
             //builder.Entity<ContaFinanceira>().MapToStoredProcedures();
         }
 
         public DbSet<Pessoa> Pessoas { get; set; }
         public DbSet<Banco> Bancos { get; set; }
-        //public DbSet<ContaBancaria> ContasBancarias { get; set; }
-        //public DbSet<Categoria> Categorias { get; set; }
-        //public DbSet<CondicaoParcelamento> CondicoesParcelamento { get; set; }
+        public DbSet<ContaBancaria> ContasBancarias { get; set; }
+        public DbSet<Categoria> Categorias { get; set; }
+        public DbSet<CondicaoParcelamento> CondicoesParcelamento { get; set; }
         //public DbSet<ContaFinanceira> ContasFinanceiras { get; set; }
         //public DbSet<ContaPagar> ContasPagar { get; set; }
         //public DbSet<ContaReceber> ContasReceber { get; set; }
@@ -80,7 +79,7 @@ namespace Fly01.Financeiro.API.Models.DAL
         //public DbSet<ConciliacaoBancaria> ConciliacoesBancarias { get; set; }
         //public DbSet<ConciliacaoBancariaItem> ConciliacaoBancariaItens { get; set; }
         //public DbSet<ConciliacaoBancariaItemContaFinanceira> ConciliacaoBancariaItemContasFinanceiras { get; set; }
-        //public DbSet<FormaPagamento> FormasPagamento { get; set; }
+        public DbSet<FormaPagamento> FormasPagamento { get; set; }
         //public DbSet<MovimentacaoFinanceira> Movimentacao { get; set; }
         //public DbSet<ContaFinanceiraRenegociacao> ContasFinanceirasRenegociacoes { get; set; }
         //public DbSet<RenegociacaoContaFinanceiraOrigem> RenegociacaoContasFinanceirasOrigem { get; set; }

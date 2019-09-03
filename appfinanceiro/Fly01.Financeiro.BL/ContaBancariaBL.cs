@@ -24,15 +24,6 @@ namespace Fly01.Financeiro.BL
             entity.Fail(All.Any(x => x.Id != entity.Id && x.NomeConta.ToUpper() == entity.NomeConta.ToUpper()), 
                 new Error("Descrição da conta bancária já utilizada anteriormente.", "nomeConta", All.FirstOrDefault(x => x.Id != entity.Id && x.NomeConta.ToUpper() == entity.NomeConta.ToUpper())?.Id.ToString()));
 
-            if(entity.BancoId == default(Guid) && !string.IsNullOrEmpty(entity.CodigoBanco))
-            {
-                var dadosBanco = bancoBL.All.FirstOrDefault(x => x.Codigo == entity.CodigoBanco);
-                if (dadosBanco != null)
-                    entity.BancoId = dadosBanco.Id;
-                else
-                    entity.Fail(true, BancoInvalido);
-            }
-
             var banco = bancoBL.All.FirstOrDefault(x => x.Id == entity.BancoId);
             if(banco != null && banco.Codigo != "999")
             {

@@ -56,6 +56,10 @@
     <Compile Include="Migrations\201909032200054_ExecSqlBancos.Designer.cs">
       <DependentUpon>201909032200054_ExecSqlBancos.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201909032221111_ExecSqlEstados.cs" />
+    <Compile Include="Migrations\201909032221111_ExecSqlEstados.Designer.cs">
+      <DependentUpon>201909032221111_ExecSqlEstados.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -102,6 +106,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201909032200054_ExecSqlBancos.resx">
       <DependentUpon>201909032200054_ExecSqlBancos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909032221111_ExecSqlEstados.resx">
+      <DependentUpon>201909032221111_ExecSqlEstados.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -60,6 +60,10 @@
     <Compile Include="Migrations\201909032221111_ExecSqlEstados.Designer.cs">
       <DependentUpon>201909032221111_ExecSqlEstados.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201909032225488_ExecSqlCidades.cs" />
+    <Compile Include="Migrations\201909032225488_ExecSqlCidades.Designer.cs">
+      <DependentUpon>201909032225488_ExecSqlCidades.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -110,9 +114,13 @@
     <EmbeddedResource Include="Migrations\201909032221111_ExecSqlEstados.resx">
       <DependentUpon>201909032221111_ExecSqlEstados.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909032225488_ExecSqlCidades.resx">
+      <DependentUpon>201909032225488_ExecSqlCidades.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Migrations\SQLScripts\InsertBancos.sql" />
+    <Content Include="Migrations\SQLScripts\InsertCidades.sql" />
     <Content Include="Migrations\SQLScripts\InsertEstados.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -37,18 +37,18 @@ namespace Fly01.Financeiro.API.Models.DAL
             builder.Properties<string>()
                 .Configure(x => x.HasColumnType("varchar"));
 
-            //builder.Entity<ContaFinanceira>()
-            //    .Map(m => m.ToTable("ContaFinanceira"))
-            //    .Map<ContaPagar>(m => m.ToTable("ContaPagar"))
-            //    .Map<ContaReceber>(m => m.ToTable("ContaReceber"));
+            builder.Entity<ContaFinanceira>()
+                .Map(m => m.ToTable("ContaFinanceira"))
+                .Map<ContaPagar>(m => m.ToTable("ContaPagar"))
+                .Map<ContaReceber>(m => m.ToTable("ContaReceber"));
 
             //What does principal end of an association means in relationship
             //por causa da repeticaoPaiId, explicito via FluentAPI
-            //builder.Entity<ContaFinanceira>()
-            //    .HasOptional(b => b.ContaFinanceiraParcelaPai)
-            //    .WithMany()
-            //    .HasForeignKey(b => b.ContaFinanceiraParcelaPaiId)
-            //    .WillCascadeOnDelete(false);
+            builder.Entity<ContaFinanceira>()
+                .HasOptional(b => b.ContaFinanceiraParcelaPai)
+                .WithMany()
+                .HasForeignKey(b => b.ContaFinanceiraParcelaPaiId)
+                .WillCascadeOnDelete(false);
 
             //builder.Entity<RenegociacaoContaFinanceira>()
             //    .Map(m => m.ToTable("RenegociacaoContaFinanceira"))
@@ -56,9 +56,9 @@ namespace Fly01.Financeiro.API.Models.DAL
             //    .Map<RenegociacaoContaFinanceiraRenegociada>(m => m.ToTable("RenegociacaoContaFinanceiraRenegociada"));
 
             //builder.Entity<ContaFinanceiraRenegociacao>().Ignore(m => m.ContasFinanceirasOrigemIds);
-            //builder.Entity<ContaFinanceira>().Ignore(m => m.Saldo);
-            //builder.Entity<ContaFinanceira>().Ignore(m => m.ContaBancariaId);
-            //builder.Entity<ContaFinanceira>().Ignore(m => m.ContaBancaria);
+            builder.Entity<ContaFinanceira>().Ignore(m => m.Saldo);
+            builder.Entity<ContaFinanceira>().Ignore(m => m.ContaBancariaId);
+            builder.Entity<ContaFinanceira>().Ignore(m => m.ContaBancaria);
             //builder.Entity<ConciliacaoBancaria>().Ignore(m => m.Arquivo);
             //builder.Entity<SaldoHistorico>().MapToStoredProcedures();
             //builder.Entity<ContaFinanceira>().MapToStoredProcedures();
@@ -69,9 +69,9 @@ namespace Fly01.Financeiro.API.Models.DAL
         public DbSet<ContaBancaria> ContasBancarias { get; set; }
         public DbSet<Categoria> Categorias { get; set; }
         public DbSet<CondicaoParcelamento> CondicoesParcelamento { get; set; }
-        //public DbSet<ContaFinanceira> ContasFinanceiras { get; set; }
-        //public DbSet<ContaPagar> ContasPagar { get; set; }
-        //public DbSet<ContaReceber> ContasReceber { get; set; }
+        public DbSet<ContaFinanceira> ContasFinanceiras { get; set; }
+        public DbSet<ContaPagar> ContasPagar { get; set; }
+        public DbSet<ContaReceber> ContasReceber { get; set; }
         //public DbSet<ContaFinanceiraBaixa> ContasFinanceirasBaixas { get; set; }
         public DbSet<Estado> Estados { get; set; }
         public DbSet<Cidade> Cidades { get; set; }

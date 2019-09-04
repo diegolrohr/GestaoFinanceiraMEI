@@ -72,6 +72,10 @@
     <Compile Include="Migrations\201909032241506_AddContaFinanceiraDependencias.Designer.cs">
       <DependentUpon>201909032241506_AddContaFinanceiraDependencias.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201909042258229_AddContaPagarReceber.cs" />
+    <Compile Include="Migrations\201909042258229_AddContaPagarReceber.Designer.cs">
+      <DependentUpon>201909042258229_AddContaPagarReceber.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -130,6 +134,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201909032241506_AddContaFinanceiraDependencias.resx">
       <DependentUpon>201909032241506_AddContaFinanceiraDependencias.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909042258229_AddContaPagarReceber.resx">
+      <DependentUpon>201909042258229_AddContaPagarReceber.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

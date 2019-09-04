@@ -76,6 +76,10 @@
     <Compile Include="Migrations\201909042258229_AddContaPagarReceber.Designer.cs">
       <DependentUpon>201909042258229_AddContaPagarReceber.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201909042303384_AddBaixaSaldoHistoricoMovimentacao.cs" />
+    <Compile Include="Migrations\201909042303384_AddBaixaSaldoHistoricoMovimentacao.Designer.cs">
+      <DependentUpon>201909042303384_AddBaixaSaldoHistoricoMovimentacao.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -137,6 +141,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201909042258229_AddContaPagarReceber.resx">
       <DependentUpon>201909042258229_AddContaPagarReceber.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909042303384_AddBaixaSaldoHistoricoMovimentacao.resx">
+      <DependentUpon>201909042303384_AddBaixaSaldoHistoricoMovimentacao.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

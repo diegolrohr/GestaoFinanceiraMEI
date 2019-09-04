@@ -51,7 +51,11 @@ namespace Fly01.Financeiro.BL
         private void GravaParcelamentoRepeticoes(ContaReceber entity, bool repetir, List<CondicaoParcelamentoParcela> condicoesParcelamento, Guid contaFinanceiraPrincipal)
         {
             var numero = default(int);
-            numero = All.Max(x => x.Numero) + 1;
+            if (All.Any())
+            {
+                numero = All.Max(x => x.Numero);
+            }
+            numero += 1;
             numero -= condicoesParcelamento.Count;
 
             for (int iParcela = 0; iParcela < condicoesParcelamento.Count; iParcela++)

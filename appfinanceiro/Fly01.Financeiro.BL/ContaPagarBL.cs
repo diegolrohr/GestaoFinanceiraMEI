@@ -43,32 +43,20 @@ namespace Fly01.Financeiro.BL
             if (entity.StatusContaBancaria == default(StatusContaBancaria))
                 entity.StatusContaBancaria = StatusContaBancaria.EmAberto;
 
-            if (!string.IsNullOrEmpty(entity.DescricaoParcela))
-            {
-                //post bemacash ignorando condicao parcelamento
-                if (entity.Id == default(Guid)) entity.Id = Guid.NewGuid();
+            var condicoesParcelamento = condicaoParcelamentoBL.GetPrestacoes(entity.CondicaoParcelamentoId, entity.DataVencimento, entity.ValorPrevisto);
+            var contaFinanceiraPrincipal = entity.Id == default(Guid) ? Guid.NewGuid() : entity.Id;
 
-                numero = All.Max(x => x.Numero) + 1;
-                entity.Numero = numero;
-
-                base.Insert(entity);
-
-                if (entity.StatusContaBancaria == StatusContaBancaria.Pago || entity.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente)
-                    contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(entity);
-            }
-            else
-            {
-                var condicoesParcelamento = condicaoParcelamentoBL.GetPrestacoes(entity.CondicaoParcelamentoId, entity.DataVencimento, entity.ValorPrevisto);
-                var contaFinanceiraPrincipal = entity.Id == default(Guid) ? Guid.NewGuid() : entity.Id;
-
-                GravaParcelamentoRepeticoes(entity, repetir, condicoesParcelamento, contaFinanceiraPrincipal);
-            }
+            GravaParcelamentoRepeticoes(entity, repetir, condicoesParcelamento, contaFinanceiraPrincipal);
         }
 
         private void GravaParcelamentoRepeticoes(ContaPagar entity, bool repetir, List<CondicaoParcelamentoParcela> condicoesParcelamento, Guid contaFinanceiraPrincipal)
-        {            
+        {
             var numero = default(int);
-            numero = All.Max(x => x.Numero) + 1;
+            if (All.Any())
+            {
+                numero = All.Max(x => x.Numero);
+            }
+            numero += 1;
             numero -= condicoesParcelamento.Count;
 
             for (int iParcela = 0; iParcela < condicoesParcelamento.Count; iParcela++)
@@ -158,8 +146,8 @@ namespace Fly01.Financeiro.BL
             int QtdTotal = All.AsNoTracking().Where(x => x.DataVencimento >= dataInicial && x.DataVencimento <= dataFinal).Count();
 
             var result = All.AsNoTracking().Where(x => x.DataVencimento >= dataInicial && x.DataVencimento <= dataFinal)
-                                            .Select(x => new { x.ValorPrevisto , x.StatusContaBancaria, x.ValorPago })    
-                                            .GroupBy(x => new { x.StatusContaBancaria})
+                                            .Select(x => new { x.ValorPrevisto, x.StatusContaBancaria, x.ValorPago })
+                                            .GroupBy(x => new { x.StatusContaBancaria })
                                             .Select(x => new
                                             {
                                                 x.Key.StatusContaBancaria,
@@ -169,8 +157,8 @@ namespace Fly01.Financeiro.BL
                                             })
                                             .ToList();
 
-            double? resultDiferenca = result.Where(x => x.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente).Select(x => x.valorTotal - x.valorPago).FirstOrDefault()?? 0;
-            double? valorPago = result.Where(x => x.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente).Select(x => x.valorPago).FirstOrDefault()?? 0;
+            double? resultDiferenca = result.Where(x => x.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente).Select(x => x.valorTotal - x.valorPago).FirstOrDefault() ?? 0;
+            double? valorPago = result.Where(x => x.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente).Select(x => x.valorPago).FirstOrDefault() ?? 0;
 
             result.ForEach(x =>
             {
@@ -180,9 +168,9 @@ namespace Fly01.Financeiro.BL
                     Quantidade = x.Quantidade,
                     QuantidadeTotal = QtdTotal,
                     Valortotal = (x.StatusContaBancaria.ToString() == "EmAberto")
-                         ?  x.valorTotal  + (double) resultDiferenca 
+                         ? x.valorTotal + (double)resultDiferenca
                          : (x.StatusContaBancaria.ToString() == "Pago")
-                            ? x.valorTotal + (double)valorPago 
+                            ? x.valorTotal + (double)valorPago
                             : x.valorTotal
                 });
             });

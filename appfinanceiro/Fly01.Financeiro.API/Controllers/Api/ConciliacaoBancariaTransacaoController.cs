@@ -5,7 +5,7 @@ using Fly01.Core.Entities.Domains.Commons;
 namespace Fly01.Financeiro.API.Controllers.Api
 {
     [ODataRoutePrefix("conciliacaobancariatransacao")]
-    public class ConciliacaoBancariaTransacaoController : ApiPlataformaController<ConciliacaoBancariaTransacao, ConciliacaoBancariaTransacaoBL>
+    public class ConciliacaoBancariaTransacaoController : ApiEmpresaController<ConciliacaoBancariaTransacao, ConciliacaoBancariaTransacaoBL>
     {
     }
 }

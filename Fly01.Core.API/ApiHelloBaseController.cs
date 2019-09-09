@@ -27,7 +27,7 @@ namespace Fly01.Core.API
         [HttpGet]
         public IHttpActionResult Say()
         {
-            Request.Headers.Add("PlataformaUrl", "SayHello");
+            Request.Headers.Add("EmpresaId", "SayHello");
             Request.Headers.Add("AppUser", "AppUserHello");
 
             var testConnectionDB = false;

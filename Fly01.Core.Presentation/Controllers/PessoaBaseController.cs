@@ -199,33 +199,9 @@ namespace Fly01.Core.Presentation.Controllers
             config.Elements.Add(new InputTextUI { Id = "idEstrangeiro", Class = "col s12 l3", Label = "Identificação Estrangeiro", MaxLength = 20 });
             config.Elements.Add(new InputEmailUI { Id = "email", Class = "col s12 l5", Label = "E-mail", MaxLength = 100 });
 
-            config.Elements.Add(new SelectUI
-            {
-                Id = "situacaoEspecialNFS",
-                Class = "col s12 l4",
-                Label = "Situação Especial NFS-e",
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoSituacaoEspecialNFS))),
-                ConstrainWidth = true
-            }
-            );
             config.Elements.Add(new InputTextUI { Id = "contato", Class = "col s6 l4", Label = "Pessoa de Contato", MaxLength = 60 });
             config.Elements.Add(new InputTelUI { Id = "celular", Class = "col s6 l4", Label = "Celular", MaxLength = 15 });
             config.Elements.Add(new InputTelUI { Id = "telefone", Class = "col s6 l4", Label = "Telefone", MaxLength = 15 });
-
-            config.Elements.Add(new SelectUI
-            {
-                Id = "tipoIndicacaoInscricaoEstadual",
-                Class = "col s12 l4",
-                Label = "Indicação Inscrição Estadual",
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoIndicacaoInscricaoEstadual))),
-                ConstrainWidth = true, 
-                DomEvents = new List<DomEventUI>
-                {
-                    new DomEventUI {DomEvent = "change", Function = "fnChangeTipoInscricao" }
-                }
-            });
-            config.Elements.Add(new InputTextUI { Id = "inscricaoEstadual", Class = "col s6 l4", Label = "Inscrição Estadual", MaxLength = 18 });
-            config.Elements.Add(new InputTextUI { Id = "inscricaoMunicipal", Class = "col s6 l4", Label = "Inscrição Municipal", MaxLength = 18 });
 
             config.Elements.Add(new InputCepUI
             {

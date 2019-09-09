@@ -13,7 +13,7 @@ using System.Data.Entity.Infrastructure;
 namespace Fly01.Core.API
 {
     [CustomExceptionFilter]
-    public abstract class ApiPlataformaBaseController<TEntity> : ApiDomainBaseController<TEntity>
+    public abstract class ApiEmpresaBaseController<TEntity> : ApiDomainBaseController<TEntity>
         where TEntity : EmpresaBase, new()
     {
         protected abstract void Insert(TEntity entity);

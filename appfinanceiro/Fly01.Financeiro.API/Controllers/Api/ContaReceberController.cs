@@ -16,7 +16,7 @@ using System.Web.OData.Routing;
 namespace Fly01.Financeiro.API.Controllers.Api
 {
     [ODataRoutePrefix("contareceber")]
-    public class ContaReceberController : ApiPlataformaController<ContaReceber, ContaReceberBL>
+    public class ContaReceberController : ApiEmpresaController<ContaReceber, ContaReceberBL>
     {
         public ContaReceberController()
         {

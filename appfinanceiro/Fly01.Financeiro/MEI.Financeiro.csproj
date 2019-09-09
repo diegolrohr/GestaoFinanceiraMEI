@@ -96,7 +96,6 @@
     <Compile Include="Models\Reports\ReportRecibo.cs" />
     <Compile Include="Models\Reports\ReportDre.cs" />
     <Compile Include="Models\Reports\WebReportViewer.cs" />
-    <Compile Include="Models\Utils\EmailBodyHelper.cs" />
     <Compile Include="Models\ViewModel\ImprimirListContasFiltroVM.cs" />
     <Compile Include="Models\ViewModel\ImprimirListContasVM.cs" />
     <Compile Include="Models\ViewModel\ReciboContaReceberVM.cs" />

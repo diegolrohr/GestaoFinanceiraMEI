@@ -7,7 +7,7 @@ using System.Web.Http;
 namespace Fly01.Financeiro.API.Controllers.Api
 {
     [ODataRoutePrefix("contafinanceirabaixamultipla")]
-    public class ContaFinanceiraBaixaMultiplaController : ApiPlataformaController<ContaFinanceiraBaixaMultipla, ContaFinanceiraBaixaMultiplaBL>
+    public class ContaFinanceiraBaixaMultiplaController : ApiEmpresaController<ContaFinanceiraBaixaMultipla, ContaFinanceiraBaixaMultiplaBL>
     {
         public override async Task<IHttpActionResult> Post(ContaFinanceiraBaixaMultipla entity)
         {

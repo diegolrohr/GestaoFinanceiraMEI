@@ -225,7 +225,7 @@
     <Compile Include="ApiDomainBaseController.cs" />
     <Compile Include="ApiHelloBaseController.cs" />
     <Compile Include="ApiODataBaseController.cs" />
-    <Compile Include="ApiPlataformaBaseController.cs" />
+    <Compile Include="ApiEmpresaBaseController.cs" />
     <Compile Include="Application\GlobalWebAPIApplication.cs" />
     <Compile Include="Application\ODataConfig.cs" />
     <Compile Include="Application\StartupConfig.cs" />

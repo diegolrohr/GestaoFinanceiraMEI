@@ -7,7 +7,7 @@ using Fly01.Core.Entities.Domains;
 
 namespace Fly01.Financeiro.API.Controllers.Api
 {
-    public class ApiPlataformaController<TEntity, TBL> : ApiPlataformaBaseController<TEntity>
+    public class ApiEmpresaController<TEntity, TBL> : ApiEmpresaBaseController<TEntity>
         where TEntity : EmpresaBase, new()
         where TBL : EmpresaBaseBL<TEntity>
     {

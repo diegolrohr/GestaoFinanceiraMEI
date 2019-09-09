@@ -8,7 +8,7 @@ using Fly01.Core.Entities.Domains.Commons;
 namespace Fly01.Financeiro.API.Controllers.Api
 {
     [ODataRoutePrefix("categoria")]
-    public class CategoriaController : ApiPlataformaController<Categoria, CategoriaBL>
+    public class CategoriaController : ApiEmpresaController<Categoria, CategoriaBL>
     {
         public CategoriaController()
         {            

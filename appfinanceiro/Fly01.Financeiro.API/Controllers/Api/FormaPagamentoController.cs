@@ -5,7 +5,7 @@ using System.Web.OData.Routing;
 namespace Fly01.Financeiro.API.Controllers.Api
 {
     [ODataRoutePrefix("formapagamento")]
-    public class FormaPagamentoController : ApiPlataformaController<FormaPagamento, FormaPagamentoBL>
+    public class FormaPagamentoController : ApiEmpresaController<FormaPagamento, FormaPagamentoBL>
     {
         public FormaPagamentoController()
         {

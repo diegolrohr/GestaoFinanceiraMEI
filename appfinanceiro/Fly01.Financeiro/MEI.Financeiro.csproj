@@ -62,6 +62,7 @@
     <Compile Include="Controllers\AutoCompleteController.cs" />
     <Compile Include="Controllers\Base\ContaFinanceiraController.cs" />
     <Compile Include="Controllers\CategoriaController.cs" />
+    <Compile Include="Controllers\CondicaoParcelamentoController.cs" />
     <Compile Include="Controllers\RelatorioContaReceberController.cs" />
     <Compile Include="Controllers\RelatorioContaPagarController.cs" />
     <Compile Include="Controllers\RelatorioContaFinanceiraController.cs" />
@@ -77,7 +78,6 @@
     <Compile Include="Controllers\ReceitaPorCategoriaController.cs" />
     <Compile Include="Controllers\DemonstrativoResultadoExercicioController.cs" />
     <Compile Include="Controllers\ClienteController.cs" />
-    <Compile Include="Controllers\CondicaoParcelamentoController.cs" />
     <Compile Include="Controllers\ContaBancariaController.cs" />
     <Compile Include="Controllers\ContaPagarController.cs" />
     <Compile Include="Controllers\ContaReceberController.cs" />

@@ -69,6 +69,7 @@ namespace Fly01.Financeiro.API.Models.DAL
         public DbSet<ContaBancaria> ContasBancarias { get; set; }
         public DbSet<Categoria> Categorias { get; set; }
         public DbSet<CondicaoParcelamento> CondicoesParcelamento { get; set; }
+
         public DbSet<ContaFinanceira> ContasFinanceiras { get; set; }
         public DbSet<ContaPagar> ContasPagar { get; set; }
         public DbSet<ContaReceber> ContasReceber { get; set; }
@@ -81,8 +82,5 @@ namespace Fly01.Financeiro.API.Models.DAL
         public DbSet<ConciliacaoBancariaItemContaFinanceira> ConciliacaoBancariaItemContasFinanceiras { get; set; }
         public DbSet<FormaPagamento> FormasPagamento { get; set; }
         public DbSet<MovimentacaoFinanceira> Movimentacao { get; set; }
-        //public DbSet<ContaFinanceiraRenegociacao> ContasFinanceirasRenegociacoes { get; set; }
-        //public DbSet<RenegociacaoContaFinanceiraOrigem> RenegociacaoContasFinanceirasOrigem { get; set; }
-        //public DbSet<RenegociacaoContaFinanceiraRenegociada> RenegociacaoContasFinanceirasRenegociadas { get; set; }
     }
 }

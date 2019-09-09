@@ -12,8 +12,5 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
 
         [JsonProperty("condicoesParcelamento")]
         public string CondicoesParcelamento { get; set; }
-
-        [JsonProperty("registroFixo")]
-        public bool RegistroFixo { get; set; }
     }
 }

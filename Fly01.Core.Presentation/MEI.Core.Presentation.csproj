@@ -141,7 +141,6 @@
     <Compile Include="Commons\ImportHelper.cs" />
     <Compile Include="Controllers\AutoCompleteBaseController.cs" />
     <Compile Include="Controllers\PessoaBaseController.cs" />
-    <Compile Include="Controllers\CondicaoParcelamentoBaseController.cs" />
     <Compile Include="Controllers\FormaPagamentoBaseController.cs" />
     <Compile Include="Controllers\PrimitiveBaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />

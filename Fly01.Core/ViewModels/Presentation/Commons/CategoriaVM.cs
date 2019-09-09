@@ -21,8 +21,5 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
 
         [JsonProperty("categoriaPai")]
         public CategoriaVM CategoriaPai { get; set; }
-
-        [JsonProperty("registroFixo")]
-        public bool RegistroFixo { get; set; }
     }
 }

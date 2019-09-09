@@ -61,11 +61,11 @@
   <ItemGroup>
     <Compile Include="Controllers\AutoCompleteController.cs" />
     <Compile Include="Controllers\Base\ContaFinanceiraController.cs" />
+    <Compile Include="Controllers\CategoriaController.cs" />
     <Compile Include="Controllers\RelatorioContaReceberController.cs" />
     <Compile Include="Controllers\RelatorioContaPagarController.cs" />
     <Compile Include="Controllers\RelatorioContaFinanceiraController.cs" />
     <Compile Include="Controllers\RelatorioController.cs" />
-    <Compile Include="Controllers\MinhaContaController.cs" />
     <Compile Include="Controllers\ContaFinanceiraBaixaMultiplaController.cs" />
     <Compile Include="Controllers\ContaFinanceiraBaixaMultiplaCPController.cs" />
     <Compile Include="Controllers\ContaFinanceiraBaixaMultiplaCRController.cs" />
@@ -75,7 +75,6 @@
     <Compile Include="Controllers\DashboardContaReceberController.cs" />
     <Compile Include="Controllers\DespesaPorCategoriaController.cs" />
     <Compile Include="Controllers\ReceitaPorCategoriaController.cs" />
-    <Compile Include="Controllers\CategoriaController.cs" />
     <Compile Include="Controllers\DemonstrativoResultadoExercicioController.cs" />
     <Compile Include="Controllers\ClienteController.cs" />
     <Compile Include="Controllers\CondicaoParcelamentoController.cs" />

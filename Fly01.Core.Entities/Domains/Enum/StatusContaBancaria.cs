@@ -10,10 +10,7 @@ namespace Fly01.Core.Entities.Domains.Enum
         [Subtitle("Pago", "Pago", "PAGO", "green")]
         Pago = 2,
 
-        [Subtitle("Renegociado", "Renegociado", "RENG", "red")]
-        Renegociado = 3,
-
         [Subtitle("BaixadoParcialmente", "Baixado Parcialmente", "BPAR", "gray")]
-        BaixadoParcialmente = 4
+        BaixadoParcialmente = 3
     }
 }

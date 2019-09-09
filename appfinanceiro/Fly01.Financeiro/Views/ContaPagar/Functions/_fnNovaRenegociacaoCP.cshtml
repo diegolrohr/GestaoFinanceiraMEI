@@ -1,9 +1,0 @@
-﻿<script>
-    function fnNovaRenegociacaoCP() {
-        @*var url = "@Url.Action("FormRenegociacaoContaPagar", "ContaPagar")";
-        //var idRecord = " ";//para forçar a execução da Url get na definição do form
-        //$$$.go(url, idRecord);
-        $$$.go(url)*@
-        $$$.go("@Url.Action("FormRenegociacaoContaPagar", "" + ViewContext.Controller.ValueProvider.GetValue("controller").RawValue)");
-    }
-</script>

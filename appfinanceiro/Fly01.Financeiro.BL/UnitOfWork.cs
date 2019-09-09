@@ -100,15 +100,6 @@ namespace Fly01.Financeiro.BL
         private FluxoCaixaBL fluxoCaixaBL;
         public FluxoCaixaBL FluxoCaixaBL => fluxoCaixaBL ?? (fluxoCaixaBL = new FluxoCaixaBL(Context, SaldoHistoricoBL, ContaFinanceiraBL));
 
-        private ContaFinanceiraRenegociacaoBL contaFinanceiraRenegociacaoBL;
-        public ContaFinanceiraRenegociacaoBL ContaFinanceiraRenegociacaoBL => contaFinanceiraRenegociacaoBL ?? (contaFinanceiraRenegociacaoBL = new ContaFinanceiraRenegociacaoBL(Context, RenegociacaoContaFinanceiraOrigemBL, RenegociacaoContaFinanceiraRenegociadaBL, ContaPagarBL, ContaReceberBL));
-
-        private RenegociacaoContaFinanceiraOrigemBL renegociacaoContaFinanceiraOrigemBL;
-        public RenegociacaoContaFinanceiraOrigemBL RenegociacaoContaFinanceiraOrigemBL => renegociacaoContaFinanceiraOrigemBL ?? (renegociacaoContaFinanceiraOrigemBL = new RenegociacaoContaFinanceiraOrigemBL(Context));
-
-        private RenegociacaoContaFinanceiraRenegociadaBL renegociacaoContaFinanceiraRenegociadaBL;
-        public RenegociacaoContaFinanceiraRenegociadaBL RenegociacaoContaFinanceiraRenegociadaBL => renegociacaoContaFinanceiraRenegociadaBL ?? (renegociacaoContaFinanceiraRenegociadaBL = new RenegociacaoContaFinanceiraRenegociadaBL(Context));
-
         private TransferenciaBL transferenciaBL;
         public TransferenciaBL TransferenciaBL => transferenciaBL ?? (transferenciaBL = new TransferenciaBL(Context, MovimentacaoBL));
 

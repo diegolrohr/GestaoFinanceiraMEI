@@ -31,7 +31,6 @@ namespace Fly01.Financeiro.API
             builder.EntitySet<ConciliacaoBancariaTransacao>("conciliacaobancariatransacao");
             builder.EntitySet<ConciliacaoBancariaItem>("conciliacaobancariabuscarexistentes");
             builder.EntitySet<FormaPagamento>("formapagamento");
-            builder.EntitySet<ContaFinanceiraRenegociacao>("contafinanceirarenegociacao");
             builder.EntitySet<MovimentacaoFinanceira>("movimentacao");
             builder.EntitySet<TransferenciaFinanceira>("transferencia");
             builder.EntitySet<MovimentacaoFinanceiraPorCategoria>("receitaporcategoria");

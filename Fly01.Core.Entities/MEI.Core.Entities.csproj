@@ -92,7 +92,6 @@
     <Compile Include="Domains\Commons\ContaFinanceira.cs" />
     <Compile Include="Domains\Commons\ContaFinanceiraBaixaMultipla.cs" />
     <Compile Include="Domains\Commons\ContaFinanceiraBaixa.cs" />
-    <Compile Include="Domains\Commons\ContaFinanceiraRenegociacao.cs" />
     <Compile Include="Domains\Commons\ContaPagar.cs" />
     <Compile Include="Domains\Commons\ContaReceber.cs" />
     <Compile Include="Domains\Commons\Estado.cs" />
@@ -107,9 +106,6 @@
     <Compile Include="Domains\Commons\MovimentacaoFinanceira.cs" />
     <Compile Include="Domains\Commons\MovimentacaoFinanceiraPorCategoria.cs" />
     <Compile Include="Domains\Commons\Pessoa.cs" />
-    <Compile Include="Domains\Commons\RenegociacaoContaFinanceira.cs" />
-    <Compile Include="Domains\Commons\RenegociacaoContaFinanceiraOrigem.cs" />
-    <Compile Include="Domains\Commons\RenegociacaoContaFinanceiraRenegociada.cs" />
     <Compile Include="Domains\Commons\SaldoHistorico.cs" />
     <Compile Include="Domains\Commons\TransferenciaFinanceira.cs" />
     <Compile Include="Domains\DomainBase.cs" />
@@ -149,8 +145,6 @@
     <Compile Include="Domains\Enum\TipoPresencaComprador.cs" />
     <Compile Include="Domains\Enum\TipoProduto.cs" />
     <Compile Include="Domains\Enum\TipoRegimeEspecialTributacao.cs" />
-    <Compile Include="Domains\Enum\TipoRenegociacaoCalculo.cs" />
-    <Compile Include="Domains\Enum\TipoRenegociacaoValorDiferenca.cs" />
     <Compile Include="Domains\Enum\TipoServico.cs" />
     <Compile Include="Domains\Enum\TipoSimulacao.cs" />
     <Compile Include="Domains\Enum\TipoSubstituicaoTributaria.cs" />

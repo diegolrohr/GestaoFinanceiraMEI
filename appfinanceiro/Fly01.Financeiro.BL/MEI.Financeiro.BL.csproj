@@ -57,9 +57,6 @@
     <Compile Include="DespesaPorCategoriaBL.cs" />
     <Compile Include="MovimentacaoPorCategoriaBL.cs" />
     <Compile Include="ReceitaPorCategoriaBL.cs" />
-    <Compile Include="RenegociacaoContaFinanceiraRenegociadaBL.cs" />
-    <Compile Include="RenegociacaoContaFinanceiraOrigemBL.cs" />
-    <Compile Include="ContaFinanceiraRenegociacaoBL.cs" />
     <Compile Include="ExtratoBL.cs" />
     <Compile Include="FluxoCaixaBL.cs" />
     <Compile Include="FormaPagamentoBL.cs" />

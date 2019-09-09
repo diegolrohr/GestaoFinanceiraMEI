@@ -24,39 +24,15 @@ using System.Web.Mvc;
 
 namespace Fly01.Financeiro.Controllers.Base
 {
-    public abstract class ContaFinanceiraController<TEntity, TEntityBaixa, TEntityRenegociacao> : BaseController<TEntity>
+    public abstract class ContaFinanceiraController<TEntity, TEntityBaixa> : BaseController<TEntity>
         where TEntity : ContaFinanceiraVM
         where TEntityBaixa : ContaFinanceiraBaixaVM
-        where TEntityRenegociacao : ContaFinanceiraRenegociacaoVM
     {
         protected ContaFinanceiraController() { }
 
-        /// <summary>
-        /// Método Responsável por definir as colunas que serão apresentadas 
-        /// no grid de listagem
-        /// </summary>
-        /// <returns></returns>
-        [OperationRole(NotApply = true)]
         protected override List<JQueryDataTableParamsColumn> GetParamsColumns(string ResourceName = "")
         {
-
-            var namePessoa = ResourceName == "ContaPagar" ? "Fornecedor" : "Cliente";
-
-            return new List<JQueryDataTableParamsColumn>()
-            {
-                new JQueryDataTableParamsColumn { Name = "Status", Data = "statusContaBancariaNomeCompleto"},
-                new JQueryDataTableParamsColumn { Name = "Saldo", Data = "saldo"},
-                new JQueryDataTableParamsColumn { Name = "Data Emissao", Data = "dataEmissao"},
-                new JQueryDataTableParamsColumn { Name = "Numero", Data = "numero"},
-                new JQueryDataTableParamsColumn { Name = "Descricao", Data = "descricao"},
-                new JQueryDataTableParamsColumn { Name = namePessoa.ToString() , Data = "pessoa_nome"},
-                new JQueryDataTableParamsColumn { Name = "Forma Pagamento", Data = "formaPagamento_descricao"},
-                new JQueryDataTableParamsColumn { Name = "Valor", Data = "valorPago"},
-                new JQueryDataTableParamsColumn { Name = "Vencimento", Data = "dataVencimento"},
-                new JQueryDataTableParamsColumn { Name = "Categoria Financeira", Data = "categoria_descricao"},
-                new JQueryDataTableParamsColumn { Name = "Condicao Parcelamento", Data = "condicaoParcelamento_descricao"},
-                new JQueryDataTableParamsColumn { Name = "Observacao", Data = "observacao"}
-            };
+            throw new NotImplementedException();
         }
 
         [OperationRole(NotApply = true)]
@@ -98,6 +74,7 @@ namespace Fly01.Financeiro.Controllers.Base
                 repeticaoFilha = x.ContaFinanceiraRepeticaoPaiId != null && x.Repetir
             };
         }
+
         [OperationRole(NotApply = true)]
         public Func<TEntityBaixa, object> GetDisplayDataBaixas()
         {
@@ -109,24 +86,7 @@ namespace Fly01.Financeiro.Controllers.Base
                 observacao = x.Observacao
             };
         }
-        [OperationRole(NotApply = true)]
-        public Func<TEntity, object> GetDisplayDataRenegociacao()
-        {
-            return x => new
-            {
-                id = x.Id,
-                descricao = x.Descricao,
-                valorPrevisto = x.ValorPrevisto.ToString("C", AppDefaults.CultureInfoDefault),
-                saldo = x.Saldo.ToString("C", AppDefaults.CultureInfoDefault),
-                dataVencimento = x.DataVencimento.ToString("dd/MM/yyyy"),
-                diasVencidos = x.DiasVencidos,
-                descricaoParcela = string.IsNullOrEmpty(x.DescricaoParcela) ? "" : x.DescricaoParcela,
-                formaPagamento_descricao = x.FormaPagamento.Descricao,
-                categoria_descricao = x.Categoria.Descricao,
-                pessoa_nome = x.Pessoa.Nome,
-                saldoSemFormatacao = x.Saldo
-            };
-        }
+
         [OperationRole(NotApply = true)]
         public Func<TEntity, object> GetDisplayDataBaixaMultipla()
         {
@@ -142,11 +102,6 @@ namespace Fly01.Financeiro.Controllers.Base
             };
         }
 
-        /// <summary>
-        /// Método responsável por salvar um novo registro
-        /// Tratado os campos responsáveis pela recorrência
-        /// </summary>
-        /// <returns></returns>
         [HttpPost]
         public override JsonResult Create(TEntity entityVM)
         {
@@ -193,10 +148,6 @@ namespace Fly01.Financeiro.Controllers.Base
             return File(reportViewer.Print(reportItens, SessionManager.Current.UserData.PlatformUrl), "application/pdf");
         }
 
-        /// <summary>
-        /// Método responsável por visualizar as informações salvas, sem a possibilidade de alterar
-        /// </summary>
-        /// <returns></returns>
         public virtual ContentResult Visualizar(Guid id)
         {
             return Json(id);
@@ -230,16 +181,7 @@ namespace Fly01.Financeiro.Controllers.Base
             }
         }
 
-        [OperationRole(PermissionValue = EPermissionValue.Read)]
-        [HttpPost]
-        public abstract JsonResult ListRenegociacaoRelacionamento(string contaFinanceiraId);
-
         #region Baixa de Títulos
-        /// <summary>
-        /// Retorna Modal View para efetuar a operação de Baixa de um título
-        /// </summary>
-        /// <param name="id">Identificador do titulo</param>
-        /// <returns></returns>
         [OperationRole(PermissionValue = EPermissionValue.Write)]
         public virtual ContentResult BaixaTitulo(Guid id)
         {
@@ -253,12 +195,6 @@ namespace Fly01.Financeiro.Controllers.Base
 
             return Content(JsonConvert.SerializeObject(baixa, JsonSerializerSetting.Front), "application/json");
         }
-
-        /// <summary>
-        /// Operação de POST da baixa de um título
-        /// </summary>
-        /// <param name="entityVM">Entidade em questão</param>
-        /// <returns></returns>
 
         [OperationRole(PermissionValue = EPermissionValue.Write)]
         [HttpPost]
@@ -281,12 +217,6 @@ namespace Fly01.Financeiro.Controllers.Base
                 return JsonResponseStatus.GetFailure(error.Message);
             }
         }
-
-        /// <summary>
-        /// Operação de POST do Cancelamento de Baixa de Titulo
-        /// </summary>
-        /// <param name="id">Identificador do titulo</param>
-        /// <returns></returns>
 
         [OperationRole(PermissionValue = EPermissionValue.Write)]
         [HttpPost]
@@ -312,171 +242,6 @@ namespace Fly01.Financeiro.Controllers.Base
             }
         }
 
-        //public JsonResult ListRelacionamentoBaixas(string contaId, string subtitleCode)
-        //{
-        //    dynamic dataToView;
-        //    int dataTotal;
-        //    var queryString = new Dictionary<string, string>();
-
-        //    if (subtitleCode == "2" || subtitleCode == "3")
-        //    {
-        //        var account = AppDefaults.GetResourceName(typeof(TEntity))
-        //                        .Replace("Accounts", "Account");
-        //        queryString.AddParam(account + "Id", contaId);
-
-        //        var response = RestHelper.ExecuteGetRequest<ResultBase<BankTransacVM>>(
-        //                        AppDefaults.GetResourceName(typeof(BankTransacVM)), queryString);
-        //        dataToView = response.Data.Select(GetDisplayDataBankTransac());
-        //        dataTotal = response.Total;
-        //    }
-        //    else
-        //    {
-        //        throw new ArgumentOutOfRangeException("Somente SubtitleCode 2 e 3");
-        //    }
-
-        //    return Json(new
-        //    {
-        //        recordsTotal = dataTotal,
-        //        recordsFiltered = dataTotal,
-        //        data = dataToView
-        //    }, JsonRequestBehavior.AllowGet);
-        //}
-
-        #endregion
-
-        #region Renegociação
-        public virtual ActionResult Renegociacao()
-        {
-            return View("Renegociacao");
-        }
-
-        [OperationRole(PermissionValue = EPermissionValue.Write)]
-        public ContentResult IncluirRenegociacao()
-        {
-            //string contaController
-            ContaFinanceiraRenegociacaoVM entity = new ContaFinanceiraRenegociacaoVM
-            {
-                DataEmissao = DateTime.Now,
-                DataVencimento = DateTime.Now,
-                TipoContaFinanceira = ResourceName.Equals("ContaPagar") ? TipoContaFinanceiraVM.ContaPagar.ToString() : TipoContaFinanceiraVM.ContaReceber.ToString(),
-                ValorAcumulado = 0,
-                ValorDiferenca = 0,
-                ValorFinal = 0
-            };
-
-            return Content(JsonConvert.SerializeObject(entity, JsonSerializerSetting.Front), "application/json");
-        }
-
-        [OperationRole(PermissionValue = EPermissionValue.Write)]
-        [HttpPost]
-        public virtual JsonResult IncluirRenegociacao(ContaFinanceiraRenegociacaoVM entityVM)
-        {
-            try
-            {
-                string resourceRenegociacao = AppDefaults.GetResourceName(typeof(TEntityRenegociacao));
-                //para não serializar null e Odata não dar erro de "Does not support untyped value in non-open type”
-                //pois sao propriedades que só tem na VM
-                entityVM.Descricao = entityVM.DescricaoRenegociacao;
-                entityVM.DataVencimento = entityVM.DtVencimento.Value;
-
-                entityVM.DescricaoRenegociacao = null;
-                entityVM.DtVencimento = null;
-
-                RestHelper.ExecutePostRequest(resourceRenegociacao, JsonConvert.SerializeObject(entityVM, JsonSerializerSetting.Default));
-                return JsonResponseStatus.Get(new ErrorInfo { HasError = false }, Operation.Create);
-            }
-            catch (Exception ex)
-            {
-                ErrorInfo error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
-                return JsonResponseStatus.GetFailure(error.Message);
-            }
-        }
-
-        public abstract JsonResult GridLoadTitulosARenegociar(string renegociaoPessoaId);
-        #endregion
-
-        #region Adiantamento
-        public virtual ActionResult IncluirAdiantamento(string origemChamada)
-        {
-            ViewBag.OrigemChamada = origemChamada;
-
-            return PartialView("_IncluirAdiantamento", Activator.CreateInstance<TEntity>());
-        }
-
-        #endregion
-
-        #region Bordero/CNAB
-        /// <summary>
-        /// Retorna Títulos que podem ser inclusos em um bordero
-        /// Este método é chamado apenas na inclusão de um bordero
-        /// </summary>
-        /// <param name="dataInicial">Filtro de Data Inicial</param>
-        /// <param name="dataFinal">Filtro de Data Final</param>
-        /// <param name="bankId">Filtro de Conta Bancária</param>
-        /// <returns></returns>
-        public JsonResult GridLoadTitulosPassiveisBordero(string dataInicial, string dataFinal, string bankId)
-        {
-            Dictionary<string, string> filters = new Dictionary<string, string>();
-            filters.AddParam("toBordero", bankId);
-            filters.AddParam("dueDate_ge", Convert.ToDateTime(dataInicial).ToString("yyyyMMdd"));
-            filters.AddParam("dueDate_le", Convert.ToDateTime(dataFinal).ToString("yyyyMMdd"));
-            filters.AddParam("type_le", "9");
-
-            return GridLoad(filters);
-        }
-
-        /// <summary>
-        /// Retorna todos os Títulos de um determinado bordero
-        /// Este método é chamado apenas na edição/visualização de um bordero
-        /// </summary>
-        /// <param name="idBordero">Identificador de Bordero</param>
-        /// <returns></returns>
-        public JsonResult GridLoadTitulosBordero(string idBordero)
-        {
-            Dictionary<string, string> filters = new Dictionary<string, string>();
-            filters.AddParam("numberBordero", idBordero);
-            return GridLoad(filters);
-        }
-
-        public JsonResult GridLoadTitulosConciliacaoBancaria(double? balance = 0)
-        {
-            Dictionary<string, string> filters = new Dictionary<string, string>();
-            filters.AddParam("hasBalance", "");
-            filters.AddParam("type_le", "9");
-
-            if (balance.HasValue && Math.Abs(balance.Value) > 0)
-            {
-                balance = Math.Abs(balance.Value);
-                filters.AddParam("balance_le", balance.Value.ToString("0.0", CultureInfo.GetCultureInfo("en-US")));
-            }
-
-            return GridLoad(filters);
-        }
-
-        public abstract string GetResourceDeleteTituloBordero(string id);
-
-        /// <summary>
-        /// Método responsável por retirar um titulo de um determinado bordero
-        /// </summary>
-        /// <param name="id">Identificador do Título</param>
-        /// <returns></returns>
-        [HttpPost]
-        [OperationRole(PermissionValue = EPermissionValue.Write)]
-        public JsonResult DeleteTituloBordero(string id)
-        {
-            try
-            {
-                string resource = GetResourceDeleteTituloBordero(id);
-
-                RestHelper.ExecutePutRequest(resource, string.Empty);
-                return JsonResponseStatus.GetSuccess("Conta excluida com sucesso.");
-            }
-            catch (Exception ex)
-            {
-                ErrorInfo error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
-                return JsonResponseStatus.GetFailure(error.Message);
-            }
-        }
         #endregion
 
         public Dictionary<string, string> ProcessQueryString(string queryString)

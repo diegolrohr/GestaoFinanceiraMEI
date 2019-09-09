@@ -87,8 +87,6 @@
     <Compile Include="Controllers\Api\StatusConciliadoController.cs" />
     <Compile Include="Controllers\Api\StatusContaBancariaController.cs" />
     <Compile Include="Controllers\Api\CondicaoParcelamentoSimulacaoController.cs" />
-    <Compile Include="Controllers\Api\ContaFinanceiraRenegociacaoController.cs" />
-    <Compile Include="Controllers\Api\RenegociacaoContasRelacionamentoController.cs" />
     <Compile Include="Controllers\Api\ExtratoController.cs" />
     <Compile Include="Controllers\Api\FluxoCaixaController.cs" />
     <Compile Include="Controllers\Api\RelatorioLicenciamentoController.cs" />

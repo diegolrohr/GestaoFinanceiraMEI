@@ -7,7 +7,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
     public class HelloController : ApiHelloBaseController
     {
         public HelloController()
-            : base(System.Web.HttpRuntime.BinDirectory, "Fly01.Financeiro.API.dll") { }
+            : base(System.Web.HttpRuntime.BinDirectory, "GestaoFinanceiraMEI.API.dll") { }
 
         public override void TestDbConnection()
         {

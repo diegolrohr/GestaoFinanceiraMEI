@@ -58,6 +58,8 @@ namespace Fly01.Financeiro.API.Models.DAL
             //builder.Entity<ContaFinanceira>().MapToStoredProcedures();
         }
 
+
+        //id empresa testes D3FC7081-7643-4CBD-9047-CC9B6F619AA7
         public DbSet<Pessoa> Pessoas { get; set; }
         public DbSet<Banco> Bancos { get; set; }
         public DbSet<ContaBancaria> ContasBancarias { get; set; }

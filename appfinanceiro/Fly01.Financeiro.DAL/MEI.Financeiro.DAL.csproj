@@ -84,6 +84,10 @@
     <Compile Include="Migrations\201909042308431_AddTableConciliacaoBancaria.Designer.cs">
       <DependentUpon>201909042308431_AddTableConciliacaoBancaria.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201909092228335_saldoHistoricoProcedures.cs" />
+    <Compile Include="Migrations\201909092228335_saldoHistoricoProcedures.Designer.cs">
+      <DependentUpon>201909092228335_saldoHistoricoProcedures.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -152,11 +156,17 @@
     <EmbeddedResource Include="Migrations\201909042308431_AddTableConciliacaoBancaria.resx">
       <DependentUpon>201909042308431_AddTableConciliacaoBancaria.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909092228335_saldoHistoricoProcedures.resx">
+      <DependentUpon>201909092228335_saldoHistoricoProcedures.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Migrations\SQLScripts\InsertBancos.sql" />
     <Content Include="Migrations\SQLScripts\InsertCidades.sql" />
     <Content Include="Migrations\SQLScripts\InsertEstados.sql" />
+    <Content Include="Migrations\SQLScripts\SaldoHistorico_Delete.sql" />
+    <Content Include="Migrations\SQLScripts\SaldoHistorico_Insert.sql" />
+    <Content Include="Migrations\SQLScripts\SaldoHistorico_Update.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

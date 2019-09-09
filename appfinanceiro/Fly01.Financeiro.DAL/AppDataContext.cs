@@ -50,12 +50,6 @@ namespace Fly01.Financeiro.API.Models.DAL
                 .HasForeignKey(b => b.ContaFinanceiraParcelaPaiId)
                 .WillCascadeOnDelete(false);
 
-            //builder.Entity<RenegociacaoContaFinanceira>()
-            //    .Map(m => m.ToTable("RenegociacaoContaFinanceira"))
-            //    .Map<RenegociacaoContaFinanceiraOrigem>(m => m.ToTable("RenegociacaoContaFinanceiraOrigem"))
-            //    .Map<RenegociacaoContaFinanceiraRenegociada>(m => m.ToTable("RenegociacaoContaFinanceiraRenegociada"));
-
-            //builder.Entity<ContaFinanceiraRenegociacao>().Ignore(m => m.ContasFinanceirasOrigemIds);
             builder.Entity<ContaFinanceira>().Ignore(m => m.Saldo);
             builder.Entity<ContaFinanceira>().Ignore(m => m.ContaBancariaId);
             builder.Entity<ContaFinanceira>().Ignore(m => m.ContaBancaria);
@@ -79,7 +73,6 @@ namespace Fly01.Financeiro.API.Models.DAL
         public DbSet<ConciliacaoBancaria> ConciliacoesBancarias { get; set; }
         public DbSet<ConciliacaoBancariaItem> ConciliacaoBancariaItens { get; set; }
         public DbSet<ConciliacaoBancariaItemContaFinanceira> ConciliacaoBancariaItemContasFinanceiras { get; set; }
-
         public DbSet<FormaPagamento> FormasPagamento { get; set; }
         public DbSet<MovimentacaoFinanceira> Movimentacao { get; set; }
     }

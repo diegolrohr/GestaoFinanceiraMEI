@@ -221,7 +221,6 @@
   <ItemGroup>
     <Compile Include="AiHandleErrorAttribute.cs" />
     <Compile Include="SocketIOHelper.cs" />
-    <Compile Include="MinhaContaBaseController.cs" />
     <Compile Include="ApiBaseController.cs" />
     <Compile Include="ApiDomainBaseController.cs" />
     <Compile Include="ApiHelloBaseController.cs" />

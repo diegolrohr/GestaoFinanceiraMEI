@@ -397,8 +397,6 @@ namespace Fly01.Core.Presentation
             }
         }
 
-        private static List<BatchVM> batchTasks = new List<BatchVM>();
-
         private string GetOrderDir(string dir)
         {
             dir = dir.Trim();
@@ -720,98 +718,6 @@ namespace Fly01.Core.Presentation
         private List<TReturn> GetSystemEntityValuesAPI<TReturn>(string systemEntity)
         {
             return RestHelper.ExecuteGetRequest<List<TReturn>>(string.Format("systemvalue/{0}", systemEntity));
-        }
-
-        [OperationRole(PermissionValue = EPermissionValue.Write)]
-        [HttpPost]
-        public JsonResult ImportCsv(string entity, string defaultFields = null)
-        {
-            try
-            {
-                ImportHelper.appViewModelName = AppViewModelResourceName;
-                ImportHelper.appEntitiesName = AppEntitiesResourceName;
-
-                var successRead = 0;
-                var totalFiles = Request.Files.Count;
-
-                var batchVm = new BatchVM
-                {
-                    Items = new List<BatchItemVM>
-                    {
-                        new BatchItemVM
-                        {
-                            Entity = entity.ToLower(),
-                            Operation = "csv",
-                            Entries = new List<BatchEntryVM>()
-                        }
-                    }
-                };
-
-                for (var i = 0; i < totalFiles; i++)
-                {
-                    var fileContent = Request.Files[i];
-                    if (fileContent == null || fileContent.ContentLength <= 0) continue;
-
-                    var newContent = ImportHelper.RenameColumns(fileContent, entity);
-                    var newContentBytes = Encoding.ASCII.GetBytes(newContent);
-                    var fileBase64 = Convert.ToBase64String(newContentBytes);
-
-
-                    batchVm.Items[0].Entries.Add(new BatchEntryVM
-                    {
-                        ItemId = DateTime.Now.Ticks.ToString() + (i + 1),
-                        Data = new BatchDataVM
-                        {
-                            FileContent = fileBase64,
-                            Md5 = Base64Helper.CalculaMD5Hash(fileBase64)
-                        },
-                        DefaultFields = defaultFields != null
-                                            ? new JavaScriptSerializer().DeserializeObject(defaultFields)
-                                            : null
-                    });
-
-                    successRead++;
-                }
-
-                if (successRead > 0)
-                {
-                    var responsePost = RestHelper.ExecutePostRequest<PostResponseAPI>("batch", JsonConvert.SerializeObject(batchVm), timeout: 1200);
-                    return Json(BatchStatus(responsePost.Id));
-                }
-
-                if (successRead == 0 && totalFiles > 0)
-                {
-                    return JsonResponseStatus.GetFailure(string.Format("Não foi possível ler {0}",
-                                                                       totalFiles > 1
-                                                                            ? "todos os " + totalFiles + " arquivos"
-                                                                            : "o arquivo"));
-                }
-
-                return JsonResponseStatus.GetFailure("Favor selecionar o arquivo.");
-            }
-            catch (Exception ex)
-            {
-                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
-                return JsonResponseStatus.GetFailure(error.Message);
-            }
-        }
-
-        [OperationRole(PermissionValue = EPermissionValue.Write)]
-        [HttpPost]
-        public ActionResult BatchStatus(string id)
-        {
-            try
-            {
-                var responseBatch = RestHelper.ExecuteGetRequest<BatchVM>(string.Format("batch/{0}", id));
-                responseBatch.Id = id;
-                var retJson = Json(new JavaScriptSerializer().DeserializeObject(JsonConvert.SerializeObject(responseBatch)));
-
-                return retJson;
-            }
-            catch (Exception ex)
-            {
-                return JsonResponseStatus.GetFailure(ex.Message);
-            }
         }
 
         [OperationRole(NotApply = true)]

@@ -5,7 +5,7 @@ using Fly01.Core.Helpers.Attribute;
 
 namespace Fly01.Financeiro.ViewModel
 {
-    public class RelatorioCentroCustoCPCRVM : DomainBaseVM
+    public class RelatorioCentroCustoCPCRVM : EmpresaBaseVM
     {
         [JsonProperty("descricao")]
         public string Descricao { get; set; }

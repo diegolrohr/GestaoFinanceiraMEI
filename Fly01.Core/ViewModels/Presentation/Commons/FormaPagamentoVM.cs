@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Fly01.Core.ViewModels.Presentation.Commons
 {
-    public class FormaPagamentoVM : DomainBaseVM
+    public class FormaPagamentoVM : EmpresaBaseVM
     {
         [JsonProperty("descricao")]
         public string Descricao { get; set; }
@@ -11,8 +11,5 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [JsonProperty("tipoFormaPagamento")]
         [APIEnum("TipoFormaPagamento")]
         public string TipoFormaPagamento { get; set; }
-
-        [JsonProperty("registroFixo")]
-        public bool RegistroFixo { get; set; }
     }
 }

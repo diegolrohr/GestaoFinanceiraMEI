@@ -34,7 +34,7 @@ using System.Web.UI.WebControls;
 namespace Fly01.Core.Presentation
 {
 
-    public abstract class BaseController<T> : PrimitiveBaseController where T : DomainBaseVM
+    public abstract class BaseController<T> : PrimitiveBaseController where T : EmpresaBaseVM
     {
 
         public class ContentUIBase : ContentUI
@@ -572,7 +572,7 @@ namespace Fly01.Core.Presentation
                                     mustCompareAsEqual = true;
                                 }
 
-                                if (propertyInfo.PropertyType.BaseType == typeof(DomainBaseVM))
+                                if (propertyInfo.PropertyType.BaseType == typeof(EmpresaBaseVM))
                                 {
                                     item.Data = item.Data.Replace("_", "/");
                                     valueFilter = item.Search.Value;

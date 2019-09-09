@@ -2,7 +2,7 @@
 
 namespace Fly01.Core.ViewModels.Presentation.Commons
 {
-    public class CondicaoParcelamentoVM : DomainBaseVM
+    public class CondicaoParcelamentoVM : EmpresaBaseVM
     {
         [JsonProperty("descricao")]
         public string Descricao { get; set; }

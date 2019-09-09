@@ -7,7 +7,7 @@ using Fly01.Financeiro.ViewModel;
 
 namespace Fly01.Financeiro.Entities.ViewModel
 {
-    public class ConciliacaoBancariaVM : DomainBaseVM
+    public class ConciliacaoBancariaVM : EmpresaBaseVM
     {
         [JsonProperty("contaBancariaId")]
         public Guid ContaBancariaId { get; set; }

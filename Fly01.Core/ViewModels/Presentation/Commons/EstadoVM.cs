@@ -2,7 +2,7 @@
 
 namespace Fly01.Core.ViewModels.Presentation.Commons
 {
-    public class EstadoVM : DomainBaseVM
+    public class EstadoVM : EmpresaBaseVM
     {
         [JsonProperty("sigla")]
         public string Sigla { get; set; }

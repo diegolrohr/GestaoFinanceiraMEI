@@ -6,7 +6,7 @@ using Fly01.Financeiro.ViewModel;
 
 namespace Fly01.Financeiro.Entities.ViewModel
 {
-    public class ConciliacaoBancariaItemContaFinanceiraVM : DomainBaseVM
+    public class ConciliacaoBancariaItemContaFinanceiraVM : EmpresaBaseVM
     {
         [Required(ErrorMessage = "O campo {0} é obrigatório.")]
         [JsonProperty("conciliacaoBancariaItemId")]

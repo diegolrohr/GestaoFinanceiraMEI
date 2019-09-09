@@ -5,7 +5,7 @@ using Fly01.Core.Helpers.Attribute;
 
 namespace Fly01.Financeiro.ViewModel
 {
-    public class DespesaPorCategoriaVM : DomainBaseVM
+    public class DespesaPorCategoriaVM : EmpresaBaseVM
     {
         [JsonProperty("categoriaId")]
         public Guid CategoriaId { get; set; }

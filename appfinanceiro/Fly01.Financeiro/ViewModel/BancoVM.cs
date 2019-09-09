@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Fly01.Financeiro.ViewModel
 {
-    public class BancoVM : DomainBaseVM
+    public class BancoVM : EmpresaBaseVM
     {
         [JsonProperty("codigo")]
         public string Codigo { get; set; }

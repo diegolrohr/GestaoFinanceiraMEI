@@ -3,7 +3,7 @@ using System;
 
 namespace Fly01.Core.ViewModels.Presentation.Commons
 {
-    public class CidadeVM : DomainBaseVM
+    public class CidadeVM : EmpresaBaseVM
     {
         [JsonProperty("nome")]
         public string Nome { get; set; }

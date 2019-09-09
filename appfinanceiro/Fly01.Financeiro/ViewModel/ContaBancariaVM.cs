@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 namespace Fly01.Financeiro.ViewModel
 {
     [Serializable]
-    public class ContaBancariaVM : DomainBaseVM
+    public class ContaBancariaVM : EmpresaBaseVM
     {
         [JsonProperty("nomeConta")]
         public string NomeConta { get; set; }

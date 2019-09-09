@@ -63,6 +63,7 @@
     <Compile Include="Controllers\Base\ContaFinanceiraController.cs" />
     <Compile Include="Controllers\CategoriaController.cs" />
     <Compile Include="Controllers\CondicaoParcelamentoController.cs" />
+    <Compile Include="Controllers\FormaPagamentoController.cs" />
     <Compile Include="Controllers\RelatorioContaReceberController.cs" />
     <Compile Include="Controllers\RelatorioContaPagarController.cs" />
     <Compile Include="Controllers\RelatorioContaFinanceiraController.cs" />
@@ -83,7 +84,6 @@
     <Compile Include="Controllers\ContaReceberController.cs" />
     <Compile Include="Controllers\ExtratoController.cs" />
     <Compile Include="Controllers\FluxoCaixaController.cs" />
-    <Compile Include="Controllers\FormaPagamentoController.cs" />
     <Compile Include="Controllers\FornecedorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">

@@ -7,7 +7,7 @@ using System.Linq;
 namespace Fly01.Financeiro.ViewModel
 {
     [Serializable]
-    public class ContaFinanceiraBaixaMultiplaVM : DomainBaseVM
+    public class ContaFinanceiraBaixaMultiplaVM : EmpresaBaseVM
     {
         [JsonProperty("data")]
         public DateTime Data { get; set; }

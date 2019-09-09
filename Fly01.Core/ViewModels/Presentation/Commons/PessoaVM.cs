@@ -4,7 +4,7 @@ using System;
 
 namespace Fly01.Core.ViewModels.Presentation.Commons
 {
-    public class PessoaVM : DomainBaseVM
+    public class PessoaVM : EmpresaBaseVM
     {
         [JsonProperty("nome")]
         public string Nome { get; set; }

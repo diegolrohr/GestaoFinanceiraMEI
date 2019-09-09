@@ -8,7 +8,7 @@ using Fly01.Core.Entities.Domains.Commons;
 namespace Fly01.Core.ViewModels.Presentation.Commons
 {
     [Serializable]
-    public class ContaFinanceiraVM : DomainBaseVM
+    public class ContaFinanceiraVM : EmpresaBaseVM
     {
         [JsonProperty("contaFinanceiraRepeticaoPaiId")]
         public Guid? ContaFinanceiraRepeticaoPaiId { get; set; }

@@ -13,7 +13,7 @@ using System.Web.Mvc;
 
 namespace Fly01.Financeiro.Controllers
 {
-    public abstract class DashboardContaFinanceiraController : BaseController<DomainBaseVM>
+    public abstract class DashboardContaFinanceiraController : BaseController<EmpresaBaseVM>
     {
         protected string tipoConta;
 
@@ -22,7 +22,7 @@ namespace Fly01.Financeiro.Controllers
             tipoConta = TipoConta;
         }
 
-        public override Func<DomainBaseVM, object> GetDisplayData()
+        public override Func<EmpresaBaseVM, object> GetDisplayData()
         {
             throw new NotImplementedException();
         }

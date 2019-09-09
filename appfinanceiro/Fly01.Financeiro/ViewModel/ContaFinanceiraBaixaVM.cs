@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 namespace Fly01.Financeiro.ViewModel
 {
     [Serializable]
-    public class ContaFinanceiraBaixaVM : DomainBaseVM
+    public class ContaFinanceiraBaixaVM : EmpresaBaseVM
     {
         [JsonProperty("data")]
         public DateTime Data { get; set; }

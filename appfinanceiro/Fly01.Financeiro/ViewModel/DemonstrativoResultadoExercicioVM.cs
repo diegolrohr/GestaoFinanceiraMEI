@@ -4,7 +4,7 @@ using Fly01.Core.ViewModels.Presentation.Commons;
 namespace Fly01.Financeiro.ViewModel
 {
     [Serializable]
-    public class DemonstrativoResultadoExercicioVM : DomainBaseVM
+    public class DemonstrativoResultadoExercicioVM : EmpresaBaseVM
     {
         public double ReceitasPrevistas { get; set; }
         public double DespesasPrevistas { get; set; }

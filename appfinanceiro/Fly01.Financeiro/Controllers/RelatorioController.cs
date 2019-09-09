@@ -11,9 +11,9 @@ using Fly01.Core.Presentation.JQueryDataTable;
 namespace Fly01.Financeiro.Controllers
 {
     [OperationRole(ResourceKey = ResourceHashConst.FinanceiroFinanceiroRelatorios)]
-    public class RelatorioController : BaseController<DomainBaseVM>
+    public class RelatorioController : BaseController<EmpresaBaseVM>
     {
-        public override Func<DomainBaseVM, object> GetDisplayData()
+        public override Func<EmpresaBaseVM, object> GetDisplayData()
         {
             throw new NotImplementedException();
         }

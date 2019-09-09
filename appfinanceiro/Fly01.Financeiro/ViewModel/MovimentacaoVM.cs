@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 namespace Fly01.Financeiro.ViewModel
 {
     [Serializable]
-    public class MovimentacaoVM : DomainBaseVM
+    public class MovimentacaoVM : EmpresaBaseVM
     {
         [Required(ErrorMessage = "O campo {0} é obrigatório.")]
         [JsonProperty("data")]

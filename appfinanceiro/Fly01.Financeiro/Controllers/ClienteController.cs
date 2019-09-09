@@ -34,9 +34,7 @@ namespace Fly01.Financeiro.Controllers
             var entity = new PessoaVM
             {
                 Nome = term,
-                Cliente = true,
-                TipoIndicacaoInscricaoEstadual = "ContribuinteIsento",
-                SituacaoEspecialNFS = "Outro"
+                Cliente = true
             };
 
             NormarlizarEntidade(ref entity);

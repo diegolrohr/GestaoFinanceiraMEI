@@ -69,19 +69,6 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [JsonProperty("nomeComercial")]
         public string NomeComercial { get; set; }
 
-        [JsonProperty("inscricaoEstadual")]
-        public string InscricaoEstadual { get; set; }
-
-        [JsonProperty("inscricaoMunicipal")]
-        public string InscricaoMunicipal { get; set; }
-
-        [JsonProperty("consumidorFinal")]
-        public bool ConsumidorFinal { get; set; }
-
-        //Informe se a pessoa que será cadastrada é uma transportadora.
-        [JsonProperty("transportadora")]
-        public bool Transportadora { get; set; }
-
         //Informe se a pessoa que será cadastrada é um cliente.
         [JsonProperty("cliente")]
         public bool Cliente { get; set; }
@@ -90,34 +77,10 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [JsonProperty("fornecedor")]
         public bool Fornecedor { get; set; }
 
-        //Informe se a pessoa que será cadastrada é um vendedor.
-        [JsonProperty("vendedor")]
-        public bool Vendedor { get; set; }
-
-        [JsonProperty("tipoIndicacaoInscricaoEstadual")]
-        [APIEnum("TipoIndicacaoInscricaoEstadual")]
-        public string TipoIndicacaoInscricaoEstadual { get; set; }
-
-        [JsonProperty("idEstrangeiro")]
-        public string IdEstrangeiro { get; set; }
-
         [JsonProperty("estado")]
         public virtual EstadoVM Estado { get; set; }
 
         [JsonProperty("cidade")]
         public virtual CidadeVM Cidade { get; set; }
-
-        [JsonProperty("registroFixo")]
-        public bool RegistroFixo { get; set; }
-
-        [JsonProperty("estadoCodigoIbge")]
-        public string EstadoCodigoIbge { get; set; }
-
-        [JsonProperty("cidadeCodigoIbge")]
-        public string CidadeCodigoIbge { get; set; }
-
-        [JsonProperty("situacaoEspecialNFS")]
-        [APIEnum("TipoSituacaoEspecialNFS")]
-        public string SituacaoEspecialNFS { get; set; }
     }
 }

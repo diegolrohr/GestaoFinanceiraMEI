@@ -28,8 +28,6 @@ namespace Fly01.Financeiro.BL
 
         public override void Insert(ContaReceber entity)
         {
-            var numero = default(int);
-
             entity.EmpresaId = EmpresaId;
             entity.UsuarioInclusao = AppUser;
 

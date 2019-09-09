@@ -59,10 +59,7 @@
     <Folder Include="Views\RelatorioContaReceber\Functions\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\AssistenciaRemotaController.cs" />
     <Compile Include="Controllers\AutoCompleteController.cs" />
-    <Compile Include="Controllers\AvaliacaoAppController.cs" />
     <Compile Include="Controllers\Base\ContaFinanceiraController.cs" />
     <Compile Include="Controllers\RelatorioContaReceberController.cs" />
     <Compile Include="Controllers\RelatorioContaPagarController.cs" />
@@ -85,13 +82,11 @@
     <Compile Include="Controllers\ContaBancariaController.cs" />
     <Compile Include="Controllers\ContaPagarController.cs" />
     <Compile Include="Controllers\ContaReceberController.cs" />
-    <Compile Include="Controllers\EmailNotificationController.cs" />
     <Compile Include="Controllers\ExtratoController.cs" />
     <Compile Include="Controllers\FluxoCaixaController.cs" />
     <Compile Include="Controllers\FormaPagamentoController.cs" />
     <Compile Include="Controllers\FornecedorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\TransportadoraController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

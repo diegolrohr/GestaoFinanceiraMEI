@@ -51,8 +51,7 @@ namespace Fly01.Core.Presentation.Controllers
                 contato = x.Contato,
                 telefone = string.IsNullOrEmpty(x.Telefone)
                             ? ""
-                            : Regex.Replace(x.Telefone, x.Telefone.Length == 10 ? @"(\d{2})(\d{4})(\d{4})" : @"(\d{2})(\d{4})(\d{5})", "($1) $2-$3"),
-                registroFixo = x.RegistroFixo
+                            : Regex.Replace(x.Telefone, x.Telefone.Length == 10 ? @"(\d{2})(\d{4})(\d{4})" : @"(\d{2})(\d{4})(\d{5})", "($1) $2-$3")
             };
         }
 
@@ -79,10 +78,6 @@ namespace Fly01.Core.Presentation.Controllers
             entityVM.Celular = Regex.Replace(entityVM.Celular ?? "", regexSomenteDigitos, "");
             entityVM.Telefone = Regex.Replace(entityVM.Telefone ?? "", regexSomenteDigitos, "");
             entityVM.CEP = Regex.Replace(entityVM.CEP ?? "", regexSomenteDigitos, "");
-            entityVM.InscricaoEstadual = Regex.Replace(entityVM.InscricaoEstadual ?? "", regexSomenteDigitos, "");
-
-            if (string.IsNullOrEmpty(entityVM.TipoIndicacaoInscricaoEstadual))
-                entityVM.TipoIndicacaoInscricaoEstadual = "ContribuinteIsento";
         }
 
         private string GetTipoDocumento(string documento)

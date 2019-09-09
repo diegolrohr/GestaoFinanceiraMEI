@@ -8,30 +8,10 @@ namespace Fly01.Financeiro.ViewModel
     [Serializable]
     public class ContaBancariaVM : DomainBaseVM
     {
-        [Required]
-        [JsonProperty("contaEmiteBoleto")]
-        public bool ContaEmiteBoleto { get; set; }
-
-        [JsonProperty("codigoBanco")]
-        public string CodigoBanco { get; set; }
-
-        [JsonProperty("codigoCedente")]
-        [Display(Name = "Código cedente")]
-        [StringLength(10, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
-        public string CodigoCedente { get; set; }
-
         [JsonProperty("codigoDV")]
         [Display(Name = "CódigoDV")]
         [StringLength(10, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
         public string CodigoDV { get; set; }
-
-        [JsonProperty("taxaJuros")]
-        [Display(Name = "Taxa de juros")]
-        public double? TaxaJuros { get; set; }
-
-        [JsonProperty("percentualMulta")]
-        [Display(Name = "Percentual multa")]
-        public double? PercentualMulta { get; set; }
 
         [JsonProperty("bancoId")]
         [Required(ErrorMessage = "O campo {0} é obrigatório.")]
@@ -72,9 +52,6 @@ namespace Fly01.Financeiro.ViewModel
         [Required(ErrorMessage = "O campo {0} é obrigatório.")]
         [StringLength(40, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
         public string NomeConta { get; set; }
-
-        [JsonProperty("registroFixo")]
-        public bool RegistroFixo { get; set; }
 
         [JsonProperty("valorInicial")]
         public double? ValorInicial { get; set; }

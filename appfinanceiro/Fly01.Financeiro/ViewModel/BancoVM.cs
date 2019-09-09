@@ -10,8 +10,5 @@ namespace Fly01.Financeiro.ViewModel
 
         [JsonProperty("nome")]
         public string Nome { get; set; }
-
-        [JsonProperty("emiteBoleto")]
-        public bool EmiteBoleto { get; set; }
     }
 }

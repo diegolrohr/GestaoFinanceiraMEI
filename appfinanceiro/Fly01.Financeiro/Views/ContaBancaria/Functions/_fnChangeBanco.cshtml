@@ -1,44 +1,8 @@
 ﻿<script>
     function fnChangeBanco(event, data) {
-        fnContaEmiteBoleto(data.item.id);
         var bancoId = data.item.id;
         $("#bancoId").val(bancoId);
 
         controlaCamposConta(data.item.agenciaContaRequired);
-    }
-
-    function hideFildsEmiteBoleto() {
-        $('#codigoCedenteField').hide();
-        $('#codigoDVField').hide();
-        $('#taxaJurosField').hide();
-        $('#percentualMultaField').hide();
-        $('#textInfoBoletosField').hide();
-    }
-
-    function fnContaEmiteBoleto(id) {        
-        $.ajax({
-            url: '@Url.Action("GetBancoEmiteBoleto", "ContaBancaria")?id='+ id,
-            type: "GET",
-            success: function (data) {
-                if (data.emiteBoleto) {
-                    $('#contaEmiteBoletoField').show();
-                    if ($('#contaEmiteBoleto').prop('checked') == true) {
-                        $('#codigoCedenteField').show();
-                        $('#codigoDVField').show();
-                        $('#taxaJurosField').show();
-                        $('#percentualMultaField').show();
-                        $('#textInfoBoletosField').show();
-                    } else {
-                        hideFildsEmiteBoleto();
-                    };
-                } else {
-                    $('#contaEmiteBoletoField').hide();
-                    hideFildsEmiteBoleto();
-                };
-            },
-            error: function (jXHR, textStatus) {
-                $$$.toast(textStatus, 'error');
-            }
-        });
     }
 </script>

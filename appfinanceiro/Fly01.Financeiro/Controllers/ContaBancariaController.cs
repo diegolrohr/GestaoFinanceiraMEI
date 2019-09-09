@@ -48,12 +48,7 @@ namespace Fly01.Financeiro.Controllers
                     $"{x.Conta} - {x.DigitoConta}"
                     : string.Empty,
                 digitoConta = x.DigitoConta,
-                registroFixo = x.RegistroFixo,
-                codigoCedente = x.CodigoCedente,
-                codigoDV = x.CodigoDV,
-                taxaJuros = x.TaxaJuros,
-                percentualMulta = x.PercentualMulta,
-                //contaEmiteBoleto = x.ContaEmiteBoleto
+                codigoDV = x.CodigoDV
             };
         }
 
@@ -169,67 +164,6 @@ namespace Fly01.Financeiro.Controllers
 
             config.Elements.Add(new InputCurrencyUI { Id = "valorInicial", Class = "col s4 l3", Label = "Valor", Disabled = true });
 
-            config.Elements.Add(new InputCheckboxUI
-            {
-                Id = "contaEmiteBoleto",
-                Class = "col s12 l10",
-                Label = " Habilitar emissão de boletos bancários",
-                DomEvents = new List<DomEventUI>()
-                {
-                    new DomEventUI() { DomEvent = "change", Function = "fnChangeCheckCedende" },
-                }
-            });
-
-            config.Elements.Add(new StaticTextUI
-            {
-                Id = "textInfoBoletos",
-                Class = "col s12",
-                Lines = new List<LineUI>
-                {
-                    new LineUI()
-                    {
-                        Tag = "h6",
-                        Text = "Se esta conta emite boletos bancários é necessário preencher os dados abaixo.",
-                    }
-                }
-            });
-
-            config.Elements.Add(new InputTextUI { Id = "codigoCedente", Class = "col m12 l3", Label = "Código cedente", Required = false, MaxLength = 150 });
-            config.Elements.Add(new InputTextUI { Id = "codigoDV", Class = "col m12 l3", Label = "CódigoDV", Required = false, MaxLength = 150 });
-            config.Elements.Add(new InputCustommaskUI
-            {
-                Id = "taxaJuros",
-                Class = "col m12 l3",
-                Label = "Taxa de juros",
-                Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
-            });
-            config.Helpers.Add(new TooltipUI
-            {
-                Id = "taxaJuros",
-                Tooltip = new HelperUITooltip()
-                {
-                    Text = "Informe a taxa de juros que será cobrado por dia após o vencimento do boleto, caso contrario, será utilizado a taxa de juros padão de 0.33% ao dia.",
-                    Position = TooltopUIPosition.Top
-                }
-            });
-            config.Elements.Add(new InputCustommaskUI
-            {
-                Id = "percentualMulta",
-                Class = "col m12 l3",
-                Label = "Percentual Multa",
-                Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
-            });
-            config.Helpers.Add(new TooltipUI
-            {
-                Id = "percentualMulta",
-                Tooltip = new HelperUITooltip()
-                {
-                    Text = "Informe o percentual da multa que será cobrado por atraso após o vencimento do boleto, caso contrario, será utilizado o percentual padão de 2.00%.",
-                    Position = TooltopUIPosition.Top
-                }
-            });
-
-
             cfg.Content.Add(config);
 
             return cfg;
@@ -287,16 +221,6 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputCurrencyUI { Id = "valorInicial", Class = "col s4 l3", Label = "Valor", Disabled = true });
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
-        }
-
-        [HttpGet]
-        public JsonResult GetBancoEmiteBoleto(Guid id)
-        {
-            Dictionary<string, string> queryString = AppDefaults.GetQueryStringDefault();
-            queryString.AddParam("$filter", $"id eq {id}");
-            var emiteBoleto = RestHelper.ExecuteGetRequest<ResultBase<BancoVM>>("Banco", queryString).Data.First().EmiteBoleto;
-
-            return Json(new { emiteBoleto }, JsonRequestBehavior.AllowGet);
         }
 
         protected override List<JQueryDataTableParamsColumn> GetParamsColumns(string ResourceName = "")

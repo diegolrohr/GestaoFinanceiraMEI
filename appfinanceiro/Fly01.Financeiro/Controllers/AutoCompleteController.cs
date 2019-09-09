@@ -69,25 +69,6 @@ namespace Fly01.Financeiro.Controllers
             return GetJson(filterObjects);
         }
 
-        public JsonResult ContaBancariaBancoEmiteBoleto(string term)
-        {
-            var resourceName = AppDefaults.GetResourceName(typeof(ContaBancariaVM));
-
-            Dictionary<string, string> queryString = AppDefaults.GetQueryStringDefault();
-            queryString.AddParam("$expand", "banco($select=nome)");
-            queryString.AddParam("$filter", $"contains(nomeConta, '{term}') and contaEmiteBoleto eq true and banco/emiteBoleto eq true");
-
-            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<ContaBancariaVM>>(resourceName, queryString).Data
-                                select new
-                                {
-                                    id = item.Id,
-                                    label = item.NomeConta,
-                                    detail = $"Banco: {item.Banco.Nome} Agencia: {item.Agencia}-{item.DigitoAgencia} Conta: {item.Conta}-{item.DigitoConta}"
-                                };
-
-            return GetJson(filterObjects);
-        }
-
         public JsonResult ContaBancariaConciliacao(string term)
         {
             //validar para não exibir já usadas em conciliacoes
@@ -110,15 +91,11 @@ namespace Fly01.Financeiro.Controllers
             return GetJson(filterObjects);
         }
 
-        public JsonResult Banco(string term, bool emiteBoleto = false)
+        public JsonResult Banco(string term)
         {
             var resourceName = AppDefaults.GetResourceName(typeof(BancoVM));
             Dictionary<string, string> queryString = AppDefaults.GetQueryStringDefault("", "");
-            if (emiteBoleto)
-                queryString.AddParam("$filter", $"(contains(nome, '{term}') or contains(codigo, '{term}')) and emiteBoleto eq true");
-            else
-                queryString.AddParam("$filter", $"contains(nome, '{term}') or contains(codigo, '{term}')");
-
+            queryString.AddParam("$filter", $"contains(nome, '{term}') or contains(codigo, '{term}')");
             queryString.AddParam("$select", "id,codigo,nome");
 
             var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<BancoVM>>(resourceName, queryString).Data

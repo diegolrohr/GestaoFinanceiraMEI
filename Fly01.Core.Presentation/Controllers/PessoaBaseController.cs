@@ -36,7 +36,7 @@ namespace Fly01.Core.Presentation.Controllers
             ExpandProperties = tempExpand;
 
             customFilters.AddParam("$filter", Filter);
-            customFilters.AddParam("$select", "id,nome,cpfcnpj,email,telefone,dataInclusao,registroFixo");
+            customFilters.AddParam("$select", "id,nome,cpfcnpj,email,telefone,dataInclusao");
 
             return customFilters;
         }
@@ -128,8 +128,8 @@ namespace Fly01.Core.Presentation.Controllers
 
             config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
             {
-                new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" },
-                new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" }
+                new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" },
+                new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" }
             }));
 
             config.Columns.Add(new DataTableUIColumn { DataField = "nome", DisplayName = ResourceTitle, Priority = 1 });

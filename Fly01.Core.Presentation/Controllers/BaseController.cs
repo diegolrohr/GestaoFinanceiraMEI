@@ -611,7 +611,7 @@ namespace Fly01.Core.Presentation
                 {
                     if (responseGrid.Total.Equals(0))
                         throw new Exception("Não existem registros para exportar");
-                    DataTable dataTable = GridToDataTable(responseGrid, param, ResourceName, fileType);
+                    DataTable dataTable = GridToDataTable(responseGrid, param);
                     switch (fileType.ToLower())
                     {
                         case "pdf":
@@ -969,41 +969,23 @@ namespace Fly01.Core.Presentation
             return sbReturn.ToString();
         }
 
-        protected abstract List<JQueryDataTableParamsColumn> GetParamsColumns(string ResourceName = "");
-
-        private List<JQueryDataTableParamsColumn> ParamsColumns(JQueryDataTableParams param, string fileType = "", string ResourceName = "")
-        {
-
-            if (fileType == "csv" || fileType == "xls")
-            {
-                try
-                {
-                    return GetParamsColumns(ResourceName);
-                }
-                catch { return param.Columns; }
-            }
-            else
-                return param.Columns;
-        }
-
-        protected DataTable GridToDataTable(ResultBase<T> responseGrid, JQueryDataTableParams param, string ResourceName, string fileType)
+        protected DataTable GridToDataTable(ResultBase<T> responseGrid, JQueryDataTableParams param)
         {
             DataTable dt = new DataTable();
             dt.Clear();
 
-            var data = responseGrid.Data.Select(GetDisplayData()).ToList();
-            Type o = data.FirstOrDefault().GetType();
-
-            ParamsColumns(param, fileType, ResourceName).ForEach(x =>
+            param.Columns.ForEach(x =>
             {
                 if (!string.IsNullOrWhiteSpace(x.Name))
                     dt.Columns.Add(x.Name);
             });
 
+            var data = responseGrid.Data.Select(GetDisplayData()).ToList();
+            Type o = data.FirstOrDefault().GetType();
             data.ForEach(x =>
             {
                 DataRow dtr = dt.NewRow();
-                ParamsColumns(param, fileType, ResourceName).ForEach(y =>
+                param.Columns.ForEach(y =>
                 {
                     if (!string.IsNullOrWhiteSpace(y.Name))
                         dtr[y.Name] = o.GetProperty(y.Data.Replace("/", "_")).GetValue(x, null);

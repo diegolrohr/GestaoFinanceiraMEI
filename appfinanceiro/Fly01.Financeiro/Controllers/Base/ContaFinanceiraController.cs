@@ -30,11 +30,6 @@ namespace Fly01.Financeiro.Controllers.Base
     {
         protected ContaFinanceiraController() { }
 
-        protected override List<JQueryDataTableParamsColumn> GetParamsColumns(string ResourceName = "")
-        {
-            throw new NotImplementedException();
-        }
-
         [OperationRole(NotApply = true)]
         public override Func<TEntity, object> GetDisplayData()
         {

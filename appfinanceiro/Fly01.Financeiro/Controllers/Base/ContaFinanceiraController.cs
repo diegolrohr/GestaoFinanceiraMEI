@@ -24,13 +24,13 @@ using System.Web.Mvc;
 
 namespace Fly01.Financeiro.Controllers.Base
 {
+    [AllowAnonymous]
     public abstract class ContaFinanceiraController<TEntity, TEntityBaixa> : BaseController<TEntity>
         where TEntity : ContaFinanceiraVM
         where TEntityBaixa : ContaFinanceiraBaixaVM
     {
         protected ContaFinanceiraController() { }
 
-        [OperationRole(NotApply = true)]
         public override Func<TEntity, object> GetDisplayData()
         {
             return x => new
@@ -70,7 +70,6 @@ namespace Fly01.Financeiro.Controllers.Base
             };
         }
 
-        [OperationRole(NotApply = true)]
         public Func<TEntityBaixa, object> GetDisplayDataBaixas()
         {
             return x => new
@@ -82,7 +81,6 @@ namespace Fly01.Financeiro.Controllers.Base
             };
         }
 
-        [OperationRole(NotApply = true)]
         public Func<TEntity, object> GetDisplayDataBaixaMultipla()
         {
             return x => new
@@ -140,7 +138,7 @@ namespace Fly01.Financeiro.Controllers.Base
 
             var reportViewer = new WebReportViewer<ImprimirListContasVM>(ReportListContas.Instance);
 
-            return File(reportViewer.Print(reportItens, SessionManager.Current.UserData.PlatformUrl), "application/pdf");
+            return File(reportViewer.Print(reportItens, "PlatformUrl"), "application/pdf");
         }
 
         public virtual ContentResult Visualizar(Guid id)
@@ -148,7 +146,6 @@ namespace Fly01.Financeiro.Controllers.Base
             return Json(id);
         }
 
-        [OperationRole(PermissionValue = EPermissionValue.Read)]
         public JsonResult ListContaBaixas(string contaFinanceiraId)
         {
             try
@@ -177,7 +174,6 @@ namespace Fly01.Financeiro.Controllers.Base
         }
 
         #region Baixa de Títulos
-        [OperationRole(PermissionValue = EPermissionValue.Write)]
         public virtual ContentResult BaixaTitulo(Guid id)
         {
             TEntity entity = Get(id);
@@ -191,7 +187,6 @@ namespace Fly01.Financeiro.Controllers.Base
             return Content(JsonConvert.SerializeObject(baixa, JsonSerializerSetting.Front), "application/json");
         }
 
-        [OperationRole(PermissionValue = EPermissionValue.Write)]
         [HttpPost]
         public JsonResult BaixaTitulo(TEntityBaixa entityVM)
         {
@@ -213,7 +208,6 @@ namespace Fly01.Financeiro.Controllers.Base
             }
         }
 
-        [OperationRole(PermissionValue = EPermissionValue.Write)]
         [HttpPost]
         public JsonResult CancelarBaixaTitulo(string id)
         {
@@ -308,7 +302,7 @@ namespace Fly01.Financeiro.Controllers.Base
             config.Elements.Add(new InputHiddenUI { Id = "contaFinanceiraId" });
             config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 l6", Label = "Data", Required = true });
             config.Elements.Add(new InputCurrencyUI { Id = "valor", Class = "col s12 l6", Label = "Valor", Required = true });
-            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "contaBancariaId",
                 Class = "col s12",
@@ -318,7 +312,7 @@ namespace Fly01.Financeiro.Controllers.Base
                 LabelId = "contaBancariaNomeConta",
                 DataUrlPostModal = @Url.Action("FormModal", "ContaBancaria"),
                 DataPostField = "nomeConta",
-            }, ResourceHashConst.FinanceiroCadastrosContasBancarias));
+            });
 
             config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
 

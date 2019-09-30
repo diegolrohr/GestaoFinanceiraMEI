@@ -18,9 +18,9 @@ using System.Web.Mvc;
 
 namespace Fly01.Financeiro.Controllers
 {
+    [AllowAnonymous]
     public class CondicaoParcelamentoController<T> : BaseController<T> where T : CondicaoParcelamentoVM
     {
-        [OperationRole(NotApply = true)]
         public JsonResult GridLoadSimulacao(string valorPrevisto, DateTime dataVencimento, string condicoesParcelamento, int? qtdParcelas)
         {
             JsonResult jsonResponse = new JsonResult();
@@ -126,13 +126,9 @@ namespace Fly01.Financeiro.Controllers
         public override List<HtmlUIButton> GetFormButtonsOnHeader()
         {
             var target = new List<HtmlUIButton>();
-
-            if (UserCanWrite)
-            {
-                target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar", Position = HtmlUIButtonPosition.Out });
-                target.Add(new HtmlUIButton { Id = "saveNew", Label = "Salvar e Novo", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Out });
-                target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main });
-            }
+            target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar", Position = HtmlUIButtonPosition.Out });
+            target.Add(new HtmlUIButton { Id = "saveNew", Label = "Salvar e Novo", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Out });
+            target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main });
 
             return target;
         }
@@ -149,7 +145,7 @@ namespace Fly01.Financeiro.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Dados da condição de parcelamento",
-                    Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())                    
+                    Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions", "CondicaoParcelamento", null, Request.Url.Scheme) + "?fns="
             };

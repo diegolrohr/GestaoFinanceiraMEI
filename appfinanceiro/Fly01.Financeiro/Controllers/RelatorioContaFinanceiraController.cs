@@ -21,6 +21,7 @@ using System.Web.Mvc;
 
 namespace Fly01.Financeiro.Controllers
 {
+    [AllowAnonymous]
     public abstract class RelatorioContaFinanceiraController : BaseController<EmpresaBaseVM>
     {
         protected string tipoConta;
@@ -47,11 +48,6 @@ namespace Fly01.Financeiro.Controllers
 
         protected virtual ContentUI FormRelatorioJson(UrlHelper url, string scheme)
         {
-            if (!UserCanRead)
-            {
-                return new ContentUIBase(Url.Action("Sidebar", "Home"));
-            }
-
             var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
             {
                 History = new ContentUIHistory { Default = url.Action("Index") },
@@ -76,14 +72,14 @@ namespace Fly01.Financeiro.Controllers
 
             config.Elements.Add(new InputHiddenUI { Id = "tipoId", Value = tipoConta });
             config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12 m4", Label = "Descrição", MaxLength = 200 });
-            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "pessoaId",
                 Class = "col s12 m4",
                 Label = tipoConta == "ContaPagar" ? "Fornecedor" : "Cliente",
                 DataUrl = tipoConta == "ContaPagar" ? @Url.Action("Fornecedor", "AutoComplete") : Url.Action("Cliente", "AutoComplete"),
                 LabelId = "pessoaNome",
-            }, tipoConta == "ContaPagar" ? ResourceHashConst.FinanceiroCadastrosFornecedores : ResourceHashConst.FinanceiroCadastrosClientes));
+            });
 
             config.Elements.Add(new AutoCompleteUI
             {
@@ -138,14 +134,14 @@ namespace Fly01.Financeiro.Controllers
                 LabelId = "condicaoParcelamentoDescricao"
             });
 
-            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "categoriaId",
                 Class = "col s12 m4",
                 Label = "Categoria Financeira",
                 DataUrl = tipoConta == "ContaPagar" ? @Url.Action("CategoriaCP", "AutoComplete") : @Url.Action("CategoriaCR", "AutoComplete"),
                 LabelId = "categoriaDescricao",
-            }, ResourceHashConst.FinanceiroCadastrosCategoria));
+            });
 
             config.Helpers.Add(new TooltipUI
             {
@@ -163,11 +159,7 @@ namespace Fly01.Financeiro.Controllers
         public override List<HtmlUIButton> GetFormButtonsOnHeader()
         {
             var target = new List<HtmlUIButton>();
-
-            if (UserCanWrite)
-            {
             target.Add(new HtmlUIButton { Id = "imprimirRelatorioId", Label = "Imprimir", OnClickFn = "fnImprimirRelatorioCPCR" });
-            }
 
             return target;
         }
@@ -201,7 +193,7 @@ namespace Fly01.Financeiro.Controllers
                 List<ImprimirListContasVM> reportItens = GetContaFinanceira(queryString, tipoConta);
                 
                 var reportViewer = new WebReportViewer<ImprimirListContasVM>(RelatorioContasPagarReceber.Instance);
-                return File(reportViewer.Print(reportItens, SessionManager.Current.UserData.PlatformUrl), "application/pdf");
+                return File(reportViewer.Print(reportItens, "PlatformUrl"), "application/pdf");
             }
             catch (Exception ex)
             {

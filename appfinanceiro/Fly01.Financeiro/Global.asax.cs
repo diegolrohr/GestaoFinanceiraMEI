@@ -5,6 +5,6 @@ namespace Fly01.Financeiro
 {
     public class WebApiApplication : GlobalHttpApplication
     {
-        protected override string GetInstrumentationKeyAppInsights() => ConfigurationManager.AppSettings["InstrumentationKeyAppInsights"];
+        
     }
 }

@@ -20,7 +20,7 @@ using System.Web.UI.WebControls;
 
 namespace Fly01.Financeiro.Controllers
 {
-    [OperationRole(NotApply = true)]
+    [AllowAnonymous]
     public class FluxoCaixaController : PrimitiveBaseController
     {
         public JsonResult LoadSaldos(string dataFinal)

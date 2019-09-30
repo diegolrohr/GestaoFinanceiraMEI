@@ -11,6 +11,5 @@ namespace Fly01.Core.Config
         public string ClientToken { get; set; }        
         public string PlatformUrl { get; set; }
         public string PlatformUser { get; set; }
-        public List<PermissionResponseVM> Permissions { get; set; }
     }
 }

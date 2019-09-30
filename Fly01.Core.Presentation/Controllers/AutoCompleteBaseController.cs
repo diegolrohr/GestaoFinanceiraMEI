@@ -9,7 +9,6 @@ using Fly01.Core.ViewModels;
 
 namespace Fly01.Core.Presentation.Controllers
 {
-    [OperationRole(NotApply = true)]
     public class AutoCompleteBaseController : PrimitiveBaseController
     {
         protected JsonResult GetJson(object data) 

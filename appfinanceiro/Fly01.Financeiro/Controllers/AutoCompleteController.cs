@@ -10,6 +10,7 @@ using System.Web.Mvc;
 
 namespace Fly01.Financeiro.Controllers
 {
+    [AllowAnonymous]
     public class AutoCompleteController : AutoCompleteBaseController
     {
         public override JsonResult Categoria(string term, string filterTipoCarteira)

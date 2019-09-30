@@ -33,7 +33,7 @@ using System.Web.UI.WebControls;
 
 namespace Fly01.Core.Presentation
 {
-
+    [AllowAnonymous]
     public abstract class BaseController<T> : PrimitiveBaseController where T : EmpresaBaseVM
     {
 
@@ -63,8 +63,7 @@ namespace Fly01.Core.Presentation
         {
             var target = new List<HtmlUIButton>();
 
-            if (UserCanWrite)
-                target.Add(new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo", Position = HtmlUIButtonPosition.Main });
+            target.Add(new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo", Position = HtmlUIButtonPosition.Main });
 
             return target;
         }
@@ -73,24 +72,18 @@ namespace Fly01.Core.Presentation
         {
             var target = new List<HtmlUIButton>();
 
-            if (UserCanWrite)
-            {
-                target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main });
-                target.Add(new HtmlUIButton { Id = "saveNew", Label = "Salvar e Novo", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main });
-            }
+            target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main });
+            target.Add(new HtmlUIButton { Id = "saveNew", Label = "Salvar e Novo", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main });
 
             return target;
         }
 
         public virtual List<DataTableUIAction> GetActionsInGrid(List<DataTableUIAction> customWriteActions)
         {
-            if (UserCanWrite)
-                return customWriteActions;
-
-            return new List<DataTableUIAction> { new DataTableUIAction { OnClickFn = "fnVisualizar", Label = "Visualizar" } };
+            customWriteActions.Add(new DataTableUIAction { OnClickFn = "fnVisualizar", Label = "Visualizar" });
+            return customWriteActions;
         }
 
-        [OperationRole(NotApply = true)]
         public JsonResult BuscaCEP(string cep)
         {
             try
@@ -124,7 +117,6 @@ namespace Fly01.Core.Presentation
             }
         }
 
-        [OperationRole(NotApply = true)]
         public ActionResult GetCodeData(string document)
         {
             dynamic response = new { };
@@ -154,7 +146,6 @@ namespace Fly01.Core.Presentation
             return Json(response.Data, JsonRequestBehavior.AllowGet);
         }
 
-        [OperationRole(NotApply = true)]
         public ActionResult GetDocumentData(string document = "", string code = "", string dataNascimento = "")
         {
             dynamic response = new { };
@@ -206,11 +197,11 @@ namespace Fly01.Core.Presentation
             return Json(response.Data, JsonRequestBehavior.AllowGet);
         }
 
-        [OperationRole(NotApply = true)]
         public ManagerEmpresaVM GetDadosEmpresa()
-            => ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
+        {
+            return new ManagerEmpresaVM();
+        }
 
-        [OperationRole(NotApply = true)]
         public ContentResult EmConstrucao(string history)
         {
             var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
@@ -243,7 +234,6 @@ namespace Fly01.Core.Presentation
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
         }
 
-        [OperationRole(NotApply = true)]
         public virtual ContentResult Functions(string fns)
         {
             string content = fns.Split(',')
@@ -254,7 +244,6 @@ namespace Fly01.Core.Presentation
             return Content(content, "text/javascript");
         }
 
-        [OperationRole(NotApply = true)]
         private string RenderRazorViewToString(string viewName)
         {
             using (var sw = new StringWriter())
@@ -269,7 +258,6 @@ namespace Fly01.Core.Presentation
             }
         }
 
-        [OperationRole(NotApply = true)]
         public List<T> GetAll(string order = "", string filterField = "", string filterValue = "")
         {
             Dictionary<string, string> queryStringRequest = AppDefaults.GetQueryStringDefault(filterField, filterValue, AppDefaults.MaxRecordsPerPageAPI);
@@ -294,7 +282,6 @@ namespace Fly01.Core.Presentation
             return items;
         }
 
-        [OperationRole(NotApply = true)]
         public List<T> GetAll(string resourceName, int maxRecords, string order = "", string filterField = "", string filterValue = "", Dictionary<string, string> querystring = null)
         {
             var queryStringRequest = new List<KeyValuePair<string, string>>();
@@ -326,27 +313,21 @@ namespace Fly01.Core.Presentation
 
         protected virtual void LoadDependence() { }
 
-        [OperationRole(NotApply = true)]
         public ActionResult NotAllow(string routeDescription)
             => View(viewName: "NotAllow", model: routeDescription);
 
-        [OperationRole(PermissionValue = EPermissionValue.Read)]
         public virtual ActionResult Index()
             => View();
 
-        [OperationRole(PermissionValue = EPermissionValue.Write)]
         public virtual ActionResult Create()
             => View("Create");
 
-        [OperationRole(PermissionValue = EPermissionValue.Write)]
         public virtual ActionResult Edit(Guid id)
             => View("Edit", id);
 
-        [OperationRole(PermissionValue = EPermissionValue.Read)]
         public virtual ActionResult View(Guid id)
             => View("View", id);
 
-        [OperationRole(PermissionValue = EPermissionValue.Write)]
         [HttpPost]
         public virtual JsonResult Delete(Guid id)
         {
@@ -362,7 +343,6 @@ namespace Fly01.Core.Presentation
             }
         }
 
-        [OperationRole(PermissionValue = EPermissionValue.Write)]
         [HttpPost]
         public virtual JsonResult Create(T entityVM)
         {
@@ -379,7 +359,6 @@ namespace Fly01.Core.Presentation
             }
         }
 
-        [OperationRole(PermissionValue = EPermissionValue.Write)]
         [HttpPost]
         public virtual JsonResult Edit(T entityVM)
         {
@@ -405,7 +384,6 @@ namespace Fly01.Core.Presentation
             return string.Format(" {0}", dir.Trim());
         }
 
-        [OperationRole(NotApply = true)]
         public virtual ContentResult Json(Guid id)
         {
             try
@@ -460,7 +438,6 @@ namespace Fly01.Core.Presentation
             return queryStringDefault;
         }
 
-        [OperationRole(PermissionValue = EPermissionValue.Read)]
         public virtual JsonResult GridLoad(Dictionary<string, string> filters = null)
         {
             var param = JQueryDataTableParams.CreateFromQueryString(Request.QueryString);
@@ -720,10 +697,8 @@ namespace Fly01.Core.Presentation
             return RestHelper.ExecuteGetRequest<List<TReturn>>(string.Format("systemvalue/{0}", systemEntity));
         }
 
-        [OperationRole(NotApply = true)]
         protected abstract ContentUI FormJson();
 
-        [OperationRole(NotApply = true)]
         [HttpPost]
         public string DecodeBase64(string content)
         {
@@ -732,14 +707,11 @@ namespace Fly01.Core.Presentation
             return text;
         }
 
-        [OperationRole(PermissionValue = EPermissionValue.Read)]
         public abstract ContentResult List();
 
-        [OperationRole(PermissionValue = EPermissionValue.Write)]
         public virtual ContentResult Form()
             => Content(JsonConvert.SerializeObject(FormJson(), JsonSerializerSetting.Front), "application/json");
 
-        [OperationRole(PermissionValue = EPermissionValue.Read)]
         public virtual ContentResult FormView()
         {
             var contentUI = FormJson();
@@ -763,7 +735,6 @@ namespace Fly01.Core.Presentation
             return Content(JsonConvert.SerializeObject(contentUI, JsonSerializerSetting.Front), "application/json");
         }
 
-        [OperationRole(NotApply = true)]
         [HttpGet]
         public virtual ActionResult Download(string fileName)
         {
@@ -779,7 +750,6 @@ namespace Fly01.Core.Presentation
             }
         }
 
-        [OperationRole(NotApply = true)]
         [HttpGet]
         public virtual ActionResult DownloadPDF(string fileName)
         {
@@ -795,7 +765,6 @@ namespace Fly01.Core.Presentation
             }
         }
 
-        [OperationRole(NotApply = true)]
         [HttpGet]
         public virtual ActionResult DownloadXMLString(string fileName)
         {
@@ -939,11 +908,12 @@ namespace Fly01.Core.Presentation
             StringBuilder sb = new StringBuilder();
             foreach (DataColumn v in data.Columns)
                 sb.Append("'" + v.ColumnName + "',");
-            
+
             sb.Append("\r\n");
             foreach (DataRow v1 in data.Rows)
             {
-                for (int k = 0; k < data.Columns.Count; k++) {
+                for (int k = 0; k < data.Columns.Count; k++)
+                {
 
                     string result = RemoveAccents(v1[k].ToString());
 

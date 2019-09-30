@@ -14,14 +14,13 @@ using Fly01.Core.ViewModels;
 
 namespace Fly01.Financeiro.Controllers
 {
-    [OperationRole(ResourceKey = ResourceHashConst.FinanceiroCadastrosFornecedores)]
+    [AllowAnonymous]
     public class FornecedorController : PessoaBaseController<PessoaVM>
     {
         protected override string ResourceTitle => "Fornecedor";
         protected override string LabelTitle => "Fornecedores";
         protected override string Filter => "fornecedor eq true";
 
-        [OperationRole(PermissionValue = EPermissionValue.Write)]
         public JsonResult PostFornecedor(string term)
         {
             var entity = new PessoaVM

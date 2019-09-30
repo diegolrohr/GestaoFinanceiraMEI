@@ -14,7 +14,7 @@ using Fly01.Core.ViewModels;
 
 namespace Fly01.Financeiro.Controllers
 {
-    [OperationRole(ResourceKey = ResourceHashConst.FinanceiroCadastrosClientes)]
+    [AllowAnonymous]
     public class ClienteController : PessoaBaseController<PessoaVM>
     {
         protected override string ResourceTitle => "Cliente";
@@ -28,7 +28,6 @@ namespace Fly01.Financeiro.Controllers
             base.NormarlizarEntidade(ref entityVM);
         }
 
-        [OperationRole(PermissionValue = EPermissionValue.Write)]
         public JsonResult PostCliente(string term)
         {
             var entity = new PessoaVM

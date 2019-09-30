@@ -15,7 +15,7 @@ using Newtonsoft.Json;
 
 namespace Fly01.Financeiro.Controllers
 {
-    [OperationRole(ResourceKey = ResourceHashConst.FinanceiroDashboardContasPagar)]
+    [AllowAnonymous]
     public class DashboardContaPagarController : DashboardContaFinanceiraController
     {
         public DashboardContaPagarController(): base("ContaPagar")

@@ -94,11 +94,8 @@ namespace Fly01.Core.Presentation.Controllers
         {
             var target = new List<HtmlUIButton>();
 
-            if (UserCanWrite)
-            {
-                target.Add(new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo", Position = HtmlUIButtonPosition.Main });
-                target.Add(new HtmlUIButton { Id = "import", Label = $"Importar {LabelTitle}", OnClickFn = "fnImportarCadastro", Position = HtmlUIButtonPosition.Out });
-            }
+            target.Add(new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo", Position = HtmlUIButtonPosition.Main });
+            target.Add(new HtmlUIButton { Id = "import", Label = $"Importar {LabelTitle}", OnClickFn = "fnImportarCadastro", Position = HtmlUIButtonPosition.Out });
 
             return target;
         }
@@ -111,11 +108,12 @@ namespace Fly01.Core.Presentation.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = LabelTitle,
-                    Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader())                    
+                    Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
-            var config = new DataTableUI {
+            var config = new DataTableUI
+            {
                 Id = "fly01dt",
                 UrlGridLoad = Url.Action("GridLoad"),
                 UrlFunctions = Url.Action("Functions") + "?fns=",
@@ -146,12 +144,9 @@ namespace Fly01.Core.Presentation.Controllers
         {
             var target = new List<HtmlUIButton>();
 
-            if (UserCanWrite)
-            {
-                target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar", Position = HtmlUIButtonPosition.Out });
-                target.Add(new HtmlUIButton { Id = "saveNew", Label = "Salvar e Novo", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Out });
-                target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main });
-            }
+            target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar", Position = HtmlUIButtonPosition.Out });
+            target.Add(new HtmlUIButton { Id = "saveNew", Label = "Salvar e Novo", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Out });
+            target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main });
 
             return target;
         }
@@ -172,7 +167,7 @@ namespace Fly01.Core.Presentation.Controllers
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
-            
+
             var config = new FormUI
             {
                 Id = "fly01frm",
@@ -299,11 +294,8 @@ namespace Fly01.Core.Presentation.Controllers
         {
             var target = new List<HtmlUIButton>();
 
-            if (UserCanWrite)
-            {
-                target.Add(new HtmlUIButton() { Id = "cancel", Label = "Voltar", OnClickFn = "fnCancelar" });
-                target.Add(new HtmlUIButton() { Id = "save", Label = "Importar", OnClickFn = "fnCarregarArquivo", Type = "submit" });
-            }
+            target.Add(new HtmlUIButton() { Id = "cancel", Label = "Voltar", OnClickFn = "fnCancelar" });
+            target.Add(new HtmlUIButton() { Id = "save", Label = "Importar", OnClickFn = "fnCarregarArquivo", Type = "submit" });
 
             return target;
         }
@@ -366,7 +358,7 @@ namespace Fly01.Core.Presentation.Controllers
             return null;
         }
 
-        protected virtual List<InputCheckboxUI> GetCheckBboxes() 
+        protected virtual List<InputCheckboxUI> GetCheckBboxes()
             => null;
     }
 }

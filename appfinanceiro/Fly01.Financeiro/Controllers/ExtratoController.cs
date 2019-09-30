@@ -28,7 +28,7 @@ using System.Text;
 
 namespace Fly01.Financeiro.Controllers
 {
-    [OperationRole(ResourceKey = ResourceHashConst.FinanceiroFinanceiroExtrato)]
+    [AllowAnonymous]
     public class ExtratoController : BaseController<MovimentacaoVM>
     {
         public JsonResult LoadContasBancarias()
@@ -255,30 +255,19 @@ namespace Fly01.Financeiro.Controllers
         public override List<HtmlUIButton> GetListButtonsOnHeader()
         {
             var target = new List<HtmlUIButton>();
+            target.Add(new HtmlUIButton { Id = "save", Label = "Atualizar", OnClickFn = "fnAtualizar", Position = HtmlUIButtonPosition.Main });
+            target.Add(new HtmlUIButton { Id = "prnt", Label = "Imprimir", OnClickFn = "fnImprimirExtrato", Position = HtmlUIButtonPosition.Out });
 
-            if (UserCanRead)
-            {
-                target.Add(new HtmlUIButton { Id = "save", Label = "Atualizar", OnClickFn = "fnAtualizar", Position = HtmlUIButtonPosition.Main });
-                target.Add(new HtmlUIButton { Id = "prnt", Label = "Imprimir", OnClickFn = "fnImprimirExtrato", Position = HtmlUIButtonPosition.Out });
-            }
+            target.Add(new HtmlUIButton { Id = "pgto", Label = "Novo Pagamento", OnClickFn = "fnNovoPagamento", Position = HtmlUIButtonPosition.In });
+            target.Add(new HtmlUIButton { Id = "rcto", Label = "Novo Recebimento", OnClickFn = "fnNovoRecebimento", Position = HtmlUIButtonPosition.In });
+            target.Add(new HtmlUIButton { Id = "trnf", Label = "Nova Transferência", OnClickFn = "fnNovaTransferencia", Position = HtmlUIButtonPosition.In });
 
-            if (UserCanWrite)
-            {
-                target.Add(new HtmlUIButton { Id = "pgto", Label = "Novo Pagamento", OnClickFn = "fnNovoPagamento", Position = HtmlUIButtonPosition.In });
-                target.Add(new HtmlUIButton { Id = "rcto", Label = "Novo Recebimento", OnClickFn = "fnNovoRecebimento", Position = HtmlUIButtonPosition.In });
-                target.Add(new HtmlUIButton { Id = "trnf", Label = "Nova Transferência", OnClickFn = "fnNovaTransferencia", Position = HtmlUIButtonPosition.In });
-            }
 
             return target;
         }
 
         public override ContentResult List()
         {
-            if (!UserCanRead)
-                return Content(JsonConvert.SerializeObject(new ContentUIBase(Url.Action("Sidebar", "Home")), JsonSerializerSetting.Default), "application/json");
-
-            var response = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
-            var responseCidade = response.Cidade != null ? response.Cidade.Nome : string.Empty;
             var dataInicialFiltroDefault = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             var dataFinalFiltroDefault = DateTime.Now;
 
@@ -297,10 +286,7 @@ namespace Fly01.Financeiro.Controllers
                 Class = "col s12 m8 offset-m2 printinfo",
                 Color = "totvs-blue",
                 Id = "fly01cardCabecalho",
-                Placeholder = response.RazaoSocial + " | CNPJ: " + response.CNPJ +
-                              " | Endereço: " + response.Endereco + ", " + response.Numero +
-                              " | Bairro: " + response.Bairro + " | CEP: " + response.CEP +
-                              " | Cidade: " + responseCidade + " | Email: " + response.Email,
+                Placeholder = "Info empresa",
                 Action = new LinkUI
                 {
                     Label = "",
@@ -461,7 +447,7 @@ namespace Fly01.Financeiro.Controllers
                     new DataTableUIColumn { DataField = "pessoaNome", DisplayName = "Cliente/Fornecedor", Priority = 2, Orderable = false, Searchable = false },
                     new DataTableUIColumn { DataField = "contaBancariaDescricao", DisplayName = "Conta Bancária", Priority = 3, Orderable = false, Searchable = false },
                     new DataTableUIColumn { DataField = "valorLancamento", DisplayName = "Valor", Priority = 4, Orderable = false, Searchable = false, Type = "currency" },
-                    new DataTableUIColumn { DataField = "descricaoLancamento", DisplayName = "Lançamento", Priority = 5, Orderable = false, Searchable = false },           
+                    new DataTableUIColumn { DataField = "descricaoLancamento", DisplayName = "Lançamento", Priority = 5, Orderable = false, Searchable = false },
         }
             });
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
@@ -472,7 +458,6 @@ namespace Fly01.Financeiro.Controllers
             throw new NotImplementedException();
         }
 
-        [OperationRole(PermissionValue = EPermissionValue.Write)]
         public ContentResult ModalExtratoNovaTransferencia()
         {
             var config = new ModalUIForm()
@@ -493,7 +478,7 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "descricaoDestino" });
             config.Elements.Add(new InputHiddenUI { Id = "descricao" });
 
-            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "contaBancariaOrigemIdTransf",
                 Class = "col s12 m6",
@@ -509,9 +494,9 @@ namespace Fly01.Financeiro.Controllers
                 {
                     new DomEventUI {DomEvent = "autocompletechange", Function = "fnChangeContaOrigemTransferencia"}
                 }
-            }, ResourceHashConst.FinanceiroCadastrosContasBancarias));
+            });
 
-            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "contaBancariaDestinoIdTransf",
                 Class = "col s12 m6",
@@ -527,9 +512,9 @@ namespace Fly01.Financeiro.Controllers
                 {
                     new DomEventUI { DomEvent = "autocompletechange", Function = "fnChangeContaDestinoTransferencia" }
                 }
-            }, ResourceHashConst.FinanceiroCadastrosContasBancarias));
+            });
 
-            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "categoriaIdTransf",
                 Class = "col s12 m6",
@@ -540,9 +525,9 @@ namespace Fly01.Financeiro.Controllers
                 LabelId = "categoriaDescricaoTransf",
                 LabelName = "categoriaDescricao",
                 DataUrlPost = Url.Action("NovaCategoriaDespesa"),
-            }, ResourceHashConst.FinanceiroCadastrosCategoria));
+            });
 
-            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "categoriaDestinoIdTransf",
                 Class = "col s12 m6",
@@ -553,7 +538,7 @@ namespace Fly01.Financeiro.Controllers
                 LabelId = "categoriaDestinoDescricaoTransf",
                 LabelName = "categoriaDestinoDescricao",
                 DataUrlPost = Url.Action("NovaCategoriaReceita")
-            }, ResourceHashConst.FinanceiroCadastrosCategoria));
+            });
 
             config.Elements.Add(new InputDateUI
             {
@@ -567,7 +552,8 @@ namespace Fly01.Financeiro.Controllers
 
             config.Elements.Add(new InputCurrencyUI { Id = "valorTransf", Class = "col s12 m6", Label = "Valor", Required = true, Name = "valor" });
 
-            config.Elements.Add(new TextAreaUI {
+            config.Elements.Add(new TextAreaUI
+            {
                 Id = "observacao",
                 Class = "col s12",
                 Label = "Descrição",
@@ -582,7 +568,6 @@ namespace Fly01.Financeiro.Controllers
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
 
-        [OperationRole(PermissionValue = EPermissionValue.Write)]
         public ContentResult ModalExtratoNovoRecebimento()
         {
             var config = new ModalUIForm()
@@ -600,7 +585,7 @@ namespace Fly01.Financeiro.Controllers
                 }
             };
 
-            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "contaBancariaDestinoIdReceb",
                 Class = "col s12",
@@ -612,9 +597,9 @@ namespace Fly01.Financeiro.Controllers
                 LabelName = "contaBancariaDestinoNomeConta",
                 DataUrlPostModal = @Url.Action("FormModal", "ContaBancaria"),
                 DataPostField = "nomeConta"
-            }, ResourceHashConst.FinanceiroCadastrosContasBancarias));
+            });
 
-            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "categoriaIdReceb",
                 Class = "col s12",
@@ -629,7 +614,7 @@ namespace Fly01.Financeiro.Controllers
                 {
                     new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeCategoriaRecebimento" }
                 }
-            }, ResourceHashConst.FinanceiroCadastrosCategoria));
+            });
 
             config.Elements.Add(new InputDateUI
             {
@@ -647,7 +632,6 @@ namespace Fly01.Financeiro.Controllers
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
 
-        [OperationRole(PermissionValue = EPermissionValue.Write)]
         public ContentResult ModalExtratoNovoPagamento()
         {
             var config = new ModalUIForm()
@@ -665,7 +649,7 @@ namespace Fly01.Financeiro.Controllers
                 }
             };
 
-            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "contaBancariaOrigemIdPgto",
                 Class = "col s12",
@@ -677,9 +661,9 @@ namespace Fly01.Financeiro.Controllers
                 LabelName = "contaBancariaOrigemNomeConta",
                 DataUrlPostModal = @Url.Action("FormModal", "ContaBancaria"),
                 DataPostField = "nomeConta"
-            }, ResourceHashConst.FinanceiroCadastrosContasBancarias));
+            });
 
-            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "categoriaIdPgto",
                 Class = "col s12",
@@ -694,7 +678,7 @@ namespace Fly01.Financeiro.Controllers
                 {
                     new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeCategoriaPagamento" }
                 }
-            }, ResourceHashConst.FinanceiroCadastrosCategoria));
+            });
 
             config.Elements.Add(new InputDateUI
             {
@@ -712,14 +696,11 @@ namespace Fly01.Financeiro.Controllers
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
 
-        [OperationRole(PermissionValue = EPermissionValue.Write)]
         [HttpPost]
         public JsonResult NovaCategoriaDespesa(string term)
         {
             return NovaCategoria(new CategoriaVM { Descricao = term, TipoCarteira = "2" });
         }
-
-        [OperationRole(PermissionValue = EPermissionValue.Write)]
         [HttpPost]
         public JsonResult NovaCategoriaReceita(string term)
         {
@@ -752,14 +733,14 @@ namespace Fly01.Financeiro.Controllers
 
                 var contabancaria = (!string.IsNullOrEmpty(contaBancariaId) ? contasbancarias.Where(x => x.ContaBancariaId == Guid.Parse(contaBancariaId)).FirstOrDefault() :
                     contasbancarias.Where(x => x.ContaBancariaDescricao == "Todas as Contas").FirstOrDefault());
-                                  
+
                 var extratodetalhes = GetExtratoDetalhe(dataInicial, dataFinal, contaBancariaId);
 
-                MontarExtratoParaPrint(contabancaria, reportItems,dataInicial, dataFinal);
+                MontarExtratoParaPrint(contabancaria, reportItems, dataInicial, dataFinal);
                 MontarDetalhesExtratoParaPrint(extratodetalhes, reportItems);
 
                 var reportViewer = new WebReportViewer<ImprimirExtratoBancarioVM>(ReportExtrato.Instance);
-                return File(reportViewer.Print(reportItems, SessionManager.Current.UserData.PlatformUrl), "application/pdf");
+                return File(reportViewer.Print(reportItems, "PlatformUrl"), "application/pdf");
             }
             catch (Exception ex)
             {
@@ -768,13 +749,11 @@ namespace Fly01.Financeiro.Controllers
             }
         }
 
-        [OperationRole(PermissionValue = EPermissionValue.Read)]
         public List<ExtratoContaSaldoVM> GetContasBancarias()
         {
             return RestHelper.ExecuteGetRequest<List<ExtratoContaSaldoVM>>("extrato/impressaosaldos");
-        }   
+        }
 
-        [OperationRole(PermissionValue = EPermissionValue.Read)]
         public List<ExtratoDetalheVM> GetExtratoDetalhe(DateTime? dataInicial, DateTime? dataFinal, string contaBancariaId)
         {
             Dictionary<string, string> queryString = new Dictionary<string, string>
@@ -788,14 +767,14 @@ namespace Fly01.Financeiro.Controllers
         }
 
         private static void MontarExtratoParaPrint(ExtratoContaSaldoVM contabancaria, List<ImprimirExtratoBancarioVM> reportItems, DateTime? dataInicial, DateTime? dataFinal)
-        {         
-                reportItems.Add(new ImprimirExtratoBancarioVM
-                {
-                    ContaBancariaDescricao = contabancaria.ContaBancariaDescricao,
-                    SaldoConsolidado = contabancaria.SaldoConsolidado,
-                    DataInicial = dataInicial,
-                    DataFinal = dataFinal
-                });
+        {
+            reportItems.Add(new ImprimirExtratoBancarioVM
+            {
+                ContaBancariaDescricao = contabancaria.ContaBancariaDescricao,
+                SaldoConsolidado = contabancaria.SaldoConsolidado,
+                DataInicial = dataInicial,
+                DataFinal = dataFinal
+            });
         }
 
         private static void MontarDetalhesExtratoParaPrint(List<ExtratoDetalheVM> extratodetalhes, List<ImprimirExtratoBancarioVM> reportItems)
@@ -804,17 +783,17 @@ namespace Fly01.Financeiro.Controllers
             {
                 reportItems.Add(new ImprimirExtratoBancarioVM
                 {
-                   Data = itens.DataMovimento,
-                   ClienteFornecedor = itens.PessoaNome,
-                   Valor = itens.ValorLancamento,
-                   Lancamento = itens.DescricaoLancamento,
-                   ContaBancaria = itens.ContaBancariaDescricao
+                    Data = itens.DataMovimento,
+                    ClienteFornecedor = itens.PessoaNome,
+                    Valor = itens.ValorLancamento,
+                    Lancamento = itens.DescricaoLancamento,
+                    ContaBancaria = itens.ContaBancariaDescricao
                 });
             }
         }
 
         #region ExportGrid 
-      
+
         protected DataTable GridToDataTable(PagedResult<ExtratoDetalheVM> responseGrid, JQueryDataTableParams param)
         {
             DataTable dt = new DataTable();

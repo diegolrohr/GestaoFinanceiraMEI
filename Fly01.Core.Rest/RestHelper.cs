@@ -46,8 +46,6 @@ namespace Fly01.Core.Rest
             get
             {
                 Dictionary<string, string> header = new Dictionary<string, string>();
-                if (SessionManager.Current.UserData.TokenData != null)
-                    header.Add(RestUtils.AUTH_HEADER, String.Format("Bearer {0}", SessionManager.Current.UserData.TokenData.AccessToken));
 
                 return header;
             }
@@ -105,7 +103,6 @@ namespace Fly01.Core.Rest
                 logEvent.Properties["requestJson"] = requestJson;
                 logEvent.Properties["statusCode"] = ex.StatusCode;
                 logEvent.Properties["exception"] = string.Concat(ex.GetType().FullName, " ", ex.Message);
-                logEvent.Properties["platformUrl"] = SessionManager.Current.UserData.PlatformUrl;
                 logger.Log(logEvent);
 
                 throw;
@@ -142,7 +139,6 @@ namespace Fly01.Core.Rest
                 logEvent.Properties["requestJson"] = (requestObj == null ? string.Empty : JsonConvert.SerializeObject(requestObj));
                 logEvent.Properties["statusCode"] = ex.StatusCode;
                 logEvent.Properties["exception"] = string.Concat(ex.GetType().FullName, " ", ex.Message);
-                logEvent.Properties["platformUrl"] = SessionManager.Current.UserData.PlatformUrl;
                 logger.Log(logEvent);
 
                 throw;
@@ -179,7 +175,6 @@ namespace Fly01.Core.Rest
                 logEvent.Properties["requestJson"] = (requestObj == null ? string.Empty : JsonConvert.SerializeObject(requestObj));
                 logEvent.Properties["statusCode"] = ex.StatusCode;
                 logEvent.Properties["exception"] = string.Concat(ex.GetType().FullName, " ", ex.Message);
-                logEvent.Properties["platformUrl"] = SessionManager.Current.UserData.PlatformUrl;
                 logger.Log(logEvent);
 
                 throw;
@@ -218,7 +213,6 @@ namespace Fly01.Core.Rest
                 logEvent.Properties["requestJson"] = "";
                 logEvent.Properties["statusCode"] = ex.StatusCode;
                 logEvent.Properties["exception"] = string.Concat(ex.GetType().FullName, " ", ex.Message);
-                logEvent.Properties["platformUrl"] = SessionManager.Current.UserData.PlatformUrl;
                 logger.Log(logEvent);
 
                 throw;
@@ -265,7 +259,6 @@ namespace Fly01.Core.Rest
                 logEvent.Properties["requestJson"] = "";
                 logEvent.Properties["statusCode"] = ex.StatusCode;
                 logEvent.Properties["exception"] = string.Concat(ex.GetType().FullName, " ", ex.Message);
-                logEvent.Properties["platformUrl"] = SessionManager.Current.UserData.PlatformUrl;
                 logger.Log(logEvent);
 
                 throw;
@@ -334,7 +327,6 @@ namespace Fly01.Core.Rest
                 logEvent.Properties["requestJson"] = ((requestObj == null) ? string.Empty : JsonConvert.SerializeObject(requestObj));
                 logEvent.Properties["statusCode"] = ex.StatusCode;
                 logEvent.Properties["exception"] = string.Concat(ex.GetType().FullName, " ", ex.Message);
-                logEvent.Properties["platformUrl"] = SessionManager.Current.UserData.PlatformUrl;
                 logger.Log(logEvent);
 
                 throw;
@@ -403,7 +395,6 @@ namespace Fly01.Core.Rest
                 logEvent.Properties["requestJson"] = requestJson;
                 logEvent.Properties["statusCode"] = ex.StatusCode;
                 logEvent.Properties["exception"] = string.Concat(ex.GetType().FullName, " ", ex.Message);
-                logEvent.Properties["platformUrl"] = SessionManager.Current.UserData.PlatformUrl;
                 logger.Log(logEvent);
 
                 throw;
@@ -427,7 +418,6 @@ namespace Fly01.Core.Rest
                 logEvent.Properties["requestJson"] = string.Empty;
                 logEvent.Properties["statusCode"] = ex.StatusCode;
                 logEvent.Properties["exception"] = string.Concat(ex.GetType().FullName, " ", ex.Message);
-                logEvent.Properties["platformUrl"] = SessionManager.Current.UserData.PlatformUrl;
                 logger.Log(logEvent);
 
                 throw;
@@ -470,7 +460,6 @@ namespace Fly01.Core.Rest
                 logEvent.Properties["requestJson"] = string.Empty;
                 logEvent.Properties["statusCode"] = ex.StatusCode;
                 logEvent.Properties["exception"] = string.Concat(ex.GetType().FullName, " ", ex.Message + " Status description: " + statusDescription + " Begin request: " + beginRequest);
-                logEvent.Properties["platformUrl"] = SessionManager.Current.UserData.PlatformUrl;
                 logger.Log(logEvent);
                 throw;
             }

@@ -12,7 +12,7 @@ using System.Web.Mvc;
 
 namespace Fly01.Financeiro.Controllers
 {
-    [OperationRole(ResourceKey = ResourceHashConst.FinanceiroDashboardContasReceber)]
+    [AllowAnonymous]
     public class DashboardContaReceberController : DashboardContaFinanceiraController
     {
         public DashboardContaReceberController() : base("ContaReceber")

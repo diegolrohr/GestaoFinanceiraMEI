@@ -26,7 +26,6 @@ using System.Web.Mvc;
 
 namespace Fly01.Financeiro.Controllers
 {
-    [OperationRole(ResourceKey = ResourceHashConst.FinanceiroFinanceiroContasPagar)]
     public class ContaPagarController : ContaFinanceiraController<ContaPagarVM, ContaFinanceiraBaixaVM>
     {
         public ContaPagarController()
@@ -80,7 +79,7 @@ namespace Fly01.Financeiro.Controllers
             };
 
             var reportViewer = new WebReportViewer<ReciboContaFinanceiraVM>(ReportRecibo.Instance);
-            return File(reportViewer.Print(itemRecibo, platformUrl: SessionManager.Current.UserData.PlatformUrl), "application/pdf");
+            return File(reportViewer.Print(itemRecibo, platformUrl: ""), "application/pdf");
         }
 
         public List<ContaPagarVM> GetListContaPagar(string queryStringOdata = "", string tipoStatus = "")
@@ -119,13 +118,11 @@ namespace Fly01.Financeiro.Controllers
         {
             var target = new List<HtmlUIButton>();
 
-            if (UserCanWrite)
-            {
-                target.Add(new HtmlUIButton { Id = "baixasBtn", Label = "Baixas múltiplas", OnClickFn = "fnBaixaMultipla", Position = HtmlUIButtonPosition.Out });
-                target.Add(new HtmlUIButton { Id = "newPrint", Label = "Imprimir", OnClickFn = "fnImprimirListContas", Position = HtmlUIButtonPosition.In });
-                target.Add(new HtmlUIButton { Id = "filterGrid", Label = bntLabel, OnClickFn = btnOnClick, Position = HtmlUIButtonPosition.Out });
-                target.Add(new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo", Position = HtmlUIButtonPosition.Main });
-            }
+            target.Add(new HtmlUIButton { Id = "baixasBtn", Label = "Baixas múltiplas", OnClickFn = "fnBaixaMultipla", Position = HtmlUIButtonPosition.Out });
+            target.Add(new HtmlUIButton { Id = "newPrint", Label = "Imprimir", OnClickFn = "fnImprimirListContas", Position = HtmlUIButtonPosition.In });
+            target.Add(new HtmlUIButton { Id = "filterGrid", Label = bntLabel, OnClickFn = btnOnClick, Position = HtmlUIButtonPosition.Out });
+            target.Add(new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo", Position = HtmlUIButtonPosition.Main });
+
 
             return target;
         }
@@ -157,7 +154,7 @@ namespace Fly01.Financeiro.Controllers
 
             var cfgForm = new FormUI
             {
-                Id = "fly01frm",               
+                Id = "fly01frm",
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 ReadyFn = gridLoad == "GridLoad" ? "" : "fnChangeInput",
                 Elements = new List<BaseUI>()
@@ -173,7 +170,7 @@ namespace Fly01.Financeiro.Controllers
                         Name = "dataInicial"
                     }
                 },
-                Functions = { "fnRowCallbackContasFinanceiras"}
+                Functions = { "fnRowCallbackContasFinanceiras" }
             };
 
             if (Request.QueryString["action"] != "GridLoadNoFilter")
@@ -291,13 +288,9 @@ namespace Fly01.Financeiro.Controllers
         public override List<HtmlUIButton> GetFormButtonsOnHeader()
         {
             var target = new List<HtmlUIButton>();
-
-            if (UserCanWrite)
-            {
-                target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar", Position = HtmlUIButtonPosition.Out });
-                target.Add(new HtmlUIButton { Id = "saveNew", Label = "Salvar e Novo", OnClickFn = "fnSalvarEnovo", Type = "submit", Position = HtmlUIButtonPosition.Out });
-                target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvarRecorrencia", Type = "submit", Position = HtmlUIButtonPosition.Main });
-            }
+            target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar", Position = HtmlUIButtonPosition.Out });
+            target.Add(new HtmlUIButton { Id = "saveNew", Label = "Salvar e Novo", OnClickFn = "fnSalvarEnovo", Type = "submit", Position = HtmlUIButtonPosition.Out });
+            target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvarRecorrencia", Type = "submit", Position = HtmlUIButtonPosition.Main });
 
             return target;
         }
@@ -344,7 +337,7 @@ namespace Fly01.Financeiro.Controllers
 
             config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12 l6", Label = "Descrição", Required = true, MaxLength = 150 });
 
-            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "pessoaId",
                 Class = "col s12 l6",
@@ -353,7 +346,7 @@ namespace Fly01.Financeiro.Controllers
                 DataUrl = @Url.Action("Fornecedor", "AutoComplete"),
                 LabelId = "pessoaNome",
                 DataUrlPost = Url.Action("PostFornecedor", "Fornecedor")
-            }, ResourceHashConst.FinanceiroCadastrosFornecedores));
+            });
 
             config.Elements.Add(new InputCurrencyUI
             {
@@ -361,7 +354,7 @@ namespace Fly01.Financeiro.Controllers
                 Class = "col s6 l2",
                 Label = "Valor",
                 Required = true,
-                Value = "0", 
+                Value = "0",
                 DomEvents = new List<DomEventUI>
                 {
                     new DomEventUI { DomEvent = "change", Function = "fnHideSimulacaoCondicao" }
@@ -388,7 +381,7 @@ namespace Fly01.Financeiro.Controllers
                 }
             });
 
-            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "condicaoParcelamentoId",
                 Class = "col s12 l6",
@@ -396,13 +389,13 @@ namespace Fly01.Financeiro.Controllers
                 Required = true,
                 DataUrl = @Url.Action("CondicaoParcelamento", "AutoComplete"),
                 LabelId = "condicaoParcelamentoDescricao",
-                DataUrlPostModal = Url.Action("FormModal", "CondicaoParcelamento", new { readyFn  = "fnFormReadyOnDemandContaPagar" }),
+                DataUrlPostModal = Url.Action("FormModal", "CondicaoParcelamento", new { readyFn = "fnFormReadyOnDemandContaPagar" }),
                 DataPostField = "descricao",
                 DomEvents = new List<DomEventUI>
                 {
                     new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeCondicaoParcelamento" }
                 }
-            }, ResourceHashConst.FinanceiroCadastrosCondicoesParcelamento));
+            });
 
             config.Elements.Add(new InputHiddenUI { Id = "condicaoParcelamentoCondicoesParcelamento" });
             config.Elements.Add(new InputHiddenUI { Id = "condicaoParcelamentoQtdParcelas" });
@@ -432,7 +425,7 @@ namespace Fly01.Financeiro.Controllers
                 }
             });
 
-            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "formaPagamentoId",
                 Class = "col s12 m4",
@@ -442,9 +435,9 @@ namespace Fly01.Financeiro.Controllers
                 LabelId = "formaPagamentoDescricao",
                 DataUrlPostModal = Url.Action("FormModal", "FormaPagamento"),
                 DataPostField = "descricao"
-            }, ResourceHashConst.FinanceiroCadastrosFormasPagamento));
+            });
 
-            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "categoriaId",
                 Class = "col s12 m4",
@@ -453,7 +446,7 @@ namespace Fly01.Financeiro.Controllers
                 DataUrl = @Url.Action("CategoriaCP", "AutoComplete"),
                 LabelId = "categoriaDescricao",
                 DataUrlPost = Url.Action("NovaCategoriaDespesa")
-            }, ResourceHashConst.FinanceiroCadastrosCategoria));
+            });
 
             config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
 
@@ -535,7 +528,7 @@ namespace Fly01.Financeiro.Controllers
                     new DomEventUI { DomEvent = "change", Function = "fnChangePeriodoFim" }
                 }
             });
-            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "contaBancariaId",
                 Class = "col s12",
@@ -545,7 +538,7 @@ namespace Fly01.Financeiro.Controllers
                 LabelId = "contaBancariaNomeConta",
                 DataUrlPostModal = @Url.Action("FormModal", "ContaBancaria"),
                 DataPostField = "nomeConta",
-            }, ResourceHashConst.FinanceiroCadastrosContasBancarias));
+            });
 
             cfg.Content.Add(config);
 
@@ -587,7 +580,6 @@ namespace Fly01.Financeiro.Controllers
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
 
-        [OperationRole(PermissionValue = EPermissionValue.Write)]
         public override JsonResult Delete(Guid id)
         {
             if (Request.QueryString["excluirRecorrencias"] == "true")
@@ -687,11 +679,11 @@ namespace Fly01.Financeiro.Controllers
                 var emAberto = "R$ 0,00";
                 var pago = "R$ 0,00";
                 var baixadoParcialmente = "R$ 0,00";
-                
+
                 foreach (var item in response)
                 {
                     if (item.Status == "Em aberto") emAberto = item.Valortotal.ToString("C", AppDefaults.CultureInfoDefault);
-                    else if (item.Status == "Pago") pago =  item.Valortotal.ToString("C", AppDefaults.CultureInfoDefault);
+                    else if (item.Status == "Pago") pago = item.Valortotal.ToString("C", AppDefaults.CultureInfoDefault);
                     else if (item.Status == "Baixado Parcialmente") baixadoParcialmente = item.Valortotal.ToString("C", AppDefaults.CultureInfoDefault);
                 }
 

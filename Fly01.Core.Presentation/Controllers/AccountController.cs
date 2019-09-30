@@ -16,68 +16,6 @@ namespace Fly01.Core.Presentation.Controllers
     [AllowAnonymous]
     public abstract class AccountController : Controller
     {
-
-        public ContentResult Platforms()
-        {
-            LoginResponse response = RestHelper.ExecutePostRequest<LoginResponse>(
-                AppDefaults.UrlGateway,
-                "v1/Platforms",
-                JsonConvert.SerializeObject(new
-                {
-                    platformUser = SessionManager.Current.UserData.PlatformUser,
-                    platformUrl = SessionManager.Current.UserData.PlatformUrl
-                })
-            );
-
-            response.PostFormUrl = @Url.Action("ChangePlatform");
-
-            return Content(JsonConvert.SerializeObject(response, JsonSerializerSetting.Front), "application/json");
-        }
-
-        public ContentResult ChangePlatform()
-        {
-            LoginResponse loginResponse;
-            try
-            {
-                if (!string.IsNullOrWhiteSpace(Request.Form.Get("PlatformId")))
-                {
-                    string platformUrl = Request.Form["PlatformId"];
-                    var userData = new UserDataCookieVM
-                    {
-                        UserName = SessionManager.Current.UserData.PlatformUser,
-                        Fly01Url = platformUrl
-                    };
-
-                    Response.SetAuthCookie(userData.UserName, userData.RememberMe, userData);
-
-                    loginResponse = new LoginResponse()
-                    {
-                        Code = (int)HttpStatusCode.OK,
-                        Success = true,
-                        Url = ""
-                    };
-                }
-                else
-                {
-                    loginResponse = new LoginResponse()
-                    {
-                        Code = 404,
-                        Success = false,
-                        Url = Url.Action("LoginScreen")
-                    };
-                }
-            }
-            catch (Exception ex)
-            {
-                loginResponse = new LoginResponse()
-                {
-                    Code = 404,
-                    Success = false,
-                    Message = ex.Message
-                };
-            }
-            return Content(JsonConvert.SerializeObject(loginResponse, JsonSerializerSetting.Front), "application/json");
-        }
         public ActionResult Login(string returnUrl, string email = "")
         {
             if (HttpContext.User.Identity.IsAuthenticated)
@@ -86,6 +24,14 @@ namespace Fly01.Core.Presentation.Controllers
             return View();
         }
 
+        public ContentResult Platforms()
+        {
+            LoginResponse response = new LoginResponse();
+
+            response.PostFormUrl = "";// @Url.Action("ChangePlatform");
+
+            return Content(JsonConvert.SerializeObject(response, JsonSerializerSetting.Front), "application/json");
+        }
         public ActionResult LogOff()
         {
             if (HttpContext.Session != null)
@@ -95,7 +41,7 @@ namespace Fly01.Core.Presentation.Controllers
 
         private bool ValidateToken(HttpContext httpContext)
         {
-            return httpContext.User.Identity.IsAuthenticated && SessionManager.Current.UserData.IsValidUserData();
+            return true;
         }
 
         public JsonResult ValidateTokenJson()

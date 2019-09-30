@@ -40,7 +40,6 @@
     <Compile Include="Base\ContextInitialize.cs" />
     <Compile Include="Config\NotificationVM.cs" />
     <Compile Include="Config\ProxyConfig.cs" />
-    <Compile Include="Config\SessionManager.cs" />
     <Compile Include="Config\TokenDataVM.cs" />
     <Compile Include="Config\UserDataVM.cs" />
     <Compile Include="Defaults\JsonSerializerSetting.cs" />
@@ -51,8 +50,6 @@
     <Compile Include="ValueObjects\CNPJ.cs" />
     <Compile Include="ValueObjects\CPF.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\EPermissionValue.cs" />
-    <Compile Include="ViewModels\PermissionResponseVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\ContaFinanceiraVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\ContaPagarVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\ContaReceberVM.cs" />

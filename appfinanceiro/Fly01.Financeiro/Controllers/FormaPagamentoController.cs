@@ -16,6 +16,7 @@ using System.Web.Mvc;
 
 namespace Fly01.Financeiro.Controllers
 {
+    [AllowAnonymous]
     public class FormaPagamentoController<T> : BaseController<T> where T : FormaPagamentoVM
     {
         public override Func<T, object> GetDisplayData()
@@ -75,12 +76,9 @@ namespace Fly01.Financeiro.Controllers
         {
             var target = new List<HtmlUIButton>();
 
-            if (UserCanWrite)
-            {
-                target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar", Position = HtmlUIButtonPosition.Out });
-                target.Add(new HtmlUIButton { Id = "saveNew", Label = "Salvar e Novo", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Out });
-                target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main });
-            }
+            target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar", Position = HtmlUIButtonPosition.Out });
+            target.Add(new HtmlUIButton { Id = "saveNew", Label = "Salvar e Novo", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Out });
+            target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main });
 
             return target;
         }

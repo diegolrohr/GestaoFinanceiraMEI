@@ -133,9 +133,7 @@
     <Compile Include="Application\RouteConfig.cs" />
     <Compile Include="Application\WebAPIConfig.cs" />
     <Compile Include="Commons\AppVM.cs" />
-    <Compile Include="Commons\ElementUIHelper.cs" />
     <Compile Include="Controllers\AssertionResponseVM.cs" />
-    <Compile Include="OperationRoleAttribute.cs" />
     <Compile Include="Commons\LayoutHelper.cs" />
     <Compile Include="Commons\AutoCompleteHelper.cs" />
     <Compile Include="Commons\ImportHelper.cs" />
@@ -159,7 +157,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Commons\ValidatorUtils.cs" />
     <Compile Include="Controllers\BaseController.cs" />
-    <Compile Include="ResourceHashConst.cs" />
     <Compile Include="SSO\SAMLRequestAuthVM.cs" />
     <Compile Include="SSO\SAMLResponseAuthVM.cs" />
     <Compile Include="SSO\SSOGatewayRequest.cs" />

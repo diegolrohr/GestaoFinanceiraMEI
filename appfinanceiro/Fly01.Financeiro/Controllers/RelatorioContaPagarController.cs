@@ -6,7 +6,7 @@ using Fly01.uiJS.Classes;
 
 namespace Fly01.Financeiro.Controllers
 {
-    [OperationRole(ResourceKey = ResourceHashConst.FinanceiroFinanceiroRelatorios)]
+    [AllowAnonymous]
     public class RelatorioContaPagarController : RelatorioContaFinanceiraController
     {
         public RelatorioContaPagarController(): base("ContaPagar"){}

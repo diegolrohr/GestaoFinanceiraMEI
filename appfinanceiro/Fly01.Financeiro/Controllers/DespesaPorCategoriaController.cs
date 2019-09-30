@@ -12,7 +12,7 @@ using Fly01.Core.Presentation.JQueryDataTable;
 
 namespace Fly01.Financeiro.Controllers
 {
-    [OperationRole(NotApply = true)]
+    [AllowAnonymous]
     public class DespesaPorCategoriaController : BaseController<DespesaPorCategoriaVM>
     {
         private DateTime _dataInicial, _dataFinal;

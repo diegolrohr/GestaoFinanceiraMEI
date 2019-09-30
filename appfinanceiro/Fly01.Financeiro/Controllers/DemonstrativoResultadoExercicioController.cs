@@ -17,7 +17,7 @@ using Fly01.Core.Presentation.JQueryDataTable;
 
 namespace Fly01.Financeiro.Controllers
 {
-    [OperationRole(ResourceKey = ResourceHashConst.FinanceiroFinanceiroRelatorios)]
+    [AllowAnonymous]
     public class DemonstrativoResultadoExercicioController : BaseController<DemonstrativoResultadoExercicioVM>
     {
         [HttpGet]
@@ -43,27 +43,21 @@ namespace Fly01.Financeiro.Controllers
                 new ReportParameter("ReportTotal", total.ToString("C", AppDefaults.CultureInfoDefault))
             };
 
-            return File(reportViewer.Print(movimentacao.Data, SessionManager.Current.UserData.PlatformUrl, $"Intervalo: {dataInicial:dd/MM/yyyy} a {dataFinal:dd/MM/yyyy}", parameters), "application/pdf");
+            return File(reportViewer.Print(movimentacao.Data, "", $"Intervalo: {dataInicial:dd/MM/yyyy} a {dataFinal:dd/MM/yyyy}", parameters), "application/pdf");
         }
 
         public override List<HtmlUIButton> GetListButtonsOnHeader()
         {
             var target = new List<HtmlUIButton>();
 
-            if (UserCanRead)
-            {
                 target.Add(new HtmlUIButton { Id = "save", Label = "Atualizar", OnClickFn = "fnAtualizar" });
                 target.Add(new HtmlUIButton { Id = "print", Label = "Imprimir", OnClickFn = "fnImprimirDRE" });
-            }
 
             return target;
         }
 
         public override ContentResult List()
         {
-            if (!UserCanRead)
-                return Content(JsonConvert.SerializeObject(new ContentUIBase(Url.Action("Sidebar", "Home")), JsonSerializerSetting.Default), "application/json");
-
             var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
             {
                 History = new ContentUIHistory { Default = Url.Action("Index") },

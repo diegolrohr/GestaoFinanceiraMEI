@@ -17,6 +17,7 @@ using System.Web.Mvc;
 
 namespace Fly01.Financeiro.Controllers
 {
+    [AllowAnonymous]
     public class CategoriaController<T> : BaseController<T> where T : CategoriaVM
     {
         private string CategoriaResourceHash { get; set; }
@@ -31,12 +32,9 @@ namespace Fly01.Financeiro.Controllers
         {
             var target = new List<HtmlUIButton>();
 
-            if (UserCanWrite)
-            {
-                target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar", Position = HtmlUIButtonPosition.Out });
-                target.Add(new HtmlUIButton { Id = "saveNew", Label = "Salvar e Novo", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Out });
-                target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main });
-            }
+            target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar", Position = HtmlUIButtonPosition.Out });
+            target.Add(new HtmlUIButton { Id = "saveNew", Label = "Salvar e Novo", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Out });
+            target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main });
 
             return target;
         }
@@ -86,7 +84,7 @@ namespace Fly01.Financeiro.Controllers
                 DomEvents = new List<DomEventUI>() { new DomEventUI() { DomEvent = "change", Function = "fnChangeTipoCarteira" } }
             });
 
-            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "categoriaPaiId",
                 Class = "col s12",
@@ -96,7 +94,7 @@ namespace Fly01.Financeiro.Controllers
                 DataUrlPost = Url.Action("NovaCategoria"),
                 LabelId = "categoriaPaiDescricao",
                 PreFilter = "tipoCarteira"
-            }, CategoriaResourceHash));
+            });
 
             cfg.Content.Add(config);
             return cfg;
@@ -116,7 +114,7 @@ namespace Fly01.Financeiro.Controllers
         public override ContentResult List()
         {
             var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
-            {                
+            {
                 History = new ContentUIHistory { Default = Url.Action("Index") },
                 Header = new HtmlUIHeader
                 {

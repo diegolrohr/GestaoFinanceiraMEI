@@ -54,8 +54,5 @@ namespace Fly01.Core.Presentation.Controllers
     {
         [JsonProperty("isAdmin")]
         public bool IsAdmin { get; set; }
-
-        [JsonProperty("permissions")]
-        public List<PermissionResponseVM> Items { get; set; }
     }
 }

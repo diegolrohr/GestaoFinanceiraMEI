@@ -10,7 +10,7 @@ using Fly01.Core.Presentation.JQueryDataTable;
 
 namespace Fly01.Financeiro.Controllers
 {
-    [OperationRole(ResourceKey = ResourceHashConst.FinanceiroFinanceiroRelatorios)]
+    [AllowAnonymous]
     public class RelatorioController : BaseController<EmpresaBaseVM>
     {
         public override Func<EmpresaBaseVM, object> GetDisplayData()

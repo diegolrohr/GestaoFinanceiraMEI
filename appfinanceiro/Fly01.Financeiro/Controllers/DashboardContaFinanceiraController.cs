@@ -13,6 +13,7 @@ using System.Web.Mvc;
 
 namespace Fly01.Financeiro.Controllers
 {
+    [AllowAnonymous]
     public abstract class DashboardContaFinanceiraController : BaseController<EmpresaBaseVM>
     {
         protected string tipoConta;
@@ -137,9 +138,6 @@ namespace Fly01.Financeiro.Controllers
 
         protected virtual ContentUI DashboardJson(UrlHelper url, string scheme)
         {
-            if (!UserCanRead)
-                return new ContentUIBase(Url.Action("Sidebar", "Home"));
-
             var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
             {
                 History = new ContentUIHistory { Default = url.Action("Index") },

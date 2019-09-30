@@ -12,15 +12,9 @@ using Fly01.Core.Presentation.JQueryDataTable;
 
 namespace Fly01.Financeiro.Controllers
 {
+    [AllowAnonymous]
     public class ContaFinanceiraBaixaMultiplaController : BaseController<ContaFinanceiraBaixaMultiplaVM>
     {
-        public string ContaBancariaResourceHash { get; set; }
-
-        public ContaFinanceiraBaixaMultiplaController(string contaBancariaResourceHash)
-        {
-            ContaBancariaResourceHash = contaBancariaResourceHash;
-        }
-
         public override ContentResult List() { throw new NotImplementedException(); }
 
         public override Func<ContaFinanceiraBaixaMultiplaVM, object> GetDisplayData() { throw new NotImplementedException(); }
@@ -31,11 +25,9 @@ namespace Fly01.Financeiro.Controllers
         {
             var target = new List<HtmlUIButton>();
 
-            if (UserCanWrite)
-            {
-                target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar", Position = HtmlUIButtonPosition.Out });
-                target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main });
-            }
+            target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar", Position = HtmlUIButtonPosition.Out });
+            target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main });
+
 
             return target;
         }
@@ -52,7 +44,7 @@ namespace Fly01.Financeiro.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Baixas múltiplas de contas a " + tipoConta.ToLower(),
-                    Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())                   
+                    Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
@@ -74,7 +66,7 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "contasFinanceirasGuids" });
             config.Elements.Add(new InputHiddenUI { Id = "tipoContaFinanceira", Value = "Conta" + tipoConta });
 
-            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "contaBancariaId",
                 Class = "col s12 m6",
@@ -84,7 +76,7 @@ namespace Fly01.Financeiro.Controllers
                 LabelId = "contaBancariaDescricao",
                 DataUrlPostModal = Url.Action("FormModal", "ContaBancaria"),
                 DataPostField = "nomeConta"
-            }, ContaBancariaResourceHash));
+            });
 
             config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m6", Label = "Data da Baixa", Required = true, Value = DateTime.Now.ToString("dd/MM/yyyy") });
             config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });

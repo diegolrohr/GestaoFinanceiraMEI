@@ -21,7 +21,7 @@ using Fly01.Core.Presentation;
 
 namespace Fly01.Financeiro.Controllers
 {
-    [OperationRole(ResourceKey = ResourceHashConst.FinanceiroFinanceiroConciliacaoBancaria)]
+    [AllowAnonymous]
     public class ConciliacaoBancariaController : BaseController<ConciliacaoBancariaVM>
     {
         public ConciliacaoBancariaController()
@@ -388,11 +388,9 @@ namespace Fly01.Financeiro.Controllers
         {
             var target = new List<HtmlUIButton>();
 
-            if (UserCanWrite)
-            {
-                target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar" });
-                target.Add(new HtmlUIButton { Id = "save", Label = "Importar Extrato", OnClickFn = "fnSalvarConciliacaoBancaria", Type = "submit" });
-            }
+
+            target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar" });
+            target.Add(new HtmlUIButton { Id = "save", Label = "Importar Extrato", OnClickFn = "fnSalvarConciliacaoBancaria", Type = "submit" });
 
             return target;
         }
@@ -430,7 +428,7 @@ namespace Fly01.Financeiro.Controllers
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
-            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "contaBancariaId",
                 Class = "col s12 m6",
@@ -440,7 +438,7 @@ namespace Fly01.Financeiro.Controllers
                 LabelId = "contaBancariaNomeConta",
                 DataUrlPostModal = @Url.Action("FormModal", "ContaBancaria"),
                 DataPostField = "nomeConta"
-            }, ResourceHashConst.FinanceiroCadastrosContasBancarias));
+            });
 
             config.Elements.Add(new InputFileUI { Id = "arquivo", Class = "col s12 m6", Label = "Arquivo do extrato bancário (.ofx)", Accept = ".ofx" });
 
@@ -486,12 +484,8 @@ namespace Fly01.Financeiro.Controllers
         public List<HtmlUIButton> GetFormButtonsBuscaExistenteOnHeader()
         {
             var target = new List<HtmlUIButton>();
-
-            if (UserCanWrite)
-            {
-                target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelarBuscarExistentes" });
-                target.Add(new HtmlUIButton { Id = "save", Label = "Conciliar", OnClickFn = "fnSalvar", Type = "submit" });
-            }
+            target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelarBuscarExistentes" });
+            target.Add(new HtmlUIButton { Id = "save", Label = "Conciliar", OnClickFn = "fnSalvar", Type = "submit" });
 
             return target;
         }
@@ -608,8 +602,7 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputCurrencyUI { Id = "valorPrevisto", Class = "col s12 l6", Label = "Valor", Required = true, Readonly = true });
             config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12 l6", Label = "Descrição", Required = true });
 
-            var resourceHasCPCR = tipoConta == "ContaPagar" ? ResourceHashConst.FinanceiroCadastrosFornecedores : ResourceHashConst.FinanceiroCadastrosClientes;
-            var elemAutoCompleteConta = new AutoCompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "pessoaId",
                 Class = "col s12 l6",
@@ -618,11 +611,9 @@ namespace Fly01.Financeiro.Controllers
                 DataUrl = tipoConta == "ContaPagar" ? @Url.Action("Fornecedor", "AutoComplete") : @Url.Action("Cliente", "AutoComplete"),
                 LabelId = "pessoaNome",
                 DataUrlPost = tipoConta == "ContaPagar" ? @Url.Action("PostFornecedor", "Fornecedor") : @Url.Action("PostCliente", "Cliente")
-            };
+            });
 
-            config.Elements.Add(ElementUIHelper.GetAutoComplete(elemAutoCompleteConta, resourceHasCPCR));
-
-            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "formaPagamentoId",
                 Class = "col s12 l6",
@@ -632,9 +623,9 @@ namespace Fly01.Financeiro.Controllers
                 LabelId = "formaPagamentoDescricao",
                 DataUrlPostModal = Url.Action("FormModal", "FormaPagamento"),
                 DataPostField = "descricao"
-            }, ResourceHashConst.FinanceiroCadastrosFormasPagamento));
+            });
 
-            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "condicaoParcelamentoId",
                 Class = "col s12 l6",
@@ -643,9 +634,9 @@ namespace Fly01.Financeiro.Controllers
                 DataUrl = @Url.Action("CondicaoParcelamentoAVista", "AutoComplete"),
                 LabelId = "condicaoParcelamentoDescricao",
                 DataUrlPost = Url.Action("PostCondicaoParcelamento", "CondicaoParcelamento"),
-            }, ResourceHashConst.FinanceiroCadastrosCondicoesParcelamento));
+            });
 
-            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "categoriaId",
                 Class = "col s12 m6",
@@ -654,7 +645,7 @@ namespace Fly01.Financeiro.Controllers
                 DataUrl = @Url.Action("Categoria" + actionCreate, "AutoComplete"),
                 LabelId = "categoriaDescricao",
                 DataUrlPost = tipoConta == "ContaPagar" ? Url.Action("NovaCategoriaDespesa") : Url.Action("NovaCategoriaReceita")
-            }, ResourceHashConst.FinanceiroCadastrosCategoria));
+            });
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }

@@ -24,7 +24,7 @@ namespace Fly01.Core.Presentation.Controllers
 
         public PessoaBaseController()
         {
-            ExpandProperties = "estado($select=id,nome,sigla,codigoIbge),cidade($select=id,nome,estadoId,codigoIbge),pais($select=id,nome)";
+            ExpandProperties = "estado($select=id,nome,sigla,codigoIbge),cidade($select=id,nome,estadoId,codigoIbge)";
         }
 
         public override Dictionary<string, string> GetQueryStringDefaultGridLoad()

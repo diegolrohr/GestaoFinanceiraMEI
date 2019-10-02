@@ -333,7 +333,7 @@ namespace Fly01.Core.Presentation
         {
             try
             {
-                RestHelper.ExecuteDeleteRequest(String.Format("{0}/{1}", ResourceName, id));
+                RestHelper.ExecuteDeleteRequest(String.Format("{0}({1})", ResourceName, id));
                 return JsonResponseStatus.Get(new ErrorInfo() { HasError = false }, Operation.Delete);
             }
             catch (Exception ex)
@@ -364,7 +364,7 @@ namespace Fly01.Core.Presentation
         {
             try
             {
-                var resourceNamePut = $"{ResourceName}/{entityVM.Id}";
+                var resourceNamePut = $"{ResourceName}({entityVM.Id})";
                 RestHelper.ExecutePutRequest(resourceNamePut, JsonConvert.SerializeObject(entityVM, JsonSerializerSetting.Edit));
 
                 return JsonResponseStatus.Get(new ErrorInfo { HasError = false }, Operation.Edit);
@@ -402,7 +402,7 @@ namespace Fly01.Core.Presentation
         protected T Get(Guid id)
         {
             string resourceName = AppDefaults.GetResourceName(typeof(T));
-            string resourceById = String.Format("{0}/{1}", ResourceName, id);
+            string resourceById = String.Format("{0}({1})", ResourceName, id);
 
             if (string.IsNullOrEmpty(ExpandProperties) && string.IsNullOrEmpty(SelectPropertiesForm))
             {

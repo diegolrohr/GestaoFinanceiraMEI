@@ -60,7 +60,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApiEmpresaManager.cs" />
     <Compile Include="ApiException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RestHelper.cs" />

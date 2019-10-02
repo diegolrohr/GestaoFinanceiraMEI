@@ -23,29 +23,13 @@ namespace Fly01.Core.Reports
             if (string.IsNullOrEmpty(platformUrl))
                 throw new ArgumentException("GetReportConfig: platformUrl argument is required.");
 
-            var empresaVM = ApiEmpresaManager.GetEmpresa(platformUrl);
-
             var headerDefault = new StringBuilder();
-            if (empresaVM != null)
-            {
-                headerDefault.AppendFormat("{0}", empresaVM.RazaoSocial);
-                headerDefault.Append("<br/>");
-                headerDefault.AppendFormat("{0}: {1}", (empresaVM?.CNPJ?.Length == 11 ? "CPF" : "CNPJ"), empresaVM.CNPJ);
-                headerDefault.Append("<br/>");
-                headerDefault.AppendFormat("Endereço: {0}, {1}", empresaVM.Endereco, string.IsNullOrWhiteSpace(empresaVM.Numero) ? "S/N" : empresaVM.Numero);
-                headerDefault.Append("<br/>");
-                headerDefault.AppendFormat("Bairro: {0} | CEP: {1} | Cidade: {2}", empresaVM.Bairro, empresaVM.CEP, empresaVM.Cidade != null ? empresaVM.Cidade.Nome : "");
-                headerDefault.Append("<br/>");
-                headerDefault.AppendFormat("Estado: {0} | País: {1}", empresaVM?.Cidade?.Estado?.Sigla ?? "", "Brasil");
-                headerDefault.Append("<br/>");
-                headerDefault.AppendFormat("Email: {0} ", empresaVM.Email ?? "");
-            }
 
             return new ReportConfig
             {
                 Header = headerDefault.ToString(),
                 Footer = string.Format("<h6>{0} emitido dia {1:dd/MM/yyyy} por {2}</h6>", reportTitle, DateTime.Now, userName),
-                LogoUrl = empresaVM.ReportLogo != null ? empresaVM.ReportLogo.Replace("data:image/png;base64,", "") : "", 
+                LogoUrl = ""//empresaVM.ReportLogo != null ? empresaVM.ReportLogo.Replace("data:image/png;base64,", "") : "", 
             };
         }
 

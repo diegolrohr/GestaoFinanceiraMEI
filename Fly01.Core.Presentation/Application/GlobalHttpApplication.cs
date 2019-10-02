@@ -20,26 +20,22 @@ namespace Fly01.Core.Presentation.Application
 {
     public static class HttpResponseBaseExtensions
     {
-        public static int SetAuthCookie<T>(this HttpResponseBase responseBase, string name, bool rememberMe, T userData)
-        {
-            var cookie = FormsAuthentication.GetAuthCookie(name, rememberMe);
-            var ticket = FormsAuthentication.Decrypt(cookie.Value);
+    //    public static int SetAuthCookie<T>(this HttpResponseBase responseBase, string name, bool rememberMe, T userData)
+    //    {
+    //        var cookie = FormsAuthentication.GetAuthCookie(name, rememberMe);
+    //        var ticket = FormsAuthentication.Decrypt(cookie.Value);
 
-            var newTicket = new FormsAuthenticationTicket(ticket.Version, ticket.Name, ticket.IssueDate, ticket.Expiration,
-                ticket.IsPersistent, JsonConvert.SerializeObject(userData), ticket.CookiePath);
-            var encTicket = FormsAuthentication.Encrypt(newTicket);
+    //        var newTicket = new FormsAuthenticationTicket(ticket.Version, ticket.Name, ticket.IssueDate, ticket.Expiration,
+    //            ticket.IsPersistent, JsonConvert.SerializeObject(userData), ticket.CookiePath);
+    //        var encTicket = FormsAuthentication.Encrypt(newTicket);
 
-            cookie.Domain = AppDefaults.UrlGateway.Contains("fly01local")
-                ? ".bemacashlocal.com.br"
-                : AppDefaults.UrlGateway.Contains("fly01dev")
-                    ? ".bemacashstage.com.br"
-                    : ".bemacash.com.br";
+    //        cookie.Domain = "";
 
-            cookie.Value = encTicket;
-            responseBase.Cookies.Add(cookie);
+    //        cookie.Value = encTicket;
+    //        responseBase.Cookies.Add(cookie);
 
-            return encTicket.Length;
-        }
+    //        return encTicket.Length;
+    //    }
     }
 
     public class GlobalHttpApplication : HttpApplication
@@ -117,26 +113,11 @@ namespace Fly01.Core.Presentation.Application
         protected void Application_Start()
         {
             AppDefaults.MPNUIVersion = ConfigurationManager.AppSettings["MPNUIVersion"];
+            AppDefaults.APIEnumResourceName = "Fly01.Core.Entities.Domains.Enum.";
+            AppDefaults.UrlFinanceiroApi = ConfigurationManager.AppSettings["UrlFinanceiroApi"];
             AppDefaults.MashupClientId = ConfigurationManager.AppSettings["MashupClientId"];
             AppDefaults.MashupPassword = ConfigurationManager.AppSettings["MashupPassword"];
             AppDefaults.MashupUser = ConfigurationManager.AppSettings["MashupUser"];
-            AppDefaults.UrlGateway = ConfigurationManager.AppSettings["UrlGateway"];
-            AppDefaults.UrlApiGateway = String.Format("{0}{1}", AppDefaults.UrlGateway, ConfigurationManager.AppSettings["GatewayAppApi"]);
-            AppDefaults.UrlGatewayNew = $"{ConfigurationManager.AppSettings["UrlGatewayNew"]}api/";
-            AppDefaults.UrlManagerNew = $"{AppDefaults.UrlGatewayNew}manager/";
-            AppDefaults.UrlManager = ConfigurationManager.AppSettings["UrlManager"];
-            AppDefaults.AppId = ConfigurationManager.AppSettings["AppId"];
-            AppDefaults.UrlLoginSSO = String.Format(ConfigurationManager.AppSettings["UrlLoginSSO"], AppDefaults.UrlManager, AppDefaults.AppId);
-            AppDefaults.UrlLogoutSSO = String.Format(ConfigurationManager.AppSettings["UrlLogoutSSO"], AppDefaults.UrlManager, AppDefaults.AppId);
-            AppDefaults.GatewayUserName = ConfigurationManager.AppSettings["GatewayUserName"];
-            AppDefaults.GatewayPassword = ConfigurationManager.AppSettings["GatewayPassword"];
-            AppDefaults.GatewayVerificationKeyPassword = ConfigurationManager.AppSettings["GatewayVerificationKeyPassword"];
-            AppDefaults.UrlLicenseManager = ConfigurationManager.AppSettings[""];
-            AppDefaults.SessionKey = ConfigurationManager.AppSettings["SessionKey"];
-            AppDefaults.RootPathApplication = ConfigurationManager.AppSettings["RootPathApplication"];
-            AppDefaults.APIEnumResourceName = "Fly01.Core.Entities.Domains.Enum.";
-            AppDefaults.FaturamentoClientId = ConfigurationManager.AppSettings["FaturamentoClientId"];
-            AppDefaults.UrlNotificationSocket = ConfigurationManager.AppSettings["UrlNotificationSocket"];
 
             GlobalConfiguration.Configure(WebAPIConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);

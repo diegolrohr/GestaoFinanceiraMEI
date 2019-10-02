@@ -20,7 +20,6 @@ namespace Fly01.Core.Presentation.Controllers
         {
             if (HttpContext.User.Identity.IsAuthenticated)
                 return RedirectToAction("Index", "Home");
-            ViewBag.LoginUrl = AppDefaults.UrlLoginSSO;
             return View();
         }
 
@@ -32,11 +31,13 @@ namespace Fly01.Core.Presentation.Controllers
 
             return Content(JsonConvert.SerializeObject(response, JsonSerializerSetting.Front), "application/json");
         }
+
         public ActionResult LogOff()
         {
             if (HttpContext.Session != null)
                 SystemLogOff(System.Web.HttpContext.Current);
-            return Redirect(AppDefaults.UrlLogoutSSO);
+            //return Redirect(AppDefaults.UrlLogoutSSO);
+            return Redirect("");
         }
 
         private bool ValidateToken(HttpContext httpContext)

@@ -589,7 +589,7 @@ namespace Fly01.Financeiro.Controllers
                     { "excluirRecorrencias", "true" }
                 };
 
-                RestHelper.ExecuteDeleteRequest($"{AppDefaults.UrlApiGateway}",
+                RestHelper.ExecuteDeleteRequest($"{AppDefaults.UrlFinanceiroApi}",
                                                 $"{ResourceName}/{id}/",
                                                 null,
                                                 queryString);

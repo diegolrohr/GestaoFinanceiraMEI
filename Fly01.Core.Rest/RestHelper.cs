@@ -10,33 +10,16 @@ namespace Fly01.Core.Rest
 {
     public static class RestHelper
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
-
         #region Static Properties
-        public static Dictionary<string, string> HeaderTenantIdCompany
-        {
-            get
-            {
-                Dictionary<string, string> header = Header;
-                header.Add(AppDefaults.TenatIdHeader, TenantId.Split(',')[0]);
-                return header;
-            }
-        }
-
-        public static string TenantId
-        {
-            get
-            {
-                return "01,01";
-            }
-        }
 
         public static Dictionary<string, string> DefaultHeader
         {
             get
             {
                 Dictionary<string, string> header = Header;
-                header.Add(AppDefaults.TenatIdHeader, TenantId);
+                header.Add("EmpresaId", "D3FC7081-7643-4CBD-9047-CC9B6F619AA7");
+                header.Add("AppUser", "diegol.rohr@gmail.com");
+                header.Add("Content-Type", "application/json");
                 return header;
             }
         }
@@ -51,26 +34,17 @@ namespace Fly01.Core.Rest
             }
         }
 
-        public static Dictionary<string, string> DefaultHeaderWithoutSession(string accessToken)
-        {
-            Dictionary<string, string> header = new Dictionary<string, string>();
-            header.Add(RestUtils.AUTH_HEADER, String.Format("Bearer {0}", accessToken));
-            header.Add(AppDefaults.TenatIdHeader, TenantId);
-
-            return header;
-        }
-
         #endregion
 
         #region PUT
         public static TReturn ExecutePutRequest<TReturn>(string resource, object requestObj, Dictionary<string, string> queryString = null)
         {
-            return ExecutePutRequest<TReturn>(AppDefaults.UrlApiGateway, resource, requestObj, queryString);
+            return ExecutePutRequest<TReturn>(AppDefaults.UrlFinanceiroApi, resource, requestObj, queryString);
         }
 
         public static string ExecutePutRequest(string resource, string requestJson, Dictionary<string, string> queryString = null)
         {
-            return ExecutePutRequest(AppDefaults.UrlApiGateway, resource, requestJson, queryString);
+            return ExecutePutRequest(AppDefaults.UrlFinanceiroApi, resource, requestJson, queryString);
         }
 
         public static string ExecutePutRequest(string url, string resource, string requestJson, Dictionary<string, string> queryString = null)
@@ -95,15 +69,6 @@ namespace Fly01.Core.Rest
                     }
                     resource = resource.TrimEnd('&');
                 }
-
-                LogLevel logLevel = ((int)ex.StatusCode) >= 500 ? LogLevel.Error : LogLevel.Warn;
-                var logEvent = new LogEventInfo(logLevel, "", "Put");
-                logEvent.Properties["method"] = "PUT";
-                logEvent.Properties["resource"] = url + resource;
-                logEvent.Properties["requestJson"] = requestJson;
-                logEvent.Properties["statusCode"] = ex.StatusCode;
-                logEvent.Properties["exception"] = string.Concat(ex.GetType().FullName, " ", ex.Message);
-                logger.Log(logEvent);
 
                 throw;
             }
@@ -132,15 +97,6 @@ namespace Fly01.Core.Rest
                     resource = resource.TrimEnd('&');
                 }
 
-                LogLevel logLevel = ((int)ex.StatusCode) >= 500 ? LogLevel.Error : LogLevel.Warn;
-                var logEvent = new LogEventInfo(logLevel, "", "Put");
-                logEvent.Properties["method"] = "PUT";
-                logEvent.Properties["resource"] = url + resource;
-                logEvent.Properties["requestJson"] = (requestObj == null ? string.Empty : JsonConvert.SerializeObject(requestObj));
-                logEvent.Properties["statusCode"] = ex.StatusCode;
-                logEvent.Properties["exception"] = string.Concat(ex.GetType().FullName, " ", ex.Message);
-                logger.Log(logEvent);
-
                 throw;
             }
         }
@@ -168,15 +124,6 @@ namespace Fly01.Core.Rest
                     resource = resource.TrimEnd('&');
                 }
 
-                LogLevel logLevel = ((int)ex.StatusCode) >= 500 ? LogLevel.Error : LogLevel.Warn;
-                var logEvent = new LogEventInfo(logLevel, "", "Put");
-                logEvent.Properties["method"] = "PUT";
-                logEvent.Properties["resource"] = url + resource;
-                logEvent.Properties["requestJson"] = (requestObj == null ? string.Empty : JsonConvert.SerializeObject(requestObj));
-                logEvent.Properties["statusCode"] = ex.StatusCode;
-                logEvent.Properties["exception"] = string.Concat(ex.GetType().FullName, " ", ex.Message);
-                logger.Log(logEvent);
-
                 throw;
             }
             catch (Exception ex)
@@ -192,7 +139,7 @@ namespace Fly01.Core.Rest
         {
             try
             {
-                return ExecuteGetRequest<TReturn>(AppDefaults.UrlApiGateway, resource, DefaultHeader, queryString);
+                return ExecuteGetRequest<TReturn>(AppDefaults.UrlFinanceiroApi, resource, DefaultHeader, queryString);
             }
             catch (ApiException ex)
             {
@@ -206,32 +153,13 @@ namespace Fly01.Core.Rest
                     resource = resource.TrimEnd('&');
                 }
 
-                LogLevel logLevel = ((int)ex.StatusCode) >= 500 ? LogLevel.Error : LogLevel.Warn;
-                var logEvent = new LogEventInfo(logLevel, "", "Get");
-                logEvent.Properties["method"] = "GET";
-                logEvent.Properties["resource"] = AppDefaults.UrlApiGateway + resource;
-                logEvent.Properties["requestJson"] = "";
-                logEvent.Properties["statusCode"] = ex.StatusCode;
-                logEvent.Properties["exception"] = string.Concat(ex.GetType().FullName, " ", ex.Message);
-                logger.Log(logEvent);
-
                 throw;
             }
-        }
-
-        public static TReturn ExecuteGetRequestWithoutSession<TReturn>(string resource, Dictionary<string, string> queryString = null, string acessToken = "")
-        {
-            return ExecuteGetRequest<TReturn>(AppDefaults.UrlApiGateway, resource, DefaultHeaderWithoutSession(acessToken), queryString);
         }
 
         public static TReturn ExecuteGetRequest<TReturn>(string url, string resource)
         {
             return ExecuteGetRequest<TReturn>(url, resource, null, null);
-        }
-
-        public static TReturn ExecuteGetRequestTenantIdCompany<TReturn>(string resource)
-        {
-            return ExecuteGetRequest<TReturn>(AppDefaults.UrlApiGateway, resource, HeaderTenantIdCompany, null);
         }
 
         public static TReturn ExecuteGetRequest<TReturn>(string url, string resource, Dictionary<string, string> queryString = null)
@@ -251,15 +179,6 @@ namespace Fly01.Core.Rest
                     }
                     resource = resource.TrimEnd('&');
                 }
-
-                LogLevel logLevel = ((int)ex.StatusCode) >= 500 ? LogLevel.Error : LogLevel.Warn;
-                var logEvent = new LogEventInfo(logLevel, "", "Get");
-                logEvent.Properties["method"] = "GET";
-                logEvent.Properties["resource"] = url + resource;
-                logEvent.Properties["requestJson"] = "";
-                logEvent.Properties["statusCode"] = ex.StatusCode;
-                logEvent.Properties["exception"] = string.Concat(ex.GetType().FullName, " ", ex.Message);
-                logger.Log(logEvent);
 
                 throw;
             }
@@ -320,15 +239,6 @@ namespace Fly01.Core.Rest
                     resource = resource.TrimEnd('&');
                 }
 
-                LogLevel logLevel = ((int)ex.StatusCode) >= 500 ? LogLevel.Error : LogLevel.Warn;
-                var logEvent = new LogEventInfo(logLevel, "", "Post");
-                logEvent.Properties["method"] = "POST";
-                logEvent.Properties["resource"] = url + resource;
-                logEvent.Properties["requestJson"] = ((requestObj == null) ? string.Empty : JsonConvert.SerializeObject(requestObj));
-                logEvent.Properties["statusCode"] = ex.StatusCode;
-                logEvent.Properties["exception"] = string.Concat(ex.GetType().FullName, " ", ex.Message);
-                logger.Log(logEvent);
-
                 throw;
             }
         }
@@ -352,12 +262,12 @@ namespace Fly01.Core.Rest
 
         public static TReturn ExecutePostRequest<TReturn>(string resource, object requestObj, Dictionary<string, string> queryString = null, int timeout = 150)
         {
-            return ExecutePostRequest<TReturn>(AppDefaults.UrlApiGateway, resource, requestObj, queryString, timeout: timeout);
+            return ExecutePostRequest<TReturn>(AppDefaults.UrlFinanceiroApi, resource, requestObj, queryString, timeout: timeout);
         }
 
         public static string ExecutePostRequest(string resource, string requestJson, Dictionary<string, string> queryString = null, int timeout = 150)
         {
-            return ExecutePostRequest(AppDefaults.UrlApiGateway, resource, requestJson, queryString, timeout: timeout);
+            return ExecutePostRequest(AppDefaults.UrlFinanceiroApi, resource, requestJson, queryString, timeout: timeout);
         }
 
         public static string ExecutePostRequest(string url, string resource, string requestJson, Dictionary<string, string> queryString = null, int timeout = 150)
@@ -388,15 +298,6 @@ namespace Fly01.Core.Rest
                     resource = resource.TrimEnd('&');
                 }
 
-                LogLevel logLevel = ((int)ex.StatusCode) >= 500 ? LogLevel.Error : LogLevel.Warn;
-                var logEvent = new LogEventInfo(logLevel, "", "Post");
-                logEvent.Properties["method"] = "POST";
-                logEvent.Properties["resource"] = url + resource;
-                logEvent.Properties["requestJson"] = requestJson;
-                logEvent.Properties["statusCode"] = ex.StatusCode;
-                logEvent.Properties["exception"] = string.Concat(ex.GetType().FullName, " ", ex.Message);
-                logger.Log(logEvent);
-
                 throw;
             }
         }
@@ -407,20 +308,11 @@ namespace Fly01.Core.Rest
         {
             try
             {
-                return ExecuteDeleteRequest(AppDefaults.UrlApiGateway, resource, DefaultHeader);
+                return ExecuteDeleteRequest(AppDefaults.UrlFinanceiroApi, resource, DefaultHeader);
             }
             catch (ApiException ex)
             {
-                LogLevel logLevel = ((int)ex.StatusCode) >= 500 ? LogLevel.Error : LogLevel.Warn;
-                var logEvent = new LogEventInfo(logLevel, "", "Delete");
-                logEvent.Properties["method"] = "DELETE";
-                logEvent.Properties["resource"] = AppDefaults.UrlApiGateway + resource;
-                logEvent.Properties["requestJson"] = string.Empty;
-                logEvent.Properties["statusCode"] = ex.StatusCode;
-                logEvent.Properties["exception"] = string.Concat(ex.GetType().FullName, " ", ex.Message);
-                logger.Log(logEvent);
-
-                throw;
+                    throw;
             }
         }
 
@@ -453,14 +345,6 @@ namespace Fly01.Core.Rest
             }
             catch (ApiException ex)
             {
-                var logLevel = (int)ex.StatusCode >= 500 ? LogLevel.Error : LogLevel.Warn;
-                var logEvent = new LogEventInfo(logLevel, "", "Delete");
-                logEvent.Properties["method"] = "DELETE";
-                logEvent.Properties["resource"] = AppDefaults.UrlApiGateway + resource;
-                logEvent.Properties["requestJson"] = string.Empty;
-                logEvent.Properties["statusCode"] = ex.StatusCode;
-                logEvent.Properties["exception"] = string.Concat(ex.GetType().FullName, " ", ex.Message + " Status description: " + statusDescription + " Begin request: " + beginRequest);
-                logger.Log(logEvent);
                 throw;
             }
         }

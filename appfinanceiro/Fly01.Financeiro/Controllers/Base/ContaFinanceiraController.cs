@@ -220,7 +220,7 @@ namespace Fly01.Financeiro.Controllers.Base
                 ResultBase<TEntityBaixa> allBaixas = RestHelper.ExecuteGetRequest<ResultBase<TEntityBaixa>>(resourceAllBaixas, queryString);
                 foreach (var item in allBaixas.Data)
                 {
-                    RestHelper.ExecuteDeleteRequest(String.Format("{0}/{1}", resourceAllBaixas, item.Id));
+                    RestHelper.ExecuteDeleteRequest(String.Format("{0}({1})", resourceAllBaixas, item.Id));
                 }
                 return JsonResponseStatus.GetSuccess("Pagamento/s cancelado/s com sucesso.");
             }
@@ -407,55 +407,6 @@ namespace Fly01.Financeiro.Controllers.Base
                     new OptionUI() { Label = "Valor", Value = "0" },
                     new OptionUI() { Label = "Conta Bancária",Value = "2" },
                     new OptionUI() { Label = "Observação", Value = "3"}
-                }
-            });
-            #endregion
-
-            #region Dados Renegociação
-            config.Elements.Add(new LabelSetUI { Id = "dadosRenegociacaoLabel", Class = "col s12", Label = "Dados da renegociação" });
-            config.Elements.Add(new SelectUI
-            {
-                Id = "tipoRenegociacaoValorDiferenca",
-                Class = "col s12 m6",
-                Label = "Tipo do Valor Diferença",
-                Disabled = true,
-                Options = new List<SelectOptionUI>
-                {
-                    new SelectOptionUI() {Label= "Acréscimo", Value = "Acrescimo"},
-                    new SelectOptionUI() {Label= "Desconto", Value = "Desconto"}
-                }
-            });
-            config.Elements.Add(new SelectUI
-            {
-                Id = "tipoRenegociacaoCalculo",
-                Class = "col s12 m6",
-                Label = "Tipo Cálculo Diferença",
-                Disabled = true,
-                Options = new List<SelectOptionUI>
-                {
-                    new SelectOptionUI() {Label= "Valor", Value = "Valor"},
-                    new SelectOptionUI() {Label= "Percentual", Value = "Percentual"}
-                }
-            });
-            config.Elements.Add(new InputFloatUI { Id = "valorDiferenca", Class = "col s12 m6", Label = "Valor Diferença ", Disabled = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "valorFinal", Class = "col s12 m6", Label = "Valor Final ", Disabled = true });
-
-            config.Elements.Add(new LabelSetUI { Id = "lblRenegociacaoOrigem", Class = "col s12", Label = "Contas originais renegociadas" });
-            config.Elements.Add(new LabelSetUI { Id = "lblRenegociacaoRenegociadas", Class = "col s12", Label = "Contas geradas pela renegociação" });
-            config.Elements.Add(new TableUI
-            {
-                Id = "datatableRenegociacaoRelacionamento",
-                Class = "col s12",
-                Label = "Renegociação Relacionamento",
-                Disabled = true,
-                Options = new List<OptionUI>
-                {
-                    new OptionUI() { Label = "Descrição", Value = "0"},
-                    new OptionUI() { Label = "Valor", Value = "1" },
-                    new OptionUI() { Label = "Vencimento",Value = "2" },
-                    new OptionUI() { Label = "Parcelas",Value = "2" },
-                    new OptionUI() { Label = "Forma Pagamento", Value = "3"},
-                    new OptionUI() { Label = tituloPessoa, Value = "4"}
                 }
             });
             #endregion

@@ -1,20 +1,4 @@
 ﻿<script>
-    function ocultaCamposRenegociacao() {
-        $('#dadosRenegociacaoLabelField').hide();
-        $('#tipoRenegociacaoValorDiferencaField').hide();
-        $('#tipoRenegociacaoCalculoField').hide();
-        $('#valorDiferencaField').hide();
-        $('#valorFinalField').hide();
-    }
-
-    function exibeCamposRenegociacao() {
-        $('#dadosRenegociacaoLabelField').show();
-        $('#tipoRenegociacaoValorDiferencaField').show();
-        $('#tipoRenegociacaoCalculoField').show();
-        $('#valorDiferencaField').show();
-        $('#valorFinalField').show();
-    }
-
     function getStatusConta() {
         return $('#fly01mdlfrm #statusContaBancaria').val();
     }
@@ -61,64 +45,6 @@
         });
     }
 
-    function getRenegociacoRelacionamento() {
-        $.ajax({
-            type: "POST",
-            url: "@Url.Action("ListRenegociacaoRelacionamento")?contaFinanceiraId=" + $('#fly01mdlfrm #id').val(),
-            dataType: "json",
-            contentType: "application/json",
-            success: function (response) {
-                if (response.success) {
-                    if (response.recordsTotal > 0) {
-                        $("#datatableRenegociacaoRelacionamento").DataTable().destroy();
-
-                        var table = $("#datatableRenegociacaoRelacionamento").DataTable({
-                            bSort: false,
-                            paging: false,
-                            bLengthChange: false,
-                            searching: false,
-                            ordering: false,
-                            info: false,
-                            data: response.data,
-                            columns: [
-                                { data: "descricao", orderable: false },
-                                { data: "valorPrevisto", orderable: false },
-                                { data: "dataVencimento", orderable: false },
-                                { data: "descricaoParcela", orderable: false },
-                                { data: "formaPagamento_descricao", orderable: false },
-                                { data: "pessoa_nome", orderable: false },
-                            ]
-                        });
-                        $('#tipoRenegociacaoValorDiferencaField select#tipoRenegociacaoValorDiferenca').val(response.renegociacao.TipoRenegociacaoValorDiferenca == 1 ? "Acrescimo" : "Desconto");
-                        $('#tipoRenegociacaoValorDiferencaField .select-dropdown').val(response.renegociacao.TipoRenegociacaoValorDiferenca == 1 ? "Acréscimo" : "Desconto");
-                        $('#tipoRenegociacaoCalculoField select#tipoRenegociacaoCalculo').val(response.renegociacao.TipoRenegociacaoCalculo == 1 ? "Valor" : "Percentual");
-                        $('#tipoRenegociacaoCalculoField .select-dropdown').val(response.renegociacao.TipoRenegociacaoCalculo == 1 ? "Valor" : "Percentual");
-                        //$('select#tipoRenegociacaoValorDiferenca').val(response.renegociacao.TipoRenegociacaoValorDiferenca);
-                        //$('select#tipoRenegociacaoCalculo').val(response.renegociacao.TipoRenegociacaoCalculo);
-                        $('#fly01mdlfrm #valorDiferenca').val(response.renegociacao.ValorDiferenca);
-                        $('#fly01mdlfrm #valorFinal').val(response.renegociacao.ValorFinal);
-
-                        if (getStatusConta() == "Renegociado") {
-                            $('#fly01mdlfrm #lblRenegociacaoRenegociadasField').show();
-                        }
-                        else {
-                            $('#fly01mdlfrm #lblRenegociacaoOrigemField').show();
-                        }
-                        exibeCamposRenegociacao();
-                        $$$.fn.updateTextFields();
-                        //posiciona os selects nos valores setados manualmente
-                        $('select#tipoRenegociacaoValorDiferenca').material_select();
-                        $('select#tipoRenegociacaoCalculo').material_select();
-                        $('#fly01mdlfrm #datatableRenegociacaoRelacionamentoField').show();
-                    }
-                }
-            },
-            error: function (jXHR, textStatus, errorThrown) {
-                $$$.toast(errorThrown, 'error');
-            }
-        });
-    }
-
     function fnFormReadyVisualizar() {
         if (getStatusConta() == "BaixadoParcialmente" || getStatusConta() == "Pago") {
             $('#fly01mdlfrm #relacaoBaixaLabelField').show();
@@ -132,12 +58,5 @@
             $('#fly01mdlfrm #btnListaBaixasField').hide();
             $('#fly01mdlfrm #datatableContaBaixasField').hide();
         }
-
-        $('#fly01mdlfrm #lblRenegociacaoOrigemField').hide();
-        $('#fly01mdlfrm #lblRenegociacaoRenegociadasField').hide();
-        $('#fly01mdlfrm #datatableRenegociacaoRelacionamentoField').hide();
-        ocultaCamposRenegociacao();
-
-        getRenegociacoRelacionamento();
     }
 </script>

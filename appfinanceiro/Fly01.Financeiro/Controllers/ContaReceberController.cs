@@ -238,14 +238,11 @@ namespace Fly01.Financeiro.Controllers
             config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
             {
                 new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "(row.statusEnum == 'EmAberto')" },
-                new DataTableUIAction { OnClickFn = "fnVisualizar", Label = "Visualizar" },
                 new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "(row.statusEnum == 'EmAberto' && row.repeticaoPai == false && row.repeticaoFilha == false)" },
                 new DataTableUIAction { OnClickFn = "fnExcluirRecorrencias", Label = "Excluir", ShowIf = "(row.statusEnum == 'EmAberto' && (row.repeticaoPai == true || row.repeticaoFilha == true))" },
                 new DataTableUIAction { OnClickFn = "fnNovaBaixa", Label = "Nova baixa", ShowIf = "row.statusEnum == 'EmAberto' || row.statusEnum == 'BaixadoParcialmente'" },
                 new DataTableUIAction { OnClickFn = "fnCancelarBaixas", Label = "Cancelar baixas", ShowIf = "row.statusEnum == 'Pago' || row.statusEnum == 'BaixadoParcialmente'" },
-                new DataTableUIAction { OnClickFn = "fnImprimirRecibo", Label = "Emitir recibo"/*, ShowIf = "row.statusEnum == 'Pago'"*/ },
-                new DataTableUIAction { OnClickFn = "fnModalImprimeBoleto", Label = "Imprimir boleto", ShowIf = "row.statusEnum != 'Pago' && row.formaPagamento == 'Boleto'" },
-                new DataTableUIAction { OnClickFn = "fnEditImprimeBoleto", Label = "Imprimir boleto", ShowIf = "row.statusEnum != 'Pago' && row.formaPagamento != 'Boleto'" }
+                new DataTableUIAction { OnClickFn = "fnImprimirRecibo", Label = "Emitir recibo"/*, ShowIf = "row.statusEnum == 'Pago'"*/ }
             }));
 
             config.Columns.Add(new DataTableUIColumn

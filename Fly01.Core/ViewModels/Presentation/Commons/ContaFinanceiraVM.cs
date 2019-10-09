@@ -43,6 +43,7 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [JsonProperty("formaPagamentoId")]
         public Guid FormaPagamentoId { get; set; }
 
+        [JsonProperty("statusContaBancaria")]
         [APIEnum("StatusContaBancaria")]
         public string StatusContaBancaria { get; set; }
 
@@ -73,9 +74,6 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
 
         [JsonProperty("numero")]
         public int Numero { get; set; }
-
-        [JsonProperty("contaBancariaId")]
-        public Guid ContaBancariaId { get; set; }
 
         [JsonProperty("contaFinanceiraRepeticaoPai")]
         public virtual ContaFinanceiraVM ContaFinanceiraRepeticaoPai { get; set; }

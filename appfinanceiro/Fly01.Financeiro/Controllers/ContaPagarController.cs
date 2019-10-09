@@ -177,14 +177,14 @@ namespace Fly01.Financeiro.Controllers
             {
                 cfg.Content.Add(new CardUI
                 {
-                    Class = "col s12 m4 center",
+                    Class = "col s12 m6 center",
                     Color = "totvs-blue",
                     Id = "fly01cardEmAberto",
                     Placeholder = "A pagar"
                 });
                 cfg.Content.Add(new CardUI
                 {
-                    Class = "col s12 m4 center",
+                    Class = "col s12 m6 center",
                     Color = "totvs-blue",
                     Id = "fly01cardPago",
                     Placeholder = "Pago"
@@ -428,7 +428,7 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "formaPagamentoId",
-                Class = "col s12 m4",
+                Class = "col s12 m6",
                 Label = "Forma Pagamento",
                 Required = true,
                 DataUrl = @Url.Action("FormaPagamento", "AutoComplete"),
@@ -440,7 +440,7 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "categoriaId",
-                Class = "col s12 m4",
+                Class = "col s12 m6",
                 Label = "Categoria Financeira",
                 Required = true,
                 DataUrl = @Url.Action("CategoriaCP", "AutoComplete"),
@@ -453,7 +453,7 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "repetir",
-                Class = "col s6",
+                Class = "col s12",
                 Label = "Repetir",
                 DomEvents = new List<DomEventUI>
                 {
@@ -461,21 +461,10 @@ namespace Fly01.Financeiro.Controllers
                 }
             });
 
-            config.Elements.Add(new InputCheckboxUI
-            {
-                Id = "baixarTitulo",
-                Class = "col s6",
-                Label = "Marcar título como pago?",
-                DomEvents = new List<DomEventUI>
-                {
-                    new DomEventUI { DomEvent = "change", Function = "fnChkBaixar" }
-                }
-            });
-
             config.Elements.Add(new SelectUI
             {
                 Id = "tipoPeriodicidade",
-                Class = "col s6 m3 l3",
+                Class = "col s6 m3",
                 Label = "Periodicidade",
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoPeriodicidade), false, "Mensal")),
                 DomEvents = new List<DomEventUI>
@@ -487,7 +476,7 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new SelectUI
             {
                 Id = "tipoRepeticao",
-                Class = "col s6 m3 l3",
+                Class = "col s6 m3",
                 Label = "Repetição",
                 Options = new List<SelectOptionUI>
                 {
@@ -502,7 +491,7 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputTextUI
             {
                 Id = "numeroRepeticoes",
-                Class = "col s6 m3 l3",
+                Class = "col s6 m3",
                 Label = "Número de Repetições",
                 DomEvents = new List<DomEventUI>
                 {
@@ -521,23 +510,12 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputDateUI
             {
                 Id = "periodoFim",
-                Class = "col s6 m3 l3",
+                Class = "col s6 m3",
                 Label = "Fim",
                 DomEvents = new List<DomEventUI>
                 {
                     new DomEventUI { DomEvent = "change", Function = "fnChangePeriodoFim" }
                 }
-            });
-            config.Elements.Add(new AutoCompleteUI
-            {
-                Id = "contaBancariaId",
-                Class = "col s12",
-                Label = "Conta Bancária",
-                Required = true,
-                DataUrl = @Url.Action("ContaBancariaBanco", "AutoComplete"),
-                LabelId = "contaBancariaNomeConta",
-                DataUrlPostModal = @Url.Action("FormModal", "ContaBancaria"),
-                DataPostField = "nomeConta",
             });
 
             cfg.Content.Add(config);

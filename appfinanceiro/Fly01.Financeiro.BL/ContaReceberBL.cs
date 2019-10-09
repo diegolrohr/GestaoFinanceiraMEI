@@ -53,8 +53,6 @@ namespace Fly01.Financeiro.BL
             {
                 numero = All.Max(x => x.Numero);
             }
-            numero += 1;
-            numero -= condicoesParcelamento.Count;
 
             for (int iParcela = 0; iParcela < condicoesParcelamento.Count; iParcela++)
             {
@@ -102,8 +100,10 @@ namespace Fly01.Financeiro.BL
         private void GravaRepeticoes(ContaReceber entity, Guid contaFinanceiraPrincipal, ContaReceber itemContaReceber)
         {
             var numero = default(int);
-            numero = All.Max(x => x.Numero) + 1;
-            numero -= entity.NumeroRepeticoes ?? numero;
+            if (All.Any())
+            {
+                numero = All.Max(x => x.Numero);
+            }
 
             for (int iRepeticao = 1; iRepeticao <= entity.NumeroRepeticoes; iRepeticao++)
             {

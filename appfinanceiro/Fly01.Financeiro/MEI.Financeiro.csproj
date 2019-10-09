@@ -154,6 +154,9 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\mpnui_0.1.9.js" />
+    <Content Include="Scripts\vendors.mpnui_0.1.9.js" />
+    <Content Include="Styles\mpnui_0.1.9.css" />
     <Content Include="_app_offline.htm" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
@@ -328,8 +331,6 @@
     <Content Include="Views\ContaReceber\Functions\_fnImprimirBoletoDeContasReceber.cshtml" />
     <Content Include="Views\Extrato\Functions\_fnContaBancariaDrawCB.cshtml" />
     <Content Include="Views\Shared\NotAllow.cshtml" />
-    <Content Include="Views\ContaPagar\Functions\_fnChkBaixar.cshtml" />
-    <Content Include="Views\ContaReceber\Functions\_fnChkBaixar.cshtml" />
     <Content Include="Views\Shared\Functions\_fnVisualizar.cshtml" />
     <Content Include="Views\Shared\View.cshtml" />
     <Content Include="Views\Shared\Functions\_fnExcluirRecorrencias.cshtml" />

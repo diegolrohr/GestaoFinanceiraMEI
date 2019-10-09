@@ -5,13 +5,9 @@ namespace Fly01.Core.Presentation.Commons
 {
     public static class LayoutHelper
     {
-        private static string cdnVersion =
-            (string.IsNullOrEmpty(AppDefaults.MPNUIVersion)
-            ? "0.1.9"
-            : AppDefaults.MPNUIVersion);
+        private static string cdnVersion = "0.1.9";
 
-        private static string serverUrl = $"https://mpn.azureedge.net/lib"; /*
-        private static string serverUrl = $"http://10.51.5.33:8000"; /* */
+        private static string serverUrl = $"https://mpn.azureedge.net/lib";
 
         private static string cssUrl = $"{serverUrl}/{cdnVersion}/mpnui.css";
         private static string jsUrl = $"{serverUrl}/{cdnVersion}/mpnui.js";

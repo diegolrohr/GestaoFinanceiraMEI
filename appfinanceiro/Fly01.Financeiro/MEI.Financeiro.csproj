@@ -145,9 +145,6 @@
   <ItemGroup>
     <Content Include="Global.asax" />
     <Content Include="ReportViewerWebForm.aspx" />
-    <Content Include="NLog.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
@@ -158,9 +155,6 @@
     <Content Include="Scripts\vendors.mpnui_0.1.9.js" />
     <Content Include="Styles\mpnui_0.1.9.css" />
     <Content Include="_app_offline.htm" />
-    <None Include="NLog.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Properties\PublishProfiles\HomologacaoStage.pubxml" />
     <None Include="Resources\Microsoft.ReportViewer.ProcessingObjectModel.dll" />
     <None Include="Properties\PublishProfiles\Homologacao.pubxml" />
@@ -251,10 +245,6 @@
     <Content Include="Views\Extrato\Functions\_fnSalvarNovaTransferencia.cshtml" />
     <Content Include="Views\Extrato\Functions\_fnChangeCategoriaPagamento.cshtml" />
     <Content Include="Views\Shared\Functions\_fnImportarCadastro.cshtml" />
-    <Content Include="Views\Fornecedor\Functions\_fnCarregarArquivo.cshtml" />
-    <Content Include="Views\Fornecedor\ImportaCadastro.cshtml" />
-    <Content Include="Views\Cliente\Functions\_fnCarregarArquivo.cshtml" />
-    <Content Include="Views\Cliente\ImportaCadastro.cshtml" />
     <Content Include="Views\ConciliacaoBancaria\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\ConciliacaoBancaria\Functions\_fnNovaTransacaoCP.cshtml" />
     <Content Include="Views\ConciliacaoBancaria\Functions\_fnNovaTransacaoCR.cshtml" />
@@ -269,8 +259,6 @@
     <Content Include="Views\ConciliacaoBancaria\BuscarExistentesCP.cshtml" />
     <Content Include="Views\ConciliacaoBancaria\BuscarExistentesCR.cshtml" />
     <Content Include="Views\ConciliacaoBancaria\Functions\_fnRenderValorConciliado.cshtml" />
-    <Content Include="Views\Cliente\Functions\_fnImportaCadastroFormReady.cshtml" />
-    <Content Include="Views\Fornecedor\Functions\_fnImportaCadastroFormReady.cshtml" />
     <Content Include="Views\Extrato\Functions\_fnChangeCategoriaRecebimento.cshtml" />
     <Content Include="Views\Extrato\Functions\_fnChangeContaOrigemTransferencia.cshtml" />
     <Content Include="Views\Extrato\Functions\_fnChangeContaDestinoTransferencia.cshtml" />
@@ -323,9 +311,6 @@
     <Content Include="Views\Shared\Functions\_fnBuscaCEP.cshtml" />
     <Content Include="Views\ContaReceber\Functions\_fnModalImprimeBoleto.cshtml" />
     <Content Include="Views\ContaBancaria\Functions\_fnChangeCheckCedende.cshtml" />
-    <Content Include="Views\Transportadora\Functions\_fnCarregarArquivo.cshtml" />
-    <Content Include="Views\Transportadora\Functions\_fnImportaCadastroFormReady.cshtml" />
-    <Content Include="Views\Transportadora\ImportaCadastro.cshtml" />
     <Content Include="Views\Shared\Functions\_fnChangeEstado.cshtml" />
     <Content Include="Views\ContaReceber\Functions\_fnFormModalContaBancaria.cshtml" />
     <Content Include="Views\ContaReceber\Functions\_fnImprimirBoletoDeContasReceber.cshtml" />
@@ -337,12 +322,8 @@
     <Content Include="Views\ContaReceber\Functions\_fnSalvarRecorrencia.cshtml" />
     <Content Include="Views\ContaPagar\Functions\_fnSalvarRecorrencia.cshtml" />
     <Content Include="Views\Fornecedor\Functions\_fnFormReady.cshtml" />
-    <Content Include="Views\Transportadora\Functions\_fnFormReady.cshtml" />
-    <Content Include="Views\Shared\Functions\_fnChangeTipoInscricao.cshtml" />
     <Content Include="Views\Cliente\Functions\_fnStateSelect.cshtml" />
     <Content Include="Views\Cliente\Functions\_fnCitySelect.cshtml" />
-    <Content Include="Views\Transportadora\Functions\_fnStateSelect.cshtml" />
-    <Content Include="Views\Transportadora\Functions\_fnCitySelect.cshtml" />
     <Content Include="Views\Fornecedor\Functions\_fnStateSelect.cshtml" />
     <Content Include="Views\Fornecedor\Functions\_fnCitySelect.cshtml" />
     <Content Include="Views\ContaPagar\Functions\_fnSalvarEnovo.cshtml" />

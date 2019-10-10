@@ -87,7 +87,6 @@
     <Compile Include="Controllers\Api\CondicaoParcelamentoSimulacaoController.cs" />
     <Compile Include="Controllers\Api\ExtratoController.cs" />
     <Compile Include="Controllers\Api\FluxoCaixaController.cs" />
-    <Compile Include="Controllers\Api\RelatorioLicenciamentoController.cs" />
     <Compile Include="Controllers\Api\TipoSimulacaoController.cs" />
     <Compile Include="Controllers\Api\TipoPeriodicidade.cs" />
     <Compile Include="Controllers\Api\TipoFormaPagamentoController.cs" />

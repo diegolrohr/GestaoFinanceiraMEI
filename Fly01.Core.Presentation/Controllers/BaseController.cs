@@ -73,14 +73,13 @@ namespace Fly01.Core.Presentation
             var target = new List<HtmlUIButton>();
 
             target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main });
-            target.Add(new HtmlUIButton { Id = "saveNew", Label = "Salvar e Novo", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main });
 
             return target;
         }
 
         public virtual List<DataTableUIAction> GetActionsInGrid(List<DataTableUIAction> customWriteActions)
         {
-            customWriteActions.Add(new DataTableUIAction { OnClickFn = "fnVisualizar", Label = "Visualizar" });
+            //customWriteActions.Add(new DataTableUIAction { OnClickFn = "fnVisualizar", Label = "Visualizar" });
             return customWriteActions;
         }
 

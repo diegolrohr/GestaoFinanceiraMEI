@@ -95,7 +95,6 @@ namespace Fly01.Core.Presentation.Controllers
             var target = new List<HtmlUIButton>();
 
             target.Add(new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo", Position = HtmlUIButtonPosition.Main });
-            target.Add(new HtmlUIButton { Id = "import", Label = $"Importar {LabelTitle}", OnClickFn = "fnImportarCadastro", Position = HtmlUIButtonPosition.Out });
 
             return target;
         }
@@ -145,7 +144,6 @@ namespace Fly01.Core.Presentation.Controllers
             var target = new List<HtmlUIButton>();
 
             target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar", Position = HtmlUIButtonPosition.Out });
-            target.Add(new HtmlUIButton { Id = "saveNew", Label = "Salvar e Novo", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Out });
             target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main });
 
             return target;
@@ -191,17 +189,15 @@ namespace Fly01.Core.Presentation.Controllers
             config.Elements.Add(new InputTextUI { Id = "nome", Class = "col s12 l5", Label = "Razão Social / Nome Completo", Required = true, MaxLength = 180 });
             config.Elements.Add(new InputTextUI { Id = "nomeComercial", Class = "col s12 l4", Label = "Nome Comercial", MaxLength = 180 });
 
-            config.Elements.Add(new InputTextUI { Id = "idEstrangeiro", Class = "col s12 l3", Label = "Identificação Estrangeiro", MaxLength = 20 });
-            config.Elements.Add(new InputEmailUI { Id = "email", Class = "col s12 l5", Label = "E-mail", MaxLength = 100 });
-
-            config.Elements.Add(new InputTextUI { Id = "contato", Class = "col s6 l4", Label = "Pessoa de Contato", MaxLength = 60 });
-            config.Elements.Add(new InputTelUI { Id = "celular", Class = "col s6 l4", Label = "Celular", MaxLength = 15 });
-            config.Elements.Add(new InputTelUI { Id = "telefone", Class = "col s6 l4", Label = "Telefone", MaxLength = 15 });
+            config.Elements.Add(new InputEmailUI { Id = "email", Class = "col s6 m3", Label = "E-mail", MaxLength = 100 });
+            config.Elements.Add(new InputTelUI { Id = "celular", Class = "col s6 m3", Label = "Celular", MaxLength = 15 });
+            config.Elements.Add(new InputTelUI { Id = "telefone", Class = "col s6 m3", Label = "Telefone", MaxLength = 15 });
+            config.Elements.Add(new InputTextUI { Id = "contato", Class = "col s6 m3", Label = "Pessoa de Contato", MaxLength = 60 });
 
             config.Elements.Add(new InputCepUI
             {
                 Id = "cep",
-                Class = "col s6 l2",
+                Class = "col s6 m2",
                 Label = "CEP",
                 MaxLength = 9,
                 DomEvents = new List<DomEventUI>() { new DomEventUI { DomEvent = "keyup", Function = "fnBuscaCEP" } }
@@ -209,18 +205,8 @@ namespace Fly01.Core.Presentation.Controllers
 
             config.Elements.Add(new AutoCompleteUI
             {
-                Id = "paisId",
-                Class = "col s12 l2",
-                Label = "País",
-                MaxLength = 35,
-                DataUrl = Url.Action("Pais", "AutoComplete"),
-                LabelId = "paisNome"
-            });
-
-            config.Elements.Add(new AutoCompleteUI
-            {
                 Id = "estadoId",
-                Class = "col s12 l4",
+                Class = "col s6 m4",
                 Label = "Estado",
                 MaxLength = 35,
                 DataUrl = Url.Action("Estado", "AutoComplete"),
@@ -234,7 +220,7 @@ namespace Fly01.Core.Presentation.Controllers
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "cidadeId",
-                Class = "col s12 l4",
+                Class = "col s12 m6",
                 Label = "Cidade (Escolha o estado antes)",
                 MaxLength = 35,
                 DataUrl = Url.Action("Cidade", "AutoComplete"),
@@ -285,73 +271,13 @@ namespace Fly01.Core.Presentation.Controllers
             return cfg;
         }
 
-        public virtual ActionResult ImportaCadastro()
-        {
-            return View();
-        }
-
         public List<HtmlUIButton> GetFormImportacaoButtonsOnHeader()
         {
             var target = new List<HtmlUIButton>();
-
             target.Add(new HtmlUIButton() { Id = "cancel", Label = "Voltar", OnClickFn = "fnCancelar" });
-            target.Add(new HtmlUIButton() { Id = "save", Label = "Importar", OnClickFn = "fnCarregarArquivo", Type = "submit" });
-
             return target;
         }
 
-        public ContentResult FormImportacao()
-        {
-            var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
-            {
-                History = new ContentUIHistory()
-                {
-                    Default = Url.Action("ImportaCadastro"),
-                },
-                Header = new HtmlUIHeader()
-                {
-                    Title = $"Importar {ResourceTitle}",
-                    Buttons = new List<HtmlUIButton>(GetFormImportacaoButtonsOnHeader())
-                },
-                UrlFunctions = Url.Action("Functions") + "?fns="
-            };
-
-            var config = new FormUI
-            {
-                Id = "fly01frm",
-                Action = new FormUIAction()
-                {
-                    Create = Url.Action("ImportaCadastro"),
-                    Edit = Url.Action("ImportaCadastro"),
-                    Get = Url.Action("Json") + "/ImportarCadastro",
-                    List = @Url.Action("List")
-                },
-                ReadyFn = "fnImportaCadastroFormReady",
-                UrlFunctions = Url.Action("Functions") + "?fns="
-            };
-
-            config.Elements.Add(new InputFileUI { Id = "arquivo", Class = "col s12", Label = "Arquivo de importação em lotes (.csv)", Required = true, Accept = ".csv" });
-
-            config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", Readonly = true });
-
-            cfg.Content.Add(config);
-
-            cfg.Content.Add(new CardUI()
-            {
-                Class = "col s12",
-                Color = "blue",
-                Id = "cardDuvidas",
-                Title = "Dúvidas",
-                Placeholder = "Se preferir você pode baixar um arquivo modelo de importação.",
-                Action = new LinkUI()
-                {
-                    Label = "Baixar arquivo modelo"
-                }
-
-            });
-
-            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
-        }
 
         protected virtual List<TooltipUI> GetHelpers()
         {

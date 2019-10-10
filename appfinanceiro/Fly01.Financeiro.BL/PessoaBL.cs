@@ -152,11 +152,6 @@ namespace Fly01.Financeiro.BL
             base.Insert(entity);
         }
 
-        public void Persist()
-        {
-
-        }
-
         public Guid BuscaPessoaNome(string nomePessoa, bool cliente, bool fornecedor)
         {
             var pessoaPadrao = All.AsNoTracking().FirstOrDefault(x => x.Nome == nomePessoa && x.Cliente == cliente && x.Fornecedor == fornecedor && x.Ativo == true);

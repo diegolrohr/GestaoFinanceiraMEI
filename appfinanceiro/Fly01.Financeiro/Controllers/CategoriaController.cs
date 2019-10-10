@@ -18,13 +18,10 @@ using System.Web.Mvc;
 namespace Fly01.Financeiro.Controllers
 {
     [AllowAnonymous]
-    public class CategoriaController<T> : BaseController<T> where T : CategoriaVM
+    public class CategoriaController : BaseController<CategoriaVM>
     {
-        private string CategoriaResourceHash { get; set; }
-
-        public CategoriaController(string categoriaResourceHash)
+        public CategoriaController()
         {
-            CategoriaResourceHash = categoriaResourceHash;
             ExpandProperties = "categoriaPai($select=descricao)";
         }
 
@@ -49,7 +46,7 @@ namespace Fly01.Financeiro.Controllers
                 },
                 Header = new HtmlUIHeader
                 {
-                    Title = "Cadastro de Categoria",
+                    Title = "Categoria",
                     Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
@@ -99,7 +96,7 @@ namespace Fly01.Financeiro.Controllers
             return cfg;
         }
 
-        public override Func<T, object> GetDisplayData()
+        public override Func<CategoriaVM, object> GetDisplayData()
         {
             return x => new
             {
@@ -117,7 +114,7 @@ namespace Fly01.Financeiro.Controllers
                 History = new ContentUIHistory { Default = Url.Action("Index") },
                 Header = new HtmlUIHeader
                 {
-                    Title = "Categoria",
+                    Title = "Categorias",
                     Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions", "Categoria", null, Request.Url?.Scheme) + "?fns="

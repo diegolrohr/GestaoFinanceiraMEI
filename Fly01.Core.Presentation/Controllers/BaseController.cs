@@ -22,6 +22,7 @@ using System.Data;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -36,6 +37,42 @@ namespace Fly01.Core.Presentation
     [AllowAnonymous]
     public abstract class BaseController<T> : PrimitiveBaseController where T : EmpresaBaseVM
     {
+        public static string GetErrorMsg(Exception ex)
+        {
+            StringBuilder sb = new StringBuilder(ex.Message);
+            Exception inner = ex.InnerException;
+            while (inner != null)
+            {
+                sb.AppendFormat(" - {0}", inner.Message);
+                inner = inner.InnerException;
+            }
+            return sb.ToString();
+        }
+
+        private ErrorInfo GetApiError(Exception ex, bool defaultMessage = false)
+        {
+            ErrorInfo errorVM = null;
+            try
+            {
+                errorVM = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+            }
+            catch
+            {
+                //mensagem não veio no formato de erro esperado
+                errorVM = new ErrorInfo { Message = GetErrorMsg(ex) };
+            }
+
+            if (errorVM == null || string.IsNullOrWhiteSpace(errorVM.Message))
+                errorVM = new ErrorInfo { Message = GetErrorMsg(ex) };
+
+            if (errorVM.ErrorCode == 0)
+                errorVM.ErrorCode = (int)HttpStatusCode.InternalServerError;
+
+            if (defaultMessage)
+                errorVM.Message = string.Format("Ocorreu um erro na requisição: {0}", errorVM.Message);
+
+            return errorVM;
+        }
 
         public class ContentUIBase : ContentUI
         {
@@ -370,7 +407,7 @@ namespace Fly01.Core.Presentation
             }
             catch (Exception ex)
             {
-                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                var error = GetApiError(ex); //JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
                 return JsonResponseStatus.GetFailure(error.Message);
             }
         }

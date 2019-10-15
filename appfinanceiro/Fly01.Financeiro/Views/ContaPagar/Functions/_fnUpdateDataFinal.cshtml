@@ -10,13 +10,14 @@
         var dataFinal = moment(lastDay).format('YYYY-MM-DD');
         var dataInicial = moment(firstDay).format('YYYY-MM-DD');
 
-        $.ajax({
+        @*$.ajax({
             url: '@Url.Action("LoadCards", "ContaPagar")' + '?dataFinal=' + dataFinal + "&dataInicial=" + dataInicial,
             type: "GET",
             success: function (data) {
 
                 $('#fly01cardEmAberto span')[0].innerHTML = data.emAberto;
                 $('#fly01cardPago span')[0].innerHTML = data.pago;
+                $('#fly01cardBaixadoParcialmente span')[0].innerHTML = data.baixadoParcialmente;
                 
                 $$$.loading.stop();
             },
@@ -24,6 +25,6 @@
                 $$$.toast(textStatus, 'error');
                 $$$.loading.stop();
             }
-        });      
+        });*@      
     }
 </script>

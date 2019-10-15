@@ -120,7 +120,7 @@ namespace Fly01.Financeiro.Controllers
             var target = new List<HtmlUIButton>();
 
             target.Add(new HtmlUIButton { Id = "baixasBtn", Label = "Baixas múltiplas", OnClickFn = "fnBaixaMultipla", Position = HtmlUIButtonPosition.Out });
-            target.Add(new HtmlUIButton { Id = "printBtn", Label = "Imprimir", OnClickFn = "fnImprimirListContas", Position = HtmlUIButtonPosition.In });
+            //target.Add(new HtmlUIButton { Id = "printBtn", Label = "Imprimir", OnClickFn = "fnImprimirListContas", Position = HtmlUIButtonPosition.In });
             target.Add(new HtmlUIButton { Id = "filterGrid", Label = bntLabel, OnClickFn = btnOnClick, Position = HtmlUIButtonPosition.Out });
             target.Add(new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo", Position = HtmlUIButtonPosition.Main });
 
@@ -150,7 +150,7 @@ namespace Fly01.Financeiro.Controllers
                 },
                 UrlFunctions = Url.Action("Functions", "ContaReceber", null, Request.Url.Scheme) + "?fns=",
                 Functions = { "fnCardList" },
-                ReadyFn = (Request.QueryString["action"] != "GridLoadNoFilter") ? "fnCardList" : ""
+                //ReadyFn = (Request.QueryString["action"] != "GridLoadNoFilter") ? "fnCardList" : ""
             };
 
             var cfgForm = new FormUI
@@ -174,23 +174,30 @@ namespace Fly01.Financeiro.Controllers
                 Functions = { "fnRowCallbackContasFinanceiras" }
             };
 
-            if (Request.QueryString["action"] != "GridLoadNoFilter")
-            {
-                cfg.Content.Add(new CardUI
-                {
-                    Class = "col s12 m6 center",
-                    Color = "totvs-blue",
-                    Id = "fly01cardEmAberto",
-                    Placeholder = "A Receber"
-                });
-                cfg.Content.Add(new CardUI
-                {
-                    Class = "col s12 m6 center",
-                    Color = "totvs-blue",
-                    Id = "fly01cardPago",
-                    Placeholder = "Pago"
-                });
-            }
+            //if (Request.QueryString["action"] != "GridLoadNoFilter")
+            //{
+            //    cfg.Content.Add(new CardUI
+            //    {
+            //        Class = "col s12 m4 center",
+            //        Color = "totvs-blue",
+            //        Id = "fly01cardEmAberto",
+            //        Placeholder = "A Receber"
+            //    });
+            //    cfg.Content.Add(new CardUI
+            //    {
+            //        Class = "col s12 m4 center",
+            //        Color = "totvs-blue",
+            //        Id = "fly01cardBaixadoParcialmente",
+            //        Placeholder = "Baixado Parcialmente"
+            //    });
+            //    cfg.Content.Add(new CardUI
+            //    {
+            //        Class = "col s12 m4 center",
+            //        Color = "totvs-blue",
+            //        Id = "fly01cardPago",
+            //        Placeholder = "Pago"
+            //    });
+            //}
 
             if (gridLoad == "GridLoad")
             {
@@ -242,7 +249,7 @@ namespace Fly01.Financeiro.Controllers
                 new DataTableUIAction { OnClickFn = "fnExcluirRecorrencias", Label = "Excluir", ShowIf = "(row.statusEnum == 'EmAberto' && (row.repeticaoPai == true || row.repeticaoFilha == true))" },
                 new DataTableUIAction { OnClickFn = "fnNovaBaixa", Label = "Nova baixa", ShowIf = "row.statusEnum == 'EmAberto' || row.statusEnum == 'BaixadoParcialmente'" },
                 new DataTableUIAction { OnClickFn = "fnCancelarBaixas", Label = "Cancelar baixas", ShowIf = "row.statusEnum == 'Pago' || row.statusEnum == 'BaixadoParcialmente'" },
-                new DataTableUIAction { OnClickFn = "fnImprimirRecibo", Label = "Emitir recibo"/*, ShowIf = "row.statusEnum == 'Pago'"*/ }
+                new DataTableUIAction { OnClickFn = "fnImprimirRecibo", Label = "Emitir recibo", ShowIf = "row.statusEnum == 'Pago'" }
             }));
 
             config.Columns.Add(new DataTableUIColumn

@@ -103,7 +103,6 @@
     <Compile Include="JWTHelper.cs" />
     <Compile Include="SHA1Helper.cs" />
     <Compile Include="Base64Helper.cs" />
-    <Compile Include="NFSeTssHelper.cs" />
     <Compile Include="ConversorHelper.cs" />
     <Compile Include="ConvertHTMLToPDF.cs" />
     <Compile Include="EnumHelper.cs" />

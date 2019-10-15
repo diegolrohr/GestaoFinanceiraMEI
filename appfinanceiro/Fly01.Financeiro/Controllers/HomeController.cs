@@ -20,6 +20,11 @@ namespace Fly01.Financeiro.Controllers
     [AllowAnonymous]
     public class HomeController : Core.Presentation.Controllers.HomeController
     {
+        public override ActionResult Index()
+        {
+            return RedirectToAction("Index", "ContaPagar");
+        }
+
         protected override ContentUI HomeJson()
         {
             var cfg = new ContentUI
@@ -250,29 +255,31 @@ namespace Fly01.Financeiro.Controllers
                 Label = "Financeiro",
                 Items = new List<LinkUI>
                     {
-                        new LinkUI() { Label = "Fluxo de Caixa", OnClick = @Url.Action("List", "Home")},
-                        new LinkUI() { Label = "Extrato", OnClick = @Url.Action("List", "Extrato")},
+                        //new LinkUI() { Label = "Fluxo de Caixa", OnClick = @Url.Action("List", "Home")},
+                        new LinkUI() { Label = "Fluxo de Caixa", OnClick = @Url.Action("List", "ContaPagar1")},
+                        //new LinkUI() { Label = "Extrato", OnClick = @Url.Action("List", "Extrato")},
                         new LinkUI() { Label = "Contas a Pagar", OnClick = @Url.Action("List", "ContaPagar")},
                         new LinkUI() { Label = "Contas a Receber", OnClick = @Url.Action("List", "ContaReceber")},
-                        new LinkUI() { Label = "Relatório DRE", OnClick = @Url.Action("List", "DemonstrativoResultadoExercicio")},
-                        new LinkUI() { Label = "Relatórios", OnClick = @Url.Action("List", "Relatorio")},
-                        new LinkUI() { Label = "Conciliação Bancária", OnClick = @Url.Action("List", "ConciliacaoBancaria")},
-
+                        //new LinkUI() { Label = "Relatório DRE", OnClick = @Url.Action("List", "DemonstrativoResultadoExercicio")},
+                        new LinkUI() { Label = "Relatório DRE", OnClick = @Url.Action("List", "ContaPagar2")},
+                        //new LinkUI() { Label = "Relatórios", OnClick = @Url.Action("List", "Relatorio")},
+                        //new LinkUI() { Label = "Conciliação Bancária", OnClick = @Url.Action("List", "ConciliacaoBancaria")},
+                        new LinkUI() { Label = "Conciliação Bancária", OnClick = @Url.Action("List", "ContaPagar3")},
                     }
             };
 
             #region MenuItems
             var menuItems = new List<SidebarUIMenu>()
             {
-                new SidebarUIMenu()
-                {
-                    Label = "Indicadores",
-                    Items = new List<LinkUI>
-                    {
-                        new LinkUI() { Label = "Contas a Pagar", OnClick = @Url.Action("List", "DashboardContaPagar")},
-                        new LinkUI() { Label = "Contas a Receber", OnClick = @Url.Action("List", "DashboardContaReceber")},
-                    }
-                },
+                //new SidebarUIMenu()
+                //{
+                //    Label = "Indicadores",
+                //    Items = new List<LinkUI>
+                //    {
+                //        new LinkUI() { Label = "Contas a Pagar", OnClick = @Url.Action("List", "DashboardContaPagar")},
+                //        new LinkUI() { Label = "Contas a Receber", OnClick = @Url.Action("List", "DashboardContaReceber")},
+                //    }
+                //},
 
                 financeiroMenuItens,
 

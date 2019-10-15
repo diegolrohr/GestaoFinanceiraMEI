@@ -22,9 +22,6 @@ namespace Fly01.Financeiro.ViewModel
         [JsonProperty("digitoConta")]
         public string DigitoConta { get; set; }
 
-        [JsonProperty("codigoDV")]
-        public string CodigoDV { get; set; }
-
         [JsonProperty("bancoId")]
         public Guid? BancoId { get; set; }
 

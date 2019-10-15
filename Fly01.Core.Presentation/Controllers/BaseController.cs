@@ -235,7 +235,13 @@ namespace Fly01.Core.Presentation
 
         public ManagerEmpresaVM GetDadosEmpresa()
         {
-            return new ManagerEmpresaVM();
+            return new ManagerEmpresaVM()
+            {
+                Cidade = new ManagerCidadeVM()
+                {
+                    Nome = "Porto Alegre"
+                }
+            };
         }
 
         public ContentResult EmConstrucao(string history)

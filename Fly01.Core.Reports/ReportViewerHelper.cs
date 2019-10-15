@@ -20,9 +20,6 @@ namespace Fly01.Core.Reports
 
         private static ReportConfig GetReportConfig(string reportTitle, string userName, string platformUrl)
         {
-            if (string.IsNullOrEmpty(platformUrl))
-                throw new ArgumentException("GetReportConfig: platformUrl argument is required.");
-
             var headerDefault = new StringBuilder();
 
             return new ReportConfig

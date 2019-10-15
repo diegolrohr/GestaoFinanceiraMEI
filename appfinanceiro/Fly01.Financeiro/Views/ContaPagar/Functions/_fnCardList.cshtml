@@ -13,6 +13,7 @@
 
                 $('#fly01cardEmAberto span')[0].innerHTML = data.emAberto;
                 $('#fly01cardPago span')[0].innerHTML = data.pago;
+                $('#fly01cardBaixadoParcialmente span')[0].innerHTML = data.baixadoParcialmente;
 
                 $$$.loading.stop();
             },
@@ -30,6 +31,9 @@
             "font-size": "13px"
         });
         $('#fly01cardPago h5').css({
+            "font-size": "13px"
+        });
+        $('#fly01cardBaixadoParcialmente h5').css({
             "font-size": "13px"
         });
     }

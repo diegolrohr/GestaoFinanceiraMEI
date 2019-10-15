@@ -301,7 +301,6 @@
     <Content Include="Views\ContaBancaria\Functions\_fnChangeBanco.cshtml" />
     <Content Include="Views\ContaBancaria\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\ContaBancaria\Functions\_fnAfterLoad.cshtml" />
-    <Content Include="Views\Shared\Functions\_fnSalvarAvaliacaoApp.cshtml" />
     <Content Include="Views\Shared\Functions\_fnSelectsAllClick.cshtml" />
     <Content Include="Views\DashboardContaReceber\Functions\_fnUpdateData.cshtml" />
     <Content Include="Views\DashboardContaPagar\Functions\_fnUpdateData.cshtml" />
@@ -310,7 +309,6 @@
     <Content Include="Views\Shared\Functions\_fnRenderEnum.cshtml" />
     <Content Include="Views\Shared\Functions\_fnBuscaCEP.cshtml" />
     <Content Include="Views\ContaReceber\Functions\_fnModalImprimeBoleto.cshtml" />
-    <Content Include="Views\ContaBancaria\Functions\_fnChangeCheckCedende.cshtml" />
     <Content Include="Views\Shared\Functions\_fnChangeEstado.cshtml" />
     <Content Include="Views\ContaReceber\Functions\_fnFormModalContaBancaria.cshtml" />
     <Content Include="Views\ContaReceber\Functions\_fnImprimirBoletoDeContasReceber.cshtml" />

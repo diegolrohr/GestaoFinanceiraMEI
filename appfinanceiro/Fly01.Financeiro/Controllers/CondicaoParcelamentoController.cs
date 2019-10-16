@@ -19,7 +19,7 @@ using System.Web.Mvc;
 namespace Fly01.Financeiro.Controllers
 {
     [AllowAnonymous]
-    public class CondicaoParcelamentoController<T> : BaseController<T> where T : CondicaoParcelamentoVM
+    public class CondicaoParcelamentoController : BaseController<CondicaoParcelamentoVM>
     {
         public JsonResult GridLoadSimulacao(string valorPrevisto, DateTime dataVencimento, string condicoesParcelamento, int? qtdParcelas)
         {
@@ -51,7 +51,7 @@ namespace Fly01.Financeiro.Controllers
             }
         }
 
-        public override Func<T, object> GetDisplayData()
+        public override Func<CondicaoParcelamentoVM, object> GetDisplayData()
         {
             return x => new
             {
@@ -112,8 +112,8 @@ namespace Fly01.Financeiro.Controllers
 
             config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
             {
-                new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" },
-                new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" }
+                new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" },
+                new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" }
             }));
 
             config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 1 });

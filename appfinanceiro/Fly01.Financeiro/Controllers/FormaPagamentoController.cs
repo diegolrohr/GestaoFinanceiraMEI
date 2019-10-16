@@ -17,9 +17,9 @@ using System.Web.Mvc;
 namespace Fly01.Financeiro.Controllers
 {
     [AllowAnonymous]
-    public class FormaPagamentoController<T> : BaseController<T> where T : FormaPagamentoVM
+    public class FormaPagamentoController : BaseController<FormaPagamentoVM>
     {
-        public override Func<T, object> GetDisplayData()
+        public override Func<FormaPagamentoVM, object> GetDisplayData()
         {
             return x => new
             {
@@ -44,7 +44,7 @@ namespace Fly01.Financeiro.Controllers
                 History = new ContentUIHistory() { Default = Url.Action("Index", "FormaPagamento") },
                 Header = new HtmlUIHeader()
                 {
-                    Title = "Forma de Pagamento",
+                    Title = "Formas de Pagamento",
                     Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
@@ -54,8 +54,8 @@ namespace Fly01.Financeiro.Controllers
 
             config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
             {
-                new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" },
-                new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" }
+                new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" },
+                new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" }
             }));
 
             config.Columns.Add(new DataTableUIColumn
@@ -93,7 +93,7 @@ namespace Fly01.Financeiro.Controllers
                 },
                 Header = new HtmlUIHeader
                 {
-                    Title = "Dados da forma de pagamento",
+                    Title = "Forma de Pagamento",
                     Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="

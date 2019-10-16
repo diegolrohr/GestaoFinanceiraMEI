@@ -143,7 +143,7 @@ namespace Fly01.Financeiro.Controllers
                 },
                 Header = new HtmlUIHeader
                 {
-                    Title = "Dados da condição de parcelamento",
+                    Title = "Condição de Parcelamento",
                     Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions", "CondicaoParcelamento", null, Request.Url.Scheme) + "?fns="

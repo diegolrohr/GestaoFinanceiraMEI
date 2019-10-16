@@ -263,8 +263,7 @@ namespace Fly01.Financeiro.Controllers
                         //new LinkUI() { Label = "Relatório DRE", OnClick = @Url.Action("List", "DemonstrativoResultadoExercicio")},
                         new LinkUI() { Label = "Relatório DRE", OnClick = @Url.Action("List", "ContaPagar2")},
                         //new LinkUI() { Label = "Relatórios", OnClick = @Url.Action("List", "Relatorio")},
-                        //new LinkUI() { Label = "Conciliação Bancária", OnClick = @Url.Action("List", "ConciliacaoBancaria")},
-                        new LinkUI() { Label = "Conciliação Bancária", OnClick = @Url.Action("List", "ContaPagar3")},
+                        new LinkUI() { Label = "Conciliação Bancária", OnClick = @Url.Action("List", "ConciliacaoBancaria")}
                     }
             };
 

@@ -122,7 +122,7 @@ namespace Fly01.Financeiro.Controllers
         {
             try
             {
-                var resourceNamePut = $"{ResourceName}/{entityVM.Id}";
+                var resourceNamePut = $"{ResourceName}({entityVM.Id})";
                 RestHelper.ExecutePutRequest(resourceNamePut, JsonConvert.SerializeObject(entityVM, JsonSerializerSetting.Default));
 
                 return JsonResponseStatus.Get(new ErrorInfo { HasError = false }, Operation.Edit);
@@ -139,7 +139,7 @@ namespace Fly01.Financeiro.Controllers
         {
             try
             {
-                RestHelper.ExecuteDeleteRequest(String.Format("{0}/{1}", "ConciliacaoBancariaItem", conciliacaoBancariaItemId));
+                RestHelper.ExecuteDeleteRequest(String.Format("{0}({1})", "ConciliacaoBancariaItem", conciliacaoBancariaItemId));
                 return JsonResponseStatus.Get(new ErrorInfo() { HasError = false }, Operation.Delete);
             }
             catch (Exception ex)
@@ -284,7 +284,7 @@ namespace Fly01.Financeiro.Controllers
 
         private ConciliacaoBancariaItemVM GetConciliacaoBancariaItem(Guid id)
         {
-            string resourceByIdCBitem = String.Format("{0}/{1}", "conciliacaoBancariaItem", id);
+            string resourceByIdCBitem = String.Format("{0}({1})", "conciliacaoBancariaItem", id);
             return RestHelper.ExecuteGetRequest<ConciliacaoBancariaItemVM>(resourceByIdCBitem, queryString: null);
         }
 
@@ -356,7 +356,7 @@ namespace Fly01.Financeiro.Controllers
                 History = new ContentUIHistory { Default = Url.Action("Index") },
                 Header = new HtmlUIHeader
                 {
-                    Title = "Conciliação Bancária",
+                    Title = "Conciliações Bancárias",
                     Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions", "ConciliacaoBancaria", null, Request.Url.Scheme) + "?fns="

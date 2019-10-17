@@ -249,6 +249,10 @@ namespace Fly01.Financeiro.Controllers
         public override ContentResult Sidebar()
         {
             var config = new SidebarUI() { Id = "nav-bar", AppName = "Gestão Financeira MEI", Parent = "header" };
+            config.Images = new SidebarUILogos()
+            {
+                Main = "Teste"
+            };
 
             var financeiroMenuItens = new SidebarUIMenu()
             {
@@ -260,8 +264,7 @@ namespace Fly01.Financeiro.Controllers
                         //new LinkUI() { Label = "Extrato", OnClick = @Url.Action("List", "Extrato")},
                         new LinkUI() { Label = "Contas a Pagar", OnClick = @Url.Action("List", "ContaPagar")},
                         new LinkUI() { Label = "Contas a Receber", OnClick = @Url.Action("List", "ContaReceber")},
-                        //new LinkUI() { Label = "Relatório DRE", OnClick = @Url.Action("List", "DemonstrativoResultadoExercicio")},
-                        new LinkUI() { Label = "Relatório DRE", OnClick = @Url.Action("List", "ContaPagar2")},
+                        new LinkUI() { Label = "Relatório DRE", OnClick = @Url.Action("List", "DemonstrativoResultadoExercicio")},
                         //new LinkUI() { Label = "Relatórios", OnClick = @Url.Action("List", "Relatorio")},
                         new LinkUI() { Label = "Conciliação Bancária", OnClick = @Url.Action("List", "ConciliacaoBancaria")}
                     }

@@ -17,15 +17,15 @@ namespace Fly01.Core.Presentation.Commons
         {
             return new HtmlString(
                 $"<title>{appName}</title>{System.Environment.NewLine}" +
-                $"<link type=\"text/css\" rel=\"stylesheet\" href=\"{cssUrl}\" />"
+                $"<link type=\"text/css\" rel=\"stylesheet\" href=\"Styles/mpnui_0.1.9.css\" />"
             );
         }
 
         public static IHtmlString ScriptsTemplate(this HtmlHelper html)
         {
             return new HtmlString(
-                $"<script src=\"{vendorJsUrl}\"></script>" +
-                $"<script src=\"{jsUrl}\"></script>"
+                $"<script src=\"Scripts/mpnui_0.1.9.js\"></script>" +
+                $"<script src=\"Scripts/vendors.mpnui_0.1.9.js\"></script>"
             );
         }
     }

@@ -3,5 +3,8 @@
         if ($("#contaBancariaNomeConta").val() != "" && $("#arquivo").val() != "") {
             $("form#fly01frm").submit();
         }
+        else {
+            $$$.toast("Informe a conta bancária e selecione um arquivo.", "error");
+        }
     }
 </script>

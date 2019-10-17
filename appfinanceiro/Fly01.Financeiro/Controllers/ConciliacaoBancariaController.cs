@@ -139,7 +139,7 @@ namespace Fly01.Financeiro.Controllers
         {
             try
             {
-                RestHelper.ExecuteDeleteRequest(String.Format("{0}({1})", "ConciliacaoBancariaItem", conciliacaoBancariaItemId));
+                RestHelper.ExecuteDeleteRequest(String.Format("{0}({1})", "conciliacaobancariaitem", conciliacaoBancariaItemId));
                 return JsonResponseStatus.Get(new ErrorInfo() { HasError = false }, Operation.Delete);
             }
             catch (Exception ex)
@@ -155,7 +155,7 @@ namespace Fly01.Financeiro.Controllers
             try
             {
                 CBItemConta.ValorConciliado = Math.Abs(CBItemConta.ValorConciliado);
-                RestHelper.ExecutePostRequest("ConciliacaoBancariaItemContaFinanceira", JsonConvert.SerializeObject(CBItemConta, JsonSerializerSetting.Default));
+                RestHelper.ExecutePostRequest("conciliacaobancariaitemcontafinanceira", JsonConvert.SerializeObject(CBItemConta, JsonSerializerSetting.Default));
                 return JsonResponseStatus.Get(new ErrorInfo() { HasError = false }, Operation.Create);
             }
             catch (Exception ex)
@@ -209,7 +209,7 @@ namespace Fly01.Financeiro.Controllers
                         return JsonResponseStatus.GetFailure("A soma dos valores conciliados deve ser igual ao valor do lançamento no extrato");
                     }
                 }
-                RestHelper.ExecutePostRequest("ConciliacaoBancariaBuscarExistentes", JsonConvert.SerializeObject(conciliacaoBancariaItem, JsonSerializerSetting.Default));
+                RestHelper.ExecutePostRequest("conciliacaobancariabuscarexistentes", JsonConvert.SerializeObject(conciliacaoBancariaItem, JsonSerializerSetting.Default));
                 return JsonResponseStatus.Get(new ErrorInfo() { HasError = false }, Operation.Create);
             }
             catch (Exception ex)
@@ -236,7 +236,7 @@ namespace Fly01.Financeiro.Controllers
                     { "pageSize", "20" }
                 };
 
-                var resource = "ConciliacaoBancariaItemSugestao";
+                var resource = "conciliacaobancariaitemsugestao";
 
                 var response = RestHelper.ExecuteGetRequest<PagedResult<ConciliacaoBancariaItemVM>>(resource, queryString);
                 //var conciliacaoBancariaItens = JsonConvert.SerializeObject(response.Data, JsonSerializerSetting.Front);
@@ -284,7 +284,7 @@ namespace Fly01.Financeiro.Controllers
 
         private ConciliacaoBancariaItemVM GetConciliacaoBancariaItem(Guid id)
         {
-            string resourceByIdCBitem = String.Format("{0}({1})", "conciliacaoBancariaItem", id);
+            string resourceByIdCBitem = String.Format("{0}({1})", "conciliacaobancariaitem", id);
             return RestHelper.ExecuteGetRequest<ConciliacaoBancariaItemVM>(resourceByIdCBitem, queryString: null);
         }
 
@@ -309,7 +309,7 @@ namespace Fly01.Financeiro.Controllers
         {
             try
             {
-                RestHelper.ExecutePostRequest("ConciliacaoBancariaTransacao", JsonConvert.SerializeObject(novaTransacao, JsonSerializerSetting.Default));
+                RestHelper.ExecutePostRequest("conciliacaobancariatransacao", JsonConvert.SerializeObject(novaTransacao, JsonSerializerSetting.Default));
                 return JsonResponseStatus.Get(new ErrorInfo() { HasError = false }, Operation.Create);
             }
             catch (Exception ex)
@@ -366,12 +366,13 @@ namespace Fly01.Financeiro.Controllers
             {
                 Id = "fly01dt",
                 UrlGridLoad = Url.Action("GridLoad"),
-                UrlFunctions = Url.Action("Functions", "ConciliacaoBancaria", null, Request.Url.Scheme) + "?fns="
+                UrlFunctions = Url.Action("Functions", "ConciliacaoBancaria", null, Request.Url.Scheme) + "?fns=",
             };
 
             config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
             {
-                new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" }
+                new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" },
+                 new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" }
             }));
 
             config.Columns.Add(new DataTableUIColumn() { DataField = "contaBancaria_nomeConta", DisplayName = "Conta nome", Priority = 1 });
@@ -457,7 +458,8 @@ namespace Fly01.Financeiro.Controllers
                 },
                 Options = new DataTableUIConfig
                 {
-                    PageLength = 20
+                    PageLength = 20,
+                    NoExportButtons = true
                 }
             };
 

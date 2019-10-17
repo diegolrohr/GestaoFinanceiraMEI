@@ -31,7 +31,7 @@
                             strMsg = data.message;
                         }
                         $$$.toast(strMsg, "success");
-                        $("#fly01mdlfrm.modal").modal("close");
+                        $$$._.fly01mdlfrm.close();
                         var idRecord = $('input#conciliacaoBancariaItemId').val();
                         $$$._.dtConciliacaoItens.refresh();
                     } else {

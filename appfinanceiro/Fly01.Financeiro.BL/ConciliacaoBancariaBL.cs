@@ -102,9 +102,9 @@ namespace Fly01.Financeiro.BL
             }
         }
 
-        public override void Delete(ConciliacaoBancaria entityToDelete)
-        {
-            throw new BusinessException("Não é possível deletar uma conciliação bancária, somente seus lançamentos");
-        }
+        //public override void Delete(ConciliacaoBancaria entityToDelete)
+        //{
+        //    throw new BusinessException("Não é possível deletar uma conciliação bancária, somente seus lançamentos");
+        //}
     }
 }

@@ -9,7 +9,7 @@ namespace Fly01.Core.Presentation.Commons
 
         private static string serverUrl = $"https://mpn.azureedge.net/lib";
 
-        private static string cssUrl = $"{serverUrl}/{cdnVersion}/mpnui.css";
+        //private static string cssUrl = $"{serverUrl}/{cdnVersion}/mpnui.css";
         private static string jsUrl = $"{serverUrl}/{cdnVersion}/mpnui.js";
         private static string vendorJsUrl = $"{serverUrl}/{cdnVersion}/vendors.mpnui.js";
 
@@ -23,10 +23,17 @@ namespace Fly01.Core.Presentation.Commons
 
         public static IHtmlString ScriptsTemplate(this HtmlHelper html)
         {
+            //https://mpn.azureedge.net/lib/0.1.9/vendors.mpnui.js
+            //https://mpn.azureedge.net/lib/0.1.9/mpnui.js
             return new HtmlString(
                 $"<script src=\"Scripts/mpnui_0.1.9.js\"></script>" +
                 $"<script src=\"Scripts/vendors.mpnui_0.1.9.js\"></script>"
             );
+
+           // return new HtmlString(
+           //    $"<script src=\"{vendorJsUrl}\"></script>" +
+           //    $"<script src=\"{jsUrl}\"></script>"
+           //);
         }
     }
 }

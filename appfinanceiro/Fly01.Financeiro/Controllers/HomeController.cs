@@ -251,7 +251,7 @@ namespace Fly01.Financeiro.Controllers
             var config = new SidebarUI() { Id = "nav-bar", AppName = "Gestão Financeira MEI", Parent = "header" };
             config.Images = new SidebarUILogos()
             {
-                Main = "Teste"
+                Main = " "//TODO: Trocar Logo
             };
 
             var financeiroMenuItens = new SidebarUIMenu()

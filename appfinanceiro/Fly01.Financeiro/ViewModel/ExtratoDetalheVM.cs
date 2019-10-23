@@ -14,6 +14,9 @@ namespace Fly01.Financeiro.ViewModel
         [JsonProperty("data")]
         public DateTime DataMovimento { get; set; }
 
+        [JsonProperty("contaFinanceiraNumero")]
+        public string ContaFinanceiraNumero { get; set; }
+
         [JsonProperty("descricaoLancamento")]
         public string DescricaoLancamento { get; set; }
 

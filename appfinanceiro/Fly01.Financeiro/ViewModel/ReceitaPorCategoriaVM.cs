@@ -20,7 +20,7 @@ namespace Fly01.Financeiro.ViewModel
         public double Previsto { get; set; }
 
         [JsonProperty("realizado")]
-        public double? Realizado { get; set; }
+        public double Realizado { get; set; }
 
         [JsonProperty("soma")]
         public double Soma { get; set; }

@@ -17,6 +17,9 @@ namespace Fly01.Core.Entities.Domains.Commons
         [JsonIgnore]
         public DateTime DataInclusao { get; set; }
 
+        [JsonProperty("contaFinanceiraNumero")]
+        public string ContaFinanceiraNumero { get; set; }
+
         [JsonProperty("descricaoLancamento")]
         public string DescricaoLancamento { get; set; }
 

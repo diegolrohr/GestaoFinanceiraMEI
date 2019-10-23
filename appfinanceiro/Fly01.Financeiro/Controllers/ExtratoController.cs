@@ -170,6 +170,7 @@ namespace Fly01.Financeiro.Controllers
                     {
                         data = item.DataMovimento.ToString("dd/MM/yyyy"),
                         descricaoLancamento = item.DescricaoLancamento,
+                        contaFinanceiraNumero = item.ContaFinanceiraNumero,
                         pessoaNome = item.PessoaNome,
                         contaBancariaDescricao = item.ContaBancariaDescricao,
                         valorLancamento = item.ValorLancamento.ToString("C", AppDefaults.CultureInfoDefault)
@@ -256,11 +257,11 @@ namespace Fly01.Financeiro.Controllers
         {
             var target = new List<HtmlUIButton>();
             target.Add(new HtmlUIButton { Id = "save", Label = "Atualizar", OnClickFn = "fnAtualizar", Position = HtmlUIButtonPosition.Main });
-            target.Add(new HtmlUIButton { Id = "prnt", Label = "Imprimir", OnClickFn = "fnImprimirExtrato", Position = HtmlUIButtonPosition.Out });
+            //target.Add(new HtmlUIButton { Id = "prnt", Label = "Imprimir", OnClickFn = "fnImprimirExtrato", Position = HtmlUIButtonPosition.Out });
 
-            target.Add(new HtmlUIButton { Id = "pgto", Label = "Novo Pagamento", OnClickFn = "fnNovoPagamento", Position = HtmlUIButtonPosition.In });
-            target.Add(new HtmlUIButton { Id = "rcto", Label = "Novo Recebimento", OnClickFn = "fnNovoRecebimento", Position = HtmlUIButtonPosition.In });
-            target.Add(new HtmlUIButton { Id = "trnf", Label = "Nova Transferência", OnClickFn = "fnNovaTransferencia", Position = HtmlUIButtonPosition.In });
+            //target.Add(new HtmlUIButton { Id = "pgto", Label = "Novo Pagamento", OnClickFn = "fnNovoPagamento", Position = HtmlUIButtonPosition.In });
+            //target.Add(new HtmlUIButton { Id = "rcto", Label = "Novo Recebimento", OnClickFn = "fnNovoRecebimento", Position = HtmlUIButtonPosition.In });
+            //target.Add(new HtmlUIButton { Id = "trnf", Label = "Nova Transferência", OnClickFn = "fnNovaTransferencia", Position = HtmlUIButtonPosition.In });
 
 
             return target;
@@ -276,7 +277,7 @@ namespace Fly01.Financeiro.Controllers
                 History = new ContentUIHistory { Default = Url.Action("Index") },
                 Header = new HtmlUIHeader
                 {
-                    Title = "Extrato",
+                    Title = "Movimentações",
                     Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions", "Extrato", null, Request.Url.Scheme) + "?fns="
@@ -422,7 +423,7 @@ namespace Fly01.Financeiro.Controllers
                 Class = "col s12",
                 Elements = new List<BaseUI>
                 {
-                    new LabelSetUI { Id =  "lab", Class = "col s12", Label = "Detalhes do Extrato"}
+                    new LabelSetUI { Id =  "lab", Class = "col s12", Label = "Detalhes das movimentações"}
                 }
             });
             cfg.Content.Add(new DataTableUI
@@ -444,6 +445,7 @@ namespace Fly01.Financeiro.Controllers
                 Columns = new List<DataTableUIColumn>
                 {
                     new DataTableUIColumn { DataField = "data", DisplayName = "Data", Priority = 1, Orderable = false, Searchable = false, Type = "date" },
+                    new DataTableUIColumn { DataField = "contaFinanceiraNumero", DisplayName = "Nº conta", Priority = 2, Orderable = false, Searchable = false },
                     new DataTableUIColumn { DataField = "pessoaNome", DisplayName = "Cliente/Fornecedor", Priority = 2, Orderable = false, Searchable = false },
                     new DataTableUIColumn { DataField = "contaBancariaDescricao", DisplayName = "Conta Bancária", Priority = 3, Orderable = false, Searchable = false },
                     new DataTableUIColumn { DataField = "valorLancamento", DisplayName = "Valor", Priority = 4, Orderable = false, Searchable = false, Type = "currency" },

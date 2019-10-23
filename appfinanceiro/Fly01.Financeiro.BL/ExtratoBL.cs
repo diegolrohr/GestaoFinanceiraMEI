@@ -181,6 +181,7 @@ namespace Fly01.Financeiro.BL
                                      DataMovimento = mov.Data,
                                      DataInclusao = mov.DataInclusao,
                                      DescricaoLancamento = mov.Descricao == null ? (mov.ContaFinanceira != null ? mov.ContaFinanceira.Descricao : "") : mov.Descricao,
+                                     ContaFinanceiraNumero = mov.ContaFinanceira.Numero.ToString(),
                                      PessoaNome = mov.ContaFinanceira.Pessoa.Nome,
                                      ValorLancamento = Math.Round(mov.Valor, 2),
                                  }).OrderByDescending(x => x.DataMovimento).ThenByDescending(x => x.DataInclusao).Skip(skipRecords).Take(takeRecords).ToList();

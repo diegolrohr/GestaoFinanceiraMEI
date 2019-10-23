@@ -1,0 +1,10 @@
+delete ConciliacaoBancariaItemContaFinanceira
+delete ConciliacaoBancariaItem
+delete ConciliacaoBancaria
+
+delete contafinanceirabaixa
+delete saldohistorico
+delete movimentacao
+delete contapagar
+delete contareceber
+delete contafinanceira

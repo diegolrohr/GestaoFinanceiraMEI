@@ -259,14 +259,10 @@ namespace Fly01.Financeiro.Controllers
                 Label = "Financeiro",
                 Items = new List<LinkUI>
                     {
-                        //new LinkUI() { Label = "Fluxo de Caixa", OnClick = @Url.Action("List", "Home")},
-                        new LinkUI() { Label = "Fluxo de Caixa", OnClick = @Url.Action("List", "ContaPagar1")},
-                        //new LinkUI() { Label = "Extrato", OnClick = @Url.Action("List", "Extrato")},
+                        new LinkUI() { Label = "Fluxo de Caixa", OnClick = @Url.Action("List", "Home")},
                         new LinkUI() { Label = "Contas a Pagar", OnClick = @Url.Action("List", "ContaPagar")},
                         new LinkUI() { Label = "Contas a Receber", OnClick = @Url.Action("List", "ContaReceber")},
                         new LinkUI() { Label = "Relatório DRE", OnClick = @Url.Action("List", "DemonstrativoResultadoExercicio")},
-                        //new LinkUI() { Label = "Relatórios", OnClick = @Url.Action("List", "Relatorio")},
-                        new LinkUI() { Label = "Conciliação Bancária", OnClick = @Url.Action("List", "ConciliacaoBancaria")}
                     }
             };
 
@@ -284,7 +280,16 @@ namespace Fly01.Financeiro.Controllers
                 //},
 
                 financeiroMenuItens,
-
+                new SidebarUIMenu()
+                {
+                    Label = "Controle Bancário",
+                    Items = new List<LinkUI>
+                    {
+                        new LinkUI() { Label = "Movimentações", OnClick = @Url.Action("List", "Extrato")},
+                        new LinkUI() { Label = "Conciliação Bancária", OnClick = @Url.Action("List", "ConciliacaoBancaria")},
+                        new LinkUI() { Label = "Contas Bancárias", OnClick = @Url.Action("List", "ContaBancaria")},
+                    }
+                },
                 new SidebarUIMenu()
                 {
                     Label = "Cadastros",
@@ -294,8 +299,7 @@ namespace Fly01.Financeiro.Controllers
                         new LinkUI() { Label = "Fornecedores", OnClick = @Url.Action("List", "Fornecedor")},
                         new LinkUI() { Label = "Condições de Parcelamento",OnClick = @Url.Action("List", "CondicaoParcelamento")},
                         new LinkUI() { Label = "Categoria", OnClick = @Url.Action("List", "Categoria")},
-                        new LinkUI() { Label = "Formas de Pagamento",OnClick = @Url.Action("List", "FormaPagamento")},
-                        new LinkUI() { Label = "Contas Bancárias", OnClick = @Url.Action("List", "ContaBancaria")},
+                        new LinkUI() { Label = "Formas de Pagamento",OnClick = @Url.Action("List", "FormaPagamento")}
                     }
                 }
             };

@@ -152,6 +152,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\mpnui_0.1.9.js" />
+    <Content Include="Scripts\ScriptLimparFinanceiro.sql" />
     <Content Include="Scripts\vendors.mpnui_0.1.9.js" />
     <Content Include="Styles\mpnui_0.1.9.css" />
     <Content Include="_app_offline.htm" />

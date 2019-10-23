@@ -51,7 +51,7 @@ namespace Fly01.Financeiro.Controllers
             var target = new List<HtmlUIButton>();
 
                 target.Add(new HtmlUIButton { Id = "save", Label = "Atualizar", OnClickFn = "fnAtualizar" });
-                target.Add(new HtmlUIButton { Id = "print", Label = "Imprimir", OnClickFn = "fnImprimirDRE" });
+                //target.Add(new HtmlUIButton { Id = "print", Label = "Imprimir", OnClickFn = "fnImprimirDRE" });
 
             return target;
         }
@@ -63,7 +63,7 @@ namespace Fly01.Financeiro.Controllers
                 History = new ContentUIHistory { Default = Url.Action("Index") },
                 Header = new HtmlUIHeader
                 {
-                    Title = "DRE",
+                    Title = "Demonstrativo de Resultado do Exercício",
                     Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions", "DemonstrativoResultadoExercicio", null, Request.Url.Scheme) + "?fns="
@@ -152,6 +152,7 @@ namespace Fly01.Financeiro.Controllers
                         DisplayName = "",
                         Priority = 1,
                         RenderFn = "fnRenderGroup",
+                        Width = "60%",
                         Searchable = false,
                         Orderable = false
                     },
@@ -159,8 +160,19 @@ namespace Fly01.Financeiro.Controllers
                     {
                         DataField = "soma",
                         DisplayName = "",
-                        Priority = 3,
+                        Priority = 2,
                         RenderFn = "fnRenderSoma",
+                        Width = "20%",
+                        Orderable = false,
+                        Searchable = false
+                    },
+                    new DataTableUIColumn
+                    {
+                        DataField = "realizado",
+                        DisplayName = "",
+                        Priority = 3,
+                        Width = "20%",
+                        RenderFn = "fnRenderRealizado",
                         Orderable = false,
                         Searchable = false
                     }
@@ -188,6 +200,7 @@ namespace Fly01.Financeiro.Controllers
                         DisplayName = "",
                         Priority = 1,
                         RenderFn = "fnRenderGroup",
+                        Width = "60%",
                         Searchable = false,
                         Orderable = false
                     },
@@ -195,8 +208,19 @@ namespace Fly01.Financeiro.Controllers
                     {
                         DataField = "soma",
                         DisplayName = "",
-                        Priority = 3,
+                        Priority = 2,
                         RenderFn = "fnRenderSoma",
+                        Width = "20%",
+                        Orderable = false,
+                        Searchable = false
+                    },
+                    new DataTableUIColumn
+                    {
+                        DataField = "realizado",
+                        DisplayName = "",
+                        Priority = 3,
+                        Width = "20%",
+                        RenderFn = "fnRenderRealizado",
                         Orderable = false,
                         Searchable = false
                     }
@@ -216,13 +240,16 @@ namespace Fly01.Financeiro.Controllers
                 { "$select", "soma" }
             };
 
-            var total = RestHelper
+            var result = RestHelper
                 .ExecuteGetRequest<ResultBase<DespesaPorCategoriaVM>>
                     ("MovimentacaoPorCategoria", queryString)
                 .Data
-                .Where(x => x.CategoriaPaiId == null)
-                .Sum(x => x.Soma)
-                .ToString("C", AppDefaults.CultureInfoDefault);
+                .Where(x => x.CategoriaPaiId == null);
+
+            var totalPrevisto = "Previsto: " + result.Sum(x => x.Soma).ToString("C", AppDefaults.CultureInfoDefault);
+            var totalRealizado = "Realizado: " + result.Sum(x => x.Realizado).ToString("C", AppDefaults.CultureInfoDefault);
+
+            var total = totalPrevisto + "<br/>" + totalRealizado;
 
             return Json(new { total }, JsonRequestBehavior.AllowGet);
         }

@@ -147,18 +147,18 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputTextUI { Id = "conta", Class = "col s4 m2 l2", Label = "Conta", Required = true, MinLength = 1, MaxLength = 10 });
             config.Elements.Add(new InputTextUI { Id = "digitoConta", Class = "col s2 m1 l1", Label = "Díg.", Required = true, MaxLength = 1 });
 
-            config.Elements.Add(new InputCheckboxUI
-            {
-                Id = "inicializaContaBancaria",
-                Class = "col s4 l3",
-                Label = " Inicializar conta com Saldo",
-                DomEvents = new List<DomEventUI>()
-                {
-                    new DomEventUI() { DomEvent = "change", Function = "fnChangeCheckInicializa" },
-                }
-            });
+            //config.Elements.Add(new InputCheckboxUI
+            //{
+            //    Id = "inicializaContaBancaria",
+            //    Class = "col s4 l3",
+            //    Label = " Inicializar conta com Saldo",
+            //    DomEvents = new List<DomEventUI>()
+            //    {
+            //        new DomEventUI() { DomEvent = "change", Function = "fnChangeCheckInicializa" },
+            //    }
+            //});
 
-            config.Elements.Add(new InputCurrencyUI { Id = "valorInicial", Class = "col s4 l3", Label = "Valor", Disabled = true });
+            //config.Elements.Add(new InputCurrencyUI { Id = "valorInicial", Class = "col s4 l3", Label = "Valor", Disabled = true });
 
             cfg.Content.Add(config);
 

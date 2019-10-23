@@ -26,7 +26,8 @@ namespace Fly01.Financeiro.Controllers
                 categoria = x.Categoria,
                 categoriaPaiId = x.CategoriaPaiId,
                 tipoCarteira = "(-) DESPESAS",
-                soma = x.Soma.ToString("C", AppDefaults.CultureInfoDefault)
+                soma = x.Soma.ToString("C", AppDefaults.CultureInfoDefault),
+                realizado = x.Realizado.ToString("C", AppDefaults.CultureInfoDefault)
             };
         }
 
@@ -54,13 +55,16 @@ namespace Fly01.Financeiro.Controllers
             _dataInicial = dataInicial;
             _dataFinal = dataFinal.AddDays(1).AddMilliseconds(-1);
             _somaRealizados = true;
-            _somaPrevistos = false;
+            _somaPrevistos = true;
 
-            var total = RestHelper.ExecuteGetRequest<ResultBase<DespesaPorCategoriaVM>>("DespesaPorCategoria", GetQueryStringDefaultGridLoad())
+            var result = RestHelper.ExecuteGetRequest<ResultBase<DespesaPorCategoriaVM>>("DespesaPorCategoria", GetQueryStringDefaultGridLoad())
                                     .Data
-                                    .Where(x => x.CategoriaPaiId == null)
-                                    .Sum(x => x.Soma)
-                                    .ToString("C", AppDefaults.CultureInfoDefault);
+                                    .Where(x => x.CategoriaPaiId == null);
+                                    
+            var totalPrevisto = "Previsto: " + result.Sum(x => x.Soma).ToString("C", AppDefaults.CultureInfoDefault);
+            var totalRealizado = "Realizado: " + result.Sum(x => x.Realizado).ToString("C", AppDefaults.CultureInfoDefault);
+
+            var total = totalPrevisto + "<br/>" + totalRealizado;
 
             return Json(new { total }, JsonRequestBehavior.AllowGet);
         }

@@ -23,7 +23,7 @@ namespace Fly01.Financeiro.BL
         public List<MovimentacaoFinanceiraPorCategoria> Get(DateTime dataInicial,
                                                   DateTime dataFinal,
                                                   bool somaRealizados = true,
-                                                  bool somaPrevistos = false)
+                                                  bool somaPrevistos = true)
         {
             var contasReceber = ContaReceberBL
                                     .AllIncluding(c => c.Categoria)

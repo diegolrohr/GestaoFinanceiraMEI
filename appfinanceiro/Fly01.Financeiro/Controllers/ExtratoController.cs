@@ -813,7 +813,8 @@ namespace Fly01.Financeiro.Controllers
                 descricaoLancamento = item.DescricaoLancamento,
                 pessoaNome = item.PessoaNome,
                 contaBancariaDescricao = item.ContaBancariaDescricao,
-                valorLancamento = item.ValorLancamento.ToString("C", AppDefaults.CultureInfoDefault)
+                valorLancamento = item.ValorLancamento.ToString("C", AppDefaults.CultureInfoDefault),
+                contaFinanceiraNumero = item.ContaFinanceiraNumero
             }).ToList();
             Type o = data.FirstOrDefault().GetType();
             data.ForEach(x =>

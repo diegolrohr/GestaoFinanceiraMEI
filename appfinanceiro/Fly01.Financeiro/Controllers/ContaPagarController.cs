@@ -118,7 +118,7 @@ namespace Fly01.Financeiro.Controllers
         {
             var target = new List<HtmlUIButton>();
 
-            target.Add(new HtmlUIButton { Id = "baixasBtn", Label = "Baixas múltiplas", OnClickFn = "fnBaixaMultipla", Position = HtmlUIButtonPosition.Out });
+            //target.Add(new HtmlUIButton { Id = "baixasBtn", Label = "Baixas múltiplas", OnClickFn = "fnBaixaMultipla", Position = HtmlUIButtonPosition.Out });
             //target.Add(new HtmlUIButton { Id = "newPrint", Label = "Imprimir", OnClickFn = "fnImprimirListContas", Position = HtmlUIButtonPosition.In });
             target.Add(new HtmlUIButton { Id = "filterGrid", Label = bntLabel, OnClickFn = btnOnClick, Position = HtmlUIButtonPosition.Out });
             target.Add(new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo", Position = HtmlUIButtonPosition.Main });
@@ -574,7 +574,7 @@ namespace Fly01.Financeiro.Controllers
                 };
 
                 RestHelper.ExecuteDeleteRequest($"{AppDefaults.UrlFinanceiroApi}",
-                                                $"{ResourceName}/{id}/",
+                                                $"{ResourceName}({id})",
                                                 null,
                                                 queryString);
                 return JsonResponseStatus.Get(new ErrorInfo { HasError = false }, Operation.Delete);

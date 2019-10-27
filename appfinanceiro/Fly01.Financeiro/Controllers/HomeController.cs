@@ -20,11 +20,6 @@ namespace Fly01.Financeiro.Controllers
     [AllowAnonymous]
     public class HomeController : Core.Presentation.Controllers.HomeController
     {
-        public override ActionResult Index()
-        {
-            return RedirectToAction("Index", "ContaPagar");
-        }
-
         protected override ContentUI HomeJson()
         {
             var cfg = new ContentUI
@@ -35,8 +30,7 @@ namespace Fly01.Financeiro.Controllers
                     Title = "Fluxo de Caixa",
                     Buttons = new List<HtmlUIButton>
                     {
-                        new HtmlUIButton { Id = "save", Label = "Atualizar", OnClickFn = "fnAtualizar", Position = HtmlUIButtonPosition.Main },
-                        new HtmlUIButton { Id = "prnt", Label = "Imprimir", OnClickFn = "fnImprimirFluxoCaixa", Position = HtmlUIButtonPosition.Out }
+                        new HtmlUIButton { Id = "save", Label = "Atualizar", OnClickFn = "fnAtualizar", Position = HtmlUIButtonPosition.Main }
                     }
                 },
                 UrlFunctions = Url.Action("Functions", "Home", null, Request.Url.Scheme) + "?fns=",
@@ -74,7 +68,7 @@ namespace Fly01.Financeiro.Controllers
                     {
                         Id = "dataInicial",
                         Class = "col s6 m3 l4 offset-l2 offset-m3",
-                        Label = "Data Inicial",
+                        Label = "Data Vencimento Inicial",
                         Value = dataInicialFiltroDefault.ToString("dd/MM/yyyy"),
                         DomEvents = new List<DomEventUI>
                         {
@@ -87,7 +81,7 @@ namespace Fly01.Financeiro.Controllers
                     {
                         Id = "dataFinal",
                         Class = "col s6 m3 l4",
-                        Label = "Data Final",
+                        Label = "Data Vencimento Final",
                         Value = dataFinalFiltroDefault.ToString("dd/MM/yyyy"),
                         DomEvents = new List<DomEventUI> {new DomEventUI {DomEvent = "click", Function = "fnAtualizar"}},
                         Max = 90,
@@ -269,16 +263,6 @@ namespace Fly01.Financeiro.Controllers
             #region MenuItems
             var menuItems = new List<SidebarUIMenu>()
             {
-                //new SidebarUIMenu()
-                //{
-                //    Label = "Indicadores",
-                //    Items = new List<LinkUI>
-                //    {
-                //        new LinkUI() { Label = "Contas a Pagar", OnClick = @Url.Action("List", "DashboardContaPagar")},
-                //        new LinkUI() { Label = "Contas a Receber", OnClick = @Url.Action("List", "DashboardContaReceber")},
-                //    }
-                //},
-
                 financeiroMenuItens,
                 new SidebarUIMenu()
                 {
@@ -298,7 +282,7 @@ namespace Fly01.Financeiro.Controllers
                         new LinkUI() { Label = "Clientes",OnClick = @Url.Action("List", "Cliente")},
                         new LinkUI() { Label = "Fornecedores", OnClick = @Url.Action("List", "Fornecedor")},
                         new LinkUI() { Label = "Condições de Parcelamento",OnClick = @Url.Action("List", "CondicaoParcelamento")},
-                        new LinkUI() { Label = "Categoria", OnClick = @Url.Action("List", "Categoria")},
+                        new LinkUI() { Label = "Categorias", OnClick = @Url.Action("List", "Categoria")},
                         new LinkUI() { Label = "Formas de Pagamento",OnClick = @Url.Action("List", "FormaPagamento")}
                     }
                 }

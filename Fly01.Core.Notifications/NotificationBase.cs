@@ -16,8 +16,8 @@ namespace Fly01.Core.Notifications
 
         public string Get()
         {
-            //return JsonConvert.SerializeObject(new { innerMessage = Errors.ToArray() });
-            return JsonConvert.SerializeObject(new { errorMessage = Errors.ToArray() });
+            var innerMessage = new { innerMessage = Errors.ToArray() };
+            return JsonConvert.SerializeObject(new { errorMessage = JsonConvert.SerializeObject(innerMessage) });
         }
     }
 }

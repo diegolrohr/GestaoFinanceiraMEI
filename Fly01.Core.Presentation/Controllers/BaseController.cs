@@ -401,6 +401,7 @@ namespace Fly01.Core.Presentation
             }
         }
 
+        //{"errorCode":400,"errorMessage":"{\"innerMessage\":[{\"dataField\":\"cpfcnpj\",\"message\":\"O CPF/CNPJ informado já foi utilizado em outro cadastro.\",\"referenceId\":\"3864a8d5-18e2-49d7-bf20-318d31ac95e1\"}]}"}
         [HttpPost]
         public virtual JsonResult Edit(T entityVM)
         {
@@ -413,7 +414,7 @@ namespace Fly01.Core.Presentation
             }
             catch (Exception ex)
             {
-                var error = GetApiError(ex); //JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
                 return JsonResponseStatus.GetFailure(error.Message);
             }
         }

@@ -17,7 +17,9 @@ namespace Fly01.Core.Presentation.Commons
         {
             return new HtmlString(
                 $"<title>{appName}</title>{System.Environment.NewLine}" +
-                $"<link type=\"text/css\" rel=\"stylesheet\" href=\"Styles/mpnui_0.1.9.css\" />"
+                //$"<link type=\"text/css\" rel=\"stylesheet\" href=\"Styles/mpnui_0.1.9.css\" />"
+                //$"<link type=\"text/css\" rel=\"stylesheet\" href=\"Styles/mpnui_0.1.9.green.css\" />"
+                $"<link type=\"text/css\" rel=\"stylesheet\" href=\"Styles/mpnui_0.1.9.blue.css\" />"
             );
         }
 

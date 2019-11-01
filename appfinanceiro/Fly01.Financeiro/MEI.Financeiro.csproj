@@ -55,6 +55,7 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="Views\RelatorioContaPagar\Functions\" />
     <Folder Include="Views\RelatorioContaReceber\Functions\" />
   </ItemGroup>
@@ -156,10 +157,7 @@
     <Content Include="Scripts\vendors.mpnui_0.1.9.js" />
     <Content Include="Styles\mpnui_0.1.9.css" />
     <Content Include="_app_offline.htm" />
-    <None Include="Properties\PublishProfiles\HomologacaoStage.pubxml" />
     <None Include="Resources\Microsoft.ReportViewer.ProcessingObjectModel.dll" />
-    <None Include="Properties\PublishProfiles\Homologacao.pubxml" />
-    <None Include="Properties\PublishProfiles\Producao.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

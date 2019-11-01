@@ -114,8 +114,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="ApplicationInsights.config" />
-    <None Include="Properties\PublishProfiles\HomologacaoStage.pubxml" />
-    <None Include="Properties\PublishProfiles\Producao.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -365,7 +363,9 @@
       <Private>True</Private>
     </Reference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Properties\PublishProfiles\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

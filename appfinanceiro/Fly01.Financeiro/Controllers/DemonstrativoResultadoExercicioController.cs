@@ -21,7 +21,7 @@ namespace Fly01.Financeiro.Controllers
     public class DemonstrativoResultadoExercicioController : BaseController<DemonstrativoResultadoExercicioVM>
     {
         [HttpGet]
-        public ActionResult Imprimir(DateTime dataInicial, DateTime dataFinal, bool somaRealizados = true, bool somaPrevistos = false)
+        public ActionResult Imprimir(DateTime dataInicial, DateTime dataFinal, bool somaRealizados = false, bool somaPrevistos = true)
         {
             var queryString = new Dictionary<string, string>
             {
@@ -134,49 +134,6 @@ namespace Fly01.Financeiro.Controllers
 
             cfg.Content.Add(new DataTableUI
             {
-                Id = "fly01dtLancamentos",
-                RowGroup = "tipoCarteira",
-                Class = "col s12",
-                UrlGridLoad = Url.Action("LoadLancamentoDescricao"),
-                UrlFunctions = Url.Action("Functions", "DemonstrativoResultadoExercicio", null, Request.Url?.Scheme) + "?fns=",
-                Columns = new List<DataTableUIColumn>
-                {
-                    new DataTableUIColumn
-                    {
-                        DataField = "categoria",
-                        DisplayName = "",
-                        Priority = 1,
-                        RenderFn = "fnRenderGroup",
-                        Width = "60%",
-                        Searchable = false,
-                        Orderable = false
-                    },
-                    new DataTableUIColumn
-                    {
-                        DataField = "soma",
-                        DisplayName = "",
-                        Priority = 2,
-                        RenderFn = "fnRenderSoma",
-                        Width = "20%",
-                        Orderable = false,
-                        Searchable = false
-                    },
-                    new DataTableUIColumn
-                    {
-                        DataField = "realizado",
-                        DisplayName = "",
-                        Priority = 3,
-                        Width = "20%",
-                        RenderFn = "fnRenderRealizado",
-                        Orderable = false,
-                        Searchable = false
-                    }
-                },
-                Options = new DataTableUIConfig { PageLength = 30, WithoutRowMenu = true }
-            });
-
-            cfg.Content.Add(new DataTableUI
-            {
                 Id = "fly01dtreceitas",
                 RowGroup = "tipoCarteira",
                 Class = "col s12",
@@ -195,7 +152,6 @@ namespace Fly01.Financeiro.Controllers
                         DisplayName = "",
                         Priority = 1,
                         RenderFn = "fnRenderGroup",
-                        Width = "60%",
                         Searchable = false,
                         Orderable = false
                     },
@@ -205,17 +161,6 @@ namespace Fly01.Financeiro.Controllers
                         DisplayName = "",
                         Priority = 2,
                         RenderFn = "fnRenderSoma",
-                        Width = "20%",
-                        Orderable = false,
-                        Searchable = false
-                    },
-                    new DataTableUIColumn
-                    {
-                        DataField = "realizado",
-                        DisplayName = "",
-                        Priority = 3,
-                        Width = "20%",
-                        RenderFn = "fnRenderRealizado",
                         Orderable = false,
                         Searchable = false
                     }
@@ -243,7 +188,6 @@ namespace Fly01.Financeiro.Controllers
                         DisplayName = "",
                         Priority = 1,
                         RenderFn = "fnRenderGroup",
-                        Width = "60%",
                         Searchable = false,
                         Orderable = false
                     },
@@ -253,17 +197,6 @@ namespace Fly01.Financeiro.Controllers
                         DisplayName = "",
                         Priority = 2,
                         RenderFn = "fnRenderSoma",
-                        Width = "20%",
-                        Orderable = false,
-                        Searchable = false
-                    },
-                    new DataTableUIColumn
-                    {
-                        DataField = "realizado",
-                        DisplayName = "",
-                        Priority = 3,
-                        Width = "20%",
-                        RenderFn = "fnRenderRealizado",
                         Orderable = false,
                         Searchable = false
                     }
@@ -283,16 +216,13 @@ namespace Fly01.Financeiro.Controllers
                 { "$select", "soma" }
             };
 
-            var result = RestHelper
-                .ExecuteGetRequest<ResultBase<DespesaPorCategoriaVM>>
-                    ("MovimentacaoPorCategoria", queryString)
-                .Data
-                .Where(x => x.CategoriaPaiId == null);
-
-            var totalPrevisto = "Previsto: " + result.Sum(x => x.Soma).ToString("C", AppDefaults.CultureInfoDefault);
-            var totalRealizado = "Realizado: " + result.Sum(x => x.Realizado).ToString("C", AppDefaults.CultureInfoDefault);
-
-            var total = totalPrevisto + "<br/>" + totalRealizado;
+            var total = RestHelper
+               .ExecuteGetRequest<ResultBase<DespesaPorCategoriaVM>>
+                   ("MovimentacaoPorCategoria", queryString)
+               .Data
+               .Where(x => x.CategoriaPaiId == null)
+               .Sum(x => x.Soma)
+               .ToString("C", AppDefaults.CultureInfoDefault);
 
             return Json(new { total }, JsonRequestBehavior.AllowGet);
         }
@@ -300,26 +230,5 @@ namespace Fly01.Financeiro.Controllers
         protected override ContentUI FormJson() { throw new NotImplementedException(); }
 
         public override Func<DemonstrativoResultadoExercicioVM, object> GetDisplayData() { throw new NotImplementedException(); }
-
-        public JsonResult LoadLancamentoDescricao()
-        {
-            var data = new List<object>()
-            {
-                new
-                {
-                    categoria = "",
-                    tipoCarteira = "AGRUPAMENTO POR CATEGORIA",
-                    soma = "Previsto",
-                    realizado = "Realizado"
-                }
-            };
-
-            return Json(new
-            {
-                recordsTotal = 1,
-                recordsFiltered = 0,
-                data = data
-            }, JsonRequestBehavior.AllowGet);
-        }
     }
 }

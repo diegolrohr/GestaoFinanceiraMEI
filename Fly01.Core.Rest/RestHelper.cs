@@ -17,8 +17,8 @@ namespace Fly01.Core.Rest
             get
             {
                 Dictionary<string, string> header = Header;
-                //header.Add("EmpresaId", "D3FC7081-7643-4CBD-9047-CC9B6F619AA7");//teste inicial
-                header.Add("EmpresaId", "9DDEF5EF-7904-4039-AD15-12F0338652E1"); //validacao Sonia
+                header.Add("EmpresaId", "D3FC7081-7643-4CBD-9047-CC9B6F619AA7");//teste inicial
+                //header.Add("EmpresaId", "9DDEF5EF-7904-4039-AD15-12F0338652E1"); //validacao Sonia
                 header.Add("AppUser", "diegol.rohr@gmail.com");
                 header.Add("Content-Type", "application/json");
                 return header;

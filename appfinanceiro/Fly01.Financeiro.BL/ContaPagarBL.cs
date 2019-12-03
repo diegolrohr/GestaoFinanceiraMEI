@@ -128,7 +128,7 @@ namespace Fly01.Financeiro.BL
                         itemContaPagarRepeticao.DataVencimento = itemContaPagarRepeticao.DataVencimento.AddYears(iRepeticao);
                         break;
                 }
-
+                itemContaPagarRepeticao.DataEmissao = itemContaPagarRepeticao.DataVencimento;
                 itemContaPagarRepeticao.Numero = numero;
 
                 base.Insert(itemContaPagarRepeticao);
